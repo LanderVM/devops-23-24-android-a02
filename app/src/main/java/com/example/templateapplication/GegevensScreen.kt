@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,12 +35,26 @@ import androidx.compose.ui.unit.sp
 fun GegevensScreen (modifier: Modifier = Modifier) {
 
     Column (
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        //ContactGegevens()
+        ContactGegevens()
         Spacer(modifier = Modifier.height(20.dp))
         Adressering()
+        Spacer(modifier = Modifier.height(15.dp))
+        Button (
+            onClick = {},
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+                disabledContainerColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+                contentColor = Color(android.graphics.Color.parseColor("#FFFFFF")),
+                disabledContentColor = Color(android.graphics.Color.parseColor("#FFFFFF"))
+            ),
+        ) {
+            Text (text= "volgende")
+        }
     }
 }
 
