@@ -90,8 +90,8 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
             onClick = {},
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-                disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
+                disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.disabledButtonColor))),
                 contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
                 disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit)))
             ),
