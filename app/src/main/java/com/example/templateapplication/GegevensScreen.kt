@@ -18,6 +18,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -71,7 +72,22 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(35.dp))
+        LinearProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 50.dp),
+            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
+            progress = 0.50f,
+            trackColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text="personalia",
+            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp).height(17.dp)
+        )
+        Spacer(modifier = Modifier.height(15.dp))
         ContactGegevens(
             naam = naam ,onNaamChange = {naam = it},
             voornaam = voornaam, onVoornaamChange = {voornaam = it},
@@ -175,7 +191,7 @@ fun InputVeld(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
             unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
         ),
-        //trailingIcon = (Icon(Icons.Default.Clear,contentDescription = null)),
+        //trailingIcon = Icon(Icons.Default.Clear,contentDescription = null),
     )
 }
 @Composable
