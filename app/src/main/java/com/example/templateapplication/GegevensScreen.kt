@@ -83,7 +83,7 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text="personalia",
+            text="Personalia",
             color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
             modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp).height(17.dp)
         )
@@ -113,7 +113,7 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
             ),
             enabled = buttonEnabled
         ) {
-            Text (text= "volgende")
+            Text (text= "Volgende")
         }
         Spacer(modifier = Modifier.height(40.dp))
     }
@@ -135,9 +135,9 @@ fun ContactGegevens(
     ) {
         Text(text = "Contact gegevens",textAlign = TextAlign.Center,fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label="naam", value = naam, onChange = onNaamChange)
+        InputVeld(label="Naam", value = naam, onChange = onNaamChange)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "voornaam",value=voornaam, onChange = onVoornaamChange)
+        InputVeld(label = "Voornaam",value=voornaam, onChange = onVoornaamChange)
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label = "Type Evenement",value = typeEvenement, onChange = onTypeEvenementChange)
         Spacer(modifier = Modifier.height(20.dp))
@@ -157,15 +157,15 @@ fun Adressering(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Adress gegevens",textAlign = TextAlign.Center,fontSize = 20.sp)
+        Text(text = "Adres gegevens",textAlign = TextAlign.Center,fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label="straat", value = straat, onChange = onStraatChange)
+        InputVeld(label="Straat", value = straat, onChange = onStraatChange)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "huisnummer", value = huisnummer, onChange = onHuisnummerChange)
+        InputVeld(label = "Huisnummer", value = huisnummer, onChange = onHuisnummerChange)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "gemeente", value = gemeente, onChange = onGemeenteChange)
+        InputVeld(label = "Gemeente", value = gemeente, onChange = onGemeenteChange)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "postcode", value = postcode, onChange = onPostcodeChange)
+        InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange)
         Spacer(modifier = Modifier.height(15.dp))
         OptieFacturatieAdress()
     }
@@ -204,14 +204,14 @@ fun OptieFacturatieAdress (modifier:Modifier = Modifier) {
         Checkbox(
             checked = true,
             onCheckedChange = {},
-            //colors = CheckboxColors(
-            //    checkedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-            //    uncheckedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-            //    checkedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-            //    unCheckedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-            //),
+            /*colors = CheckboxColors(
+                checkedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+                uncheckedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+                checkedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+               unCheckedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+            ),*/
         )
-        Text(text="Adress is ook facturatie adress", modifier = Modifier.padding(horizontal = 12.dp ))
+        Text(text="Adres is ook facturatie adress", modifier = Modifier.padding(horizontal = 12.dp ))
     }
 }
 
