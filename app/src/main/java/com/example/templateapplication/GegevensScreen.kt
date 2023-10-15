@@ -115,7 +115,7 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
         ) {
             Text (text= "volgende")
         }
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 
@@ -211,7 +211,7 @@ fun OptieFacturatieAdress (modifier:Modifier = Modifier) {
             //    unCheckedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
             //),
         )
-        Text(text="Adress is ook facturatie adress", modifier = Modifier.padding(horizontal = 20.dp ))
+        Text(text="Adress is ook facturatie adress", modifier = Modifier.padding(horizontal = 12.dp ))
     }
 }
 
