@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,9 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
 
     Column (
-        modifier = Modifier.fillMaxWidth().verticalScroll(state = scrollState),
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(20.dp))
@@ -51,14 +54,15 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
             onClick = {},
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-                disabledContainerColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-                contentColor = Color(android.graphics.Color.parseColor("#FFFFFF")),
-                disabledContentColor = Color(android.graphics.Color.parseColor("#FFFFFF"))
+                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
+                disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit)))
             ),
         ) {
             Text (text= "volgende")
         }
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
@@ -108,7 +112,7 @@ fun Adressering() {
 fun InputVeld(modifier: Modifier = Modifier,label:String) {
 
     OutlinedTextField(
-        label = { Text(text = label, color = Color(android.graphics.Color.parseColor("#D3B98B"))) },
+        label = { Text(text = label, color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))) },
         value = "",
         onValueChange = {},
         modifier = Modifier
@@ -117,8 +121,9 @@ fun InputVeld(modifier: Modifier = Modifier,label:String) {
             .height(75.dp)
             .padding(horizontal = 40.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-            unfocusedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B"))),
+            focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+            unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+        ),
         //trailingIcon = (Icon(Icons.Default.Clear,contentDescription = null)),
     )
 }
