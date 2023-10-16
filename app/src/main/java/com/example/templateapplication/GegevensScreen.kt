@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -55,7 +56,7 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
     var gemeente by remember { mutableStateOf("") }
     var postcode by remember { mutableStateOf("") }
 
-    var facturatieAdressChecked by remember { mutableStateOf(false) }
+    var facturatieAdressChecked by remember { mutableStateOf(true) }
 
     val buttonEnabled:Boolean
     if (naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
@@ -87,7 +88,10 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
         Text(
             text="Personalia",
             color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 60.dp).height(17.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 60.dp)
+                .height(17.dp)
         )
         Spacer(modifier = Modifier.height(15.dp))
         ContactGegevens(
@@ -227,6 +231,7 @@ fun OptieFacturatieAdress (
                 disabledBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
                 disabledIndeterminateBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),
             ),*/
+            colors = CheckboxDefaults.colors()
         )
         Text(text="Adres is ook facturatie adress", modifier = Modifier.padding(horizontal = 12.dp ))
     }
