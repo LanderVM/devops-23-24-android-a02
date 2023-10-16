@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Template Application</string>
+    <string name="lichter">#D3B98B</string>
+    <string name="wit">#FFFFFF</string>
+    <string name="lichts">#efe5d4</string>
+    <string name="main">#C8A86E</string>
+    <string name="disabledButtonColor">#f8f1e4</string>
 </resources>
