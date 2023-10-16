@@ -75,7 +75,7 @@ fun DatumScreen (modifier: Modifier = Modifier) {
         Spacer(modifier= Modifier.height(50.dp))
         DatumPicker(datum = eindDatum, naamDatum = "eind datum")
         Spacer(modifier = Modifier.height(10.dp))
-        TijdPicker(label = "eind uur", value = startUur.value, onChange ={startUur.value=it} )
+        TijdPicker(label = "eind uur", value = eindUur.value, onChange ={eindUur.value=it} )
         Spacer(modifier= Modifier.height(30.dp))
     }
 }
