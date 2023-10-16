@@ -55,6 +55,8 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
     var gemeente by remember { mutableStateOf("") }
     var postcode by remember { mutableStateOf("") }
 
+    var facturatieAdressChecked by remember { mutableStateOf(false) }
+
     val buttonEnabled:Boolean
     if (naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
         typeEvenement.isEmpty()||email.isBlank()||email.isEmpty()||
@@ -100,6 +102,7 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
             huisnummer = huisnummer, onHuisnummerChange = {huisnummer = it},
             gemeente = gemeente, onGemeenteChange = {gemeente = it},
             postcode = postcode, onPostcodeChange = {postcode = it},
+            facturatieAdressChecked = facturatieAdressChecked, onFacturatieAdressCheckedChange = {facturatieAdressChecked = it}
         )
         Spacer(modifier = Modifier.height(15.dp))
         Button (
@@ -152,6 +155,7 @@ fun Adressering(
     huisnummer:String,onHuisnummerChange:(String)->Unit,
     gemeente:String,onGemeenteChange:(String)->Unit,
     postcode:String,onPostcodeChange:(String)->Unit,
+    facturatieAdressChecked:Boolean,onFacturatieAdressCheckedChange:(Boolean)->Unit,
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -167,7 +171,10 @@ fun Adressering(
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange)
         Spacer(modifier = Modifier.height(15.dp))
-        OptieFacturatieAdress()
+        OptieFacturatieAdress(
+            facturatieAdressChecked = facturatieAdressChecked,
+            onFacturatieAdressCheckedChange = onFacturatieAdressCheckedChange
+        )
     }
 }
 
@@ -191,24 +198,34 @@ fun InputVeld(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
             unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
         ),
-        //trailingIcon = Icon(Icons.Default.Clear,contentDescription = null),
+        //trailingIcon = {Icon(Icons.Default.Clear,contentDescription = null)},
     )
 }
 @Composable
-fun OptieFacturatieAdress (modifier:Modifier = Modifier) {
+fun OptieFacturatieAdress (
+    modifier:Modifier = Modifier,
+    facturatieAdressChecked:Boolean,
+    onFacturatieAdressCheckedChange:(Boolean)->Unit,) {
 
     Row (
         modifier = Modifier.height(50.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(
-            checked = true,
-            onCheckedChange = {},
+            checked = facturatieAdressChecked,
+            onCheckedChange = onFacturatieAdressCheckedChange,
             /*colors = CheckboxColors(
                 checkedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
                 uncheckedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
                 checkedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-               unCheckedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+                uncheckedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
+                checkedCheckmarkColor= Color(android.graphics.Color.parseColor("#FFFFFF")),,
+                uncheckedCheckmarkColor= Color(android.graphics.Color.parseColor("#FFFFFF")),
+                disabledCheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
+                disabledUncheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
+                disabledIndeterminateBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
+                disabledBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
+                disabledIndeterminateBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),
             ),*/
         )
         Text(text="Adres is ook facturatie adress", modifier = Modifier.padding(horizontal = 12.dp ))
