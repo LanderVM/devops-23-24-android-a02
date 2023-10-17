@@ -1,7 +1,11 @@
 package com.example.templateapplication.ui.screens.overpage
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.templateapplication.NavigationRoutes
 import com.example.templateapplication.R
+import com.example.templateapplication.ui.screens.overpage.components.InfoParts
 import com.example.templateapplication.ui.theme.ImperialScript
 
 @Composable
@@ -25,23 +30,20 @@ fun OverScreen(navController: NavController, modifier: Modifier = Modifier) {
     LazyColumn(
     ) {
         item {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Over de foodtruck",
                     fontFamily = ImperialScript,
-                    fontSize = 100.sp,
+                    fontSize = 50.sp,
                     color = Color.DarkGray,
-                    modifier = Modifier.padding(top = 50.dp)
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                InfoParts()
             }
         }
-        items(3) { index ->
-            FormuleCard("Categorië item", image,
-                { navController.navigate(NavigationRoutes.home.name) })
-        }
+
     }
 }

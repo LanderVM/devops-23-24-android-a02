@@ -29,6 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.data.navidrawer.NavigationItem
 import com.example.templateapplication.ui.maincomponents.BlancheAppBar
+import com.example.templateapplication.ui.screens.gegevenspage.GegevensScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.overpage.OverScreen
 import kotlinx.coroutines.launch
@@ -42,6 +43,9 @@ fun BlancheApp() {
         ),
         NavigationItem(
             title = NavigationRoutes.over.name,
+        ),
+        NavigationItem(
+            title = NavigationRoutes.gegevens.name,
         ),
     )
     Surface(
@@ -115,6 +119,11 @@ fun BlancheApp() {
                     composable(NavigationRoutes.over.name) {
                         OverScreen(
                             navController,
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    }
+                    composable(NavigationRoutes.gegevens.name) {
+                        GegevensScreen(
                             modifier = Modifier.padding(innerPadding)
                         )
                     }

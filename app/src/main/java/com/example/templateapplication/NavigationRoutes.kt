@@ -4,5 +4,6 @@ import androidx.annotation.StringRes
 
 enum class NavigationRoutes(@StringRes val title: Int) {
     home(title = R.string.home_title),
-    over(title = R.string.over_title)
+    over(title = R.string.over_title),
+    gegevens(title = R.string.gegevens_title)
 }

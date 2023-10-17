@@ -19,9 +19,11 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
         item {
             HomeScreenTop()
         }
-        // Mock data
-        items(3) { index ->
-            FormuleCard("Categorië item", image, { navController.navigate(NavigationRoutes.over.name) })
+        item {
+            FormuleCard("Over pagina", image, { navController.navigate(NavigationRoutes.over.name) })
+        }
+        item {
+            FormuleCard("Gegevens pagina", image, { navController.navigate(NavigationRoutes.gegevens.name) })
         }
     }
 }
