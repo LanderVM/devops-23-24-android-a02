@@ -1,5 +1,6 @@
 package com.example.templateapplication
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -27,12 +28,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.data.navidrawer.NavigationItem
-import com.example.templateapplication.ui.maincomponents.BlancheAppBar
+import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.gegevenspage.GegevensScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.overpage.OverScreen
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,6 +115,11 @@ fun BlancheApp() {
                     composable(NavigationRoutes.home.name) {
                         HomeScreen(
                             navController,
+                            openDrawer = {
+                                scope.launch {
+                                    drawerState.open()
+                                }
+                            },
                             modifier = Modifier.padding(innerPadding)
                         )
                     }

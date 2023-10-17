@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,38 +25,58 @@ import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.ImperialScript
 
 @Composable
-fun HomeScreenTop(modifier: Modifier = Modifier) {
-    val image = painterResource(R.drawable.homescreen_background)
-    Box {
-        Box(
-            modifier = modifier
-                .fillMaxHeight(0.4f)
+fun HomeScreenTop(
+    modifier: Modifier = Modifier,
 
+    openDrawer: () -> Unit = {}
+) {
+    val image = painterResource(R.drawable.homescreen_background)
+
+    Box(
+        modifier = modifier.fillMaxHeight(0.4f)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
             Image(
                 painter = image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .shadow(8.dp)
+                modifier = Modifier.fillMaxSize().shadow(8.dp)
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Blanche",
-                    fontFamily = ImperialScript,
-                    fontSize = 100.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 50.dp)
-                )
-            }
 
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                IconButton(
+                    onClick = openDrawer,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "Menu",
+                        tint = Color.White,
+                    )
+                }
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Blanche",
+                        fontFamily = ImperialScript,
+                        fontSize = 100.sp,
+                        color = Color.White,
+                        modifier = Modifier.padding(top = 50.dp)
+                    )
+                }
+            }
         }
     }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()

@@ -6,18 +6,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.templateapplication.NavigationRoutes
 import com.example.templateapplication.R
 
 @Composable
-fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun HomeScreen(
+    navController: NavController,
+    openDrawer: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     val image = painterResource(id = R.drawable.sfeer_foto_1)
 
     LazyColumn(
     ) {
         item {
-            HomeScreenTop()
+            HomeScreenTop(openDrawer = openDrawer)
         }
         item {
             FormuleCard("Over pagina", image, { navController.navigate(NavigationRoutes.over.name) })
