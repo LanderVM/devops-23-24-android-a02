@@ -10,11 +10,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -88,18 +93,18 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(15.dp))
         ContactGegevens(
-            naam = naam ,onNaamChange = {naam = it},
-            voornaam = voornaam, onVoornaamChange = {voornaam = it},
-            typeEvenement = typeEvenement, onTypeEvenementChange = {typeEvenement = it},
-            email = email, onEmailChange = {email = it}
+            naam = naam ,onNaamChange = {naam = it}, makeEmptyNaam = {naam = ""},
+            voornaam = voornaam, onVoornaamChange = {voornaam = it}, makeEmptyVoornaam = {voornaam = ""},
+            typeEvenement = typeEvenement, onTypeEvenementChange = {typeEvenement = it},makeEmptyTypeEvenement = {typeEvenement = ""},
+            email = email, onEmailChange = {email = it},makeEmptyEmail = {email = ""},
         )
         Spacer(modifier = Modifier.height(20.dp))
         Adressering(
             straat = straat, onStraatChange = {straat = it},
-            huisnummer = huisnummer, onHuisnummerChange = {huisnummer = it},
-            gemeente = gemeente, onGemeenteChange = {gemeente = it},
-            postcode = postcode, onPostcodeChange = {postcode = it},
-            facturatieAdressChecked = facturatieAdressChecked, onFacturatieAdressCheckedChange = {facturatieAdressChecked = it}
+            huisnummer = huisnummer, onHuisnummerChange = {huisnummer = it}, makeEmptyStraat = {straat = ""},
+            gemeente = gemeente, onGemeenteChange = {gemeente = it}, makeEmptyHuisnummer = {huisnummer=""},
+            postcode = postcode, onPostcodeChange = {postcode = it}, makeEmptyGemeente = {gemeente = ""},
+            facturatieAdressChecked = facturatieAdressChecked, onFacturatieAdressCheckedChange = {facturatieAdressChecked = it}, makeEmptyPostcode = {postcode=""}
         )
         Spacer(modifier = Modifier.height(15.dp))
         Button (
@@ -124,10 +129,10 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
 @Composable
 fun ContactGegevens(
     modifier: Modifier = Modifier,
-    naam:String,onNaamChange:(String)->Unit,
-    voornaam:String,onVoornaamChange:(String)->Unit,
-    typeEvenement:String,onTypeEvenementChange:(String)->Unit,
-    email:String,onEmailChange:(String)->Unit,
+    naam:String,onNaamChange:(String)->Unit,makeEmptyNaam: () -> Unit,
+    voornaam:String,onVoornaamChange:(String)->Unit,makeEmptyVoornaam: () -> Unit,
+    typeEvenement:String,onTypeEvenementChange:(String)->Unit,makeEmptyTypeEvenement: () -> Unit,
+    email:String,onEmailChange:(String)->Unit,makeEmptyEmail: () -> Unit,
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -135,23 +140,23 @@ fun ContactGegevens(
     ) {
         Text(text = "Contact gegevens",textAlign = TextAlign.Center,fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label="Naam", value = naam, onChange = onNaamChange)
+        InputVeld(label="Naam", value = naam, onChange = onNaamChange, makeEmpty = makeEmptyNaam)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Voornaam",value=voornaam, onChange = onVoornaamChange)
+        InputVeld(label = "Voornaam",value=voornaam, onChange = onVoornaamChange, makeEmpty = makeEmptyVoornaam)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Type Evenement",value = typeEvenement, onChange = onTypeEvenementChange)
+        InputVeld(label = "Type Evenement",value = typeEvenement, onChange = onTypeEvenementChange, makeEmpty = makeEmptyTypeEvenement)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Email", value = email, onChange = onEmailChange)
+        InputVeld(label = "Email", value = email, onChange = onEmailChange, makeEmpty = makeEmptyEmail)
     }
 }
 
 @Composable
 fun Adressering(
     modifier: Modifier = Modifier,
-    straat:String,onStraatChange:(String)->Unit,
-    huisnummer:String,onHuisnummerChange:(String)->Unit,
-    gemeente:String,onGemeenteChange:(String)->Unit,
-    postcode:String,onPostcodeChange:(String)->Unit,
+    straat:String,onStraatChange:(String)->Unit,makeEmptyStraat:()->Unit,
+    huisnummer:String,onHuisnummerChange:(String)->Unit,makeEmptyHuisnummer:()->Unit,
+    gemeente:String,onGemeenteChange:(String)->Unit,makeEmptyGemeente:()->Unit,
+    postcode:String,onPostcodeChange:(String)->Unit,makeEmptyPostcode:()->Unit,
     facturatieAdressChecked:Boolean,onFacturatieAdressCheckedChange:(Boolean)->Unit,
 ) {
     Column (
@@ -160,13 +165,13 @@ fun Adressering(
     ) {
         Text(text = "Adres gegevens",textAlign = TextAlign.Center,fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label="Straat", value = straat, onChange = onStraatChange)
+        InputVeld(label="Straat", value = straat, onChange = onStraatChange, makeEmpty = makeEmptyStraat)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Huisnummer", value = huisnummer, onChange = onHuisnummerChange)
+        InputVeld(label = "Huisnummer", value = huisnummer, onChange = onHuisnummerChange, makeEmpty = makeEmptyHuisnummer)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Gemeente", value = gemeente, onChange = onGemeenteChange)
+        InputVeld(label = "Gemeente", value = gemeente, onChange = onGemeenteChange, makeEmpty = makeEmptyGemeente)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange)
+        InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange, makeEmpty = makeEmptyPostcode)
         Spacer(modifier = Modifier.height(15.dp))
         OptieFacturatieAdress(
             facturatieAdressChecked = facturatieAdressChecked,
@@ -179,7 +184,7 @@ fun Adressering(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputVeld(
-    modifier: Modifier = Modifier,label:String,value: String,onChange:(String)->Unit
+    modifier: Modifier = Modifier,label:String,value: String,onChange:(String)->Unit,makeEmpty:()->Unit
 ) {
 
     OutlinedTextField(
@@ -195,7 +200,19 @@ fun InputVeld(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
             unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
         ),
-        //trailingIcon = {Icon(Icons.Default.Clear,contentDescription = null)},
+        trailingIcon = {
+            IconButton(
+                onClick = makeEmpty,
+                enabled = !value.isEmpty(),
+                /*colors= IconButtonColors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                    contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                    disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
+                    disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
+                ),*/
+            ) {
+            Icon(Icons.Default.Clear,contentDescription = null,tint=Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))))
+        }},
     )
 }
 @Composable
