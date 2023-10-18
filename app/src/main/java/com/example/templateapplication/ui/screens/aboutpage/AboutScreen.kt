@@ -33,6 +33,7 @@ import com.example.templateapplication.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import com.example.templateapplication.ui.theme.ImperialScript
 
 @Composable
 fun AboutScreen (
@@ -42,12 +43,15 @@ fun AboutScreen (
     val scrollState = rememberScrollState()
 
     Column (
-        modifier = Modifier.fillMaxWidth().verticalScroll(state = scrollState),
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Info()
         Spacer(modifier = Modifier.height(50.dp))
         Pictures()
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 
@@ -60,6 +64,13 @@ fun Info (
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))
+        Text(
+            text = "Over de foodtruck",
+            fontFamily = ImperialScript,
+            fontSize = 50.sp,
+            color = Color.DarkGray,
+        )
+        Spacer(modifier = Modifier.height(22.dp))
         Text(text="Minimaal te voorziene ruimte:",style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text="5m x 2m x 2m", fontSize = 18.sp)
@@ -96,7 +107,9 @@ fun Info (
 @Composable
 fun Pictures () {
     Column (
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Box(
@@ -119,7 +132,9 @@ fun Pictures () {
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Box (
-                modifier = Modifier.fillMaxHeight().width(115.dp)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(115.dp)
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto4),
@@ -129,7 +144,9 @@ fun Pictures () {
                 )
             }
             Box (
-                modifier = Modifier.fillMaxHeight().width(115.dp)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(115.dp)
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto7),
@@ -139,7 +156,9 @@ fun Pictures () {
                 )
             }
             Box (
-                modifier = Modifier.fillMaxHeight().width(115.dp)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(115.dp)
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto8),

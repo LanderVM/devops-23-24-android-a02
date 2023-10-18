@@ -35,6 +35,7 @@ import com.example.templateapplication.ui.screens.overpage.OverScreen
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.graphics.Color
+import com.example.templateapplication.ui.screens.aboutpage.AboutScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,7 +126,7 @@ fun BlancheApp() {
                         )
                     }
                     composable(NavigationRoutes.over.name) {
-                        OverScreen(
+                        AboutScreen(
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
