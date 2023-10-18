@@ -33,8 +33,6 @@ fun FormuleCard(
     modifier: Modifier = Modifier
 ) {
 
-    val navController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
     Card(
         shape = RectangleShape,
         modifier = Modifier

@@ -114,18 +114,18 @@ fun BlancheApp() {
                 ) {
                     composable(NavigationRoutes.home.name) {
                         HomeScreen(
-                            navController,
                             openDrawer = {
                                 scope.launch {
                                     drawerState.open()
                                 }
                             },
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.padding(innerPadding),
+                            onAboutNavigation = {navController.navigate(NavigationRoutes.over.name)},
+                            onGegevensNavigation = {navController.navigate(NavigationRoutes.gegevens.name)},
                         )
                     }
                     composable(NavigationRoutes.over.name) {
                         OverScreen(
-                            navController,
                             modifier = Modifier.padding(innerPadding)
                         )
                     }

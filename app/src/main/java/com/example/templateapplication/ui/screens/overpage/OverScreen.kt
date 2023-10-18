@@ -24,7 +24,9 @@ import com.example.templateapplication.ui.screens.overpage.components.InfoParts
 import com.example.templateapplication.ui.theme.ImperialScript
 
 @Composable
-fun OverScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun OverScreen(
+    modifier: Modifier = Modifier
+) {
     val image = painterResource(id = R.drawable.sfeer_foto_1)
 
     LazyColumn(

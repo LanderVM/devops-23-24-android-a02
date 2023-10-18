@@ -13,9 +13,10 @@ import com.example.templateapplication.R
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
     openDrawer: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onAboutNavigation: ()->Unit,
+    onGegevensNavigation:()->Unit,
+    modifier: Modifier = Modifier,
 ) {
     val image = painterResource(id = R.drawable.sfeer_foto_1)
 
@@ -25,10 +26,10 @@ fun HomeScreen(
             HomeScreenTop(openDrawer = openDrawer)
         }
         item {
-            FormuleCard("Over pagina", image, { navController.navigate(NavigationRoutes.over.name) })
+            FormuleCard("Over pagina", image, onButtonClicked = onAboutNavigation )
         }
         item {
-            FormuleCard("Gegevens pagina", image, { navController.navigate(NavigationRoutes.gegevens.name) })
+            FormuleCard("Gegevens pagina", image, onButtonClicked = onGegevensNavigation)
         }
     }
 }
