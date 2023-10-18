@@ -2,14 +2,18 @@ package com.example.templateapplication.ui.screens.aboutpage
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -70,7 +74,7 @@ fun Info (
         Spacer(modifier = Modifier.height(8.dp))
         Text(text="Smalste punt op de route naar", fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text="plaats van opstelling dinet minimaal", fontSize = 18.sp)
+        Text(text="plaats van opstelling dient minimaal", fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text="3m te zijn!", fontSize = 18.sp)
         Spacer(modifier = Modifier.height(35.dp))
@@ -106,6 +110,44 @@ fun Pictures () {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Box (
+                modifier = Modifier.fillMaxHeight().width(115.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.foto4),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Box (
+                modifier = Modifier.fillMaxHeight().width(115.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.foto7),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Box (
+                modifier = Modifier.fillMaxHeight().width(115.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.foto8),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 }
