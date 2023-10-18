@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.graphics.Color
 import com.example.templateapplication.ui.screens.aboutpage.AboutScreen
+import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +49,9 @@ fun BlancheApp() {
         ),
         NavigationItem(
             title = NavigationRoutes.gegevens.name,
+        ),
+        NavigationItem(
+            title = NavigationRoutes.formules.name,
         ),
     )
     Surface(
@@ -122,7 +126,8 @@ fun BlancheApp() {
                             modifier = Modifier.padding(innerPadding),
                             onAboutNavigation = {navController.navigate(NavigationRoutes.over.name)},
                             onGegevensNavigation = {navController.navigate(NavigationRoutes.gegevens.name)},
-                        )
+                            onFormulesNavigation = {navController.navigate(NavigationRoutes.formules.name)},
+                            )
                     }
                     composable(NavigationRoutes.over.name) {
                         AboutScreen(
@@ -131,6 +136,11 @@ fun BlancheApp() {
                     }
                     composable(NavigationRoutes.gegevens.name) {
                         GegevensScreen(
+                            modifier = Modifier.padding(innerPadding),
+                        )
+                    }
+                    composable(NavigationRoutes.formules.name) {
+                        FormulesScreen(
                             modifier = Modifier.padding(innerPadding)
                         )
                     }

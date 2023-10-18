@@ -19,7 +19,6 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -37,6 +36,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.R
+import com.example.templateapplication.ui.theme.DisabledButtonColor
+import com.example.templateapplication.ui.theme.MainColor
+import com.example.templateapplication.ui.theme.MainLightestColor
 
 
 @Composable
@@ -57,14 +59,10 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
     var facturatieAdressChecked by remember { mutableStateOf(true) }
 
     val buttonEnabled:Boolean
-    if (naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
-        typeEvenement.isEmpty()||email.isBlank()||email.isEmpty()||
-        straat.isBlank()||straat.isEmpty()||huisnummer.isBlank()||huisnummer.isEmpty()||
-        gemeente.isBlank()||gemeente.isEmpty()||postcode.isBlank()||postcode.isEmpty()) {
-        buttonEnabled = false
-    } else {
-        buttonEnabled = true
-    }
+    buttonEnabled = !(naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
+            typeEvenement.isEmpty()||email.isBlank()||email.isEmpty()||
+            straat.isBlank()||straat.isEmpty()||huisnummer.isBlank()||huisnummer.isEmpty()||
+            gemeente.isBlank()||gemeente.isEmpty()||postcode.isBlank()||postcode.isEmpty())
 
 
     Column (
@@ -78,14 +76,14 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp),
-            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
+            color = MainColor,
             progress = 0.50f,
-            trackColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
+            trackColor = MainLightestColor,
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text="Personalia",
-            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
+            color = MainColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 60.dp)
@@ -111,10 +109,10 @@ fun GegevensScreen (modifier: Modifier = Modifier) {
             onClick = {},
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
-                disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.disabledButtonColor))),
-                contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
-                disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit)))
+                containerColor = MainColor,
+                disabledContainerColor = DisabledButtonColor,
+                contentColor = Color.White,
+                disabledContentColor = Color.White
             ),
             enabled = buttonEnabled
         ) {

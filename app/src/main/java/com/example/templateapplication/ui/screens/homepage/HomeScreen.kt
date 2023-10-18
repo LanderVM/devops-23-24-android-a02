@@ -14,8 +14,9 @@ import com.example.templateapplication.R
 @Composable
 fun HomeScreen(
     openDrawer: () -> Unit = {},
-    onAboutNavigation: ()->Unit,
-    onGegevensNavigation:()->Unit,
+    onAboutNavigation: () -> Unit,
+    onGegevensNavigation: () -> Unit,
+    onFormulesNavigation: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val image = painterResource(id = R.drawable.sfeer_foto_1)
@@ -30,6 +31,9 @@ fun HomeScreen(
         }
         item {
             FormuleCard("Gegevens pagina", image, onButtonClicked = onGegevensNavigation)
+        }
+        item {
+            FormuleCard("Formules pagina", image, onButtonClicked = onFormulesNavigation)
         }
     }
 }
