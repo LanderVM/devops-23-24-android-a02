@@ -31,7 +31,6 @@ import com.example.templateapplication.data.navidrawer.NavigationItem
 import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.gegevenspage.GegevensScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
-import com.example.templateapplication.ui.screens.overpage.OverScreen
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.graphics.Color
