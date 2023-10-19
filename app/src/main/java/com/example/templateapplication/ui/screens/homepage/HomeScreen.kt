@@ -15,7 +15,6 @@ import com.example.templateapplication.R
 fun HomeScreen(
     openDrawer: () -> Unit = {},
     onAboutNavigation: () -> Unit,
-    onGegevensNavigation: () -> Unit,
     onFormulesNavigation: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -27,13 +26,10 @@ fun HomeScreen(
             HomeScreenTop(openDrawer = openDrawer)
         }
         item {
-            FormuleCard("Over pagina", image, onButtonClicked = onAboutNavigation )
+            FormuleCard("Over", image, onButtonClicked = onAboutNavigation )
         }
         item {
-            FormuleCard("Gegevens pagina", image, onButtonClicked = onGegevensNavigation)
-        }
-        item {
-            FormuleCard("Formules pagina", image, onButtonClicked = onFormulesNavigation)
+            FormuleCard("Formules", image, onButtonClicked = onFormulesNavigation)
         }
     }
 }

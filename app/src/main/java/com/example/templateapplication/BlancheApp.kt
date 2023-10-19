@@ -125,7 +125,6 @@ fun BlancheApp() {
                             },
                             modifier = Modifier.padding(innerPadding),
                             onAboutNavigation = {navController.navigate(NavigationRoutes.over.name)},
-                            onGegevensNavigation = {navController.navigate(NavigationRoutes.gegevens.name)},
                             onFormulesNavigation = {navController.navigate(NavigationRoutes.formules.name)},
                             )
                     }
