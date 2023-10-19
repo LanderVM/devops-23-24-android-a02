@@ -37,7 +37,8 @@ import com.example.templateapplication.ui.theme.ImperialScript
 
 @Composable
 fun AboutScreen (
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateEmailScreen:()->Unit,
 ) {
 
     val scrollState = rememberScrollState()
@@ -48,7 +49,7 @@ fun AboutScreen (
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Info()
+        Info(navigateEmailScreen=navigateEmailScreen)
         Spacer(modifier = Modifier.height(50.dp))
         Pictures()
         Spacer(modifier = Modifier.height(40.dp))
@@ -57,7 +58,8 @@ fun AboutScreen (
 
 @Composable
 fun Info (
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateEmailScreen:()->Unit,
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -90,7 +92,7 @@ fun Info (
         Text(text="3m te zijn!", fontSize = 18.sp)
         Spacer(modifier = Modifier.height(35.dp))
         Button (
-            onClick = {},
+            onClick = navigateEmailScreen,
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),

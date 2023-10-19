@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.graphics.Color
 import com.example.templateapplication.ui.screens.aboutpage.AboutScreen
+import com.example.templateapplication.ui.screens.aboutpage.EmailForInformationScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -130,7 +131,8 @@ fun BlancheApp() {
                     }
                     composable(NavigationRoutes.over.name) {
                         AboutScreen(
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.padding(innerPadding),
+                            navigateEmailScreen = {navController.navigate(NavigationRoutes.emailInfo.name)}
                         )
                     }
                     composable(NavigationRoutes.gegevens.name) {
@@ -140,6 +142,11 @@ fun BlancheApp() {
                     }
                     composable(NavigationRoutes.formules.name) {
                         FormulesScreen(
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    }
+                    composable(NavigationRoutes.emailInfo.name) {
+                        EmailForInformationScreen(
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
