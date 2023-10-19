@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.templateapplication.data.navidrawer.FormuleItem
+import com.example.templateapplication.data.formules.FormuleItem
 import com.example.templateapplication.ui.screens.formulepage.components.DetailsFormuleCard
 import com.example.templateapplication.ui.theme.MainColor
 
@@ -19,7 +19,7 @@ fun FormulesScreen(
     val formuleBasis = FormuleItem("Basis", basis)
 
     val allIn = listOf("Foodtruck", "Tap", "BBQ", "Decoratie")
-    val formuleAllIn = FormuleItem("Basis", allIn)
+    val formuleAllIn = FormuleItem("All-In", allIn)
 
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp)

@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.templateapplication.data.navidrawer.FormuleItem
+import com.example.templateapplication.data.formules.FormuleItem
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @Composable

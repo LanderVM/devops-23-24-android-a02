@@ -2,9 +2,13 @@ package com.example.templateapplication
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -33,7 +38,13 @@ import com.example.templateapplication.ui.screens.gegevenspage.GegevensScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.toUpperCase
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.sp
 import com.example.templateapplication.ui.screens.aboutpage.AboutScreen
 import com.example.templateapplication.ui.screens.aboutpage.EmailForInformationScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
@@ -69,14 +80,34 @@ fun BlancheApp() {
         }
         ModalNavigationDrawer(
             drawerContent = {
-                ModalDrawerSheet {
+                ModalDrawerSheet(
+                    drawerContentColor = Color.White,
+                    modifier = Modifier
+                        .alpha(0.9f)
+                ) {
                     Spacer(
                         modifier = Modifier.height(16.dp)
                     )
+
                     navItems.forEachIndexed { index, item ->
+                        Divider(
+                            color = Color.DarkGray,
+                            modifier = Modifier
+                                .fillMaxWidth(0.9f)
+                                .padding(10.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
+                        val isSelected = index == selectedItemIndex
+
                         NavigationDrawerItem(
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = Color.Transparent
+                            ),
                             label = {
-                                Text(text = item.title)
+                                Text(
+                                    text = item.title.uppercase(),
+                                    fontSize = 40.sp,
+                                )
                             },
                             selected = index == selectedItemIndex,
                             onClick = {
@@ -102,7 +133,7 @@ fun BlancheApp() {
                                 backStackEntry?.destination?.route ?: NavigationRoutes.home.name
                             ),
                             canNavigateBack = navController.previousBackStackEntry != null,
-                            navigateUp = { navController.navigateUp() },
+                            navigateUp = { navController.navigate(NavigationRoutes.home.name) },
                             openDrawer = {
                                 scope.launch {
                                     drawerState.open()
