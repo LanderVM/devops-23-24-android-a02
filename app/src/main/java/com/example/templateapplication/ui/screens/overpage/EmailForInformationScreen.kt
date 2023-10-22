@@ -54,6 +54,7 @@ fun EmailForInformationScreen (
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             onClick = {},
+            enabled = !(email.isBlank()||email.isEmpty()),
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MainColor,
