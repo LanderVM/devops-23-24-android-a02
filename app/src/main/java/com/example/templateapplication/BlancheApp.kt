@@ -53,7 +53,7 @@ import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlancheApp(
-    navController: NavController = rememberNavController()
+    navController: NavHostController = rememberNavController()
 ) {
     val navItems = listOf(
         NavigationItem(
