@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ fun HomeScreenTop(
     val image = painterResource(R.drawable.homescreen_background)
 
     Box(
-        modifier = modifier.fillMaxHeight(0.4f)
+        modifier = modifier.fillMaxHeight(0.4f).testTag("homeScreenTop")
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

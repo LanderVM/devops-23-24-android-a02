@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.aboutpage
+package com.example.templateapplication.ui.screens.overpage
 
 
 import androidx.compose.foundation.Image
@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -25,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -121,7 +118,7 @@ fun Pictures () {
         ) {
             Image(
                 painter = painterResource(R.drawable.foto3),
-                contentDescription = null,
+                contentDescription = "foto van de foodtruck",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
@@ -140,7 +137,7 @@ fun Pictures () {
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto4),
-                    contentDescription = null,
+                    contentDescription = "foto van mensen die glazen inschenken",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -152,7 +149,7 @@ fun Pictures () {
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto7),
-                    contentDescription = null,
+                    contentDescription = "foto van ingeschonken glas",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -164,7 +161,7 @@ fun Pictures () {
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto8),
-                    contentDescription = null,
+                    contentDescription = "foto van een tap",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )

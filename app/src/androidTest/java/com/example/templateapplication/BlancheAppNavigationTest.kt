@@ -49,17 +49,17 @@ class BlancheAppNavigationTest {
         navController.assertCurrentRouteName(NavigationRoutes.formules.name)
     }
     @Test
-    fun blancheNavHost_clickOver_navigateToAboutScreen () {
+    fun blancheNavHost_clickOver_navigateToOverScreen () {
         val sni:SemanticsNodeInteraction = composeTestRule.onNodeWithText("Over")
         sni.performClick()
         navController.assertCurrentRouteName(NavigationRoutes.over.name)
     }
-    private fun navigateToAbout() {
+    private fun navigateToOver() {
         composeTestRule.onNodeWithText("Over").performClick()
     }
     @Test
     fun blancheNavHost_clickMeerInfo_navigateToEmailScreen () {
-        navigateToAbout()
+        navigateToOver()
         composeTestRule.onNodeWithText("Meer info").performClick()
         navController.assertCurrentRouteName(NavigationRoutes.emailInfo.name)
     }
