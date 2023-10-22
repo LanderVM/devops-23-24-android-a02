@@ -45,13 +45,16 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.templateapplication.ui.screens.aboutpage.AboutScreen
 import com.example.templateapplication.ui.screens.aboutpage.EmailForInformationScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BlancheApp() {
+fun BlancheApp(
+    navController: NavController = rememberNavController()
+) {
     val navItems = listOf(
         NavigationItem(
             title = NavigationRoutes.home.name,
@@ -70,7 +73,7 @@ fun BlancheApp() {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        val navController = rememberNavController()
+        //val navController = rememberNavController()
         val backStackEntry by navController.currentBackStackEntryAsState()
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
