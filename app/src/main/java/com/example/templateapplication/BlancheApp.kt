@@ -172,11 +172,11 @@ fun BlancheApp(
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
-                    composable(NavigationRoutes.emailInfo.name) {
+                    /*composable(NavigationRoutes.emailInfo.name) {
                         EmailForInformationScreen(
                             modifier = Modifier.padding(innerPadding)
                         )
-                    }
+                    }*/
                 }
             }
         }

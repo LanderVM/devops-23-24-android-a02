@@ -29,13 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.BasicNetwork
-import com.android.volley.toolbox.DiskBasedCache
-import com.android.volley.toolbox.HurlStack
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
@@ -59,9 +52,9 @@ fun EmailForInformationScreen (
             modifier = Modifier.padding(horizontal = 40.dp).fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(30.dp))
-        InputVeld(label = "email", value = email, onChange = {email=it}) {
+        //InputVeld(label = "email", value = email, onChange = {email=it}) {
 
-        }
+        //}
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             onClick = {},
@@ -78,7 +71,7 @@ fun EmailForInformationScreen (
         }
     }
 }
-
+/*
 private fun sendEmail (email:String) {
 
     var resp:String = ""
@@ -92,7 +85,7 @@ private fun sendEmail (email:String) {
 
     val network = BasicNetwork(HurlStack())
 
-    val queue = Volley.newRequestQueue()
+    //val queue = Volley.newRequestQueue()
 
     val jsonObjRequest = JsonObjectRequest(
         Request.Method.PUT, siteUrl, obj,
@@ -104,9 +97,9 @@ private fun sendEmail (email:String) {
             // handle error
             error = volleyError.toString()
         })
-    queue.add(jsonObjRequest)
-}
-
+    //queue.add(jsonObjRequest)
+}*/
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputVeld(
@@ -144,4 +137,4 @@ fun InputVeld(
             }
         },
     )
-}
+}*/
