@@ -1,5 +1,7 @@
 package com.example.templateapplication.ui.screens.overpage
 
+import android.app.PendingIntent.getActivity
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -30,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
+import org.json.JSONObject
+
 
 @Composable
 fun EmailForInformationScreen (
@@ -48,9 +52,9 @@ fun EmailForInformationScreen (
             modifier = Modifier.padding(horizontal = 40.dp).fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(30.dp))
-        InputVeld(label = "email", value = email, onChange = {email=it}) {
+        //InputVeld(label = "email", value = email, onChange = {email=it}) {
 
-        }
+        //}
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             onClick = {},
@@ -67,7 +71,35 @@ fun EmailForInformationScreen (
         }
     }
 }
+/*
+private fun sendEmail (email:String) {
 
+    var resp:String = ""
+    var error:String = ""
+
+    val siteUrl = ""
+
+    var obj:JSONObject = JSONObject().put("email",email)
+
+    //val cache = DiskBasedCache( 1024 * 1024)
+
+    val network = BasicNetwork(HurlStack())
+
+    //val queue = Volley.newRequestQueue()
+
+    val jsonObjRequest = JsonObjectRequest(
+        Request.Method.PUT, siteUrl, obj,
+        Response.Listener{ jsonObject ->
+            // handle JSON response
+            resp = jsonObject.toString()
+        },
+        {volleyError ->
+            // handle error
+            error = volleyError.toString()
+        })
+    //queue.add(jsonObjRequest)
+}*/
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputVeld(
@@ -105,4 +137,4 @@ fun InputVeld(
             }
         },
     )
-}
+}*/
