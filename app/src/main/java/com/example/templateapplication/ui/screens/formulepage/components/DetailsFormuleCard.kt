@@ -17,12 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.templateapplication.data.formules.FormuleItem
+import com.example.templateapplication.model.formules.Formule
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @Composable
 fun DetailsFormuleCard(
-    formule: FormuleItem,
+    formule: Formule,
     backgroundColor: Color = Color.White,
     textColor: Color = Color.Black,
 ) {
@@ -76,7 +76,7 @@ fun DetailsFormuleCardPreview() {
     )
     val backgroundColor = MainLightestColor
     val textColor = Color.Black
-    val formule = FormuleItem("Titel", mockList)
+    val formule = Formule("Titel", mockList)
 
     DetailsFormuleCard(formule, backgroundColor, textColor)
 }

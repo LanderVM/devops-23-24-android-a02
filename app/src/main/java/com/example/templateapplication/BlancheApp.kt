@@ -28,7 +28,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.templateapplication.data.navidrawer.NavigationItem
+import com.example.templateapplication.model.navidrawer.NavigationItem
 import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.gegevenspage.GegevensScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
@@ -129,7 +129,7 @@ fun BlancheApp(
                                 backStackEntry?.destination?.route ?: NavigationRoutes.home.name
                             ),
                             canNavigateBack = navController.previousBackStackEntry != null,
-                            navigateUp = { navController.navigate(NavigationRoutes.home.name) },
+                            navigateUp = { navController.navigateUp() },
                             openDrawer = {
                                 scope.launch {
                                     drawerState.open()
