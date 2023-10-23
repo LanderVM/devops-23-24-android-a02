@@ -1,5 +1,7 @@
 package com.example.templateapplication.ui.screens.overpage
 
+import android.app.PendingIntent.getActivity
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -27,9 +29,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.BasicNetwork
+import com.android.volley.toolbox.DiskBasedCache
+import com.android.volley.toolbox.HurlStack
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
+import org.json.JSONObject
+
 
 @Composable
 fun EmailForInformationScreen (
@@ -66,6 +77,34 @@ fun EmailForInformationScreen (
             Text(text= "Verstuur",)
         }
     }
+}
+
+private fun sendEmail (email:String) {
+
+    var resp:String = ""
+    var error:String = ""
+
+    val siteUrl = ""
+
+    var obj:JSONObject = JSONObject().put("email",email)
+
+    //val cache = DiskBasedCache( 1024 * 1024)
+
+    val network = BasicNetwork(HurlStack())
+
+    val queue = Volley.newRequestQueue()
+
+    val jsonObjRequest = JsonObjectRequest(
+        Request.Method.PUT, siteUrl, obj,
+        Response.Listener{ jsonObject ->
+            // handle JSON response
+            resp = jsonObject.toString()
+        },
+        {volleyError ->
+            // handle error
+            error = volleyError.toString()
+        })
+    queue.add(jsonObjRequest)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
