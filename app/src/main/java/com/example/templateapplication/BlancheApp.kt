@@ -30,7 +30,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.model.navidrawer.NavigationItem
 import com.example.templateapplication.ui.layout.BlancheAppBar
-import com.example.templateapplication.ui.screens.gegevenspage.GegevensScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
@@ -39,8 +38,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
+import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
 import com.example.templateapplication.ui.screens.overpage.AboutScreen
-import com.example.templateapplication.ui.screens.overpage.EmailForInformationScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +56,7 @@ fun BlancheApp(
             title = NavigationRoutes.over.name,
         ),
         NavigationItem(
-            title = NavigationRoutes.gegevens.name,
+            title = NavigationRoutes.evenementGegevens.name,
         ),
         NavigationItem(
             title = NavigationRoutes.formules.name,
@@ -162,14 +162,20 @@ fun BlancheApp(
                             navigateEmailScreen = {navController.navigate(NavigationRoutes.emailInfo.name)}
                         )
                     }
-                    composable(NavigationRoutes.gegevens.name) {
-                        GegevensScreen(
-                            modifier = Modifier.padding(innerPadding),
+                    composable(NavigationRoutes.contactGegevens.name) {
+                        ConatctGegevensScreen(
+                            modifier = Modifier.padding(innerPadding)
                         )
                     }
                     composable(NavigationRoutes.formules.name) {
                         FormulesScreen(
                             modifier = Modifier.padding(innerPadding)
+                        )
+                    }
+                    composable(NavigationRoutes.evenementGegevens.name) {
+                        EvenementScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navigateContactGegevensScreen = {navController.navigate(NavigationRoutes.contactGegevens.name)},
                         )
                     }
                     /*composable(NavigationRoutes.emailInfo.name) {

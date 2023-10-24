@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.gegevenspage
+package com.example.templateapplication.ui.screens.contactgegevenspage
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +19,8 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -42,7 +44,7 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 
 
 @Composable
-fun GegevensScreen (modifier: Modifier = Modifier) {
+fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
 
     val scrollState = rememberScrollState()
 
@@ -202,14 +204,14 @@ fun InputVeld(
             IconButton(
                 onClick = makeEmpty,
                 enabled = !value.isEmpty(),
-                /*colors= IconButtonColors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                colors= IconButtonDefaults.iconButtonColors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
                     contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-                    disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
-                    disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
-                ),*/
+                    disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
+                    disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
+                )
             ) {
-            Icon(Icons.Default.Clear,contentDescription = null,tint=Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))))
+            Icon(Icons.Default.Clear,contentDescription = null)
         }},
     )
 }
@@ -226,20 +228,24 @@ fun OptieFacturatieAdress (
         Checkbox(
             checked = facturatieAdressChecked,
             onCheckedChange = onFacturatieAdressCheckedChange,
-            /*colors = CheckboxColors(
+            colors = CheckboxDefaults.colors(
+                /*
                 checkedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
                 uncheckedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
                 checkedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
                 uncheckedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-                checkedCheckmarkColor= Color(android.graphics.Color.parseColor("#FFFFFF")),,
+                checkedCheckmarkColor= Color(android.graphics.Color.parseColor("#FFFFFF")),
                 uncheckedCheckmarkColor= Color(android.graphics.Color.parseColor("#FFFFFF")),
-                disabledCheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
-                disabledUncheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
-                disabledIndeterminateBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
-                disabledBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),,
-                disabledIndeterminateBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),
-            ),*/
-            colors = CheckboxDefaults.colors()
+                disabledCheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),
+                disabledUncheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),
+                disabledIndeterminateBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),
+                disabledBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),
+                disabledIndeterminateBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),*/
+                checkedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                uncheckedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                checkmarkColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
+            ),
+
         )
         Text(text="Adres is ook facturatie adress", modifier = Modifier.padding(horizontal = 12.dp ))
     }

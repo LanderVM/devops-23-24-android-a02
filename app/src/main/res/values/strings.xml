@@ -1,13 +1,16 @@
 <resources>
     <string name="app_name">Template Application</string>
-    <string name="lichter">#D3B98B</string>
-    <string name="wit">#FFFFFF</string>
-    <string name="lichts">#efe5d4</string>
+    <string name="donkerder">#b49763</string>
     <string name="main">#C8A86E</string>
+    <string name="lichter">#D3B98B</string>
+    <string name="lichterder">#e9dcc5</string>
+    <string name="lichts">#efe5d4</string>
+    <string name="wit">#FFFFFF</string>
     <string name="disabledButtonColor">#f8f1e4</string>
     <string name="home_title">Home</string>
     <string name="over_title">Over</string>
-    <string name="gegevens_title">Gegevens</string>
+    <string name="contact_gegevens_title">Contact gegevens</string>
+    <string name="evenement_gegevens_titel">Evenement gegevens</string>
     <string name="formules_title">Formules</string>
     <string name="over_email">Meer info</string>
 </resources>

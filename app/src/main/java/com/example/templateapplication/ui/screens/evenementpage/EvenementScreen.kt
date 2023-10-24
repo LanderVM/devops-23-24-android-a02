@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -25,6 +26,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimePickerColors
+import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.material3.rememberTimePickerState
@@ -34,9 +37,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.templateapplication.R
+import com.example.templateapplication.ui.theme.DisabledButtonColor
+import com.example.templateapplication.ui.theme.MainColor
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -44,15 +51,27 @@ import java.util.stream.LongStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EvenementScreen (modifier: Modifier = Modifier) {
+fun EvenementScreen (
+    modifier: Modifier = Modifier,
+    navigateContactGegevensScreen:()->Unit
+) {
 
     val datumState = rememberDateRangePickerState()
     val beginTijdState = rememberTimePickerState()
     val eindTijdState = rememberTimePickerState()
 
+    var buttonEnabled:Boolean = false
+
     var invalidDates:LongArray = longArrayOf()
 
     val validatorFunction:(Long)->Boolean = {datum:Long-> !LongStream.of(*invalidDates).anyMatch{n->n==datum}}
+
+
+    if (datumState.selectedEndDateMillis==null||datumState.selectedStartDateMillis==null) {
+        buttonEnabled=false
+    }else {
+        buttonEnabled=true
+    }
 
     Column(
         modifier = Modifier
@@ -84,6 +103,21 @@ fun EvenementScreen (modifier: Modifier = Modifier) {
         TimePart(state = beginTijdState, welkeTijd = "Begin tijd")
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd")
+        Spacer(modifier = Modifier.height(35.dp))
+        Button (
+            onClick = navigateContactGegevensScreen,
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MainColor,
+                disabledContainerColor = DisabledButtonColor,
+                contentColor = Color.White,
+                disabledContentColor = Color.White
+            ),
+            enabled = buttonEnabled
+        ) {
+            Text (text= "Volgende")
+        }
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 fun getFormattedDate(timeInMillis: Long): String{
@@ -139,19 +173,19 @@ fun DatumPart (
             },
             showModeToggle = false,
             colors = DatePickerDefaults.colors(
-                containerColor = Color.Blue,
+                containerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichter))),
                 titleContentColor = Color.Black,
                 headlineContentColor = Color.Black,
                 weekdayContentColor = Color.Black,
-                subheadContentColor = Color.Black,
+                subheadContentColor =Color.Black,
                 yearContentColor = Color.Green,
                 currentYearContentColor = Color.Red,
                 selectedYearContainerColor = Color.Red,
                 disabledDayContentColor = Color.Gray,
-                todayDateBorderColor = Color.Blue,
-                dayInSelectionRangeContainerColor = Color.LightGray,
+                todayDateBorderColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
+                dayInSelectionRangeContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichter))),
                 dayInSelectionRangeContentColor = Color.White,
-                selectedDayContainerColor = Color.Black
+                selectedDayContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
             )
         )
         Spacer(modifier = Modifier.height(20.dp))
@@ -176,7 +210,17 @@ fun TimePart (
             fontSize = 40.sp
         )
         Spacer(modifier = Modifier.height(20.dp))
-        TimeInput(state = state)
+        TimeInput(
+            state = state,
+            colors = TimePickerDefaults.colors(
+                periodSelectorSelectedContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
+                periodSelectorSelectedContentColor = Color(android.graphics.Color.parseColor(stringResource(R.string.wit))),
+                timeSelectorSelectedContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
+                timeSelectorSelectedContentColor = Color(android.graphics.Color.parseColor(stringResource(R.string.wit))),
+                timeSelectorUnselectedContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.wit))),
+                timeSelectorUnselectedContentColor = Color.Black,
+            )
+        )
     }
 }
 
