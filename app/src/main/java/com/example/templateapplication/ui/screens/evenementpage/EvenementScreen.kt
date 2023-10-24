@@ -84,17 +84,6 @@ fun EvenementScreen (modifier: Modifier = Modifier) {
         TimePart(state = beginTijdState, welkeTijd = "Begin tijd")
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd")
-        /*
-        Spacer(modifier= Modifier.height(40.dp))
-        DatumPicker(datum = startDatum, naamDatum = "start datum")
-        Spacer(modifier = Modifier.height(10.dp))
-        TijdPicker(label = "begin uur", value = startUur.value, onChange ={startUur.value=it} )
-        Spacer(modifier= Modifier.height(50.dp))
-        DatumPicker(datum = eindDatum, naamDatum = "eind datum")
-        Spacer(modifier = Modifier.height(10.dp))
-        TijdPicker(label = "eind uur", value = eindUur.value, onChange ={eindUur.value=it} )
-        Spacer(modifier= Modifier.height(30.dp))
-        */
     }
 }
 fun getFormattedDate(timeInMillis: Long): String{
@@ -191,65 +180,4 @@ fun TimePart (
     }
 }
 
-@Composable
-fun DatumPicker (datum:MutableState<String>,naamDatum:String) {
-    val mContext = LocalContext.current
 
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
-
-    val mCalendar = Calendar.getInstance()
-
-    mYear = mCalendar.get(Calendar.YEAR)
-    mMonth = mCalendar.get(Calendar.MONTH)
-    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    mCalendar.time = Date()
-
-    val mDatePickerDialog = DatePickerDialog(
-        mContext,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            datum.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-        }, mYear, mMonth, mDay
-    )
-
-    Column (
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Geselecteerde ${naamDatum}: ${datum.value}", fontSize = 20.sp, textAlign = TextAlign.Center)
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = {
-            mDatePickerDialog.show()
-        }, colors = ButtonDefaults.buttonColors(containerColor = Color(android.graphics.Color.parseColor("#C8A86E"))) ) {
-
-            Text(text = "Open Datum Picker", color = Color.White)
-        }
-
-
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TijdPicker (label:String,value:String,onChange:(String)->Unit) {
-
-    OutlinedTextField(
-        label = { Text(text = label, color = Color(android.graphics.Color.parseColor("#C8A86E"))) },
-        value = value,
-        onValueChange =onChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = 75.dp)
-            .height(75.dp)
-            .padding(horizontal = 40.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(android.graphics.Color.parseColor("#C8A86E")),
-            unfocusedBorderColor = Color(android.graphics.Color.parseColor("#C8A86E"))
-        ),
-        //trailingIcon = Icon(Icons.Default.Clear,contentDescription = null),
-    )
-
-
-}
