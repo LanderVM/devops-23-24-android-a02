@@ -67,7 +67,8 @@ fun AboutScreen (
         PopUp1(
             setOpenDialog = {value -> openDialog1 = value},
             openNextDialog = {openDialog2 = true},
-            onEmailChange = {emailAdress = it}
+            onEmailChange = {emailAdress = it},
+            email = emailAdress,
         )
     }
     if (openDialog2) {
@@ -145,6 +146,7 @@ fun PopUp1(
     setOpenDialog: (Boolean) -> Unit,
     openNextDialog:()->Unit,
     onEmailChange:(String)->Unit,
+    email:String
 ) {
     Dialog(onDismissRequest = {setOpenDialog(false) }) {
         Surface(
@@ -166,7 +168,7 @@ fun PopUp1(
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 InputVeld(
-                    label = "E-mail", value = "", onChange = onEmailChange
+                    label = "E-mail", value = email, onChange = onEmailChange
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Button (
