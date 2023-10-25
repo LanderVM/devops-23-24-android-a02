@@ -60,6 +60,11 @@ fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
 
     var facturatieAdressChecked by remember { mutableStateOf(true) }
 
+    var straatFacturatie by remember { mutableStateOf("") }
+    var huisnummerFacturatie by remember { mutableStateOf("") }
+    var gemeenteFacturatie by remember { mutableStateOf("") }
+    var postcodeFacturatie by remember { mutableStateOf("") }
+
     val buttonEnabled:Boolean
     buttonEnabled = !(naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
             typeEvenement.isEmpty()||email.isBlank()||email.isEmpty()||
@@ -100,13 +105,37 @@ fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(30.dp))
         Adressering(
+            welkeAdressering = "Adres gegevens",
             straat = straat, onStraatChange = {straat = it},
             huisnummer = huisnummer, onHuisnummerChange = {huisnummer = it}, makeEmptyStraat = {straat = ""},
             gemeente = gemeente, onGemeenteChange = {gemeente = it}, makeEmptyHuisnummer = {huisnummer=""},
             postcode = postcode, onPostcodeChange = {postcode = it}, makeEmptyGemeente = {gemeente = ""},
-            facturatieAdressChecked = facturatieAdressChecked, onFacturatieAdressCheckedChange = {facturatieAdressChecked = it}, makeEmptyPostcode = {postcode=""}
+            makeEmptyPostcode = {postcode=""}
         )
         Spacer(modifier = Modifier.height(15.dp))
+        OptieFacturatieAdress(
+            facturatieAdressChecked = facturatieAdressChecked,
+            onFacturatieAdressCheckedChange = {facturatieAdressChecked = it}
+        )
+        Spacer(modifier = Modifier.height(15.dp))
+        if (!facturatieAdressChecked) {
+            Adressering(
+                welkeAdressering = "Facturatie adres",
+                straat = straatFacturatie,
+                onStraatChange = {straatFacturatie = it},
+                makeEmptyStraat = { straatFacturatie="" },
+                huisnummer = huisnummerFacturatie,
+                onHuisnummerChange = {huisnummerFacturatie=it},
+                makeEmptyHuisnummer = { huisnummerFacturatie=""},
+                gemeente = gemeenteFacturatie,
+                onGemeenteChange = {gemeenteFacturatie=it},
+                makeEmptyGemeente = { gemeenteFacturatie="" },
+                postcode = postcodeFacturatie,
+                onPostcodeChange = {postcodeFacturatie = it},
+                makeEmptyPostcode = {postcodeFacturatie=""}
+            )
+        }
+        Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {},
             shape = RoundedCornerShape(20.dp),
@@ -153,17 +182,17 @@ fun ContactGegevens(
 @Composable
 fun Adressering(
     modifier: Modifier = Modifier,
+    welkeAdressering:String,
     straat:String,onStraatChange:(String)->Unit,makeEmptyStraat:()->Unit,
     huisnummer:String,onHuisnummerChange:(String)->Unit,makeEmptyHuisnummer:()->Unit,
     gemeente:String,onGemeenteChange:(String)->Unit,makeEmptyGemeente:()->Unit,
     postcode:String,onPostcodeChange:(String)->Unit,makeEmptyPostcode:()->Unit,
-    facturatieAdressChecked:Boolean,onFacturatieAdressCheckedChange:(Boolean)->Unit,
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Adres gegevens",textAlign = TextAlign.Center,fontSize = 20.sp)
+        Text(text = welkeAdressering,textAlign = TextAlign.Center,fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label="Straat", value = straat, onChange = onStraatChange, makeEmpty = makeEmptyStraat)
         Spacer(modifier = Modifier.height(20.dp))
@@ -172,11 +201,6 @@ fun Adressering(
         InputVeld(label = "Gemeente", value = gemeente, onChange = onGemeenteChange, makeEmpty = makeEmptyGemeente)
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange, makeEmpty = makeEmptyPostcode)
-        Spacer(modifier = Modifier.height(15.dp))
-        OptieFacturatieAdress(
-            facturatieAdressChecked = facturatieAdressChecked,
-            onFacturatieAdressCheckedChange = onFacturatieAdressCheckedChange
-        )
     }
 }
 
@@ -229,18 +253,6 @@ fun OptieFacturatieAdress (
             checked = facturatieAdressChecked,
             onCheckedChange = onFacturatieAdressCheckedChange,
             colors = CheckboxDefaults.colors(
-                /*
-                checkedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-                uncheckedBoxColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-                checkedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-                uncheckedBorderColor = Color(android.graphics.Color.parseColor("#D3B98B")),
-                checkedCheckmarkColor= Color(android.graphics.Color.parseColor("#FFFFFF")),
-                uncheckedCheckmarkColor= Color(android.graphics.Color.parseColor("#FFFFFF")),
-                disabledCheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),
-                disabledUncheckedBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),
-                disabledIndeterminateBoxColor= Color(android.graphics.Color.parseColor("#D3B98B")),
-                disabledBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),
-                disabledIndeterminateBorderColor= Color(android.graphics.Color.parseColor("#D3B98B")),*/
                 checkedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
                 uncheckedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
                 checkmarkColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
