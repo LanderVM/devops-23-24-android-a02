@@ -155,7 +155,7 @@ fun PopUp1(
                 .height(200.dp)
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
-            color = Color.LightGray
+            color = Color(android.graphics.Color.parseColor(stringResource(R.string.extrakleur2))),
         ) {
             Column (
                 modifier = Modifier.fillMaxWidth(),
@@ -206,7 +206,7 @@ fun PopUp2(
                 .height(200.dp)
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
-            color = Color.LightGray
+            color = Color(android.graphics.Color.parseColor(stringResource(R.string.extrakleur2))),
         ) {
             Column (
                 modifier = Modifier.fillMaxWidth(),
@@ -260,8 +260,8 @@ fun InputVeld(
             .height(55.dp)
             .padding(horizontal = 30.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-            unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+            focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.donkerder))),
+            unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.donkerder)))
         ),
 
     )
