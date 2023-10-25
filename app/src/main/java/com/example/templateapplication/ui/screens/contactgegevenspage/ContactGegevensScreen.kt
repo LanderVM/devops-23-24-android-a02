@@ -69,7 +69,15 @@ fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
     buttonEnabled = !(naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
             typeEvenement.isEmpty()||email.isBlank()||email.isEmpty()||
             straat.isBlank()||straat.isEmpty()||huisnummer.isBlank()||huisnummer.isEmpty()||
-            gemeente.isBlank()||gemeente.isEmpty()||postcode.isBlank()||postcode.isEmpty())
+            gemeente.isBlank()||gemeente.isEmpty()||postcode.isBlank()||postcode.isEmpty()||
+            (!facturatieAdressChecked&&straatFacturatie.isEmpty())||(!facturatieAdressChecked&&straatFacturatie.isBlank())
+            ||
+            (!facturatieAdressChecked&&gemeenteFacturatie.isEmpty())||(!facturatieAdressChecked&&gemeenteFacturatie.isBlank())
+            ||
+            (!facturatieAdressChecked&&huisnummerFacturatie.isEmpty())||(!facturatieAdressChecked&&huisnummerFacturatie.isBlank())
+            ||
+            (!facturatieAdressChecked&&postcodeFacturatie.isEmpty())||(!facturatieAdressChecked&&postcodeFacturatie.isBlank())
+            )
 
 
     Column (
