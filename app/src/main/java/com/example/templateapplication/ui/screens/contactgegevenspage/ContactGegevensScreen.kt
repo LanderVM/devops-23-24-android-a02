@@ -91,14 +91,14 @@ fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
                 .padding(horizontal = 60.dp)
                 .height(17.dp)
         )
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         ContactGegevens(
             naam = naam ,onNaamChange = {naam = it}, makeEmptyNaam = {naam = ""},
             voornaam = voornaam, onVoornaamChange = {voornaam = it}, makeEmptyVoornaam = {voornaam = ""},
             typeEvenement = typeEvenement, onTypeEvenementChange = {typeEvenement = it},makeEmptyTypeEvenement = {typeEvenement = ""},
             email = email, onEmailChange = {email = it},makeEmptyEmail = {email = ""},
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         Adressering(
             straat = straat, onStraatChange = {straat = it},
             huisnummer = huisnummer, onHuisnummerChange = {huisnummer = it}, makeEmptyStraat = {straat = ""},
