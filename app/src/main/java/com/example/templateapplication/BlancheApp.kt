@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
 import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
-import com.example.templateapplication.ui.screens.overpage.AboutScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
+import com.example.templateapplication.ui.screens.overpage.OverScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -157,7 +157,7 @@ fun BlancheApp(
                             )
                     }
                     composable(NavigationRoutes.over.name) {
-                        AboutScreen(
+                        OverScreen(
                             modifier = Modifier.padding(innerPadding),
                             navigateEmailScreen = {navController.navigate(NavigationRoutes.emailInfo.name)}
                         )
