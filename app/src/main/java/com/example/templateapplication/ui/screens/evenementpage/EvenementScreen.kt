@@ -57,8 +57,8 @@ fun EvenementScreen (
 ) {
 
     val datumState = rememberDateRangePickerState()
-    val beginTijdState = rememberTimePickerState()
-    val eindTijdState = rememberTimePickerState()
+    val beginTijdState = rememberTimePickerState(is24Hour = true)
+    val eindTijdState = rememberTimePickerState(is24Hour = true)
 
     var buttonEnabled:Boolean = false
 
@@ -183,7 +183,7 @@ fun DatumPart (
                 selectedYearContainerColor = Color.Red,
                 disabledDayContentColor = Color.Gray,
                 todayDateBorderColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
-                dayInSelectionRangeContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichter))),
+                dayInSelectionRangeContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichterder))),
                 dayInSelectionRangeContentColor = Color.White,
                 selectedDayContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
             )
