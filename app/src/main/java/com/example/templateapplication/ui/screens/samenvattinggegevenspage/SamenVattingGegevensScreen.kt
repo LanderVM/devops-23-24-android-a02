@@ -33,7 +33,9 @@ import com.example.templateapplication.R
 
 @Composable
 fun SamenvattingGegevensScreen (
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateEventGegevens:()->Unit,
+    navigateContactGegevens:()->Unit,
 ) {
     Column (
         modifier = Modifier
@@ -41,10 +43,13 @@ fun SamenvattingGegevensScreen (
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         HeadOfPage()
         Spacer(modifier = Modifier.height(20.dp))
-        Navigation()
+        Navigation(
+            navigateContactGegevens=navigateContactGegevens,
+            navigateEventGegevens = navigateEventGegevens,
+        )
         Spacer(modifier = Modifier.height(25.dp))
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
         Spacer(modifier = Modifier.height(25.dp))
@@ -81,7 +86,9 @@ fun HeadOfPage(
 }
 @Composable
 fun Navigation (
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateEventGegevens:()->Unit,
+    navigateContactGegevens:()->Unit,
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -111,7 +118,9 @@ fun Navigation (
             Spacer(modifier = Modifier.width(30.dp))
             ClickableText(
                 text = AnnotatedString("Evenement") ,
-                onClick = {},
+                onClick = {
+                    navigateEventGegevens()
+                },
                 style = TextStyle(fontSize = 22.sp)
             )
         }
@@ -131,7 +140,9 @@ fun Navigation (
             Spacer(modifier = Modifier.width(30.dp))
             ClickableText(
                 text = AnnotatedString("Contact en facturatie gegevens"),
-                onClick = {},
+                onClick = {
+                    navigateContactGegevens()
+                },
                 style = TextStyle(fontSize = 22.sp)
             )
         }
