@@ -1,6 +1,8 @@
-package com.example.templateapplication
+package com.example.templateapplication.navigation
 
+import android.content.Context
 import androidx.annotation.StringRes
+import com.example.templateapplication.R
 
 enum class NavigationRoutes(@StringRes val title: Int) {
     home(title = R.string.home_title),
@@ -8,5 +10,9 @@ enum class NavigationRoutes(@StringRes val title: Int) {
     contactGegevens(title = R.string.contact_gegevens_title),
     formules(title = R.string.formules_title),
     emailInfo(title = R.string.over_email),
-    evenementGegevens(title=R.string.evenement_gegevens_titel)
+    evenementGegevens(R.string.evenement_gegevens_titel);
+
+    fun getString(context: Context): String {
+        return context.getString(title)
+    }
 }

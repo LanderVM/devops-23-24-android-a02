@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import junit.framework.TestCase.assertEquals
+import com.example.templateapplication.navigation.NavigationRoutes
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
