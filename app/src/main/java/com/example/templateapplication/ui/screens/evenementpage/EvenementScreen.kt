@@ -57,8 +57,8 @@ fun EvenementScreen (
 ) {
 
     val datumState = rememberDateRangePickerState()
-    val beginTijdState = rememberTimePickerState(is24Hour = true)
-    val eindTijdState = rememberTimePickerState(is24Hour = true)
+    val beginTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
+    val eindTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
 
     var buttonEnabled:Boolean = false
 
