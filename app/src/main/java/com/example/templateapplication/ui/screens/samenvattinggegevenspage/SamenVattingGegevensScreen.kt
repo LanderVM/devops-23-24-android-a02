@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Divider
@@ -42,23 +44,29 @@ fun SamenvattingGegevensScreen (
     navigateEventGegevens:()->Unit,
     navigateContactGegevens:()->Unit,
 ) {
+
+    val scrollState = rememberScrollState()
+
     Column (
         modifier = Modifier
             .padding(horizontal = 30.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth().verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(15.dp))
         HeadOfPage()
-        Spacer(modifier = Modifier.height(20.dp))
         Navigation(
             navigateContactGegevens=navigateContactGegevens,
             navigateEventGegevens = navigateEventGegevens,
         )
-        Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
         Spacer(modifier = Modifier.height(25.dp))
         EventGegevens()
+        Spacer(modifier = Modifier.height(30.dp))
+        Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+        Spacer(modifier = Modifier.height(25.dp))
+        ContactGegevens()
     }
 
 }
@@ -184,7 +192,6 @@ fun EventGegevens(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text= "Evenement",
             textAlign = TextAlign.Start,
@@ -214,12 +221,68 @@ fun EventGegevens(
         Spacer(modifier = Modifier.height(20.dp))
         ListItem(
             headlineContent = {Text(text="Type evenement", fontSize = 18.sp)},
-            supportingContent = {Text(text="een Japanse douche",fontSize = 16.sp)},
+            supportingContent = {Text(text="een gezellig samenkomen",fontSize = 16.sp)},
             colors = ListItemDefaults.colors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
             ),
             modifier = Modifier.padding(horizontal = 30.dp)
         )
         
+    }
+}
+
+@Composable
+fun ContactGegevens(
+    modifier: Modifier = Modifier
+) {
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text= "Contact en facturatie gegevens",
+            textAlign = TextAlign.Start,
+            modifier= Modifier.fillMaxWidth(),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = MainColor,
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        ListItem(
+            headlineContent = {Text(text="Naam",fontSize = 18.sp)},
+            supportingContent = {Text(text="23/44/5555",fontSize = 16.sp)},
+            colors = ListItemDefaults.colors(
+                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+            ),
+            modifier = Modifier.padding(horizontal = 30.dp)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        ListItem(
+            headlineContent = {Text(text="Email",fontSize = 18.sp)},
+            supportingContent = {Text(text="ergens",fontSize = 16.sp)},
+            colors = ListItemDefaults.colors(
+                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+            ),
+            modifier = Modifier.padding(horizontal = 30.dp)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        ListItem(
+            headlineContent = {Text(text="Telefoon", fontSize = 18.sp)},
+            supportingContent = {Text(text="een gezellig samenkomen",fontSize = 16.sp)},
+            colors = ListItemDefaults.colors(
+                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+            ),
+            modifier = Modifier.padding(horizontal = 30.dp)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        ListItem(
+            headlineContent = {Text(text="Adres", fontSize = 18.sp)},
+            supportingContent = {Text(text="een gezellig samenkomen",fontSize = 16.sp)},
+            colors = ListItemDefaults.colors(
+                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+            ),
+            modifier = Modifier.padding(horizontal = 30.dp)
+        )
+
     }
 }
