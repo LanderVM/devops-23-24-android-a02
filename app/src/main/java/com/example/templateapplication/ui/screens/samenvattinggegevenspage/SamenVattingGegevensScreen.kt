@@ -50,7 +50,8 @@ fun SamenvattingGegevensScreen (
     Column (
         modifier = Modifier
             .padding(horizontal = 30.dp)
-            .fillMaxWidth().verticalScroll(state = scrollState),
+            .fillMaxWidth()
+            .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(15.dp))
@@ -78,12 +79,13 @@ fun HeadOfPage(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text= "Overzicht",
             textAlign = TextAlign.Center,
             modifier= Modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp),
+                .padding(vertical = 12.dp),
             fontSize = 30.sp,
             fontWeight = FontWeight.SemiBold,
             color = MainColor,
@@ -91,7 +93,7 @@ fun HeadOfPage(
         LinearProgressIndicator(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 50.dp),
+                .padding(horizontal = 20.dp),
             color = MainColor,
             progress = 1.00f,
             trackColor = MainLightestColor,
