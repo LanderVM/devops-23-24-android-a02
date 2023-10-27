@@ -11,15 +11,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 import com.example.templateapplication.R
+import com.example.templateapplication.ui.theme.DisabledButtonColor
 
 @Composable
 fun SamenvattingGegevensScreen (
@@ -68,6 +73,24 @@ fun SamenvattingGegevensScreen (
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
         Spacer(modifier = Modifier.height(25.dp))
         ContactGegevens()
+        Spacer(modifier = Modifier.height(30.dp))
+        Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+        Spacer(modifier = Modifier.height(25.dp))
+        KostGegevens()
+        Spacer(modifier = Modifier.height(30.dp))
+        Button (
+            onClick = {},
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MainColor,
+                disabledContainerColor = DisabledButtonColor,
+                contentColor = Color.White,
+                disabledContentColor = Color.White
+            ),
+        ) {
+            Text (text= "Offerte aanvragen")
+        }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 
 }
@@ -285,6 +308,257 @@ fun ContactGegevens(
             ),
             modifier = Modifier.padding(horizontal = 30.dp)
         )
+
+    }
+}
+
+@Composable
+fun KostGegevens (
+    modifier: Modifier = Modifier
+) {
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text= "Kost",
+            textAlign = TextAlign.Start,
+            modifier= Modifier.fillMaxWidth(),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = MainColor,
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp),
+            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder))),
+        ){
+            Column (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="Omschrijving",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="Prijs",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="Subtotaal",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+                Divider(color = Color.Gray, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="basic formule 1x",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€350",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€350",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                }
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="Stoel 17x",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€5",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€85",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                }
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="Bord 17x",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€5",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€85",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                }
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="Vervoerskosten",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€0.75",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€2.25",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                }
+                Divider(color = Color.Gray, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="TOTAAL EXCL BTW",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(100.dp))
+                    Text(
+                        text="€2.25",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                }
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="TOTAAL BTW (21%)",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(100.dp))
+                    Text(
+                        text="€2.25",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                }
+                Divider(color = Color.Gray, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+                Row(
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(
+                        text="Te betalen",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.width(100.dp))
+                    Text(
+                        text="€630",
+                        textAlign = TextAlign.Start,
+                        modifier= Modifier,
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+        }
 
     }
 }
