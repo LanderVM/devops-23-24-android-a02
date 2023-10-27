@@ -10,7 +10,8 @@ enum class NavigationRoutes(@StringRes val title: Int) {
     contactGegevens(title = R.string.contact_gegevens_title),
     formules(title = R.string.formules_title),
     emailInfo(title = R.string.over_email),
-    evenementGegevens(R.string.evenement_gegevens_titel);
+    evenementGegevens(R.string.evenement_gegevens_titel),
+    samenvatting(title = R.string.samenvatting);
 
     fun getString(context: Context): String {
         return context.getString(title)

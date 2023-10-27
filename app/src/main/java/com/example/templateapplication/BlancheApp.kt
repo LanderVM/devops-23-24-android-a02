@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import androidx.navigation.navArgument
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
@@ -107,7 +109,8 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.contactGegevens.name) {
                         ConatctGegevensScreen(
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
                         )
                     }
                     composable(NavigationRoutes.formules.name) {
@@ -121,6 +124,13 @@ fun BlancheApp(
                             navigateContactGegevensScreen = {navController.navigate(NavigationRoutes.contactGegevens.name)},
                         )
                     }
+                    composable(
+                        "${NavigationRoutes.samenvatting.name}?naam={naam}",
+                                arguments = listOf(navArgument("naam") { defaultValue = "user1234" })
+                    ) { backStackEntry ->
+                        Text(text = backStackEntry.arguments?.getString("naam").toString())
+                    }
+
                     /*composable(NavigationRoutes.emailInfo.name) {
                         EmailForInformationScreen(
                             modifier = Modifier.padding(innerPadding)
