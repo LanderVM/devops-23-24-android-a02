@@ -56,9 +56,11 @@ fun EvenementScreen (
     navigateContactGegevensScreen:()->Unit
 ) {
 
+    val scrollState = rememberScrollState()
+
     val datumState = rememberDateRangePickerState()
-    val beginTijdState = rememberTimePickerState(is24Hour = true)
-    val eindTijdState = rememberTimePickerState(is24Hour = true)
+    val beginTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
+    val eindTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
 
     var buttonEnabled:Boolean = false
 
@@ -76,7 +78,7 @@ fun EvenementScreen (
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(35.dp))

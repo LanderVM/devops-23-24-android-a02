@@ -32,6 +32,7 @@ import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGeg
 import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 import com.example.templateapplication.ui.screens.overpage.OverScreen
+import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SamenvattingGegevensScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +40,6 @@ fun BlancheApp(
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
 ) {
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -119,6 +119,13 @@ fun BlancheApp(
                         EvenementScreen(
                             modifier = Modifier.padding(innerPadding),
                             navigateContactGegevensScreen = {navController.navigate(NavigationRoutes.contactGegevens.name)},
+                        )
+                    }
+                    composable(NavigationRoutes.samenvattingGegevens.name) {
+                        SamenvattingGegevensScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navigateEventGegevens = {navController.navigate(NavigationRoutes.evenementGegevens.name)},
+                            navigateContactGegevens = {navController.navigate(NavigationRoutes.contactGegevens.name)}
                         )
                     }
                     /*composable(NavigationRoutes.emailInfo.name) {
