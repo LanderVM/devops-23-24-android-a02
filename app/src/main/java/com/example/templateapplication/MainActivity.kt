@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     BlancheApp()
-                    //SamenvattingGegevensScreen(navigateEventGegevens = { /*TODO*/ }, navigateContactGegevens = {})
                 }
             }
 
