@@ -11,10 +11,10 @@ enum class NavigationRoutes(@StringRes val title: Int) {
     formules(title = R.string.formules_title),
     emailInfo(title = R.string.over_email),
     evenementGegevens(title=R.string.evenement_gegevens_titel),
-    samenvattingGegevens(title=R.string.samenvatting_gegevens_titel);
+    samenvattingGegevens(title=R.string.samenvatting_gegevens_titel),
+    extras(title=R.string.extras_title);
 
     fun getString(context: Context): String {
         return context.getString(title)
     }
 }
-    
