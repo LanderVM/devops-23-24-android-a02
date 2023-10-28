@@ -62,10 +62,6 @@ fun NavigationDrawer(
             to = NavigationRoutes.formules.name
         ),
         NavigationItem(
-            title = NavigationRoutes.evenementGegevens.getString(context),
-            to = NavigationRoutes.evenementGegevens.name
-        ),
-        NavigationItem(
             title = NavigationRoutes.extras.getString(context),
             to = NavigationRoutes.extras.name
         ),

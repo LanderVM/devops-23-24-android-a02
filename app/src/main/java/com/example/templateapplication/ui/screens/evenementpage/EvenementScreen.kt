@@ -23,6 +23,7 @@ import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
@@ -58,15 +59,18 @@ fun EvenementScreen (
 
     val scrollState = rememberScrollState()
 
-    val datumState = rememberDateRangePickerState()
+    val datumState = rememberDateRangePickerState(
+        yearRange = IntRange(start = 2023, endInclusive = Calendar.getInstance().get(Calendar.YEAR)+1),
+        //selectableDates =
+    )
     val beginTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
     val eindTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
 
     var buttonEnabled:Boolean = false
 
-    var invalidDates:LongArray = longArrayOf()
+    //var invalidDates:LongArray = longArrayOf()
 
-    val validatorFunction:(Long)->Boolean = {datum:Long-> !LongStream.of(*invalidDates).anyMatch{n->n==datum}}
+    //val validatorFunction:(Long)->Boolean = {datum:Long-> !LongStream.of(*invalidDates).anyMatch{n->n==datum}}
 
 
     if (datumState.selectedEndDateMillis==null||datumState.selectedStartDateMillis==null) {
@@ -100,7 +104,10 @@ fun EvenementScreen (
                 .height(17.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        DatumPart(state = datumState, validatorFunction = validatorFunction)
+        DatumPart(
+            state = datumState,
+            //validatorFunction = validatorFunction
+            )
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = beginTijdState, welkeTijd = "Begin tijd")
         Spacer(modifier = Modifier.height(20.dp))
@@ -135,7 +142,7 @@ fun getFormattedDate(timeInMillis: Long): String{
 fun DatumPart (
     modifier: Modifier = Modifier,
     state: DateRangePickerState,
-    validatorFunction:(Long)->Boolean
+    //validatorFunction:(Long)->Boolean
 ) {
     Column (
         modifier = Modifier
@@ -152,8 +159,9 @@ fun DatumPart (
         DateRangePicker(
             state,
             modifier = Modifier.height(450.dp),
-            dateFormatter = DatePickerFormatter("yy MM dd", "yy MM dd", "yy MM dd"),
-            dateValidator = validatorFunction,
+            //dateFormatter = DatePickerFormatter("yy MM dd", "yy MM dd", "yy MM dd"),
+            dateFormatter = DatePickerDefaults.dateFormatter("yy MM dd", "yy MM dd", "yy MM dd"),
+            //dateValidator = validatorFunction,
             title = {
                 Text(text = "Selecteer begin dag tot eind dag evenement", modifier = Modifier
                     .padding(16.dp))
