@@ -5,50 +5,58 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.templateapplication.model.klant.GegevensUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class ContactGegevensViewModel : ViewModel() {
 
-    var naam by mutableStateOf("")
-        private set
-    var voornaam by mutableStateOf("")
-        private set
-    var typeEvenement by mutableStateOf("")
-        private set
-    var email by mutableStateOf("")
-        private set
-    var straat by mutableStateOf("")
-        private set
-    var huisnummer by mutableStateOf("")
-        private set
-    var gemeente by mutableStateOf("")
-        private set
-    var postcode by mutableStateOf("")
-        private set
-    var facturatieAdressChecked by mutableStateOf(true)
-        private set
-    var straatFacturatie by mutableStateOf("")
-        private set
-    var huisnummerFacturatie by mutableStateOf("")
-        private set
-    var gemeenteFacturatie by mutableStateOf("")
-        private set
-    var postcodeFacturatie by mutableStateOf("")
-        private set
+    private val _gegevensUiState = MutableStateFlow(ContactGegevensUiState())
+    val gegevensUiState = _gegevensUiState.asStateFlow()
+
+    val naam: String
+        get() = gegevensUiState.value.naam
+
+    val voornaam: String
+        get() = gegevensUiState.value.voornaam
+
+    val email: String
+        get() = gegevensUiState.value.email
+
+    val typeEvenement: String
+        get() = gegevensUiState.value.typeEvenement
+
+    val straat: String
+        get() = gegevensUiState.value.straat
+
+    val gemeente: String
+        get() = gegevensUiState.value.gemeente
+
+    val postcode: String
+        get() = gegevensUiState.value.postcode
+
+    val huisnummer: String
+        get() = gegevensUiState.value.huisnummer
+
+    val facturatieAdressChecked: Boolean
+        get() = gegevensUiState.value.facturatieAdressChecked
+
+    val postcodeFacturatie: String
+        get() = gegevensUiState.value.postcodeFacturatie
+
+    val gemeenteFacturatie: String
+        get() = gegevensUiState.value.gemeenteFacturatie
+
+    val huisnummerFacturatie: String
+        get() = gegevensUiState.value.huisnummerFacturatie
+
+    val straatFacturatie: String
+        get() = gegevensUiState.value.straatFacturatie
 
     init {
 
-    }
-
-    fun navigationArguments(): String {
-        return "naam=$naam&voornaam=$voornaam&typeEvenement=$typeEvenement" +
-                "&email=$email&straat=$straat&huisnummer=$huisnummer" +
-                "&gemeente=$gemeente&postcode=$postcode" +
-                "&facturatieAdressChecked=$facturatieAdressChecked" +
-                "&straatFacturatie=$straatFacturatie&huisnummerFacturatie=$huisnummerFacturatie" +
-                "&gemeenteFacturatie=$gemeenteFacturatie&postcodeFacturatie=$postcodeFacturatie"
     }
 
     fun allFieldsFilled(): Boolean {
@@ -69,57 +77,80 @@ class ContactGegevensViewModel : ViewModel() {
     }
 
     fun updateNaam(naam: String) {
-        this.naam = naam
+        _gegevensUiState.update {
+            it.copy(naam = naam)
+        }
     }
 
     fun updateVoornaam(voornaam: String) {
-        this.voornaam = voornaam
+        _gegevensUiState.update {
+            it.copy(voornaam = voornaam)
+        }
     }
 
     fun updateTypeEvenement(typeEvenement: String) {
-        this.typeEvenement = typeEvenement
+        _gegevensUiState.update {
+            it.copy(typeEvenement = typeEvenement)
+        }
     }
 
     fun updateEmail(email: String) {
-        this.email = email
+        _gegevensUiState.update {
+            it.copy(email = email)
+        }
     }
 
     fun updateStraat(straat: String) {
-        this.straat = straat
+        _gegevensUiState.update {
+            it.copy(straat = straat)
+        }
     }
 
     fun updateHuisnummer(huisnummer: String) {
-        this.huisnummer = huisnummer
+        _gegevensUiState.update {
+            it.copy(huisnummer = huisnummer)
+        }
     }
 
     fun updateGemeente(gemeente: String) {
-        this.gemeente = gemeente
+        _gegevensUiState.update {
+            it.copy(gemeente = gemeente)
+        }
     }
 
     fun updatePostcode(postcode: String) {
-        this.postcode = postcode
+        _gegevensUiState.update {
+            it.copy(postcode = postcode)
+        }
     }
 
     fun updateFacturatieAdressChecked(checked: Boolean) {
-        this.facturatieAdressChecked = checked
+        _gegevensUiState.update {
+            it.copy(facturatieAdressChecked = checked)
+        }
     }
 
     fun updateStraatFacturatie(straatFacturatie: String) {
-        this.straatFacturatie = straatFacturatie
+        _gegevensUiState.update {
+            it.copy(straatFacturatie = straatFacturatie)
+        }
     }
 
     fun updateHuisnummerFacturatie(huisnummerFacturatie: String) {
-        this.huisnummerFacturatie = huisnummerFacturatie
+        _gegevensUiState.update {
+            it.copy(huisnummerFacturatie = huisnummerFacturatie)
+        }
     }
 
     fun updateGemeenteFacturatie(gemeenteFacturatie: String) {
-        this.gemeenteFacturatie = gemeenteFacturatie
+        _gegevensUiState.update {
+            it.copy(gemeenteFacturatie = gemeenteFacturatie)
+        }
     }
 
     fun updatePostcodeFacturatie(postcodeFacturatie: String) {
-        this.postcodeFacturatie = postcodeFacturatie
+        _gegevensUiState.update {
+            it.copy(postcodeFacturatie = postcodeFacturatie)
+        }
     }
-
-
-    // You can add more functions to handle data as needed
 }

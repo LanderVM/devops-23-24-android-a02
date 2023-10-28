@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,8 +27,10 @@ import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
+import com.example.templateapplication.model.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
@@ -41,7 +44,6 @@ fun BlancheApp(
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
 ) {
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -51,6 +53,11 @@ fun BlancheApp(
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
+
+        // VIEWMODELS
+        var gegevensViewModel: ContactGegevensViewModel = viewModel()
+        val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
+
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
         }
@@ -90,6 +97,9 @@ fun BlancheApp(
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(NavigationRoutes.home.name) {
+                        Text(
+                            text = gegevensUiState.naam
+                        )
                         HomeScreen(
                             openDrawer = {
                                 scope.launch {
@@ -109,8 +119,8 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.contactGegevens.name) {
                         ConatctGegevensScreen(
+                            gegevensViewModel = gegevensViewModel,
                             modifier = Modifier.padding(innerPadding),
-                            navController = navController
                         )
                     }
                     composable(NavigationRoutes.formules.name) {
@@ -125,7 +135,7 @@ fun BlancheApp(
                         )
                     }
                     composable(
-                        "${NavigationRoutes.samenvatting.name}?naam={naam}",
+                        "${NavigationRoutes.samenvattingGegevens.name}?naam={naam}",
                                 arguments = listOf(navArgument("naam") { defaultValue = "user1234" })
                     ) { backStackEntry ->
                         Text(text = backStackEntry.arguments?.getString("naam").toString())
