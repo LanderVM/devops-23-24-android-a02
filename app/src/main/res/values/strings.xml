@@ -14,6 +14,7 @@
     <string name="contact_gegevens_title">Contact gegevens</string>
     <string name="evenement_gegevens_titel">Evenement gegevens</string>
     <string name="samenvatting_gegevens_titel">Samenvatting gegevens</string>
+    <string name="extras_title">Extra materiaal</string>
     <string name="formules_title">Formules</string>
     <string name="over_email">Meer info</string>
 </resources>

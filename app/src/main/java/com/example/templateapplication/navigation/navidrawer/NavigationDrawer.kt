@@ -61,6 +61,14 @@ fun NavigationDrawer(
             title = NavigationRoutes.formules.getString(context),
             to = NavigationRoutes.formules.name
         ),
+        NavigationItem(
+            title = NavigationRoutes.evenementGegevens.getString(context),
+            to = NavigationRoutes.evenementGegevens.name
+        ),
+        NavigationItem(
+            title = NavigationRoutes.extras.getString(context),
+            to = NavigationRoutes.extras.name
+        ),
     )
 
     ModalDrawerSheet(

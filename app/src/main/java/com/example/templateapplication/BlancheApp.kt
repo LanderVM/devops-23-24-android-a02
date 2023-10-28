@@ -30,6 +30,7 @@ import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
 import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
+import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 import com.example.templateapplication.ui.screens.overpage.OverScreen
 import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SamenvattingGegevensScreen
@@ -127,6 +128,9 @@ fun BlancheApp(
                             navigateEventGegevens = {navController.navigate(NavigationRoutes.evenementGegevens.name)},
                             navigateContactGegevens = {navController.navigate(NavigationRoutes.contactGegevens.name)}
                         )
+                    }
+                    composable(NavigationRoutes.extras.name) {
+                        ExtrasScreen()
                     }
                     /*composable(NavigationRoutes.emailInfo.name) {
                         EmailForInformationScreen(
