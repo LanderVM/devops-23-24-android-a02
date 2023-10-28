@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
@@ -47,6 +49,9 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
 
     val scrollState = rememberScrollState()
+
+    val contactGegevensViewModel:ContactGegevensViewModel = viewModel()
+    val contactGegevensUiState by contactGegevensViewModel.uiState.collectAsState()
 
     var naam by remember { mutableStateOf("") }
     var voornaam by remember { mutableStateOf("") }
@@ -66,17 +71,25 @@ fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
     var postcodeFacturatie by remember { mutableStateOf("") }
 
     val buttonEnabled:Boolean
-    buttonEnabled = !(naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
-            typeEvenement.isEmpty()||email.isBlank()||email.isEmpty()||
-            straat.isBlank()||straat.isEmpty()||huisnummer.isBlank()||huisnummer.isEmpty()||
-            gemeente.isBlank()||gemeente.isEmpty()||postcode.isBlank()||postcode.isEmpty()||
-            (!facturatieAdressChecked&&straatFacturatie.isEmpty())||(!facturatieAdressChecked&&straatFacturatie.isBlank())
+    buttonEnabled = !(contactGegevensUiState.naam.isBlank()||contactGegevensUiState.naam.isEmpty()
+            ||contactGegevensUiState.voornaam.isBlank()||contactGegevensUiState.voornaam.isEmpty()||
+            contactGegevensUiState.typeEvenement.isBlank()|| contactGegevensUiState.typeEvenement.isEmpty()||
+            contactGegevensUiState.email.isBlank()||contactGegevensUiState.email.isEmpty()||
+            contactGegevensUiState.straat.isBlank()||contactGegevensUiState.straat.isEmpty()||
+            contactGegevensUiState.huisnummer.isBlank()||contactGegevensUiState.huisnummer.isEmpty()||
+            contactGegevensUiState.gemeente.isBlank()||contactGegevensUiState.gemeente.isEmpty()||
+            contactGegevensUiState.postcode.isBlank()||contactGegevensUiState.postcode.isEmpty()||
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.straatFacturatie.isEmpty() )||
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.straatFacturatie.isBlank() )
             ||
-            (!facturatieAdressChecked&&gemeenteFacturatie.isEmpty())||(!facturatieAdressChecked&&gemeenteFacturatie.isBlank())
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.gemeenteFacturatie.isEmpty() )||
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.gemeenteFacturatie.isBlank() )
             ||
-            (!facturatieAdressChecked&&huisnummerFacturatie.isEmpty())||(!facturatieAdressChecked&&huisnummerFacturatie.isBlank())
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.huisnummerFacturatie.isEmpty() )||
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.huisnummerFacturatie.isBlank() )
             ||
-            (!facturatieAdressChecked&&postcodeFacturatie.isEmpty())||(!facturatieAdressChecked&&postcodeFacturatie.isBlank())
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.postcodeFacturatie.isEmpty() )||
+            (!contactGegevensUiState.facturatieAdressChecked&& contactGegevensUiState.postcodeFacturatie.isBlank() )
             )
 
 
@@ -106,41 +119,41 @@ fun ConatctGegevensScreen (modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(30.dp))
         ContactGegevens(
-            naam = naam ,onNaamChange = {naam = it}, makeEmptyNaam = {naam = ""},
-            voornaam = voornaam, onVoornaamChange = {voornaam = it}, makeEmptyVoornaam = {voornaam = ""},
-            typeEvenement = typeEvenement, onTypeEvenementChange = {typeEvenement = it},makeEmptyTypeEvenement = {typeEvenement = ""},
-            email = email, onEmailChange = {email = it},makeEmptyEmail = {email = ""},
+            naam = contactGegevensUiState.naam ,onNaamChange = {contactGegevensViewModel.updateNaam(it)}, makeEmptyNaam = {contactGegevensViewModel.updateNaam("")},
+            voornaam = contactGegevensUiState.voornaam, onVoornaamChange = {contactGegevensViewModel.updateVoornaam(it)}, makeEmptyVoornaam = {contactGegevensViewModel.updateVoornaam("")},
+            typeEvenement = contactGegevensUiState.typeEvenement, onTypeEvenementChange = {contactGegevensViewModel.updateTypeEvenement(it)},makeEmptyTypeEvenement = {contactGegevensViewModel.updateTypeEvenement("")},
+            email = contactGegevensUiState.email, onEmailChange = {contactGegevensViewModel.updateEmail(it)},makeEmptyEmail = {contactGegevensViewModel.updateEmail("")},
         )
         Spacer(modifier = Modifier.height(30.dp))
         Adressering(
             welkeAdressering = "Adres gegevens",
-            straat = straat, onStraatChange = {straat = it},
-            huisnummer = huisnummer, onHuisnummerChange = {huisnummer = it}, makeEmptyStraat = {straat = ""},
-            gemeente = gemeente, onGemeenteChange = {gemeente = it}, makeEmptyHuisnummer = {huisnummer=""},
-            postcode = postcode, onPostcodeChange = {postcode = it}, makeEmptyGemeente = {gemeente = ""},
-            makeEmptyPostcode = {postcode=""}
+            straat = contactGegevensUiState.straat, onStraatChange = {contactGegevensViewModel.updateStraat(it)},
+            huisnummer = contactGegevensUiState.huisnummer, onHuisnummerChange = {contactGegevensViewModel.updateHuisnummer(it)}, makeEmptyStraat = {contactGegevensViewModel.updateStraat("")},
+            gemeente = contactGegevensUiState.gemeente, onGemeenteChange = {contactGegevensViewModel.updateGemeente(it)}, makeEmptyHuisnummer = {contactGegevensViewModel.updateHuisnummer("")},
+            postcode = contactGegevensUiState.postcode, onPostcodeChange = {contactGegevensViewModel.updatePostcode(it)}, makeEmptyGemeente = {contactGegevensViewModel.updateGemeente("")},
+            makeEmptyPostcode = {contactGegevensViewModel.updatePostcode("")}
         )
         Spacer(modifier = Modifier.height(15.dp))
         OptieFacturatieAdress(
-            facturatieAdressChecked = facturatieAdressChecked,
-            onFacturatieAdressCheckedChange = {facturatieAdressChecked = it}
+            facturatieAdressChecked = contactGegevensUiState.facturatieAdressChecked,
+            onFacturatieAdressCheckedChange = {contactGegevensViewModel.updateFacturatieAdressChecked(it)}
         )
         Spacer(modifier = Modifier.height(15.dp))
-        if (!facturatieAdressChecked) {
+        if (!contactGegevensUiState.facturatieAdressChecked) {
             Adressering(
                 welkeAdressering = "Facturatie adres",
-                straat = straatFacturatie,
-                onStraatChange = {straatFacturatie = it},
-                makeEmptyStraat = { straatFacturatie="" },
-                huisnummer = huisnummerFacturatie,
-                onHuisnummerChange = {huisnummerFacturatie=it},
-                makeEmptyHuisnummer = { huisnummerFacturatie=""},
-                gemeente = gemeenteFacturatie,
-                onGemeenteChange = {gemeenteFacturatie=it},
-                makeEmptyGemeente = { gemeenteFacturatie="" },
-                postcode = postcodeFacturatie,
-                onPostcodeChange = {postcodeFacturatie = it},
-                makeEmptyPostcode = {postcodeFacturatie=""}
+                straat = contactGegevensUiState.straatFacturatie,
+                onStraatChange = {contactGegevensViewModel.updateStraatFacturatie(it)},
+                makeEmptyStraat = { contactGegevensViewModel.updateStraatFacturatie("") },
+                huisnummer = contactGegevensUiState.huisnummerFacturatie,
+                onHuisnummerChange = {contactGegevensViewModel.updateHuisnummerFacturatie(it)},
+                makeEmptyHuisnummer = { contactGegevensViewModel.updateHuisnummerFacturatie("")},
+                gemeente = contactGegevensUiState.gemeenteFacturatie,
+                onGemeenteChange = {contactGegevensViewModel.updateGemeenteFacturatie(it)},
+                makeEmptyGemeente = { contactGegevensViewModel.updateGemeenteFacturatie("") },
+                postcode = contactGegevensUiState.postcodeFacturatie,
+                onPostcodeChange = {contactGegevensViewModel.updatePostcodeFacturatie(it)},
+                makeEmptyPostcode = {contactGegevensViewModel.updatePostcodeFacturatie("")}
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
