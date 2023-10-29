@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,7 +26,11 @@ import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.templateapplication.model.adres.AdresViewModel
+import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
@@ -41,6 +46,7 @@ fun BlancheApp(
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
 ) {
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -50,6 +56,15 @@ fun BlancheApp(
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
+
+        // VIEWMODELS
+        var gegevensViewModel: ContactGegevensViewModel = viewModel()
+
+        var adresViewModel: AdresViewModel = viewModel()
+
+        var formuleViewModel: FormuleViewModel = viewModel()
+
+
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
         }
@@ -108,7 +123,10 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.contactGegevens.name) {
                         ConatctGegevensScreen(
-                            modifier = Modifier.padding(innerPadding)
+                            gegevensViewModel = gegevensViewModel,
+                            adresViewModel = adresViewModel,
+                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)},
+                            modifier = Modifier.padding(innerPadding),
                         )
                     }
                     composable(NavigationRoutes.formules.name) {
@@ -120,11 +138,15 @@ fun BlancheApp(
                         EvenementScreen(
                             modifier = Modifier.padding(innerPadding),
                             navigateContactGegevensScreen = {navController.navigate(NavigationRoutes.contactGegevens.name)},
-                        )
+                            formuleViewModel = formuleViewModel,
+                            )
                     }
                     composable(NavigationRoutes.samenvattingGegevens.name) {
                         SamenvattingGegevensScreen(
                             modifier = Modifier.padding(innerPadding),
+                            gegevensViewModel = gegevensViewModel,
+                            adresViewModel = adresViewModel,
+                            formuleViewModel = formuleViewModel,
                             navigateEventGegevens = {navController.navigate(NavigationRoutes.evenementGegevens.name)},
                             navigateContactGegevens = {navController.navigate(NavigationRoutes.contactGegevens.name)}
                         )
@@ -132,11 +154,6 @@ fun BlancheApp(
                     composable(NavigationRoutes.extras.name) {
                         ExtrasScreen()
                     }
-                    /*composable(NavigationRoutes.emailInfo.name) {
-                        EmailForInformationScreen(
-                            modifier = Modifier.padding(innerPadding)
-                        )
-                    }*/
                 }
             }
         }

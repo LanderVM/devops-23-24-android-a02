@@ -18,4 +18,3 @@ enum class NavigationRoutes(@StringRes val title: Int) {
         return context.getString(title)
     }
 }
-    
