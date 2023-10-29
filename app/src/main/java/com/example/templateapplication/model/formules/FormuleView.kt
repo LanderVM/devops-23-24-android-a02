@@ -6,13 +6,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
 import java.util.Calendar
-import java.util.Date
 
 class FormuleViewModel : ViewModel() {
     private val _formuleUiState = MutableStateFlow(FormuleUiState())
