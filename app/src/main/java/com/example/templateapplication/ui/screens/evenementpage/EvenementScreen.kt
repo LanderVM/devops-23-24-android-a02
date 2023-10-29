@@ -1,13 +1,10 @@
 package com.example.templateapplication.ui.screens.evenementpage
 
-import android.app.DatePickerDialog
-import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,52 +14,58 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePickerDefaults
-import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
-import androidx.compose.material3.TimePickerColors
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
+import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.stream.LongStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EvenementScreen (
     modifier: Modifier = Modifier,
+    formuleViewModel: FormuleViewModel = viewModel(),
     navigateContactGegevensScreen:()->Unit
 ) {
+    val formuleUiState by formuleViewModel.formuleUiState.collectAsState()
+    val selectedStartDate = remember { mutableStateOf(formuleViewModel.beginDatum) }
+    val selectedEndDate = remember { mutableStateOf(formuleViewModel.eindDatum) }
+
 
     val scrollState = rememberScrollState()
 
     val datumState = rememberDateRangePickerState(
+        initialSelectedStartDateMillis = selectedStartDate.value.timeInMillis,
+        initialSelectedEndDateMillis = selectedEndDate.value.timeInMillis,
         yearRange = IntRange(start = 2023, endInclusive = Calendar.getInstance().get(Calendar.YEAR)+1),
         //selectableDates =
     )
+
     val beginTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
     val eindTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
 
@@ -106,12 +109,13 @@ fun EvenementScreen (
         Spacer(modifier = Modifier.height(20.dp))
         DatumPart(
             state = datumState,
+            formuleViewModel = formuleViewModel,
             //validatorFunction = validatorFunction
             )
         Spacer(modifier = Modifier.height(20.dp))
-        TimePart(state = beginTijdState, welkeTijd = "Begin tijd")
+        TimePart(state = beginTijdState, welkeTijd = "Begin tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(20.dp))
-        TimePart(state = eindTijdState, welkeTijd = "Eind tijd")
+        TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(35.dp))
         Button (
             onClick = navigateContactGegevensScreen,
@@ -142,6 +146,7 @@ fun getFormattedDate(timeInMillis: Long): String{
 fun DatumPart (
     modifier: Modifier = Modifier,
     state: DateRangePickerState,
+    formuleViewModel: FormuleViewModel,
     //validatorFunction:(Long)->Boolean
 ) {
     Column (
@@ -156,6 +161,10 @@ fun DatumPart (
             textAlign = TextAlign.Center,
             fontSize = 40.sp
         )
+        LaunchedEffect(state.selectedStartDateMillis, state.selectedEndDateMillis) {
+            formuleViewModel.updateDatums(state.selectedStartDateMillis, state.selectedEndDateMillis)
+        }
+
         DateRangePicker(
             state,
             modifier = Modifier.height(450.dp),
@@ -208,7 +217,8 @@ fun DatumPart (
 fun TimePart (
     modifier: Modifier = Modifier,
     state:TimePickerState,
-    welkeTijd:String
+    welkeTijd:String,
+    formuleViewModel: FormuleViewModel,
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),

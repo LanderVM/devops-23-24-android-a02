@@ -27,23 +27,17 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import com.example.templateapplication.R
-import com.example.templateapplication.model.ContactGegevensViewModel
-import com.example.templateapplication.navigation.NavigationRoutes
+import com.example.templateapplication.model.adres.AdresViewModel
+import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
@@ -52,9 +46,12 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 @Composable
 fun ConatctGegevensScreen (
     gegevensViewModel: ContactGegevensViewModel = viewModel(),
+    adresViewModel: AdresViewModel = viewModel(),
+    navigateSamenvatting: ()->Unit,
     modifier: Modifier = Modifier
 ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
+    val adresUiState by adresViewModel.adresUiState.collectAsState()
 
     val scrollState = rememberScrollState()
 
@@ -103,49 +100,49 @@ fun ConatctGegevensScreen (
 
         Adressering(
             welkeAdressering = "Adres gegevens",
-            straat = gegevensUiState.straat,
-            onStraatChange = { gegevensViewModel.updateStraat(it) },
-            makeEmptyStraat = { gegevensViewModel.updateStraat("") },
-            huisnummer = gegevensUiState.huisnummer,
-            onHuisnummerChange = { gegevensViewModel.updateHuisnummer(it) },
-            makeEmptyHuisnummer = { gegevensViewModel.updateHuisnummer("") },
-            gemeente = gegevensUiState.gemeente,
-            onGemeenteChange = { gegevensViewModel.updateGemeente(it) },
-            makeEmptyGemeente = { gegevensViewModel.updateGemeente("") },
-            postcode = gegevensUiState.postcode,
-            onPostcodeChange = { gegevensViewModel.updatePostcode(it) },
-            makeEmptyPostcode = { gegevensViewModel.updatePostcode("") }
+            straat = adresUiState.straat,
+            onStraatChange = { adresViewModel.updateStraat(it) },
+            makeEmptyStraat = { adresViewModel.updateStraat("") },
+            huisnummer = adresUiState.huisnummer,
+            onHuisnummerChange = { adresViewModel.updateHuisnummer(it) },
+            makeEmptyHuisnummer = { adresViewModel.updateHuisnummer("") },
+            gemeente = adresUiState.gemeente,
+            onGemeenteChange = { adresViewModel.updateGemeente(it) },
+            makeEmptyGemeente = { adresViewModel.updateGemeente("") },
+            postcode = adresUiState.postcode,
+            onPostcodeChange = { adresViewModel.updatePostcode(it) },
+            makeEmptyPostcode = { adresViewModel.updatePostcode("") }
         )
 
         Spacer(modifier = Modifier.height(15.dp))
 
         OptieFacturatieAdress(
-            facturatieAdressChecked = gegevensUiState.facturatieAdressChecked,
-            onFacturatieAdressCheckedChange = {gegevensViewModel.updateFacturatieAdressChecked(it)}
+            facturatieAdressChecked = adresUiState.facturatieAdressChecked,
+            onFacturatieAdressCheckedChange = {adresViewModel.updateFacturatieAdressChecked(it)}
         )
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        if (!gegevensUiState.facturatieAdressChecked) {
+        if (!adresUiState.facturatieAdressChecked) {
             Adressering(
                 welkeAdressering = "Facturatie adres",
-                straat = gegevensUiState.straatFacturatie,
-                onStraatChange = { gegevensViewModel.updateStraatFacturatie(it) },
-                makeEmptyStraat = { gegevensViewModel.updateStraatFacturatie("") },
-                huisnummer = gegevensUiState.huisnummerFacturatie,
-                onHuisnummerChange = { gegevensViewModel.updateHuisnummerFacturatie(it) },
-                makeEmptyHuisnummer = { gegevensViewModel.updateHuisnummerFacturatie("") },
-                gemeente = gegevensUiState.gemeenteFacturatie,
-                onGemeenteChange = { gegevensViewModel.updateGemeenteFacturatie(it) },
-                makeEmptyGemeente = { gegevensViewModel.updateGemeenteFacturatie("") },
-                postcode = gegevensUiState.postcodeFacturatie,
-                onPostcodeChange = { gegevensViewModel.updatePostcodeFacturatie(it) },
-                makeEmptyPostcode = { gegevensViewModel.updatePostcodeFacturatie("") }
+                straat = adresUiState.straatFacturatie,
+                onStraatChange = { adresViewModel.updateStraatFacturatie(it) },
+                makeEmptyStraat = { adresViewModel.updateStraatFacturatie("") },
+                huisnummer = adresUiState.huisnummerFacturatie,
+                onHuisnummerChange = { adresViewModel.updateHuisnummerFacturatie(it) },
+                makeEmptyHuisnummer = { adresViewModel.updateHuisnummerFacturatie("") },
+                gemeente = adresUiState.gemeenteFacturatie,
+                onGemeenteChange = { adresViewModel.updateGemeenteFacturatie(it) },
+                makeEmptyGemeente = { adresViewModel.updateGemeenteFacturatie("") },
+                postcode = adresUiState.postcodeFacturatie,
+                onPostcodeChange = { adresViewModel.updatePostcodeFacturatie(it) },
+                makeEmptyPostcode = { adresViewModel.updatePostcodeFacturatie("") }
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
         Button (
-            onClick = {},
+            onClick = navigateSamenvatting,
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MainColor,
@@ -153,7 +150,7 @@ fun ConatctGegevensScreen (
                 contentColor = Color.White,
                 disabledContentColor = Color.White
             ),
-            enabled = gegevensViewModel.allFieldsFilled()
+            enabled = gegevensViewModel.allFieldsFilled() && adresViewModel.allFieldsFilled()
         ) {
             Text (text= "Volgende")
         }

@@ -1,11 +1,15 @@
 package com.example.templateapplication.model.formules
 
-data class GegevensUiState(
-    val naam: String = "",
-    val voorNaam: String = "",
-    val email: String = "",
-    val straat: String = "",
-    val huisNummer: String = "",
-    val gemeente: String = "",
-    val postcode: String = ""
-)
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.util.Calendar
+
+data class FormuleUiState(
+    var beginDatum: Calendar = Calendar.getInstance(),
+    var eindDatum: Calendar = Calendar.getInstance(),
+
+    var beginUur: LocalTime? = null,
+    var eindUur: LocalTime? = null,
+
+    )
