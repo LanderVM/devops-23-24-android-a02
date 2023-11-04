@@ -1,10 +1,12 @@
 package com.example.templateapplication.ui.screens.evenementpage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,6 +41,12 @@ import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.commons.VolgendeKnop
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -98,6 +106,8 @@ fun EvenementScreen(
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(35.dp))
+        LocatiePart()
+
         VolgendeKnop(
             navigeer = navigateContactGegevensScreen,
             enabled = buttonEnabled,
@@ -112,6 +122,40 @@ fun getFormattedDate(timeInMillis: Long): String {
     return dateFormat.format(calender.timeInMillis)
 }
 
+@Composable
+fun LocatiePart() {
+    val startPlaats = LatLng(50.93735122680664, 4.03336238861084)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(startPlaats, 15f)
+    }
+    Titel(
+        text = "Locatie",
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .padding(horizontal = 30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier.background(Color.LightGray).padding(2.dp)
+        ) {
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                Marker(
+                    state = MarkerState(position = startPlaats),
+                    title = "Singapore",
+                    snippet = "Marker in Singapore"
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatumPart(
@@ -121,8 +165,8 @@ fun DatumPart(
     // validatorFunction:(Long)->Boolean
 ) {
     Titel(
-    text = "Datum",
-)
+        text = "Datum",
+    )
     Column(
         modifier = Modifier
             .fillMaxWidth()

@@ -39,7 +39,7 @@ fun Titel(
         Text(
             text = text,
             textAlign = TextAlign.Center,
-            fontSize = 20.sp,
+            fontSize = 25.sp,
             overflow = TextOverflow.Ellipsis,  // Maakt text op meerdere lijnen
             modifier = Modifier.width(120.dp), // Maakt text op meerdere lijnen
         )

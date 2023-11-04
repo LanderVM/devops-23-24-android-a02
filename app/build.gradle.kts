@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.maps.android:maps-compose:4.1.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation ("androidx.compose.runtime:runtime:1.5.3")
     implementation ("androidx.compose.runtime:runtime-livedata:1.5.3")
