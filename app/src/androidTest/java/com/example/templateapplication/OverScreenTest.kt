@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import com.example.templateapplication.ui.screens.overpage.AboutScreen
+import com.example.templateapplication.ui.screens.overpage.OverScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,7 +18,7 @@ class OverScreenTest {
     fun overScreen_verifyContent () {
 
         composeTestRule.setContent {
-            AboutScreen( navigateEmailScreen = {})
+            OverScreen( navigateEmailScreen = {})
         }
 
         composeTestRule.onNodeWithText("Over de foodtruck").assertExists()

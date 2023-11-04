@@ -4,7 +4,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import com.example.templateapplication.ui.screens.contactgegevenspage.GegevensScreen
+import androidx.navigation.testing.TestNavHostController
+import com.example.templateapplication.navigation.NavigationRoutes
+import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -13,11 +15,13 @@ class GegevensScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private lateinit var navController: TestNavHostController
+
     @Test
     fun homeScreen_verifyContent () {
 
         composeTestRule.setContent {
-            GegevensScreen()
+            ConatctGegevensScreen(navigateSamenvatting = {})
         }
 
         composeTestRule.onNodeWithText("Personalia").assertExists()

@@ -23,36 +23,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.R
+import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @ExperimentalMaterial3Api
 @Composable
-fun ExtrasScreen (
-    modifier: Modifier = Modifier
+fun ExtrasScreen(
+    modifier: Modifier = Modifier,
 ) {
-
     val scrollState = rememberScrollState()
 
     var selectedIndex by remember { mutableStateOf(0) }
-    val options = listOf("Prijs asc", "Prijs desc", "Naam asc","Naam desc")
+    val options = listOf("Prijs asc", "Prijs desc", "Naam asc", "Naam desc")
 
-    Column (
+    Column(
         modifier = Modifier
             .padding(horizontal = 30.dp)
             .fillMaxWidth()
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(35.dp))
         HeadOfPage()
-        Spacer(modifier = Modifier.height(30.dp))
-        Text(text = "Extra materiaal",textAlign = TextAlign.Center,fontSize = 25.sp)
+        Text(text = "Extra materiaal", textAlign = TextAlign.Center, fontSize = 25.sp)
         Spacer(modifier = Modifier.height(30.dp))
 
         SingleChoiceSegmentedButtonRow {
@@ -62,8 +59,13 @@ fun ExtrasScreen (
                     onClick = { selectedIndex = index },
                     selected = index == selectedIndex,
                     colors = SegmentedButtonColors(
-                        activeContainerColor = Color(android.graphics.Color.parseColor(stringResource(
-                            R.string.lichterder))),
+                        activeContainerColor = Color(
+                            android.graphics.Color.parseColor(
+                                stringResource(
+                                    R.string.lichterder,
+                                ),
+                            ),
+                        ),
                         activeBorderColor = Color.Black,
                         activeContentColor = Color.Black,
                         disabledActiveBorderColor = Color.Black,
@@ -74,8 +76,8 @@ fun ExtrasScreen (
                         disabledInactiveContentColor = Color.Black,
                         inactiveBorderColor = Color.Black,
                         inactiveContainerColor = Color.White,
-                        inactiveContentColor = Color.Black
-                    )
+                        inactiveContentColor = Color.Black,
+                    ),
                 ) {
                     Text(text = label, fontSize = 12.sp)
                 }
@@ -86,28 +88,15 @@ fun ExtrasScreen (
 
 @Composable
 fun HeadOfPage(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        LinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            color = MainColor,
-            progress = 0.75f,
-            trackColor = MainLightestColor,
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text="Extra Materiaal",
-            color = MainColor,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(17.dp)
-                .padding(horizontal = 30.dp)
+        ProgressieBar(
+            text = "Extra Materiaal",
+            progressie = 0.75f,
         )
     }
 }

@@ -9,8 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
-import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SamenvattingGegevensScreen
 import com.example.templateapplication.ui.theme.TemplateApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,23 +18,18 @@ class MainActivity : ComponentActivity() {
             TemplateApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     BlancheApp()
                 }
             }
-
-
-
         }
     }
 }
 
-
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun AppPreview() {
     TemplateApplicationTheme {
         BlancheApp()
     }

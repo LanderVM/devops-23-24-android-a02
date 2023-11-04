@@ -1,10 +1,8 @@
 package com.example.templateapplication.navigation.navidrawer
 
 import android.content.Context
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,40 +37,40 @@ fun NavigationDrawer(
     selectedItemIndex: Int,
     scope: CoroutineScope,
     drawerState: DrawerState,
-    context: Context
+    context: Context,
 ) {
     var selectedItemIdx = selectedItemIndex
 
     val navItems = listOf(
         NavigationItem(
             title = NavigationRoutes.home.getString(context),
-            to = NavigationRoutes.home.name
+            to = NavigationRoutes.home.name,
         ),
         NavigationItem(
             title = NavigationRoutes.over.getString(context),
-            to = NavigationRoutes.over.name
+            to = NavigationRoutes.over.name,
         ),
         NavigationItem(
             title = NavigationRoutes.evenementGegevens.getString(context),
-            to = NavigationRoutes.evenementGegevens.name
+            to = NavigationRoutes.evenementGegevens.name,
         ),
         NavigationItem(
             title = NavigationRoutes.formules.getString(context),
-            to = NavigationRoutes.formules.name
+            to = NavigationRoutes.formules.name,
         ),
         NavigationItem(
             title = NavigationRoutes.extras.getString(context),
-            to = NavigationRoutes.extras.name
+            to = NavigationRoutes.extras.name,
         ),
     )
 
     ModalDrawerSheet(
         drawerContentColor = Color.White,
         modifier = Modifier
-            .alpha(0.9f)
+            .alpha(0.9f),
     ) {
         Spacer(
-            modifier = Modifier.height(16.dp)
+            modifier = Modifier.height(16.dp),
         )
 
         navItems.forEachIndexed { index, item ->
@@ -82,17 +79,17 @@ fun NavigationDrawer(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .padding(10.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally),
             )
             val isSelected = index == selectedItemIndex
 
             NavigationDrawerItem(
                 colors = NavigationDrawerItemDefaults.colors(
-                    selectedContainerColor = Color.Transparent
+                    selectedContainerColor = Color.Transparent,
                 ),
                 label = {
                     Box(
-                       contentAlignment = Alignment.CenterStart
+                        contentAlignment = Alignment.CenterStart,
                     ) {
                         Text(
                             text = item.title.uppercase(),
@@ -100,7 +97,7 @@ fun NavigationDrawer(
                             fontSize = 30.sp,
                             lineHeight = 35.sp,
                             overflow = TextOverflow.Ellipsis,
-                            )
+                        )
                     }
                 },
                 selected = index == selectedItemIndex,
@@ -113,7 +110,7 @@ fun NavigationDrawer(
                 },
                 modifier = Modifier
                     .height(80.dp)
-                    .padding(NavigationDrawerItemDefaults.ItemPadding)
+                    .padding(NavigationDrawerItemDefaults.ItemPadding),
             )
         }
     }
@@ -132,6 +129,6 @@ fun NavigationDrawerPreview() {
         selectedItemIndex = selectedItemIndex,
         scope = rememberCoroutineScope(),
         drawerState = drawerState,
-        context = context
+        context = context,
     )
 }
