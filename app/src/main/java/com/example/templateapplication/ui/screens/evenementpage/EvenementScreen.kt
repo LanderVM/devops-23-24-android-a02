@@ -1,5 +1,7 @@
 package com.example.templateapplication.ui.screens.evenementpage
 
+import android.util.Log
+import android.widget.SearchView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,6 +43,7 @@ import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.commons.VolgendeKnop
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -131,6 +134,7 @@ fun LocatiePart() {
     Titel(
         text = "Locatie",
     )
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -143,12 +147,12 @@ fun LocatiePart() {
         ) {
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState
+                cameraPositionState = cameraPositionState,
             ) {
                 Marker(
                     state = MarkerState(position = startPlaats),
-                    title = "Singapore",
-                    snippet = "Marker in Singapore"
+                    title = "Blanche",
+                    snippet = "Onze opslagplaats"
                 )
             }
         }

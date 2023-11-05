@@ -64,6 +64,7 @@ fun BlancheApp(
             mutableIntStateOf(0)
         }
         ModalNavigationDrawer(
+            gesturesEnabled = false, // Swipe voor navigatiebar
             drawerContent = {
                 NavigationDrawer(
                     navController = navController,
