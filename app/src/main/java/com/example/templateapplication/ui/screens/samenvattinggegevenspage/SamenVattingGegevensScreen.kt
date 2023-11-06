@@ -254,7 +254,7 @@ fun EventGegevens(
                 Text(text="Datum",fontSize = 18.sp)},
             supportingContent = {
                 Text(
-                    text="${formuleUiState.beginDatum.time} - ${formuleUiState.eindDatum.time}",
+                    text=formuleViewModel.getDatumsInString(),
                     fontSize = 16.sp)
                                 },
             colors = ListItemDefaults.colors(

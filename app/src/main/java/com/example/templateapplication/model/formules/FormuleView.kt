@@ -44,6 +44,11 @@ class FormuleViewModel : ViewModel() {
         }
     }
 
+    fun getDatumsInString() : String {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+        return "${dateFormat.format(beginDatum.timeInMillis)} - ${dateFormat.format(eindDatum.timeInMillis)}"
+    }
+
     fun updateBeginUur(uur: LocalTime) {
         _formuleUiState.update {
             it.copy(beginUur = uur)
