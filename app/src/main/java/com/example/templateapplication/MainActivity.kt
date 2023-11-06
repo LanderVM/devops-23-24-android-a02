@@ -18,10 +18,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, R.string.map_key.toString())
-        }
-
         setContent {
             TemplateApplicationTheme {
                 Surface(

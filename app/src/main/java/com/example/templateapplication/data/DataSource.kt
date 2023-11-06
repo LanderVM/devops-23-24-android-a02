@@ -8,6 +8,7 @@ import com.example.templateapplication.ui.theme.MainLightColor
 import com.example.templateapplication.ui.theme.MainLighterColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 
+//TODO interface van maken
 class Datasource() {
     fun loadFormules(): List<Formule> {
         val basis = listOf("Foodtruck", "Optioneel bier")

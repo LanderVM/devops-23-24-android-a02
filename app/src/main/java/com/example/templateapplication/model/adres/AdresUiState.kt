@@ -1,5 +1,6 @@
 package com.example.templateapplication.model.adres
 
+//TODO val van maken
 data class AdresUiState(
     var straat: String = "",
     var huisnummer: String = "",
