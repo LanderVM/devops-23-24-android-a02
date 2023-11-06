@@ -19,8 +19,8 @@ class ContactGegevensViewModel : ViewModel() {
     val email: String
         get() = gegevensUiState.value.email
 
-    val typeEvenement: String
-        get() = gegevensUiState.value.typeEvenement
+    val telefoonnummer: String
+        get() = gegevensUiState.value.telefoonnummer
 
     init {
 
@@ -28,8 +28,8 @@ class ContactGegevensViewModel : ViewModel() {
 
     fun allFieldsFilled(): Boolean {
         val buttonEnabled:Boolean
-        buttonEnabled = !(naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||typeEvenement.isBlank()||
-                typeEvenement.isEmpty()||email.isBlank()||email.isEmpty())
+        buttonEnabled = !(naam.isBlank()||naam.isEmpty()||voornaam.isBlank()||voornaam.isEmpty()||telefoonnummer.isBlank()||
+                telefoonnummer.isEmpty()||email.isBlank()||email.isEmpty())
         return buttonEnabled
     }
 
@@ -45,9 +45,9 @@ class ContactGegevensViewModel : ViewModel() {
         }
     }
 
-    fun updateTypeEvenement(typeEvenement: String) {
+    fun updateTelefoonnummer(telefoonnummer: String) {
         _gegevensUiState.update {
-            it.copy(typeEvenement = typeEvenement)
+            it.copy(telefoonnummer = telefoonnummer)
         }
     }
 

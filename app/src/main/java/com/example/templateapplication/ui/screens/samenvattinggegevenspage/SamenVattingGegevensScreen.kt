@@ -269,7 +269,7 @@ fun EventGegevens(
                               },
             supportingContent = {
                 Text(
-                    text=adresUiState.gemeente,
+                    text="",
                     fontSize = 16.sp)
                                 },
             colors = ListItemDefaults.colors(
@@ -278,22 +278,6 @@ fun EventGegevens(
             modifier = Modifier.padding(horizontal = 30.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ListItem(
-            headlineContent = {
-                Text(
-                    text="Type evenement",
-                    fontSize = 18.sp)
-                              },
-            supportingContent = {
-                Text(
-                    text=gegevensUiState.typeEvenement,
-                    fontSize = 16.sp)
-                                },
-            colors = ListItemDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
-            ),
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
         
     }
 }
@@ -322,7 +306,7 @@ fun ContactGegevens(
         Spacer(modifier = Modifier.height(20.dp))
         ListItem(
             headlineContent = {Text(text="Naam",fontSize = 18.sp)},
-            supportingContent = {Text(text=gegevensUiState.naam,fontSize = 16.sp)},
+            supportingContent = {Text(text=gegevensUiState.naam+" "+gegevensUiState.voornaam,fontSize = 16.sp)},
             colors = ListItemDefaults.colors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
             ),
@@ -339,8 +323,8 @@ fun ContactGegevens(
         )
         Spacer(modifier = Modifier.height(20.dp))
         ListItem(
-            headlineContent = {Text(text="Telefoon", fontSize = 18.sp)},
-            supportingContent = {Text(text="een gezellig samenkomen",fontSize = 16.sp)},
+            headlineContent = {Text(text="Telefoonnummer",fontSize = 18.sp)},
+            supportingContent = {Text(text=gegevensUiState.telefoonnummer,fontSize = 16.sp)},
             colors = ListItemDefaults.colors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
             ),
@@ -349,7 +333,11 @@ fun ContactGegevens(
         Spacer(modifier = Modifier.height(20.dp))
         ListItem(
             headlineContent = {Text(text="Adres", fontSize = 18.sp)},
-            supportingContent = {Text(text="een gezellig samenkomen",fontSize = 16.sp)},
+            supportingContent = {
+                Text(
+                    text=adresUiState.straat+" "+adresUiState.huisnummer+" "+adresUiState.gemeente,
+                    fontSize = 16.sp
+                )},
             colors = ListItemDefaults.colors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
             ),

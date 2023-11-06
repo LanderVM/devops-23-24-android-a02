@@ -65,9 +65,9 @@ fun ConatctGegevensScreen(
             voornaam = gegevensUiState.voornaam,
             onVoornaamChange = { gegevensViewModel.updateVoornaam(it) },
             makeEmptyVoornaam = { gegevensViewModel.updateVoornaam("") },
-            typeEvenement = gegevensUiState.typeEvenement,
-            onTypeEvenementChange = { gegevensViewModel.updateTypeEvenement(it) },
-            makeEmptyTypeEvenement = { gegevensViewModel.updateTypeEvenement("") },
+            telefoonnummer = gegevensUiState.telefoonnummer,
+            onTelefoonnummerChange = { gegevensViewModel.updateTelefoonnummer(it) },
+            makeEmptyTelefoonnummer = { gegevensViewModel.updateTelefoonnummer("") },
             email = gegevensUiState.email,
             onEmailChange = { gegevensViewModel.updateEmail(it) },
             makeEmptyEmail = { gegevensViewModel.updateEmail("") },
@@ -132,9 +132,9 @@ fun ContactGegevens(
     voornaam: String,
     onVoornaamChange: (String) -> Unit,
     makeEmptyVoornaam: () -> Unit,
-    typeEvenement: String,
-    onTypeEvenementChange: (String) -> Unit,
-    makeEmptyTypeEvenement: () -> Unit,
+    telefoonnummer: String,
+    onTelefoonnummerChange: (String) -> Unit,
+    makeEmptyTelefoonnummer: () -> Unit,
     email: String,
     onEmailChange: (String) -> Unit,
     makeEmptyEmail: () -> Unit,
@@ -150,7 +150,7 @@ fun ContactGegevens(
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label = "Voornaam", value = voornaam, onChange = onVoornaamChange, makeEmpty = makeEmptyVoornaam)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Type Evenement", value = typeEvenement, onChange = onTypeEvenementChange, makeEmpty = makeEmptyTypeEvenement)
+        InputVeld(label = "Telefoonnummer", value = telefoonnummer, onChange = onTelefoonnummerChange, makeEmpty = makeEmptyTelefoonnummer)
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label = "Email", value = email, onChange = onEmailChange, makeEmpty = makeEmptyEmail)
     }
