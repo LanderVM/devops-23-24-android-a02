@@ -1,5 +1,6 @@
 package com.example.templateapplication.model.adres
 
+//TODO rename to viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
