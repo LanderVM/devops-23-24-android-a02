@@ -10,10 +10,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.templateapplication.ui.theme.TemplateApplicationTheme
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, R.string.map_key.toString())
+        }
+
         setContent {
             TemplateApplicationTheme {
                 Surface(

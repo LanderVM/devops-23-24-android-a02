@@ -64,7 +64,7 @@ fun BlancheApp(
             mutableIntStateOf(0)
         }
         ModalNavigationDrawer(
-            gesturesEnabled = false, // Swipe voor navigatiebar
+            gesturesEnabled = true, // Swipe voor navigatiebar
             drawerContent = {
                 NavigationDrawer(
                     navController = navController,
@@ -108,8 +108,11 @@ fun BlancheApp(
                             },
                             modifier = Modifier.padding(innerPadding),
                             onAboutNavigation = { navController.navigate(NavigationRoutes.over.name) },
-                            onFormulesNavigation = { navController.navigate(NavigationRoutes.formules.name) },
-                        )
+                            onBasicNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
+                            onAllInNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
+                            onGevorderedNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
+
+                            )
                     }
                     composable(NavigationRoutes.over.name) {
                         OverScreen(

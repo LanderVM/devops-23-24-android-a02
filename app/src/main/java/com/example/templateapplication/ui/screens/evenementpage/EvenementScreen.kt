@@ -1,6 +1,9 @@
 package com.example.templateapplication.ui.screens.evenementpage
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
+import android.view.View
 import android.widget.SearchView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,17 +11,26 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Button
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerState
@@ -33,10 +45,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.formules.FormuleViewModel
@@ -46,6 +61,12 @@ import com.example.templateapplication.ui.commons.VolgendeKnop
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.maps.android.compose.Circle
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
@@ -109,7 +130,6 @@ fun EvenementScreen(
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(35.dp))
-        LocatiePart()
 
         VolgendeKnop(
             navigeer = navigateContactGegevensScreen,
@@ -123,41 +143,6 @@ fun getFormattedDate(timeInMillis: Long): String {
     calender.timeInMillis = timeInMillis
     val dateFormat = SimpleDateFormat("dd/MM/yyyy")
     return dateFormat.format(calender.timeInMillis)
-}
-
-@Composable
-fun LocatiePart() {
-    val startPlaats = LatLng(50.93735122680664, 4.03336238861084)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(startPlaats, 15f)
-    }
-    Titel(
-        text = "Locatie",
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-            .padding(horizontal = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier.background(Color.LightGray).padding(2.dp)
-        ) {
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState,
-            ) {
-                Marker(
-                    state = MarkerState(position = startPlaats),
-                    title = "Blanche",
-                    snippet = "Onze opslagplaats"
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

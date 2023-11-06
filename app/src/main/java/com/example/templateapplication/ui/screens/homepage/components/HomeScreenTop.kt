@@ -2,9 +2,11 @@ package com.example.templateapplication.ui.screens.homepage.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -78,10 +80,11 @@ fun HomeScreenTop(
         }
     }
 
+    Spacer(modifier = Modifier.height(20.dp))
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -91,4 +94,5 @@ fun HomeScreenTop(
             color = Color.Black
         )
     }
+    Spacer(modifier = Modifier.height(20.dp))
 }

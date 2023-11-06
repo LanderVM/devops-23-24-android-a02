@@ -12,10 +12,16 @@ import com.example.templateapplication.R
 fun HomeScreen(
     openDrawer: () -> Unit = {},
     onAboutNavigation: () -> Unit,
-    onFormulesNavigation: () -> Unit,
+    onBasicNavigation: () -> Unit,
+    onAllInNavigation: () -> Unit,
+    onGevorderedNavigation: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val image = painterResource(id = R.drawable.sfeer_foto_1)
+    val image1 = painterResource(id = R.drawable.foto4)
+    val image2 = painterResource(id = R.drawable.foto5)
+    val image3 = painterResource(id = R.drawable.foto8)
+    val image4 = painterResource(id = R.drawable.foto7)
+
 
     LazyColumn(
     ) {
@@ -23,10 +29,17 @@ fun HomeScreen(
             HomeScreenTop(openDrawer = openDrawer)
         }
         item {
-            FormuleCard("Over", image, onButtonClicked = onAboutNavigation )
+            FormuleCard("Basic", image1, onButtonClicked = onBasicNavigation)
         }
         item {
-            FormuleCard("Formules", image, onButtonClicked = onFormulesNavigation)
+            FormuleCard("All-In", image2, onButtonClicked = onAllInNavigation)
         }
+        item {
+            FormuleCard("Gevorderd", image3, onButtonClicked = onGevorderedNavigation)
+        }
+        item {
+            FormuleCard("Over", image4, onButtonClicked = onAboutNavigation )
+        }
+
     }
 }
