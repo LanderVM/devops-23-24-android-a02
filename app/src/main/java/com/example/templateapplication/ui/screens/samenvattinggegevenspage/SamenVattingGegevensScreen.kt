@@ -50,6 +50,7 @@ import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import java.text.SimpleDateFormat
 
+
 @Composable
 fun SamenvattingGegevensScreen (
     modifier: Modifier = Modifier,
@@ -179,6 +180,7 @@ fun Navigation (
                 style = TextStyle(fontSize = 22.sp)
             )
         }
+
         Spacer(modifier = Modifier.height(10.dp))
         Row (
             modifier = Modifier
@@ -210,7 +212,7 @@ fun Navigation (
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.filled_circle),
+                painter = painterResource(id = com.example.templateapplication.R.drawable.filled_circle),
                 contentDescription = "een gevulde circel",
                 modifier = Modifier.size(13.dp,13.dp)
             )
