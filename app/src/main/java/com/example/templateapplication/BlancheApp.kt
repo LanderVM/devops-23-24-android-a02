@@ -107,7 +107,7 @@ fun BlancheApp(
                                 }
                             },
                             modifier = Modifier.padding(innerPadding),
-                            onAboutNavigation = { navController.navigate(NavigationRoutes.over.name) },
+                            onExtraNavigation = { navController.navigate(NavigationRoutes.extras.name) },
                             onBasicNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             onAllInNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             onGevorderedNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
@@ -151,7 +151,7 @@ fun BlancheApp(
                         )
                     }
                     composable(NavigationRoutes.extras.name) {
-                        ExtrasScreen()
+                        ExtrasScreen(Modifier.padding(innerPadding))
                     }
                 }
             }

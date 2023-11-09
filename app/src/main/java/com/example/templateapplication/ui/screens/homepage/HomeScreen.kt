@@ -11,7 +11,7 @@ import com.example.templateapplication.R
 @Composable
 fun HomeScreen(
     openDrawer: () -> Unit = {},
-    onAboutNavigation: () -> Unit,
+    onExtraNavigation: () -> Unit,
     onBasicNavigation: () -> Unit,
     onAllInNavigation: () -> Unit,
     onGevorderedNavigation: () -> Unit,
@@ -38,7 +38,7 @@ fun HomeScreen(
             FormuleCard("Gevorderd", image3, onButtonClicked = onGevorderedNavigation)
         }
         item {
-            FormuleCard("Over", image4, onButtonClicked = onAboutNavigation )
+            FormuleCard("Extra Materiaal", image4, onButtonClicked = onExtraNavigation )
         }
 
     }
