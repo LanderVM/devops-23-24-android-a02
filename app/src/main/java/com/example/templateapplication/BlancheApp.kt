@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.model.adres.AdresViewModel
+import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
@@ -59,6 +60,7 @@ fun BlancheApp(
         var gegevensViewModel: ContactGegevensViewModel = viewModel()
         var adresViewModel: AdresViewModel = viewModel()
         var formuleViewModel: FormuleViewModel = viewModel()
+        var extraItemViewModel: ExtraItemViewModel = viewModel()
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
@@ -151,7 +153,9 @@ fun BlancheApp(
                         )
                     }
                     composable(NavigationRoutes.extras.name) {
-                        ExtrasScreen(Modifier.padding(innerPadding))
+                        ExtrasScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            extraItemViewModel = extraItemViewModel)
                     }
                 }
             }

@@ -2,7 +2,7 @@ package com.example.templateapplication.data
 
 import androidx.compose.ui.graphics.Color
 import com.example.templateapplication.R
-import com.example.templateapplication.model.extraMateriaal.ExtraMateriaalItem
+import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.formules.Formule
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainDarkColor
@@ -37,16 +37,5 @@ class Datasource() {
         )
     }
 
-    fun loadExtraItems(): List<ExtraMateriaalItem>{
-        return listOf<ExtraMateriaalItem>(
-            ExtraMateriaalItem("Stoel", "stoel", 2.99, 5, R.drawable.foto7 ),
-            ExtraMateriaalItem("Tafel", "tafel", 2.99, 5, R.drawable.foto7 ),
-            ExtraMateriaalItem("Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
-            ExtraMateriaalItem("Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
-            ExtraMateriaalItem("Stoel", "stoel", 2.99, 5, R.drawable.foto7 ),
-            ExtraMateriaalItem("Tafel", "tafel", 2.99, 5, R.drawable.foto7 ),
-            ExtraMateriaalItem("Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
-            ExtraMateriaalItem("Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
-        )
-    }
+
 }
