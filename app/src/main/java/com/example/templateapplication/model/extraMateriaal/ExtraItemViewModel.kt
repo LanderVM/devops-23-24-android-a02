@@ -2,6 +2,8 @@ package com.example.templateapplication.model.extraMateriaal
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.toMutableStateList
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.templateapplication.R
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +14,10 @@ class ExtraItemViewModel : ViewModel() {
     val extraItemState = _extraItemState.asStateFlow()
 
     private val _listExtraItems = loadExtraItems().toMutableStateList()
+
+    private var addedItems: MutableList<ExtraItemState> = mutableListOf()
+
+
     val listExtraItems: List<ExtraItemState>
         get() = _listExtraItems
 
@@ -35,7 +41,17 @@ class ExtraItemViewModel : ViewModel() {
             extraItem.amount = amount
         }
 
+    fun addItemToCart(item: ExtraItemState){
+        addedItems.add(item)
+    }
 
+    fun getListAddedItems() : List<ExtraItemState> {
+        return addedItems
+    }
+
+    fun getBothLists() : List<ExtraItemState> {
+        return addedItems + listExtraItems
+    }
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
@@ -50,6 +66,8 @@ class ExtraItemViewModel : ViewModel() {
         return sortedList
 
     }
+
+
     fun loadExtraItems(): List<ExtraItemState>{
         return listOf<ExtraItemState>(
             ExtraItemState("Stoel", "stoel", 2.99, 5, R.drawable.foto7 ),

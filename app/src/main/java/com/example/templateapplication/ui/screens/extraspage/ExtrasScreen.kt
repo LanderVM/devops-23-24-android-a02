@@ -15,10 +15,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -60,8 +64,6 @@ fun ExtrasScreen(
     extraItemViewModel: ExtraItemViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
-
-
     var selectedIndex by remember { mutableStateOf(0) }
     val options = listOf("Prijs asc", "Prijs desc", "Naam asc", "Naam desc")
 
@@ -72,10 +74,7 @@ fun ExtrasScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         HeadOfPage()
-        Titel(
-        text = "Extra Materiaal",)
         Spacer(modifier = Modifier.height(30.dp))
-
         SingleChoiceSegmentedButtonRow {
             options.forEachIndexed { index, label ->
                 SegmentedButton(
@@ -108,9 +107,12 @@ fun ExtrasScreen(
             }
         }
         Spacer(modifier = Modifier.height(30.dp))
-        ExtraItemList(extraList = extraItemViewModel.getListSorted(selectedIndex),
+        ExtraItemList(
+            extraList = extraItemViewModel.getListSorted(selectedIndex),
             onAmountChange = {extraItem, amount ->
-                extraItemViewModel.changeExtraItemAmount(extraItem, amount)})
+                extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
+            onAddItem = {extraItem -> extraItemViewModel.addItemToCart(extraItem)}
+        )
     }
 }
 
@@ -134,12 +136,14 @@ fun HeadOfPage(
 fun ExtraItemList(
     extraList: List<ExtraItemState>,
     onAmountChange: (ExtraItemState, Int) -> Unit,
+    onAddItem: (ExtraItemState) -> Unit,
     modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         items(extraList) { extraItem ->
             ExtraItemCard(
                 extraItem = extraItem,
                 onAmountChanged = { amount -> onAmountChange(extraItem, amount) },
+                onAddItem= {onAddItem(extraItem)},
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -151,6 +155,7 @@ fun ExtraItemList(
 fun ExtraItemCard(
     extraItem: ExtraItemState,
     onAmountChanged: (Int) -> Unit,
+    onAddItem: (ExtraItemState) -> Unit,
     modifier: Modifier = Modifier) {
     Card(
         modifier = Modifier
@@ -193,9 +198,19 @@ fun ExtraItemCard(
                         label = { Text("Aantal") },
                         colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
                         modifier = Modifier
-                            .width(90.dp)
+                            .width(70.dp)
 
                     )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    FloatingActionButton(
+                        onClick = {
+                            onAddItem(extraItem)
+                        },
+                        containerColor = Color.LightGray
+                    ) {
+                        Icon(Icons.Filled.Add, "Add Button")
+                    }
+
                 }
             }
             Spacer(modifier = Modifier.width(50.dp))
@@ -211,6 +226,8 @@ fun ExtraItemCard(
         }
     }
 }
+
+
 
 
 
