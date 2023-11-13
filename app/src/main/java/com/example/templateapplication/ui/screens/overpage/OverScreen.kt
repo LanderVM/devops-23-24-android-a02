@@ -1,16 +1,6 @@
 package com.example.templateapplication.ui.screens.overpage
 
-
-import android.app.Activity
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,35 +31,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.templateapplication.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.fragment.app.Fragment
-import com.example.templateapplication.ui.commons.Titel
+import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.ImperialScript
 import com.example.templateapplication.ui.theme.MainColor
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.maps.android.compose.Circle
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+
 
 @Composable
 fun OverScreen (
@@ -108,107 +82,6 @@ fun OverScreen (
         Spacer(modifier = Modifier.height(50.dp))
         Pictures()
         Spacer(modifier = Modifier.height(40.dp))
-        LocatiePart()
-    }
-}
-
-@Composable
-fun LocatiePart() {
-    val startPlaats = LatLng(50.93735122680664, 4.03336238861084)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(startPlaats, 15f)
-    }
-    Titel(
-        text = "Locatie",
-    )
-    MyComponent()
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-            .padding(horizontal = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier
-                .background(Color.LightGray)
-                .padding(2.dp)
-        ) {
-
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState,
-            ) {
-                Marker(
-                    state = MarkerState(position = startPlaats),
-                    title = "Blanche",
-                    snippet = "Onze opslagplaats"
-                )
-                Circle(center = startPlaats, radius = 20000.0)
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-
-    }
-}
-
-@Composable
-fun FragmentInComposeExample() {
-    AndroidView(
-        modifier = Modifier.fillMaxSize(), // Occupy the max size in the Compose UI tree
-        factory = { context ->
-            // Creates view
-            val view = LayoutInflater.from(context).inflate(R.layout.autocomplete_google_maps, null)
-            view
-
-        },
-        update = { view ->
-            // Specify the types of place data to return.
-
-            // View's been inflated or state read in this block has been updated
-            // Add logic here if necessary
-
-            // As selectedItem is read here, AndroidView will recompose
-            // whenever the state changes
-            // Example of Compose -> View communication
-        }
-    )
-}
-
-@Composable
-fun MyComponent() {
-    val context = LocalContext.current
-
-    val intentLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) {
-        when (it.resultCode) {
-            Activity.RESULT_OK -> {
-                it.data?.let {
-                    val place = Autocomplete.getPlaceFromIntent(it)
-                    Log.i("MAP_ACTIVITY", "Place: ${place.name}, ${place.id}")
-                }
-            }
-
-            Activity.RESULT_CANCELED -> {
-                // The user canceled the operation.
-            }
-        }
-    }
-
-    val launchMapInputOverlay = {
-        Places.initialize(context, R.string.map_key.toString())
-        val fields = listOf(Place.Field.ID, Place.Field.NAME)
-        val intent = Autocomplete
-            .IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-            .build(context)
-        intentLauncher.launch(intent)
-    }
-
-    Column {
-        Button(onClick = launchMapInputOverlay) {
-            Text("Select Location")
-        }
     }
 }
 
