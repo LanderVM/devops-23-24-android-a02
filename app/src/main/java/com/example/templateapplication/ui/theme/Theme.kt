@@ -37,7 +37,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun TemplateApplicationTheme(
+fun BlancheTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit

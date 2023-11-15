@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.homepage
 
-import AlertPopUp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.templateapplication.R
+import com.example.templateapplication.ui.commons.AlertPopUp
 import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
 import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
 
@@ -18,6 +18,7 @@ fun HomeScreen(
     onBasicNavigation: () -> Unit,
     onAllInNavigation: () -> Unit,
     onGevorderedNavigation: () -> Unit,
+    onGuidePriceNavigation: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val openAlertDialog = remember { mutableStateOf(true) }
@@ -26,7 +27,10 @@ fun HomeScreen(
         openAlertDialog.value -> {
             AlertPopUp(
                 onDismissRequest = { openAlertDialog.value = false },
-                onConfirmation = { println("confirmed") },
+                onConfirmation = {
+                    openAlertDialog.value = false
+                    onGuidePriceNavigation()
+                },
                 dialogTitle = "Snelle Inschatting",
                 dialogText = "Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?",
                 confirmText = "Ja",

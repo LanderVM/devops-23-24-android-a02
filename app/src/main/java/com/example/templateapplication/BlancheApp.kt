@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.model.guidePrice.GuidePriceViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
@@ -35,6 +36,7 @@ import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGeg
 import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
+import com.example.templateapplication.ui.screens.guideprice.GuidePriceScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.overpage.OverScreen
 import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SamenvattingGegevensScreen
@@ -48,7 +50,7 @@ fun BlancheApp(
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.background
     ) {
         // val navController = rememberNavController()
         val backStackEntry by navController.currentBackStackEntryAsState()
@@ -61,6 +63,7 @@ fun BlancheApp(
         var adresViewModel: AdresViewModel = viewModel()
         var formuleViewModel: FormuleViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel()
+        var guidePriceViewModel: GuidePriceViewModel = viewModel()
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
@@ -73,17 +76,17 @@ fun BlancheApp(
                     selectedItemIndex = selectedItemIndex,
                     drawerState = drawerState,
                     scope = scope,
-                    context = context,
+                    context = context
                 )
             },
-            drawerState = drawerState,
+            drawerState = drawerState
         ) {
             Scaffold(
                 topBar = {
                     if (backStackEntry?.destination?.route != NavigationRoutes.home.name) {
                         BlancheAppBar(
                             currentScreen = NavigationRoutes.valueOf(
-                                backStackEntry?.destination?.route ?: NavigationRoutes.home.name,
+                                backStackEntry?.destination?.route ?: NavigationRoutes.home.name
                             ),
                             canNavigateBack = navController.previousBackStackEntry != null,
                             navigateUp = { navController.navigateUp() },
@@ -91,15 +94,15 @@ fun BlancheApp(
                                 scope.launch {
                                     drawerState.open()
                                 }
-                            },
+                            }
                         )
                     }
-                },
+                }
             ) { innerPadding ->
                 NavHost(
                     navController = navController,
                     startDestination = NavigationRoutes.home.name,
-                    modifier = Modifier.padding(innerPadding),
+                    modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(NavigationRoutes.home.name) {
                         HomeScreen(
@@ -109,37 +112,53 @@ fun BlancheApp(
                                 }
                             },
                             modifier = Modifier.padding(innerPadding),
-                            onExtraNavigation = { navController.navigate(NavigationRoutes.extras.name) },
-                            onBasicNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
-                            onAllInNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
-                            onGevorderedNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
-
-                            )
+                            onExtraNavigation = {
+                                navController.navigate(NavigationRoutes.extras.name)
+                            },
+                            onBasicNavigation = {
+                                navController.navigate(NavigationRoutes.evenementGegevens.name)
+                            },
+                            onAllInNavigation = {
+                                navController.navigate(NavigationRoutes.evenementGegevens.name)
+                            },
+                            onGevorderedNavigation = {
+                                navController.navigate(NavigationRoutes.evenementGegevens.name)
+                            },
+                            onGuidePriceNavigation = {
+                                navController.navigate(NavigationRoutes.guidePrice.name)
+                            }
+                        )
                     }
                     composable(NavigationRoutes.over.name) {
                         OverScreen(
                             modifier = Modifier.padding(innerPadding),
-                            navigateEmailScreen = { navController.navigate(NavigationRoutes.emailInfo.name) },
+                            navigateEmailScreen = {
+                                navController.navigate(NavigationRoutes.emailInfo.name)
+                            }
                         )
                     }
                     composable(NavigationRoutes.contactGegevens.name) {
                         ConatctGegevensScreen(
                             gegevensViewModel = gegevensViewModel,
                             adresViewModel = adresViewModel,
-                            navigateSamenvatting = { navController.navigate(NavigationRoutes.samenvattingGegevens.name) },
-                            modifier = Modifier.padding(innerPadding),
+                            navigateSamenvatting = {
+                                navController.navigate(NavigationRoutes.samenvattingGegevens.name)
+                            },
+                            modifier = Modifier.padding(innerPadding)
                         )
                     }
                     composable(NavigationRoutes.formules.name) {
                         FormulesScreen(
-                            modifier = Modifier.padding(innerPadding),
+                            modifier = Modifier.padding(innerPadding)
                         )
                     }
                     composable(NavigationRoutes.evenementGegevens.name) {
                         EvenementScreen(
                             modifier = Modifier.padding(innerPadding),
-                            navigateContactGegevensScreen = { navController.navigate(NavigationRoutes.contactGegevens.name) },
-                            formuleViewModel = formuleViewModel,
+                            navigateContactGegevensScreen = {
+                                navController.navigate(NavigationRoutes.contactGegevens.name)
+                            },
+                            formuleViewModel = formuleViewModel
                         )
                     }
                     composable(NavigationRoutes.samenvattingGegevens.name) {
@@ -148,14 +167,25 @@ fun BlancheApp(
                             gegevensViewModel = gegevensViewModel,
                             adresViewModel = adresViewModel,
                             formuleViewModel = formuleViewModel,
-                            navigateEventGegevens = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
-                            navigateContactGegevens = { navController.navigate(NavigationRoutes.contactGegevens.name) },
+                            navigateEventGegevens = {
+                                navController.navigate(NavigationRoutes.evenementGegevens.name)
+                            },
+                            navigateContactGegevens = {
+                                navController.navigate(NavigationRoutes.contactGegevens.name)
+                            }
                         )
                     }
                     composable(NavigationRoutes.extras.name) {
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
-                            extraItemViewModel = extraItemViewModel)
+                            extraItemViewModel = extraItemViewModel
+                        )
+                    }
+                    composable(NavigationRoutes.guidePrice.name) {
+                        GuidePriceScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            guidePriceViewModel = guidePriceViewModel
+                        )
                     }
                 }
             }
