@@ -68,6 +68,8 @@ fun AutoCompleteComponent(
         }
 
         withContext(Dispatchers.Main) {
+            delay(2000)
+            // Update Camera position
             if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
                 cameraPositionState.position = CameraPosition.fromLatLngZoom(googleMapsPlaceState.marker, 8f)
             }
@@ -75,7 +77,7 @@ fun AutoCompleteComponent(
     }
 
     if (googleMapsDistanceState.distanceResponse.rows.isNotEmpty()) {
-        Text(text = googleMapsDistanceState.distanceResponse.rows[0].elements[0].distance.value.toString())
+        Text(text = "Afstand: " + googleMapsDistanceState.distanceResponse.rows[0].elements[0].distance.text)
     }
 
     Box(

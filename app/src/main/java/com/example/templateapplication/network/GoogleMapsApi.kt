@@ -1,6 +1,5 @@
 package com.example.templateapplication.network
 
-import com.google.android.gms.maps.model.LatLng
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -25,8 +24,8 @@ interface GooglePlacesApiService {
     @GET("maps/api/distancematrix/json")
     suspend fun getDistance(
         @Query("key") key: String = "AIzaSyDLmwXCGwUK5jxbqcZD3IqYMvcUcsS_J1c",
-        @Query("destinations") destinations: LatLng,
-        @Query("origins") origins: LatLng,
+        @Query("destinations") destinations: String,
+        @Query("origins") origins: String,
     ): ApiGoogleDistanceResponse
 
     companion object{

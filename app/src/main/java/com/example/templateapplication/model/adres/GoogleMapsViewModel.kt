@@ -78,6 +78,10 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
     fun updateDistance() {
         viewModelScope.launch {
             try {
+                Log.i("TEST", LatLng(
+                    _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lat,
+                    _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lng
+                ).toString() + _uiStatePlace.value.marker)
                 val distanceResult = tasksRepository.getDistance(
                     vertrekPlaats = _uiStatePlace.value.marker,
                     eventPlaats = LatLng(

@@ -25,7 +25,7 @@ class ApiGoogleMapsRepository(
     }
 
     override suspend fun getDistance(vertrekPlaats: LatLng, eventPlaats: LatLng): GoogleDistanceResponse {
-        return googlePlacesApiService.getDistance(origins = vertrekPlaats, destinations = vertrekPlaats).asDomainObject()
+        return googlePlacesApiService.getDistance(origins = "${vertrekPlaats.latitude}, ${vertrekPlaats.longitude}", destinations = "${eventPlaats.latitude}, ${eventPlaats.longitude}").asDomainObject()
     }
 
 }

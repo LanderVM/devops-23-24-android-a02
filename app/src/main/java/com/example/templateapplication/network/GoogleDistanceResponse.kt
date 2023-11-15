@@ -19,12 +19,13 @@ data class GoogleDistanceResponse(
 @Serializable
 data class GoogleDistanceInKm(
     val text: String,
-    val value: Int
+    val value: Long
 )
 
 @Serializable
 data class GoogleDistanceField(
     val distance: GoogleDistanceInKm,
+    val status: String
 )
 
 @Serializable
