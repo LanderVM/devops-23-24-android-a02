@@ -1,12 +1,15 @@
 package com.example.templateapplication.ui.screens.homepage
 
-import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
-import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
+import AlertPopUp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.templateapplication.R
+import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
+import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
 
 @Composable
 fun HomeScreen(
@@ -15,16 +18,29 @@ fun HomeScreen(
     onBasicNavigation: () -> Unit,
     onAllInNavigation: () -> Unit,
     onGevorderedNavigation: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
+    val openAlertDialog = remember { mutableStateOf(true) }
+
+    when {
+        openAlertDialog.value -> {
+            AlertPopUp(
+                onDismissRequest = { openAlertDialog.value = false },
+                onConfirmation = { println("confirmed") },
+                dialogTitle = "Snelle Inschatting",
+                dialogText = "Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?",
+                confirmText = "Ja",
+                dismissText = "Ik wacht nog even"
+            )
+        }
+    }
+
     val image1 = painterResource(id = R.drawable.foto4)
     val image2 = painterResource(id = R.drawable.foto5)
     val image3 = painterResource(id = R.drawable.foto8)
     val image4 = painterResource(id = R.drawable.foto7)
 
-
-    LazyColumn(
-    ) {
+    LazyColumn {
         item {
             HomeScreenTop(openDrawer = openDrawer)
         }
@@ -38,8 +54,7 @@ fun HomeScreen(
             FormuleCard("Gevorderd", image3, onButtonClicked = onGevorderedNavigation)
         }
         item {
-            FormuleCard("Extra Materiaal", image4, onButtonClicked = onExtraNavigation )
+            FormuleCard("Extra Materiaal", image4, onButtonClicked = onExtraNavigation)
         }
-
     }
 }
