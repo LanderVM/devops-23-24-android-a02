@@ -13,6 +13,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.GoogleMapsApplication
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.network.ApiResponse
+import com.example.templateapplication.network.GoogleDistanceResponse
+import com.example.templateapplication.network.GoogleMapsDistanceState
 import com.example.templateapplication.network.GoogleMapsPlaceState
 import com.example.templateapplication.network.GoogleMapsPredictionsState
 import com.example.templateapplication.network.GooglePlaceResponse
@@ -29,11 +31,19 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
     private val _uiStatePrediciton = MutableStateFlow(GoogleMapsPredictionsState(GooglePredictionsResponse(arrayListOf())))
     val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediciton.asStateFlow()
 
+    var googleMapsPredictionApiState: ApiResponse<GoogleMapsPredictionsState> by mutableStateOf(ApiResponse.Loading)
+        private set
+
     private val _uiStatePlace = MutableStateFlow(GoogleMapsPlaceState(GooglePlaceResponse(arrayListOf())))
     val uiStatePlace: StateFlow<GoogleMapsPlaceState> = _uiStatePlace.asStateFlow()
 
+    var googleMapsPlaceApiState: ApiResponse<GoogleMapsPlaceState> by mutableStateOf(ApiResponse.Loading)
+        private set
 
-    var googleMapsPredictionApiState: ApiResponse<GoogleMapsPredictionsState> by mutableStateOf(ApiResponse.Loading)
+    private val _uiStateDistance = MutableStateFlow(GoogleMapsDistanceState(GoogleDistanceResponse(arrayListOf())))
+    val uiStateDistance: StateFlow<GoogleMapsDistanceState> = _uiStateDistance.asStateFlow()
+
+    var googleMapsDistanceApiState: ApiResponse<GoogleMapsDistanceState> by mutableStateOf(ApiResponse.Loading)
         private set
 
     init {
@@ -44,31 +54,6 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
             it.copy(input = input)
         }
         //getPredictions(input)
-    }
-
-    fun updateMarker(marker: LatLng) {
-        _uiStatePrediciton.update {
-            it.copy(marker = marker)
-        }
-    }
-
-    private fun getPredictions(input: String){
-        viewModelScope.launch {
-            try{
-                val listResult = tasksRepository.getPredictions(input = input)
-                _uiStatePrediciton.update {
-                    it.copy(predictionsResponse = listResult)
-                }
-                googleMapsPredictionApiState = ApiResponse.Success(
-                    GoogleMapsPredictionsState(listResult)
-                )
-            }
-            catch (e: IOException){
-                googleMapsPredictionApiState = ApiResponse.Error
-                Log.i("Error", e.toString())
-            }
-
-        }
     }
 
     fun getPredictions(){
@@ -87,6 +72,46 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
                 Log.i("Error", e.toString())
             }
 
+        }
+    }
+
+    fun updateDistance() {
+        viewModelScope.launch {
+            try {
+                val distanceResult = tasksRepository.getDistance(
+                    vertrekPlaats = _uiStatePlace.value.marker,
+                    eventPlaats = LatLng(
+                        _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lat,
+                        _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lng
+                    )
+                )
+                _uiStateDistance.update {
+                    it.copy(distanceResponse = distanceResult)
+                }
+                googleMapsDistanceApiState = ApiResponse.Success(
+                    GoogleMapsDistanceState(distanceResult)
+                )
+            } catch (e: IOException){
+                googleMapsDistanceApiState = ApiResponse.Error
+                Log.i("Error", e.toString())
+            }
+        }
+    }
+
+    fun updateMarker() {
+        viewModelScope.launch {
+            try {
+                val placeResult = tasksRepository.getPlace(input = _uiStatePrediciton.value.input)
+                _uiStatePlace.update {
+                    it.copy(placeResponse = placeResult)
+                }
+                googleMapsPlaceApiState = ApiResponse.Success(
+                    GoogleMapsPlaceState(placeResult)
+                )
+            } catch (e: IOException){
+                googleMapsPlaceApiState = ApiResponse.Error
+                Log.i("Error", e.toString())
+            }
         }
     }
 

@@ -98,13 +98,14 @@ fun EvenementScreen(
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(35.dp))
+        AutoCompleteComponent()
+        Spacer(modifier = Modifier.height(35.dp))
 
         VolgendeKnop(
             navigeer = navigateContactGegevensScreen,
             enabled = buttonEnabled,
         )
         Spacer(modifier = Modifier.height(40.dp))
-        AutoCompleteComponent()
     }
 }
 fun getFormattedDate(timeInMillis: Long): String {

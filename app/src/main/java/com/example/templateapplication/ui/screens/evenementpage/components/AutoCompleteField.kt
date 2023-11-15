@@ -3,25 +3,19 @@ package com.example.templateapplication.ui.screens.evenementpage.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,8 +32,11 @@ import com.google.maps.android.compose.Circle
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 @Composable
 fun AutoCompleteComponent(
@@ -47,54 +44,45 @@ fun AutoCompleteComponent(
     googleMapsViewModel: GoogleMapsViewModel = viewModel(factory = GoogleMapsViewModel.Factory),
 ) {
     val googleMapsPredictionState by googleMapsViewModel.uiStatePrediction.collectAsState()
-    val googleMapsApiState = googleMapsViewModel.googleMapsPredictionApiState
+    val googleMapsPredictionApiState = googleMapsViewModel.googleMapsPredictionApiState
 
-    var someInputText by rememberSaveable { mutableStateOf(googleMapsPredictionState.input) }
+    val googleMapsPlaceState by googleMapsViewModel.uiStatePlace.collectAsState()
+    val googleMapsPlaceApiState = googleMapsViewModel.googleMapsPlaceApiState
 
-    val startPlaats = LatLng(50.93735122680664, 4.03336238861084)
+    val googleMapsDistanceState by googleMapsViewModel.uiStateDistance.collectAsState()
+    val googleMapsDistanceApiState = googleMapsViewModel.googleMapsDistanceApiState
+
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(startPlaats, 15f)
+        position = CameraPosition.fromLatLngZoom(googleMapsPlaceState.marker, 15f)
     }
 
-    LaunchedEffect(key1 = someInputText) {
+    LaunchedEffect(key1 = googleMapsPredictionState.input) {
         // if (someInputText.isBlank()) return@LaunchedEffect
+        withContext(Dispatchers.IO) {
+            delay(1000)
+            googleMapsViewModel.getPredictions()
+            googleMapsViewModel.updateMarker()
+            if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
+                googleMapsViewModel.updateDistance()
+            }
+        }
 
-        delay(1000)
-        googleMapsViewModel.getPredictions()
+        withContext(Dispatchers.Main) {
+            if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
+                cameraPositionState.position = CameraPosition.fromLatLngZoom(googleMapsPlaceState.marker, 8f)
+            }
+        }
     }
 
-    TextField(
-        value = googleMapsPredictionState.input,
-        onValueChange = {
-            someInputText = it
-            googleMapsViewModel.updateInput(it)
-        },
-    )
-    OutlinedTextField(
-        value = googleMapsPredictionState.input,
-        onValueChange = {
-            someInputText = it
-            googleMapsViewModel.updateInput(it)
-        },
-    )
-
-    Box(modifier = modifier.height(400.dp)) {
-        when (googleMapsApiState) {
-            is ApiResponse.Loading -> Text("")
-            is ApiResponse.Error -> Text("Error")
-            is ApiResponse.Success -> {
-                AutoCompleteListComponent(
-                    predictionsState = googleMapsPredictionState,
-                    onPredictionClick = { prediction -> googleMapsViewModel.updateInput(prediction.description) }
-                )
-            }
-            else -> {}
-        }
+    if (googleMapsDistanceState.distanceResponse.rows.isNotEmpty()) {
+        Text(text = googleMapsDistanceState.distanceResponse.rows[0].elements[0].distance.value.toString())
     }
 
     Box(
         modifier = Modifier
             .background(Color.LightGray)
+            .height(300.dp)
+            .width(300.dp)
             .padding(2.dp)
     ) {
         GoogleMap(
@@ -102,31 +90,65 @@ fun AutoCompleteComponent(
             cameraPositionState = cameraPositionState,
         ) {
             Marker(
-                state = MarkerState(position = googleMapsPredictionState.marker),
+                state = MarkerState(position = googleMapsPlaceState.marker),
                 title = "Blanche",
                 snippet = "Onze opslagplaats"
             )
-            Circle(center = startPlaats, radius = 20000.0)
+            if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
+                Marker(
+                    state = MarkerState(position = LatLng(
+                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
+                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                    )),
+                    title = "Event plaats",
+                    snippet = "Uw gekozen plaats"
+                )
+                Polyline(
+                    points = listOf(
+                        googleMapsPlaceState.marker,
+                        LatLng(
+                            googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
+                            googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                        )
+                    )
+                )
+            }
+            Circle(center = googleMapsPlaceState.marker, radius = 20000.0)
         }
     }
+
+    Spacer(modifier = Modifier.height(20.dp))
+    
+    OutlinedTextField(
+        value = googleMapsPredictionState.input,
+        onValueChange = {
+            googleMapsViewModel.updateInput(it)
+        },
+        modifier = Modifier.width(300.dp)
+    )
+
+    when (googleMapsPredictionApiState) {
+        is ApiResponse.Loading -> {}
+        is ApiResponse.Error -> Text(text = "Error")
+        is ApiResponse.Success -> {
+            AutoCompleteListComponent(
+                predictionsState = googleMapsPredictionState,
+                onPredictionClick = { prediction -> googleMapsViewModel.updateInput(prediction.description) }
+            )
+        }
+        else -> {}
+    }
+
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AutoCompleteListComponent(
     predictionsState: GoogleMapsPredictionsState,
     onPredictionClick: (GooglePrediction) -> Unit
 ) {
-    val lazyListState = rememberLazyListState()
-
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(5.dp),
-        state = lazyListState
-    ) {
-        items(items = predictionsState.predictionsResponse.predictions) { prediction ->
-            AutocompleteCardItem(onPredictionClick, prediction)
-        }
-        item { Spacer(modifier = Modifier.height(400.dp)) }
+    predictionsState.predictionsResponse.predictions.forEach {
+        AutocompleteCardItem(onPredictionClick, it)
     }
 }
 
@@ -135,12 +157,15 @@ fun AutocompleteCardItem(onPredictionClick: (GooglePrediction) -> Unit, predicti
     Box(
         modifier = Modifier
             .padding(10.dp)
-            .fillMaxSize()
+            .fillMaxHeight()
+            .width(300.dp)
+            .background(Color.LightGray)
             .clickable { onPredictionClick(prediction) },
         contentAlignment = Alignment.Center
     ) {
         Text(
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier
+                .padding(5.dp),
             text = prediction.description,
             color = Color.Black
         )
