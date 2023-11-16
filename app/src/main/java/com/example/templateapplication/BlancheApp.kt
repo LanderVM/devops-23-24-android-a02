@@ -126,7 +126,7 @@ fun BlancheApp(
                         ConatctGegevensScreen(
                             gegevensViewModel = gegevensViewModel,
                             adresViewModel = adresViewModel,
-                            navigateSamenvatting = { navController.navigate(NavigationRoutes.samenvattingGegevens.name) },
+                            navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
@@ -150,12 +150,14 @@ fun BlancheApp(
                             formuleViewModel = formuleViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.contactGegevens.name) },
+                            navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },
                         )
                     }
                     composable(NavigationRoutes.extras.name) {
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
-                            extraItemViewModel = extraItemViewModel)
+                            extraItemViewModel = extraItemViewModel,
+                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)})
                     }
                 }
             }
