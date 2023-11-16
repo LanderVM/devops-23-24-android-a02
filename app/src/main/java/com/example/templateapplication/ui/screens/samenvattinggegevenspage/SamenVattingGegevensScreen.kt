@@ -59,6 +59,7 @@ fun SamenvattingGegevensScreen (
     formuleViewModel: FormuleViewModel = viewModel(),
     navigateEventGegevens:()->Unit,
     navigateContactGegevens:()->Unit,
+    navigateExtras: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -74,6 +75,7 @@ fun SamenvattingGegevensScreen (
         Navigation(
             navigateContactGegevens=navigateContactGegevens,
             navigateEventGegevens = navigateEventGegevens,
+            navigateExtras = navigateExtras
         )
         Spacer(modifier = Modifier.height(30.dp))
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
@@ -145,6 +147,7 @@ fun Navigation (
     modifier: Modifier = Modifier,
     navigateEventGegevens:()->Unit,
     navigateContactGegevens:()->Unit,
+    navigateExtras: () -> Unit,
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -218,8 +221,8 @@ fun Navigation (
             )
             Spacer(modifier = Modifier.width(30.dp))
             ClickableText(
-                text = AnnotatedString("Extra materieel"),
-                onClick = {},
+                text = AnnotatedString("Extra materiaal"),
+                onClick = {navigateExtras()},
                 style = TextStyle(fontSize = 22.sp)
             )
         }

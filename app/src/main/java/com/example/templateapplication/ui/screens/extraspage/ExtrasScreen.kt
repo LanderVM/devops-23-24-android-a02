@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -55,64 +56,82 @@ import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
+import com.example.templateapplication.ui.commons.VolgendeKnop
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @ExperimentalMaterial3Api
 @Composable
 fun ExtrasScreen(
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel = viewModel()
+    extraItemViewModel: ExtraItemViewModel = viewModel(),
+    navigateSamenvatting: () -> Unit,
 ) {
-    val scrollState = rememberScrollState()
+
     var selectedIndex by remember { mutableStateOf(0) }
     val options = listOf("Prijs asc", "Prijs desc", "Naam asc", "Naam desc")
 
-    Column(
+
+    LazyColumn(
         modifier = Modifier
             .padding(horizontal = 30.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        HeadOfPage()
-        Spacer(modifier = Modifier.height(30.dp))
-        SingleChoiceSegmentedButtonRow {
-            options.forEachIndexed { index, label ->
-                SegmentedButton(
-                    shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
-                    onClick = { selectedIndex = index },
-                    selected = index == selectedIndex,
-                    colors = SegmentedButtonColors(
-                        activeContainerColor = Color(
-                            android.graphics.Color.parseColor(
-                                stringResource(
-                                    R.string.lichterder,
+        item{
+            HeadOfPage()
+        }
+        item{
+            SingleChoiceSegmentedButtonRow {
+                options.forEachIndexed { index, label ->
+                    SegmentedButton(
+                        shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                        onClick = { selectedIndex = index },
+                        selected = index == selectedIndex,
+                        colors = SegmentedButtonColors(
+                            activeContainerColor = Color(
+                                android.graphics.Color.parseColor(
+                                    stringResource(
+                                        R.string.lichterder,
+                                    ),
                                 ),
                             ),
+                            activeBorderColor = Color.Black,
+                            activeContentColor = Color.Black,
+                            disabledActiveBorderColor = Color.Black,
+                            disabledActiveContainerColor = Color.White,
+                            disabledActiveContentColor = Color.Black,
+                            disabledInactiveBorderColor = Color.Black,
+                            disabledInactiveContainerColor = Color.Black,
+                            disabledInactiveContentColor = Color.Black,
+                            inactiveBorderColor = Color.Black,
+                            inactiveContainerColor = Color.White,
+                            inactiveContentColor = Color.Black,
                         ),
-                        activeBorderColor = Color.Black,
-                        activeContentColor = Color.Black,
-                        disabledActiveBorderColor = Color.Black,
-                        disabledActiveContainerColor = Color.White,
-                        disabledActiveContentColor = Color.Black,
-                        disabledInactiveBorderColor = Color.Black,
-                        disabledInactiveContainerColor = Color.Black,
-                        disabledInactiveContentColor = Color.Black,
-                        inactiveBorderColor = Color.Black,
-                        inactiveContainerColor = Color.White,
-                        inactiveContentColor = Color.Black,
-                    ),
-                ) {
-                    Text(text = label, fontSize = 12.sp)
+                    ) {
+                        Text(text = label, fontSize = 12.sp)
+                    }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(30.dp))
-        ExtraItemList(
-            extraList = extraItemViewModel.getListSorted(selectedIndex),
-            onAmountChange = {extraItem, amount ->
-                extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
-            onAddItem = {extraItem -> extraItemViewModel.addItemToCart(extraItem)}
-        )
+        items(extraItemViewModel.getListSorted(selectedIndex)){ extraItem ->
+            ExtraItemCard(
+                extraItem = extraItem,
+                onAmountChanged = {extraItem, amount ->
+                    extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
+                onAddItem= {extraItem -> extraItemViewModel.addItemToCart(extraItem)},
+                modifier = Modifier.padding(8.dp)
+            )
+
+        }
+        item{
+            VolgendeKnop(
+                navigeer = navigateSamenvatting,
+                enabled = true,
+            )
+        }
+
+
     }
 }
 
@@ -132,29 +151,13 @@ fun HeadOfPage(
 }
 
 
-@Composable
-fun ExtraItemList(
-    extraList: List<ExtraItemState>,
-    onAmountChange: (ExtraItemState, Int) -> Unit,
-    onAddItem: (ExtraItemState) -> Unit,
-    modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
-        items(extraList) { extraItem ->
-            ExtraItemCard(
-                extraItem = extraItem,
-                onAmountChanged = { amount -> onAmountChange(extraItem, amount) },
-                onAddItem= {onAddItem(extraItem)},
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-    }
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExtraItemCard(
     extraItem: ExtraItemState,
-    onAmountChanged: (Int) -> Unit,
+    onAmountChanged: (ExtraItemState, Int) -> Unit,
     onAddItem: (ExtraItemState) -> Unit,
     modifier: Modifier = Modifier) {
     Card(
@@ -226,9 +229,5 @@ fun ExtraItemCard(
         }
     }
 }
-
-
-
-
 
 

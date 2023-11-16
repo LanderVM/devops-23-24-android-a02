@@ -40,7 +40,7 @@ import com.example.templateapplication.ui.commons.VolgendeKnop
 fun ConatctGegevensScreen(
     gegevensViewModel: ContactGegevensViewModel = viewModel(),
     adresViewModel: AdresViewModel = viewModel(),
-    navigateSamenvatting: () -> Unit,
+    navigateExtras: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
@@ -116,7 +116,7 @@ fun ConatctGegevensScreen(
         }
         Spacer(modifier = Modifier.height(30.dp))
         VolgendeKnop(
-            navigeer = navigateSamenvatting,
+            navigeer = navigateExtras,
             enabled = gegevensViewModel.allFieldsFilled() && adresViewModel.allFieldsFilled(),
         )
         Spacer(modifier = Modifier.height(40.dp))
