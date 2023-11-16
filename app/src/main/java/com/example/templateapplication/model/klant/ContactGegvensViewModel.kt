@@ -22,6 +22,7 @@ class ContactGegevensViewModel : ViewModel() {
     val telefoonnummer: String
         get() = gegevensUiState.value.telefoonnummer
 
+
     init {
 
     }

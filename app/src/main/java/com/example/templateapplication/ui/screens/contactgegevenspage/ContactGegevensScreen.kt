@@ -113,6 +113,8 @@ fun ConatctGegevensScreen(
                 onPostcodeChange = { adresViewModel.updatePostcodeFacturatie(it) },
                 makeEmptyPostcode = { adresViewModel.updatePostcodeFacturatie("") },
             )
+            Spacer(modifier = Modifier.height(20.dp))
+            InputVeld(label = "Btw-nummer", value = adresUiState.btwNummer, onChange = { adresViewModel.updateBtwNummer(it) }, makeEmpty = { adresViewModel.updateBtwNummer("")})
         }
         Spacer(modifier = Modifier.height(30.dp))
         VolgendeKnop(
@@ -217,10 +219,10 @@ fun InputVeld(
                 onClick = makeEmpty,
                 enabled = !value.isEmpty(),
                 colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichts))),
+                    containerColor = Color.Transparent,
                     contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-                    disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
-                    disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Transparent,
                 ),
             ) {
                 Icon(Icons.Default.Clear, contentDescription = null)

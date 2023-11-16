@@ -15,7 +15,8 @@ class ExtraItemViewModel : ViewModel() {
 
     private val _listExtraItems = loadExtraItems().toMutableStateList()
 
-    private var addedItems: MutableList<ExtraItemState> = mutableListOf()
+    private var addedItems = listOf<ExtraItemState>().toMutableStateList()
+
 
 
     val listExtraItems: List<ExtraItemState>
@@ -40,7 +41,9 @@ class ExtraItemViewModel : ViewModel() {
         listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
             extraItem.amount = amount
         }
-
+    fun getTotalPrice() : Double{
+        return addedItems.sumOf { it.price * it.amount }
+    }
     fun changeExtraItemEditing(item: ExtraItemState, editing: Boolean) =
         listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
             extraItem.isEditing = editing
@@ -89,14 +92,14 @@ class ExtraItemViewModel : ViewModel() {
 
     fun loadExtraItems(): List<ExtraItemState>{
         return listOf<ExtraItemState>(
-            ExtraItemState(1,"Stoel", "stoel", 2.99, 0, R.drawable.foto7 ),
-            ExtraItemState(2,"Tafel", "tafel", 2.99, 0, R.drawable.foto7 ),
-            ExtraItemState(3,"Stoel2", "stoel", 2.80, 0, R.drawable.foto6 ),
-            ExtraItemState(4,"Bank", "stoel", 10.0, 0, R.drawable.foto6 ),
-            ExtraItemState(5,"Stoel", "stoel", 2.99, 0, R.drawable.foto7 ),
-            ExtraItemState(6,"Tafel", "tafel", 2.99, 0, R.drawable.foto7 ),
-            ExtraItemState(7,"Stoel2", "stoel", 2.80, 0, R.drawable.foto6 ),
-            ExtraItemState(8,"Bank", "stoel", 10.0, 0, R.drawable.foto6 ),
+            ExtraItemState(1,"Stoel", "stoel", 2.99, 1, R.drawable.foto7 ),
+            ExtraItemState(2,"Tafel", "tafel", 2.99, 1, R.drawable.foto7 ),
+            ExtraItemState(3,"Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
+            ExtraItemState(4,"Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
+            ExtraItemState(5,"Stoel", "stoel", 2.99, 1, R.drawable.foto7 ),
+            ExtraItemState(6,"Tafel", "tafel", 2.99, 1, R.drawable.foto7 ),
+            ExtraItemState(7,"Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
+            ExtraItemState(8,"Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
         )
     }
 }

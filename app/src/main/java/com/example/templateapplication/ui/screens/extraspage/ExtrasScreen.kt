@@ -1,7 +1,6 @@
 package com.example.templateapplication.ui.screens.extraspage
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -13,35 +12,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,17 +45,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.data.Datasource
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
-import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
-import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.commons.VolgendeKnop
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
@@ -75,7 +62,9 @@ fun ExtrasScreen(
     modifier: Modifier = Modifier,
     extraItemViewModel: ExtraItemViewModel = viewModel(),
     navigateSamenvatting: () -> Unit,
-) {
+    isOverview: Boolean, )
+{
+
 
     var selectedIndex by remember { mutableStateOf(0) }
     val options = listOf("Prijs asc", "Prijs desc", "Naam asc", "Naam desc")
@@ -131,16 +120,19 @@ fun ExtrasScreen(
                     extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
                 onAddItem= {extraItem -> extraItemViewModel.addItemToCart(extraItem)},
                 onRemoveItem= {extraItem -> extraItemViewModel.removeItemFromCart(extraItem)},
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
+                isOverview = isOverview
             )
 
         }
-        item{
+        if(true/*!isOverview*/){//TODO remove for demo
+            item{
             VolgendeKnop(
                 navigeer = navigateSamenvatting,
                 enabled = true,
             )
-        }
+        }}
+
 
 
     }
@@ -171,7 +163,8 @@ fun ExtraItemCard(
     onAmountChanged: (ExtraItemState, Int) -> Unit,
     onAddItem: (ExtraItemState) -> Unit,
     onRemoveItem: (ExtraItemState) -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+    isOverview: Boolean) {
 
 
     Card(
@@ -195,58 +188,62 @@ fun ExtraItemCard(
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(text = "€${extraItem.price}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
-                if (extraItem.isEditing) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "",
-                            onValueChange = {
-                                val enteredAmount = it.toIntOrNull()
-                                extraItem.amount = when {
-                                    enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(999)
-                                    else -> 0
-                                }
-                                onAddItem(extraItem)
-
-                            },
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            label = { Text(text = "Aantal", fontSize = 10.sp) },
-                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
-                            modifier = Modifier
-                                .width(70.dp)
-
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        IconButton(
-                            onClick = {
-                                extraItem.isEditing = false;
-                                onRemoveItem(extraItem);
-                            },
-                            colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
-
+                if(!isOverview){
+                    if (extraItem.isEditing) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(vertical = 8.dp)
                         ) {
-                            Icon(Icons.Filled.Delete, "Delete Button", modifier=Modifier.size(35.dp))
+                            OutlinedTextField(
+                                value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "",
+                                onValueChange = {
+                                    val enteredAmount = it.toIntOrNull()
+                                    extraItem.amount = when {
+                                        enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(999)
+                                        else ->0
+                                    }
+                                    onAddItem(extraItem)
+
+                                },
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    keyboardType = KeyboardType.Number
+                                ),
+                                label = { Text(text = "Aantal", fontSize = 10.sp) },
+                                colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
+                                modifier = Modifier
+                                    .width(70.dp)
+
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            IconButton(
+                                onClick = {
+                                    extraItem.isEditing = false;
+                                    onRemoveItem(extraItem);
+                                },
+                                colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
+
+                            ) {
+                                Icon(Icons.Filled.Delete, "Delete Button", modifier=Modifier.size(35.dp))
+                            }
                         }
-                    }
-                } else {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    ) {
-                        Button(
-                            onClick = {
-                                extraItem.isEditing = true
-                            },
-                            colors = ButtonColors(containerColor = MainColor, contentColor = Color.White, disabledContentColor = Color.White, disabledContainerColor = MainColor)
+                    } else {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(vertical = 8.dp)
                         ) {
-                            Text(text = "Voeg Toe")
+                            Button(
+                                onClick = {
+                                    extraItem.isEditing = true;
+                                    onAddItem(extraItem)
+                                },
+                                colors = ButtonColors(containerColor = MainColor, contentColor = Color.White, disabledContentColor = Color.White, disabledContainerColor = MainColor)
+                            ) {
+                                Text(text = "Voeg Toe")
+                            }
                         }
                     }
                 }
+
             }
             Spacer(modifier = Modifier.width(50.dp))
             Image(

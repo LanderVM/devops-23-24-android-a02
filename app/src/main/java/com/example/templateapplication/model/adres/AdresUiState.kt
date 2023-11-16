@@ -11,4 +11,5 @@ data class AdresUiState(
     val huisnummerFacturatie: String = "",
     val gemeenteFacturatie: String = "",
     val postcodeFacturatie: String = "",
+    val btwNummer: String = ""
 )

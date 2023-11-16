@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -77,6 +78,7 @@ import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.commons.VolgendeKnop
 
 import com.example.templateapplication.ui.theme.DisabledButtonColor
+import com.example.templateapplication.ui.theme.MainLighterColor
 import java.text.SimpleDateFormat
 
 
@@ -123,12 +125,16 @@ fun SamenvattingGegevensScreen (
             adresViewModel = adresViewModel
         )
         Spacer(modifier = Modifier.height(30.dp))
-        Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+
+        if(!extraItemViewModel.getListAddedItems().isEmpty()){
+            Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+            Spacer(modifier = Modifier.height(30.dp))
+            ExtrasScreen (extraItemViewModel = extraItemViewModel)
+        }
         Spacer(modifier = Modifier.height(30.dp))
-        ExtrasScreen (extraItemViewModel = extraItemViewModel)
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
         Spacer(modifier = Modifier.height(25.dp))
-        KostGegevens()
+        KostGegevens(extraItemViewModel= extraItemViewModel)
         Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {},
@@ -273,49 +279,58 @@ fun EventGegevens(
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
     val formuleUiState by formuleViewModel.formuleUiState.collectAsState()
+    var show by remember { mutableStateOf(true) }
 
     Column (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text= "Evenement",
-            textAlign = TextAlign.Start,
-            modifier= Modifier.fillMaxWidth(),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MainColor,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ListItem(
-            headlineContent = {
-                Text(text="Datum",fontSize = 18.sp)},
-            supportingContent = {
-                Text(
-                    text=formuleViewModel.getDatumsInString(),
-                    fontSize = 16.sp)
-                                },
-            colors = ListItemDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
-            ),
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ListItem(
-            headlineContent = {
-                Text(text="Locatie",fontSize = 18.sp)
-                              },
-            supportingContent = {
-                Text(
-                    text="",
-                    fontSize = 16.sp)
-                                },
-            colors = ListItemDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
-            ),
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
+        Row(modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically){
+            Text(
+                text= "Evenement",
+                textAlign = TextAlign.Start,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MainColor,
+            )
+            IconButton(onClick = { show = !show}) {
+                Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
+            }
+        }
+        if(show){
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {
+                    Text(text="Datum",fontSize = 18.sp)},
+                supportingContent = {
+                    Text(
+                        text=formuleViewModel.getDatumsInString(),
+                        fontSize = 16.sp)
+                },
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {
+                    Text(text="Locatie",fontSize = 18.sp)
+                },
+                supportingContent = {
+                    Text(
+                        text="",
+                        fontSize = 16.sp)
+                },
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+
         
     }
 }
@@ -328,59 +343,70 @@ fun ContactGegevens(
 ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
+    var show by remember { mutableStateOf(true) }
 
     Column (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text= "Contact en facturatie gegevens",
-            textAlign = TextAlign.Start,
-            modifier= Modifier.fillMaxWidth(),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MainColor,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ListItem(
-            headlineContent = {Text(text="Naam",fontSize = 18.sp)},
-            supportingContent = {Text(text=gegevensUiState.naam+" "+gegevensUiState.voornaam,fontSize = 16.sp)},
-            colors = ListItemDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
-            ),
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ListItem(
-            headlineContent = {Text(text="Email",fontSize = 18.sp)},
-            supportingContent = {Text(text=gegevensUiState.email,fontSize = 16.sp)},
-            colors = ListItemDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
-            ),
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ListItem(
-            headlineContent = {Text(text="Telefoonnummer",fontSize = 18.sp)},
-            supportingContent = {Text(text=gegevensUiState.telefoonnummer,fontSize = 16.sp)},
-            colors = ListItemDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
-            ),
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ListItem(
-            headlineContent = {Text(text="Adres", fontSize = 18.sp)},
-            supportingContent = {
-                Text(
-                    text=adresUiState.straat+" "+adresUiState.huisnummer+" "+adresUiState.gemeente,
-                    fontSize = 16.sp
-                )},
-            colors = ListItemDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
-            ),
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text= "Contact en facturatie gegevens",
+                textAlign = TextAlign.Start,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MainColor,
+            )
+            IconButton(onClick = { show = !show}) {
+                Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
+            }
+
+        }
+        if(show){
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {Text(text="Naam",fontSize = 18.sp)},
+                supportingContent = {Text(text=gegevensUiState.naam+" "+gegevensUiState.voornaam,fontSize = 16.sp)},
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {Text(text="Email",fontSize = 18.sp)},
+                supportingContent = {Text(text=gegevensUiState.email,fontSize = 16.sp)},
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {Text(text="Telefoonnummer",fontSize = 18.sp)},
+                supportingContent = {Text(text=gegevensUiState.telefoonnummer,fontSize = 16.sp)},
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {Text(text="Adres", fontSize = 18.sp)},
+                supportingContent = {
+                    Text(
+                        text=adresUiState.straat+" "+adresUiState.huisnummer+" "+adresUiState.gemeente,
+                        fontSize = 16.sp
+                    )},
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )}
+
 
     }
 }
@@ -389,30 +415,41 @@ fun ContactGegevens(
 fun ExtrasScreen(
     modifier: Modifier = Modifier,
     extraItemViewModel: ExtraItemViewModel = viewModel(),
+
 ) {
+    var show by remember { mutableStateOf(true) }
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text= "Extra Materiaal",
-            textAlign = TextAlign.Start,
-            modifier= Modifier.fillMaxWidth(),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MainColor,
-        )
-        extraItemViewModel.getListAddedItems().forEach { extraItem ->
-            ExtraItemCard(
-                extraItem = extraItem,
-                onAmountChanged = {extraItem, amount ->
-                    extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
-                onRemoveItem= { extraItemViewModel.removeItemFromCart(extraItem) },
-                modifier = Modifier.padding(8.dp)
+        Row(modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically){
+            Text(
+                text= "Extra Materiaal",
+                textAlign = TextAlign.Start,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MainColor,
             )
+            IconButton(onClick = { show = !show}) {
+                Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
+            }
+        }
+        if(show){
+            extraItemViewModel.getListAddedItems().forEach { extraItem ->
+                ExtraItemCard(
+                    extraItem = extraItem,
+                    onAmountChanged = {extraItem, amount ->
+                        extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
+                    onRemoveItem= { extraItemViewModel.removeItemFromCart(extraItem) },
+                    modifier = Modifier.padding(8.dp)
+                )
+
+            }
+        }
 
         }
-    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -495,7 +532,8 @@ fun ExtraItemCard(
 }
 @Composable
 fun KostGegevens (
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    extraItemViewModel: ExtraItemViewModel
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -514,7 +552,7 @@ fun KostGegevens (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 18.dp),
-            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder))),
+            color = MainLighterColor,
         ){
             Column (
                 modifier = Modifier.fillMaxWidth(),
@@ -555,7 +593,6 @@ fun KostGegevens (
                 }
                 Divider(color = Color.Gray, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
                 Row(
-                    //horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.height(35.dp)
                 ) {
@@ -583,63 +620,36 @@ fun KostGegevens (
                         color = Color.Black,
                     )
                 }
-                Row(
-                    //horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp)
-                ) {
-                    Text(
-                        text="Stoel 17x",
-                        textAlign = TextAlign.Start,
-                        modifier= Modifier,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                    )
-                    Spacer(modifier = Modifier.width(50.dp))
-                    Text(
-                        text="€5",
-                        textAlign = TextAlign.Start,
-                        modifier= Modifier,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                    )
-                    Spacer(modifier = Modifier.width(50.dp))
-                    Text(
-                        text="€85",
-                        textAlign = TextAlign.Start,
-                        modifier= Modifier,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                    )
-                }
-                Row(
-                    //horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp)
-                ) {
-                    Text(
-                        text="Bord 17x",
-                        textAlign = TextAlign.Start,
-                        modifier= Modifier,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                    )
-                    Spacer(modifier = Modifier.width(50.dp))
-                    Text(
-                        text="€5",
-                        textAlign = TextAlign.Start,
-                        modifier= Modifier,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                    )
-                    Spacer(modifier = Modifier.width(50.dp))
-                    Text(
-                        text="€85",
-                        textAlign = TextAlign.Start,
-                        modifier= Modifier,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                    )
+                extraItemViewModel.getListAddedItems().forEach(){
+                    extraItem ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.height(35.dp)
+                    ) {
+                        Text(
+                            text="${extraItem.title} x${extraItem.amount}",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier,
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                        )
+                        Spacer(modifier = Modifier.width(50.dp))
+                        Text(
+                            text="€ ${extraItem.price}",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier,
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                        )
+                        Spacer(modifier = Modifier.width(50.dp))
+                        Text(
+                            text="€ ${String.format("%.2f", extraItem.price * extraItem.amount)}",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier,
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                        )
+                    }
                 }
                 Row(
                     //horizontalArrangement = Arrangement.SpaceBetween,
@@ -648,7 +658,7 @@ fun KostGegevens (
                 ) {
                     Text(
                         text="Vervoerskosten",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -656,7 +666,7 @@ fun KostGegevens (
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
                         text="€0.75",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -664,7 +674,7 @@ fun KostGegevens (
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
                         text="€2.25",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -678,15 +688,15 @@ fun KostGegevens (
                 ) {
                     Text(
                         text="TOTAAL EXCL BTW",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
                     )
                     Spacer(modifier = Modifier.width(100.dp))
                     Text(
-                        text="€2.25",
-                        textAlign = TextAlign.Start,
+                        text="€ ${String.format("%.2f", extraItemViewModel.getTotalPrice() + 2.25 + 350)}", //TODO change to variables
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -699,15 +709,15 @@ fun KostGegevens (
                 ) {
                     Text(
                         text="TOTAAL BTW (21%)",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
                     )
                     Spacer(modifier = Modifier.width(100.dp))
                     Text(
-                        text="€2.25",
-                        textAlign = TextAlign.Start,
+                        text="€ ${String.format("%.2f", (extraItemViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -721,7 +731,7 @@ fun KostGegevens (
                 ) {
                     Text(
                         text="Te betalen",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -729,8 +739,8 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(100.dp))
                     Text(
-                        text="€630",
-                        textAlign = TextAlign.Start,
+                        text="€ ${String.format("%.2f", (extraItemViewModel.getTotalPrice() + 2.25 + 350) + (extraItemViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
+                        textAlign = TextAlign.Right,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,

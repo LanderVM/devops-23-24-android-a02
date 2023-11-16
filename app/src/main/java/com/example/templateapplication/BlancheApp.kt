@@ -109,7 +109,7 @@ fun BlancheApp(
                                 }
                             },
                             modifier = Modifier.padding(innerPadding),
-                            onExtraNavigation = { navController.navigate(NavigationRoutes.extras.name) },
+                            onExtraNavigation = { navController.navigate(NavigationRoutes.extrasOverview.name) },
                             onBasicNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             onAllInNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             onGevorderedNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
@@ -158,7 +158,17 @@ fun BlancheApp(
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
                             extraItemViewModel = extraItemViewModel,
-                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)})
+                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)},
+                            isOverview = false
+                        )
+                    }
+                    composable(NavigationRoutes.extrasOverview.name) {
+                        ExtrasScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            extraItemViewModel = extraItemViewModel,
+                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)},
+                            isOverview = true
+                        )
                     }
                 }
             }
