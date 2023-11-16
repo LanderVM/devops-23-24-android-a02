@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,9 +21,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.GoogleMapsViewModel
 import com.example.templateapplication.network.ApiResponse
 import com.example.templateapplication.network.GoogleMapsPredictionsState
@@ -38,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AutoCompleteComponent(
     modifier: Modifier = Modifier,
@@ -62,23 +67,27 @@ fun AutoCompleteComponent(
             delay(1000)
             googleMapsViewModel.getPredictions()
             googleMapsViewModel.updateMarker()
-            if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
-                googleMapsViewModel.updateDistance()
-            }
+            googleMapsViewModel.updateDistance()
         }
 
         withContext(Dispatchers.Main) {
-            delay(2000)
+            delay(1000)
             // Update Camera position
             if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
-                cameraPositionState.position = CameraPosition.fromLatLngZoom(googleMapsPlaceState.marker, 8f)
+                cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                    LatLng(
+                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
+                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                    ), 12f)
+            } else {
+                cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                    googleMapsPlaceState.marker, 10f
+                )
             }
         }
     }
 
-    if (googleMapsDistanceState.distanceResponse.rows.isNotEmpty()) {
-        Text(text = "Afstand: " + googleMapsDistanceState.distanceResponse.rows[0].elements[0].distance.text)
-    }
+    Text(text = googleMapsViewModel.getDistanceString())
 
     Box(
         modifier = Modifier
@@ -96,7 +105,7 @@ fun AutoCompleteComponent(
                 title = "Blanche",
                 snippet = "Onze opslagplaats"
             )
-            if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
+            if (googleMapsViewModel.checkForPlace()) {
                 Marker(
                     state = MarkerState(position = LatLng(
                         googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
@@ -126,6 +135,10 @@ fun AutoCompleteComponent(
         onValueChange = {
             googleMapsViewModel.updateInput(it)
         },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+            unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+        ),
         modifier = Modifier.width(300.dp)
     )
 
@@ -158,10 +171,10 @@ fun AutoCompleteListComponent(
 fun AutocompleteCardItem(onPredictionClick: (GooglePrediction) -> Unit, prediction: GooglePrediction) {
     Box(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(top = 10.dp)
             .fillMaxHeight()
             .width(300.dp)
-            .background(Color.LightGray)
+            .background(color = Color(android.graphics.Color.parseColor("#C8A86E")))
             .clickable { onPredictionClick(prediction) },
         contentAlignment = Alignment.Center
     ) {
@@ -169,7 +182,7 @@ fun AutocompleteCardItem(onPredictionClick: (GooglePrediction) -> Unit, predicti
             modifier = Modifier
                 .padding(5.dp),
             text = prediction.description,
-            color = Color.Black
+            color = Color.White
         )
     }
 }

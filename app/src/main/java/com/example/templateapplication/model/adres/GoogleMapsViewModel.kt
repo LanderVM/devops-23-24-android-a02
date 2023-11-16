@@ -28,18 +28,21 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : ViewModel() {
+    // Autocomplete
     private val _uiStatePrediciton = MutableStateFlow(GoogleMapsPredictionsState(GooglePredictionsResponse(arrayListOf())))
     val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediciton.asStateFlow()
 
     var googleMapsPredictionApiState: ApiResponse<GoogleMapsPredictionsState> by mutableStateOf(ApiResponse.Loading)
         private set
 
+    // Plaatsen
     private val _uiStatePlace = MutableStateFlow(GoogleMapsPlaceState(GooglePlaceResponse(arrayListOf())))
     val uiStatePlace: StateFlow<GoogleMapsPlaceState> = _uiStatePlace.asStateFlow()
 
     var googleMapsPlaceApiState: ApiResponse<GoogleMapsPlaceState> by mutableStateOf(ApiResponse.Loading)
         private set
 
+    // Afstand
     private val _uiStateDistance = MutableStateFlow(GoogleMapsDistanceState(GoogleDistanceResponse(arrayListOf())))
     val uiStateDistance: StateFlow<GoogleMapsDistanceState> = _uiStateDistance.asStateFlow()
 
@@ -53,7 +56,6 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
         _uiStatePrediciton.update {
             it.copy(input = input)
         }
-        //getPredictions(input)
     }
 
     fun getPredictions(){
@@ -76,28 +78,26 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
     }
 
     fun updateDistance() {
-        viewModelScope.launch {
-            try {
-                Log.i("TEST", LatLng(
-                    _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lat,
-                    _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lng
-                ).toString() + _uiStatePlace.value.marker)
-                val distanceResult = tasksRepository.getDistance(
-                    vertrekPlaats = _uiStatePlace.value.marker,
-                    eventPlaats = LatLng(
-                        _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lat,
-                        _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lng
+        if (checkForPlace()) {
+            viewModelScope.launch {
+                try {
+                    val distanceResult = tasksRepository.getDistance(
+                        vertrekPlaats = _uiStatePlace.value.marker,
+                        eventPlaats = LatLng(
+                            _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lat,
+                            _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lng
+                        )
                     )
-                )
-                _uiStateDistance.update {
-                    it.copy(distanceResponse = distanceResult)
+                    _uiStateDistance.update {
+                        it.copy(distanceResponse = distanceResult)
+                    }
+                    googleMapsDistanceApiState = ApiResponse.Success(
+                        GoogleMapsDistanceState(distanceResult)
+                    )
+                } catch (e: IOException){
+                    googleMapsDistanceApiState = ApiResponse.Error
+                    Log.i("Error", e.toString())
                 }
-                googleMapsDistanceApiState = ApiResponse.Success(
-                    GoogleMapsDistanceState(distanceResult)
-                )
-            } catch (e: IOException){
-                googleMapsDistanceApiState = ApiResponse.Error
-                Log.i("Error", e.toString())
             }
         }
     }
@@ -117,6 +117,27 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
                 Log.i("Error", e.toString())
             }
         }
+    }
+
+    fun getDistanceLong() : Long? {
+        if (uiStateDistance.value.distanceResponse.rows.isEmpty() or uiStatePrediction.value.input.isBlank()) {
+            return null
+        }
+        return uiStateDistance.value.distanceResponse.rows[0].elements[0].distance.value
+    }
+
+    fun getDistanceString() : String {
+        if (uiStateDistance.value.distanceResponse.rows.isEmpty() or uiStatePrediction.value.input.isBlank()) {
+            return ""
+        }
+        return "Afstand: " + uiStateDistance.value.distanceResponse.rows[0].elements[0].distance.text
+    }
+
+    fun checkForPlace() : Boolean {
+        if (uiStatePlace.value.placeResponse.candidates.isNotEmpty()) {
+            return true
+        }
+        return false
     }
 
     companion object {
