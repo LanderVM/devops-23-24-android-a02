@@ -148,6 +148,7 @@ fun BlancheApp(
                             gegevensViewModel = gegevensViewModel,
                             adresViewModel = adresViewModel,
                             formuleViewModel = formuleViewModel,
+                            extraItemViewModel = extraItemViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.contactGegevens.name) },
                             navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },

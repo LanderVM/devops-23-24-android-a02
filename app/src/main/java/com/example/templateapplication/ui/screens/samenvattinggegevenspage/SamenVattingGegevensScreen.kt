@@ -1,8 +1,10 @@
 package com.example.templateapplication.ui.screens.samenvattinggegevenspage
 
 import android.widget.Space
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,26 +12,48 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonColors
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
@@ -37,6 +61,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,8 +70,12 @@ import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.AdresViewModel
+import com.example.templateapplication.model.extraMateriaal.ExtraItemState
+import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
+import com.example.templateapplication.ui.commons.VolgendeKnop
+
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import java.text.SimpleDateFormat
 
@@ -57,6 +86,7 @@ fun SamenvattingGegevensScreen (
     gegevensViewModel: ContactGegevensViewModel = viewModel(),
     adresViewModel: AdresViewModel = viewModel(),
     formuleViewModel: FormuleViewModel = viewModel(),
+    extraItemViewModel: ExtraItemViewModel = viewModel(),
     navigateEventGegevens:()->Unit,
     navigateContactGegevens:()->Unit,
     navigateExtras: () -> Unit,
@@ -93,6 +123,9 @@ fun SamenvattingGegevensScreen (
             adresViewModel = adresViewModel
         )
         Spacer(modifier = Modifier.height(30.dp))
+        Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+        Spacer(modifier = Modifier.height(30.dp))
+        ExtrasScreen (extraItemViewModel = extraItemViewModel)
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
         Spacer(modifier = Modifier.height(25.dp))
         KostGegevens()
@@ -352,6 +385,114 @@ fun ContactGegevens(
     }
 }
 
+@Composable
+fun ExtrasScreen(
+    modifier: Modifier = Modifier,
+    extraItemViewModel: ExtraItemViewModel = viewModel(),
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text= "Extra Materiaal",
+            textAlign = TextAlign.Start,
+            modifier= Modifier.fillMaxWidth(),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = MainColor,
+        )
+        extraItemViewModel.getListAddedItems().forEach { extraItem ->
+            ExtraItemCard(
+                extraItem = extraItem,
+                onAmountChanged = {extraItem, amount ->
+                    extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
+                onRemoveItem= { extraItemViewModel.removeItemFromCart(extraItem) },
+                modifier = Modifier.padding(8.dp)
+            )
+
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExtraItemCard(
+    extraItem: ExtraItemState,
+    onAmountChanged: (ExtraItemState, Int) -> Unit,
+    onRemoveItem: (ExtraItemState) -> Unit,
+    modifier: Modifier = Modifier) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardColors(containerColor = MainLightestColor, contentColor = Color.Black, disabledContainerColor = Color.Gray, disabledContentColor = Color.Black)
+    ) {
+        Row(
+            modifier = Modifier
+                .height(IntrinsicSize.Min)
+                .padding(16.dp)
+        ) {
+            Column {
+                Text(text = extraItem.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(text = extraItem.category, fontSize = 16.sp, color = Color.Gray)
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(text = "€${extraItem.price}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                ) {
+                    TextField(
+                        value = extraItem.amount.toString(),
+                        onValueChange = {
+                            if (it.isNotBlank()) {
+                                extraItem.amount = it.toInt()
+                            } else {
+                                extraItem.amount = 0
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        label = { Text("Aantal") },
+                        colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
+                        modifier = Modifier
+                            .width(70.dp)
+
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    IconButton(
+                        onClick = {
+                            extraItem.isEditing = false;
+                            onRemoveItem(extraItem);
+                        },
+                        colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
+
+                    ) {
+                        Icon(Icons.Filled.Delete, "Delete Button", modifier=Modifier.size(35.dp))
+                    }
+
+                }
+            }
+            Spacer(modifier = Modifier.width(50.dp))
+            Image(
+                painter = painterResource(id = extraItem.imageResourceId),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(RoundedCornerShape(4.dp))
+            )
+
+
+        }
+    }
+}
 @Composable
 fun KostGegevens (
     modifier: Modifier = Modifier

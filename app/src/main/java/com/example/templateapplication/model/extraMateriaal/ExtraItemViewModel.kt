@@ -37,21 +37,40 @@ class ExtraItemViewModel : ViewModel() {
         get() = extraItemState.value.imageResourceId
 
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
-        listExtraItems.find { it.title == item.title }?.let { extraItem ->
+        listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
             extraItem.amount = amount
         }
 
-    fun addItemToCart(item: ExtraItemState){
-        addedItems.add(item)
+    fun changeExtraItemEditing(item: ExtraItemState, editing: Boolean) =
+        listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
+            extraItem.isEditing = editing
+        }
+
+    fun addItemToCart(item: ExtraItemState) {
+
+        val existingItem = addedItems.find { it.extraItemId == item.extraItemId }
+
+        if (existingItem != null) {
+            existingItem.amount = item.amount
+        } else {
+            addedItems.add(item)
+        }
     }
+
+    fun removeItemFromCart(item: ExtraItemState) {
+        val existingItem = addedItems.find { it.extraItemId == item.extraItemId }
+        if (existingItem != null) {
+            changeExtraItemAmount(existingItem, 0)
+            addedItems.remove(existingItem)
+        }
+
+    }
+
 
     fun getListAddedItems() : List<ExtraItemState> {
         return addedItems
     }
 
-    fun getBothLists() : List<ExtraItemState> {
-        return addedItems + listExtraItems
-    }
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
@@ -70,14 +89,14 @@ class ExtraItemViewModel : ViewModel() {
 
     fun loadExtraItems(): List<ExtraItemState>{
         return listOf<ExtraItemState>(
-            ExtraItemState("Stoel", "stoel", 2.99, 5, R.drawable.foto7 ),
-            ExtraItemState("Tafel", "tafel", 2.99, 5, R.drawable.foto7 ),
-            ExtraItemState("Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
-            ExtraItemState("Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
-            ExtraItemState("Stoel", "stoel", 2.99, 5, R.drawable.foto7 ),
-            ExtraItemState("Tafel", "tafel", 2.99, 5, R.drawable.foto7 ),
-            ExtraItemState("Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
-            ExtraItemState("Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
+            ExtraItemState(1,"Stoel", "stoel", 2.99, 0, R.drawable.foto7 ),
+            ExtraItemState(2,"Tafel", "tafel", 2.99, 0, R.drawable.foto7 ),
+            ExtraItemState(3,"Stoel2", "stoel", 2.80, 0, R.drawable.foto6 ),
+            ExtraItemState(4,"Bank", "stoel", 10.0, 0, R.drawable.foto6 ),
+            ExtraItemState(5,"Stoel", "stoel", 2.99, 0, R.drawable.foto7 ),
+            ExtraItemState(6,"Tafel", "tafel", 2.99, 0, R.drawable.foto7 ),
+            ExtraItemState(7,"Stoel2", "stoel", 2.80, 0, R.drawable.foto6 ),
+            ExtraItemState(8,"Bank", "stoel", 10.0, 0, R.drawable.foto6 ),
         )
     }
 }

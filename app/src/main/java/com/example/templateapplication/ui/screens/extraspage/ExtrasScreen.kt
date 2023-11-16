@@ -1,6 +1,7 @@
 package com.example.templateapplication.ui.screens.extraspage
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -18,12 +19,20 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -57,6 +66,7 @@ import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.commons.VolgendeKnop
+import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @ExperimentalMaterial3Api
@@ -120,6 +130,7 @@ fun ExtrasScreen(
                 onAmountChanged = {extraItem, amount ->
                     extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
                 onAddItem= {extraItem -> extraItemViewModel.addItemToCart(extraItem)},
+                onRemoveItem= {extraItem -> extraItemViewModel.removeItemFromCart(extraItem)},
                 modifier = Modifier.padding(8.dp)
             )
 
@@ -159,7 +170,10 @@ fun ExtraItemCard(
     extraItem: ExtraItemState,
     onAmountChanged: (ExtraItemState, Int) -> Unit,
     onAddItem: (ExtraItemState) -> Unit,
+    onRemoveItem: (ExtraItemState) -> Unit,
     modifier: Modifier = Modifier) {
+
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -181,39 +195,57 @@ fun ExtraItemCard(
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(text = "€${extraItem.price}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                ) {
-                    TextField(
-                        value = extraItem.amount.toString(),
-                        onValueChange = {
-                            if (it.isNotBlank()) {
-                                extraItem.amount = it.toInt()
-                            } else {
-                                extraItem.amount = 0
-                            }
-                        },
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        label = { Text("Aantal") },
-                        colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
-                        modifier = Modifier
-                            .width(70.dp)
-
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    FloatingActionButton(
-                        onClick = {
-                            onAddItem(extraItem)
-                        },
-                        containerColor = Color.LightGray
+                if (extraItem.isEditing) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 8.dp)
                     ) {
-                        Icon(Icons.Filled.Add, "Add Button")
-                    }
+                        OutlinedTextField(
+                            value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "",
+                            onValueChange = {
+                                val enteredAmount = it.toIntOrNull()
+                                extraItem.amount = when {
+                                    enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(999)
+                                    else -> 0
+                                }
+                                onAddItem(extraItem)
 
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Number
+                            ),
+                            label = { Text(text = "Aantal", fontSize = 10.sp) },
+                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
+                            modifier = Modifier
+                                .width(70.dp)
+
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        IconButton(
+                            onClick = {
+                                extraItem.isEditing = false;
+                                onRemoveItem(extraItem);
+                            },
+                            colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
+
+                        ) {
+                            Icon(Icons.Filled.Delete, "Delete Button", modifier=Modifier.size(35.dp))
+                        }
+                    }
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                extraItem.isEditing = true
+                            },
+                            colors = ButtonColors(containerColor = MainColor, contentColor = Color.White, disabledContentColor = Color.White, disabledContainerColor = MainColor)
+                        ) {
+                            Text(text = "Voeg Toe")
+                        }
+                    }
                 }
             }
             Spacer(modifier = Modifier.width(50.dp))
@@ -224,10 +256,9 @@ fun ExtraItemCard(
                     .size(150.dp)
                     .clip(RoundedCornerShape(4.dp))
             )
-
-
         }
     }
+
 }
 
 
