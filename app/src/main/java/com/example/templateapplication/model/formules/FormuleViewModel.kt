@@ -1,6 +1,5 @@
 package com.example.templateapplication.model.formules
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,31 +12,15 @@ class FormuleViewModel : ViewModel() {
     private val _formuleUiState = MutableStateFlow(FormuleUiState())
     val formuleUiState = _formuleUiState.asStateFlow()
 
-    val beginDatum: Calendar
-        get() = formuleUiState.value.beginDatum
-
-    val eindDatum: Calendar
-        get() = formuleUiState.value.eindDatum
-
-    val beginUur: LocalTime?
-        get() = formuleUiState.value.beginUur
-
-    val eindUur: LocalTime?
-        get() = formuleUiState.value.eindUur
-
     fun updateDatums(begin: Long?, eind: Long?) {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
         val calendarBegin = Calendar.getInstance()
         if (begin != null) {
             calendarBegin.timeInMillis = begin
-            Log.i("TSET", "${calendarBegin.time} ${beginDatum.time}")
         }
 
         val calendarEinde = Calendar.getInstance()
         if (eind != null) {
             calendarEinde.timeInMillis = eind
-            Log.i("TSET", "${calendarEinde.time} ${eindDatum.time}")
-
         }
         _formuleUiState.update {
             it.copy(beginDatum = calendarBegin, eindDatum = calendarEinde)
@@ -45,8 +28,13 @@ class FormuleViewModel : ViewModel() {
     }
 
     fun getDatumsInString() : String {
+        if (_formuleUiState.value.beginDatum == null || _formuleUiState.value.eindDatum == null) {
+            return "/"
+        }
         val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-        return "${dateFormat.format(beginDatum.timeInMillis)} - ${dateFormat.format(eindDatum.timeInMillis)}"
+
+        return "${dateFormat.format(_formuleUiState.value.beginDatum!!.timeInMillis)} - " +
+                "${dateFormat.format(_formuleUiState.value.eindDatum!!.timeInMillis)}"
     }
 
     fun updateBeginUur(uur: LocalTime) {
@@ -59,5 +47,9 @@ class FormuleViewModel : ViewModel() {
         _formuleUiState.update {
             it.copy(eindUur = uur)
         }
+    }
+
+    fun checkDate() : Boolean {
+        return _formuleUiState.value.beginDatum != null && _formuleUiState.value.eindDatum != null
     }
 }

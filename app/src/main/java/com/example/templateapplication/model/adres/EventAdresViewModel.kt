@@ -12,14 +12,9 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.GoogleMapsApplication
 import com.example.templateapplication.data.GoogleMapsRepository
-import com.example.templateapplication.network.ApiResponse
 import com.example.templateapplication.network.GoogleDistanceResponse
-import com.example.templateapplication.network.GoogleMapsDistanceState
-import com.example.templateapplication.network.GoogleMapsPlaceState
-import com.example.templateapplication.network.GoogleMapsPredictionsState
 import com.example.templateapplication.network.GooglePlaceResponse
 import com.example.templateapplication.network.GooglePredictionsResponse
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : ViewModel() {
+class EventAdresViewModel(private val tasksRepository: GoogleMapsRepository) : ViewModel() {
     // Autocomplete
     private val _uiStatePrediciton = MutableStateFlow(GoogleMapsPredictionsState(GooglePredictionsResponse(arrayListOf())))
     val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediciton.asStateFlow()
@@ -35,7 +30,7 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
     var googleMapsPredictionApiState: ApiResponse<GoogleMapsPredictionsState> by mutableStateOf(ApiResponse.Loading)
         private set
 
-    // Plaatsen
+    // Plaats
     private val _uiStatePlace = MutableStateFlow(GoogleMapsPlaceState(GooglePlaceResponse(arrayListOf())))
     val uiStatePlace: StateFlow<GoogleMapsPlaceState> = _uiStatePlace.asStateFlow()
 
@@ -73,7 +68,6 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
                 googleMapsPredictionApiState = ApiResponse.Error
                 Log.i("Error", e.toString())
             }
-
         }
     }
 
@@ -82,11 +76,8 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
             viewModelScope.launch {
                 try {
                     val distanceResult = tasksRepository.getDistance(
-                        vertrekPlaats = _uiStatePlace.value.marker,
-                        eventPlaats = LatLng(
-                            _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lat,
-                            _uiStatePlace.value.placeResponse.candidates[0].geometry.location.lng
-                        )
+                        vertrekPlaats = "${_uiStatePlace.value.marker.latitude}, ${_uiStatePlace.value.marker.longitude}",
+                        eventPlaats = _uiStatePlace.value.placeResponse.candidates[0].formatted_address
                     )
                     _uiStateDistance.update {
                         it.copy(distanceResponse = distanceResult)
@@ -112,6 +103,7 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
                 googleMapsPlaceApiState = ApiResponse.Success(
                     GoogleMapsPlaceState(placeResult)
                 )
+                updateDistance()
             } catch (e: IOException){
                 googleMapsPlaceApiState = ApiResponse.Error
                 Log.i("Error", e.toString())
@@ -133,6 +125,7 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
         return "Afstand: " + uiStateDistance.value.distanceResponse.rows[0].elements[0].distance.text
     }
 
+    // Check of er een plaats is gevonden met de autocomplete
     fun checkForPlace() : Boolean {
         if (uiStatePlace.value.placeResponse.candidates.isNotEmpty()) {
             return true
@@ -145,7 +138,7 @@ class GoogleMapsViewModel(private val tasksRepository: GoogleMapsRepository) : V
             initializer {
                 val application = (this[APPLICATION_KEY] as GoogleMapsApplication)
                 val tasksRepository = application.container.googleMapsRepository
-                GoogleMapsViewModel(tasksRepository = tasksRepository
+                EventAdresViewModel(tasksRepository = tasksRepository
                 )
             }
         }

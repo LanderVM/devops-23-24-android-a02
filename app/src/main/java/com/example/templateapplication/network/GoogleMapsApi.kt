@@ -18,7 +18,8 @@ interface GooglePlacesApiService {
         @Query("key") key: String = "AIzaSyDLmwXCGwUK5jxbqcZD3IqYMvcUcsS_J1c",
         @Query("inputtype") types: String = "textquery",
         @Query("input") input: String,
-        @Query("fields") language: String = "geometry",
+        @Query("language") language: String = "nl",
+        @Query("fields") fields: String = "formatted_address,geometry",
     ): ApiGooglePlaceResponse
 
     @GET("maps/api/distancematrix/json")
@@ -27,6 +28,7 @@ interface GooglePlacesApiService {
         @Query("destinations") destinations: String,
         @Query("origins") origins: String,
     ): ApiGoogleDistanceResponse
+
 
     companion object{
         const val BASE_URL = "https://maps.googleapis.com/"

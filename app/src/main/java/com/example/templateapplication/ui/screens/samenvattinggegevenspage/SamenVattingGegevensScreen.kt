@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.samenvattinggegevenspage
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,17 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,17 +26,12 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonColors
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -56,7 +46,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -67,19 +56,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.templateapplication.ui.theme.MainColor
-import com.example.templateapplication.ui.theme.MainLightestColor
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.AdresViewModel
+import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
-import com.example.templateapplication.ui.commons.VolgendeKnop
-
 import com.example.templateapplication.ui.theme.DisabledButtonColor
+import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
-import java.text.SimpleDateFormat
+import com.example.templateapplication.ui.theme.MainLightestColor
 
 
 @Composable
@@ -89,7 +76,8 @@ fun SamenvattingGegevensScreen (
     adresViewModel: AdresViewModel = viewModel(),
     formuleViewModel: FormuleViewModel = viewModel(),
     extraItemViewModel: ExtraItemViewModel = viewModel(),
-    navigateEventGegevens:()->Unit,
+    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
+    navigateEventGegevens: ()->Unit,
     navigateContactGegevens:()->Unit,
     navigateExtras: () -> Unit,
 ) {
@@ -116,6 +104,7 @@ fun SamenvattingGegevensScreen (
             gegevensViewModel = gegevensViewModel,
             adresViewModel = adresViewModel,
             formuleViewModel = formuleViewModel,
+            eventAdresViewModel = eventAdresViewModel,
         )
         Spacer(modifier = Modifier.height(30.dp))
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
@@ -275,10 +264,21 @@ fun EventGegevens(
     adresViewModel: AdresViewModel,
     gegevensViewModel: ContactGegevensViewModel,
     formuleViewModel: FormuleViewModel,
-) {
+    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
+    ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
     val formuleUiState by formuleViewModel.formuleUiState.collectAsState()
+
+    val googleMapsPredictionState by eventAdresViewModel.uiStatePrediction.collectAsState()
+    val googleMapsPredictionApiState = eventAdresViewModel.googleMapsPredictionApiState
+
+    val googleMapsPlaceState by eventAdresViewModel.uiStatePlace.collectAsState()
+    val googleMapsPlaceApiState = eventAdresViewModel.googleMapsPlaceApiState
+
+    val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
+    val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
+
     var show by remember { mutableStateOf(true) }
 
     Column (
@@ -320,7 +320,7 @@ fun EventGegevens(
                 },
                 supportingContent = {
                     Text(
-                        text="",
+                        text=googleMapsPlaceState.placeResponse.candidates[0].formatted_address,
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(

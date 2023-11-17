@@ -29,5 +29,6 @@ data class GooglePlaceGeometry(
 
 @Serializable
 data class GooglePlace(
+    val formatted_address: String,
     val geometry: GooglePlaceGeometry,
 )

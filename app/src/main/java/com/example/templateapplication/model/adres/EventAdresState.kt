@@ -1,5 +1,8 @@
-package com.example.templateapplication.network
+package com.example.templateapplication.model.adres
 
+import com.example.templateapplication.network.GoogleDistanceResponse
+import com.example.templateapplication.network.GooglePlaceResponse
+import com.example.templateapplication.network.GooglePredictionsResponse
 import com.google.android.gms.maps.model.LatLng
 
 data class GoogleMapsPredictionsState(

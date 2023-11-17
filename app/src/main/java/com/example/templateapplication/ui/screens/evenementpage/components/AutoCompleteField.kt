@@ -26,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.adres.GoogleMapsViewModel
-import com.example.templateapplication.network.ApiResponse
-import com.example.templateapplication.network.GoogleMapsPredictionsState
+import com.example.templateapplication.model.adres.ApiResponse
+import com.example.templateapplication.model.adres.EventAdresViewModel
+import com.example.templateapplication.model.adres.GoogleMapsPredictionsState
 import com.example.templateapplication.network.GooglePrediction
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -46,16 +46,16 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AutoCompleteComponent(
     modifier: Modifier = Modifier,
-    googleMapsViewModel: GoogleMapsViewModel = viewModel(factory = GoogleMapsViewModel.Factory),
+    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
 ) {
-    val googleMapsPredictionState by googleMapsViewModel.uiStatePrediction.collectAsState()
-    val googleMapsPredictionApiState = googleMapsViewModel.googleMapsPredictionApiState
+    val googleMapsPredictionState by eventAdresViewModel.uiStatePrediction.collectAsState()
+    val googleMapsPredictionApiState = eventAdresViewModel.googleMapsPredictionApiState
 
-    val googleMapsPlaceState by googleMapsViewModel.uiStatePlace.collectAsState()
-    val googleMapsPlaceApiState = googleMapsViewModel.googleMapsPlaceApiState
+    val googleMapsPlaceState by eventAdresViewModel.uiStatePlace.collectAsState()
+    val googleMapsPlaceApiState = eventAdresViewModel.googleMapsPlaceApiState
 
-    val googleMapsDistanceState by googleMapsViewModel.uiStateDistance.collectAsState()
-    val googleMapsDistanceApiState = googleMapsViewModel.googleMapsDistanceApiState
+    val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
+    val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(googleMapsPlaceState.marker, 15f)
@@ -65,9 +65,7 @@ fun AutoCompleteComponent(
         // if (someInputText.isBlank()) return@LaunchedEffect
         withContext(Dispatchers.IO) {
             delay(1000)
-            googleMapsViewModel.getPredictions()
-            googleMapsViewModel.updateMarker()
-            googleMapsViewModel.updateDistance()
+            eventAdresViewModel.getPredictions()
         }
 
         withContext(Dispatchers.Main) {
@@ -87,7 +85,7 @@ fun AutoCompleteComponent(
         }
     }
 
-    Text(text = googleMapsViewModel.getDistanceString())
+    Text(text = eventAdresViewModel.getDistanceString())
 
     Box(
         modifier = Modifier
@@ -105,7 +103,7 @@ fun AutoCompleteComponent(
                 title = "Blanche",
                 snippet = "Onze opslagplaats"
             )
-            if (googleMapsViewModel.checkForPlace()) {
+            if (eventAdresViewModel.checkForPlace()) {
                 Marker(
                     state = MarkerState(position = LatLng(
                         googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
@@ -133,7 +131,7 @@ fun AutoCompleteComponent(
     OutlinedTextField(
         value = googleMapsPredictionState.input,
         onValueChange = {
-            googleMapsViewModel.updateInput(it)
+            eventAdresViewModel.updateInput(it)
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
@@ -148,12 +146,13 @@ fun AutoCompleteComponent(
         is ApiResponse.Success -> {
             AutoCompleteListComponent(
                 predictionsState = googleMapsPredictionState,
-                onPredictionClick = { prediction -> googleMapsViewModel.updateInput(prediction.description) }
+                onPredictionClick = { prediction ->
+                    eventAdresViewModel.updateInput(prediction.description)
+                    eventAdresViewModel.updateMarker()
+                }
             )
         }
-        else -> {}
     }
-
 }
 
 @OptIn(ExperimentalLayoutApi::class)

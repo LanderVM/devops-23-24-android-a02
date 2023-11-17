@@ -5,12 +5,11 @@ import com.example.templateapplication.network.GooglePlaceResponse
 import com.example.templateapplication.network.GooglePlacesApiService
 import com.example.templateapplication.network.GooglePredictionsResponse
 import com.example.templateapplication.network.asDomainObject
-import com.google.android.gms.maps.model.LatLng
 
 interface GoogleMapsRepository {
     suspend fun getPredictions(input: String): GooglePredictionsResponse
     suspend fun getPlace(input: String): GooglePlaceResponse
-    suspend fun getDistance(vertrekPlaats: LatLng, eventPlaats: LatLng): GoogleDistanceResponse
+    suspend fun getDistance(vertrekPlaats: String, eventPlaats: String): GoogleDistanceResponse
 }
 
 class ApiGoogleMapsRepository(
@@ -24,8 +23,8 @@ class ApiGoogleMapsRepository(
         return googlePlacesApiService.getPlace(input = input).asDomainObject()
     }
 
-    override suspend fun getDistance(vertrekPlaats: LatLng, eventPlaats: LatLng): GoogleDistanceResponse {
-        return googlePlacesApiService.getDistance(origins = "${vertrekPlaats.latitude}, ${vertrekPlaats.longitude}", destinations = "${eventPlaats.latitude}, ${eventPlaats.longitude}").asDomainObject()
+    override suspend fun getDistance(vertrekPlaats: String, eventPlaats: String): GoogleDistanceResponse {
+        return googlePlacesApiService.getDistance(origins = vertrekPlaats, destinations = eventPlaats).asDomainObject()
     }
 
 }

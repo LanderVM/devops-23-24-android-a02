@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
+import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
@@ -48,34 +49,36 @@ import java.util.Calendar
 fun EvenementScreen(
     modifier: Modifier = Modifier,
     formuleViewModel: FormuleViewModel = viewModel(),
+    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
     navigateContactGegevensScreen: () -> Unit,
 ) {
     val formuleUiState by formuleViewModel.formuleUiState.collectAsState()
-    val selectedStartDate = remember { mutableStateOf(formuleViewModel.beginDatum) }
-    val selectedEndDate = remember { mutableStateOf(formuleViewModel.eindDatum) }
+    val selectedStartDate = remember { mutableStateOf(formuleUiState.beginDatum) }
+    val selectedEndDate = remember { mutableStateOf(formuleUiState.eindDatum) }
+
+    val googleMapsPredictionState by eventAdresViewModel.uiStatePrediction.collectAsState()
+    val googleMapsPredictionApiState = eventAdresViewModel.googleMapsPredictionApiState
+
+    val googleMapsPlaceState by eventAdresViewModel.uiStatePlace.collectAsState()
+    val googleMapsPlaceApiState = eventAdresViewModel.googleMapsPlaceApiState
+
+    val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
+    val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
 
     val scrollState = rememberScrollState()
 
     val datumState = rememberDateRangePickerState(
-        initialSelectedStartDateMillis = selectedStartDate.value.timeInMillis,
-        initialSelectedEndDateMillis = selectedEndDate.value.timeInMillis,
+        initialSelectedStartDateMillis = selectedStartDate.value?.timeInMillis,
+        initialSelectedEndDateMillis = selectedEndDate.value?.timeInMillis,
         yearRange = IntRange(start = 2023, endInclusive = Calendar.getInstance().get(Calendar.YEAR) + 1),
     )
 
     val beginTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
     val eindTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
 
-    var buttonEnabled: Boolean = false
-
     // var invalidDates:LongArray = longArrayOf()
 
     // val validatorFunction:(Long)->Boolean = {datum:Long-> !LongStream.of(*invalidDates).anyMatch{n->n==datum}}
-
-    if (datumState.selectedEndDateMillis == null || datumState.selectedStartDateMillis == null) {
-        buttonEnabled = false
-    } else {
-        buttonEnabled = true
-    }
 
     Column(
         modifier = Modifier
@@ -98,12 +101,12 @@ fun EvenementScreen(
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(35.dp))
-        AutoCompleteComponent()
+        AutoCompleteComponent(eventAdresViewModel = eventAdresViewModel)
         Spacer(modifier = Modifier.height(35.dp))
 
         VolgendeKnop(
             navigeer = navigateContactGegevensScreen,
-            enabled = buttonEnabled,
+            enabled = eventAdresViewModel.checkForPlace() && formuleViewModel.checkDate(),
         )
         Spacer(modifier = Modifier.height(40.dp))
     }

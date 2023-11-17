@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.model.adres.AdresViewModel
+import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
@@ -61,6 +62,7 @@ fun BlancheApp(
         var adresViewModel: AdresViewModel = viewModel()
         var formuleViewModel: FormuleViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel()
+        var eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
@@ -140,6 +142,7 @@ fun BlancheApp(
                             modifier = Modifier.padding(innerPadding),
                             navigateContactGegevensScreen = { navController.navigate(NavigationRoutes.contactGegevens.name) },
                             formuleViewModel = formuleViewModel,
+                            eventAdresViewModel = eventAdresViewModel,
                         )
                     }
                     composable(NavigationRoutes.samenvattingGegevens.name) {
@@ -149,6 +152,7 @@ fun BlancheApp(
                             adresViewModel = adresViewModel,
                             formuleViewModel = formuleViewModel,
                             extraItemViewModel = extraItemViewModel,
+                            eventAdresViewModel = eventAdresViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.contactGegevens.name) },
                             navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },
