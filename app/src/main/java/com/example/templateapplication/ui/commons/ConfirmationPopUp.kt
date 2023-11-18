@@ -58,5 +58,5 @@ fun AlertPopUp(
 fun PopUpPreview(
     modifier: Modifier = Modifier
 ) {
-    AlertPopUp(onDismissRequest = { }, dialogTitle = "Titel", dialogText = "Tekst...")
+    AlertPopUp(onDismissRequest = { }, dialogTitle = "Titel", dialogText = "Tekst...", confirmText = "Confirm txt", dismissText = "Dismiss txt")
 }
