@@ -40,7 +40,7 @@ import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.commons.VolgendeKnop
-import com.example.templateapplication.ui.screens.evenementpage.components.AutoCompleteComponent
+import com.example.templateapplication.ui.commons.AutoCompleteComponent
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -56,14 +56,6 @@ fun EvenementScreen(
     val selectedStartDate = remember { mutableStateOf(formuleUiState.beginDatum) }
     val selectedEndDate = remember { mutableStateOf(formuleUiState.eindDatum) }
 
-    val googleMapsPredictionState by eventAdresViewModel.uiStatePrediction.collectAsState()
-    val googleMapsPredictionApiState = eventAdresViewModel.googleMapsPredictionApiState
-
-    val googleMapsPlaceState by eventAdresViewModel.uiStatePlace.collectAsState()
-    val googleMapsPlaceApiState = eventAdresViewModel.googleMapsPlaceApiState
-
-    val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
-    val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
 
     val scrollState = rememberScrollState()
 

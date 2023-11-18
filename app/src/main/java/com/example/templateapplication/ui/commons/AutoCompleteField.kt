@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.evenementpage.components
+package com.example.templateapplication.ui.commons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -127,7 +127,7 @@ fun AutoCompleteComponent(
     }
 
     Spacer(modifier = Modifier.height(20.dp))
-    
+
     OutlinedTextField(
         value = googleMapsPredictionState.input,
         onValueChange = {
