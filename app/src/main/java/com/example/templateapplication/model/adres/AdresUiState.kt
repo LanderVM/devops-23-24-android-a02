@@ -1,6 +1,6 @@
 package com.example.templateapplication.model.adres
 
-//TODO val van maken
+
 data class AdresUiState(
     val straat: String = "",
     val huisnummer: String = "",
@@ -11,4 +11,5 @@ data class AdresUiState(
     val huisnummerFacturatie: String = "",
     val gemeenteFacturatie: String = "",
     val postcodeFacturatie: String = "",
+    val btwNummer: String = ""
 )

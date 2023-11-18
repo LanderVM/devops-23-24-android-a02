@@ -5,11 +5,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import com.example.templateapplication.ui.theme.BlancheTheme
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AlertPopUp(
     onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
+    onConfirmation: (() -> Unit)? = null,
     dialogTitle: String,
     dialogText: String,
     confirmText: String,
@@ -27,12 +29,14 @@ fun AlertPopUp(
                 onDismissRequest()
             },
             confirmButton = {
-                TextButton(
-                    onClick = {
-                        onConfirmation()
+                onConfirmation?.let {
+                    TextButton(
+                        onClick = {
+                            onConfirmation()
+                        }
+                    ) {
+                        Text(text = confirmText)
                     }
-                ) {
-                    Text(text = confirmText)
                 }
             },
             dismissButton = {
@@ -46,4 +50,13 @@ fun AlertPopUp(
             },
         )
     }
+}
+
+
+@Preview
+@Composable
+fun PopUpPreview(
+    modifier: Modifier = Modifier
+) {
+    AlertPopUp(onDismissRequest = { }, dialogTitle = "Titel", dialogText = "Tekst...")
 }

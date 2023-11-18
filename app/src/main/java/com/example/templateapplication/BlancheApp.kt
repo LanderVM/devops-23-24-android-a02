@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.model.adres.AdresViewModel
+import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.model.guidePrice.GuidePriceViewModel
@@ -50,7 +51,7 @@ fun BlancheApp(
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colorScheme.background,
     ) {
         // val navController = rememberNavController()
         val backStackEntry by navController.currentBackStackEntryAsState()
@@ -64,6 +65,7 @@ fun BlancheApp(
         var formuleViewModel: FormuleViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel()
         var guidePriceViewModel: GuidePriceViewModel = viewModel()
+        var eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
@@ -112,18 +114,10 @@ fun BlancheApp(
                                 }
                             },
                             modifier = Modifier.padding(innerPadding),
-                            onExtraNavigation = {
-                                navController.navigate(NavigationRoutes.extras.name)
-                            },
-                            onBasicNavigation = {
-                                navController.navigate(NavigationRoutes.evenementGegevens.name)
-                            },
-                            onAllInNavigation = {
-                                navController.navigate(NavigationRoutes.evenementGegevens.name)
-                            },
-                            onGevorderedNavigation = {
-                                navController.navigate(NavigationRoutes.evenementGegevens.name)
-                            },
+                            onExtraNavigation = { navController.navigate(NavigationRoutes.extrasOverview.name) },
+                            onBasicNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
+                            onAllInNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
+                            onGevorderedNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             onGuidePriceNavigation = {
                                 navController.navigate(NavigationRoutes.guidePrice.name)
                             }
@@ -132,19 +126,15 @@ fun BlancheApp(
                     composable(NavigationRoutes.over.name) {
                         OverScreen(
                             modifier = Modifier.padding(innerPadding),
-                            navigateEmailScreen = {
-                                navController.navigate(NavigationRoutes.emailInfo.name)
-                            }
+                            navigateEmailScreen = { navController.navigate(NavigationRoutes.emailInfo.name) },
                         )
                     }
                     composable(NavigationRoutes.contactGegevens.name) {
                         ConatctGegevensScreen(
                             gegevensViewModel = gegevensViewModel,
                             adresViewModel = adresViewModel,
-                            navigateSamenvatting = {
-                                navController.navigate(NavigationRoutes.samenvattingGegevens.name)
-                            },
-                            modifier = Modifier.padding(innerPadding)
+                            navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },
+                            modifier = Modifier.padding(innerPadding),
                         )
                     }
                     composable(NavigationRoutes.formules.name) {
@@ -155,10 +145,9 @@ fun BlancheApp(
                     composable(NavigationRoutes.evenementGegevens.name) {
                         EvenementScreen(
                             modifier = Modifier.padding(innerPadding),
-                            navigateContactGegevensScreen = {
-                                navController.navigate(NavigationRoutes.contactGegevens.name)
-                            },
-                            formuleViewModel = formuleViewModel
+                            navigateContactGegevensScreen = { navController.navigate(NavigationRoutes.contactGegevens.name) },
+                            formuleViewModel = formuleViewModel,
+                            eventAdresViewModel = eventAdresViewModel,
                         )
                     }
                     composable(NavigationRoutes.samenvattingGegevens.name) {
@@ -167,18 +156,27 @@ fun BlancheApp(
                             gegevensViewModel = gegevensViewModel,
                             adresViewModel = adresViewModel,
                             formuleViewModel = formuleViewModel,
-                            navigateEventGegevens = {
-                                navController.navigate(NavigationRoutes.evenementGegevens.name)
-                            },
-                            navigateContactGegevens = {
-                                navController.navigate(NavigationRoutes.contactGegevens.name)
-                            }
+                            extraItemViewModel = extraItemViewModel,
+                            eventAdresViewModel = eventAdresViewModel,
+                            navigateEventGegevens = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
+                            navigateContactGegevens = { navController.navigate(NavigationRoutes.contactGegevens.name) },
+                            navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },
                         )
                     }
                     composable(NavigationRoutes.extras.name) {
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
-                            extraItemViewModel = extraItemViewModel
+                            extraItemViewModel = extraItemViewModel,
+                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)},
+                            isOverview = false
+                        )
+                    }
+                    composable(NavigationRoutes.extrasOverview.name) {
+                        ExtrasScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            extraItemViewModel = extraItemViewModel,
+                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)},
+                            isOverview = true
                         )
                     }
                     composable(NavigationRoutes.guidePrice.name) {

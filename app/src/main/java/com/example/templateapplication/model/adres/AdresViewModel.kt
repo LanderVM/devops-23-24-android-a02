@@ -53,6 +53,7 @@ class AdresViewModel : ViewModel() {
                 (!facturatieAdressChecked&&huisnummerFacturatie.isEmpty())||(!facturatieAdressChecked&&huisnummerFacturatie.isBlank())
                 ||
                 (!facturatieAdressChecked&&postcodeFacturatie.isEmpty())||(!facturatieAdressChecked&&postcodeFacturatie.isBlank())
+                || (!facturatieAdressChecked && adresUiState.value.btwNummer.isEmpty())
                 )
         return buttonEnabled
     }
@@ -108,6 +109,12 @@ class AdresViewModel : ViewModel() {
     fun updatePostcodeFacturatie(postcodeFacturatie: String) {
         _adresUiState.update {
             it.copy(postcodeFacturatie = postcodeFacturatie)
+        }
+    }
+
+    fun updateBtwNummer(btwNummer: String){
+        _adresUiState.update {
+            it.copy(btwNummer = btwNummer)
         }
     }
 

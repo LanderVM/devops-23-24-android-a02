@@ -1,36 +1,20 @@
 package com.example.templateapplication.ui.screens.evenementpage
 
-import android.app.Activity
-import android.content.Intent
-import android.util.Log
-import android.view.View
-import android.widget.SearchView
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerState
@@ -45,20 +29,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
+import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.commons.VolgendeKnop
-
+import com.example.templateapplication.ui.screens.evenementpage.components.AutoCompleteComponent
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -67,35 +49,36 @@ import java.util.Calendar
 fun EvenementScreen(
     modifier: Modifier = Modifier,
     formuleViewModel: FormuleViewModel = viewModel(),
+    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
     navigateContactGegevensScreen: () -> Unit,
 ) {
     val formuleUiState by formuleViewModel.formuleUiState.collectAsState()
-    val selectedStartDate = remember { mutableStateOf(formuleViewModel.beginDatum) }
-    val selectedEndDate = remember { mutableStateOf(formuleViewModel.eindDatum) }
+    val selectedStartDate = remember { mutableStateOf(formuleUiState.beginDatum) }
+    val selectedEndDate = remember { mutableStateOf(formuleUiState.eindDatum) }
+
+    val googleMapsPredictionState by eventAdresViewModel.uiStatePrediction.collectAsState()
+    val googleMapsPredictionApiState = eventAdresViewModel.googleMapsPredictionApiState
+
+    val googleMapsPlaceState by eventAdresViewModel.uiStatePlace.collectAsState()
+    val googleMapsPlaceApiState = eventAdresViewModel.googleMapsPlaceApiState
+
+    val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
+    val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
 
     val scrollState = rememberScrollState()
 
     val datumState = rememberDateRangePickerState(
-        initialSelectedStartDateMillis = selectedStartDate.value.timeInMillis,
-        initialSelectedEndDateMillis = selectedEndDate.value.timeInMillis,
+        initialSelectedStartDateMillis = selectedStartDate.value?.timeInMillis,
+        initialSelectedEndDateMillis = selectedEndDate.value?.timeInMillis,
         yearRange = IntRange(start = 2023, endInclusive = Calendar.getInstance().get(Calendar.YEAR) + 1),
-        // selectableDates =
     )
 
     val beginTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
     val eindTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
 
-    var buttonEnabled: Boolean = false
-
     // var invalidDates:LongArray = longArrayOf()
 
     // val validatorFunction:(Long)->Boolean = {datum:Long-> !LongStream.of(*invalidDates).anyMatch{n->n==datum}}
-
-    if (datumState.selectedEndDateMillis == null || datumState.selectedStartDateMillis == null) {
-        buttonEnabled = false
-    } else {
-        buttonEnabled = true
-    }
 
     Column(
         modifier = Modifier
@@ -118,10 +101,12 @@ fun EvenementScreen(
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(35.dp))
+        AutoCompleteComponent(eventAdresViewModel = eventAdresViewModel)
+        Spacer(modifier = Modifier.height(35.dp))
 
         VolgendeKnop(
             navigeer = navigateContactGegevensScreen,
-            enabled = buttonEnabled,
+            enabled = eventAdresViewModel.checkForPlace() && formuleViewModel.checkDate(),
         )
         Spacer(modifier = Modifier.height(40.dp))
     }

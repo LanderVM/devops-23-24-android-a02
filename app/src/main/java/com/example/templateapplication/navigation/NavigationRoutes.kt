@@ -14,6 +14,7 @@ enum class NavigationRoutes(@StringRes val title: Int) {
     samenvattingGegevens(title=R.string.samenvatting_gegevens_titel),
     extras(title=R.string.extras_title),
     guidePrice(title=R.string.guide_price);
+    extrasOverview(title= R.string.extrasOverview);
 
     fun getString(context: Context): String {
         return context.getString(title)
