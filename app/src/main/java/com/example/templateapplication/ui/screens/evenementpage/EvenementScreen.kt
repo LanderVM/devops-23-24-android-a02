@@ -72,6 +72,7 @@ fun EvenementScreen(
         DatumPart(
             state = datumState,
             formulaViewModel = formuleViewModel,
+            showCalenderToggle = false,
         )
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = beginTijdState, welkeTijd = "Begin tijd", formuleViewModel = formuleViewModel)

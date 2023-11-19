@@ -53,12 +53,12 @@ fun GuidePriceScreen(
         DatumPart(
             state = dataState,
             formulaViewModel = formulaViewModel,
+            showCalenderToggle = true,
         )
         Titel(
             text = "Locatie",
         )
         AutoCompleteComponent(eventAddressViewModel = eventAdresViewModel, showMap = false)
         Spacer(modifier = Modifier.height(35.dp))
-
     }
 }

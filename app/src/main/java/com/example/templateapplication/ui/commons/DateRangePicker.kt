@@ -32,6 +32,7 @@ fun DatumPart(
     modifier: Modifier = Modifier,
     state: DateRangePickerState,
     formulaViewModel: FormuleViewModel,
+    showCalenderToggle: Boolean,
 ) {
     Titel(
         text = "Datum",
@@ -72,7 +73,7 @@ fun DatumPart(
                     }
                 }
             },
-            showModeToggle = false,
+            showModeToggle = showCalenderToggle,
             // TODO color cleanup
             colors = DatePickerDefaults.colors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichter))),
