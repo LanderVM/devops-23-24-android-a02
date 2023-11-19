@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,6 +45,9 @@ import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.AutoCompleteComponent
 import com.example.templateapplication.ui.commons.DatumPart
 import com.example.templateapplication.ui.commons.Titel
+import com.example.templateapplication.ui.theme.onSecondary
+import com.example.templateapplication.ui.theme.secondary
+import com.example.templateapplication.ui.theme.tertiary
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,14 +58,11 @@ fun GuidePriceScreen(
     eventAdresViewModel: EventAdresViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val formulasList = listOf("Basic", "All in", "Extended")
+    val scrollState = rememberScrollState()
     val formulaUIState by formulaViewModel.formuleUiState.collectAsState()
+
     val selectedStartDate = remember { mutableStateOf(formulaUIState.beginDatum) }
     val selectedEndDate = remember { mutableStateOf(formulaUIState.eindDatum) }
-    val scrollState = rememberScrollState()
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableIntStateOf(0) }
-
     val dataState = rememberDateRangePickerState(
         initialSelectedStartDateMillis = selectedStartDate.value?.timeInMillis,
         initialSelectedEndDateMillis = selectedEndDate.value?.timeInMillis,
@@ -71,9 +72,16 @@ fun GuidePriceScreen(
         ),
     )
 
-    var wantsExtras by remember { mutableStateOf(false) }
+    val formulasList = listOf("Basic", "All in", "Extended")
+    val materialsList = listOf("Appel", "Peer", "Appelsien")
 
+    var formulaDropDownExpand by remember { mutableStateOf(false) }
+    var selectedFormula by remember { mutableIntStateOf(0) }
     var amountOfPersons by remember { mutableStateOf("") }
+
+
+    var wantsExtras by remember { mutableStateOf(false) }
+    val selectedItems = remember { mutableStateListOf<String>() }
 
     Column(
         modifier = Modifier
@@ -98,12 +106,12 @@ fun GuidePriceScreen(
                 .fillMaxWidth(0.75f)
         ) {
             ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded },
+                expanded = formulaDropDownExpand,
+                onExpandedChange = { formulaDropDownExpand = !formulaDropDownExpand },
             ) {
                 OutlinedTextField(
                     readOnly = true,
-                    value = formulasList[selectedOption],
+                    value = formulasList[selectedFormula],
                     onValueChange = { },
                     label = {
                         Text(
@@ -113,7 +121,7 @@ fun GuidePriceScreen(
                     },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(
-                            expanded = expanded
+                            expanded = formulaDropDownExpand
                         )
                     },
                     modifier = Modifier
@@ -121,15 +129,15 @@ fun GuidePriceScreen(
                         .fillMaxWidth(0.5f),
                 )
                 ExposedDropdownMenu(
-                    expanded = expanded,
+                    expanded = formulaDropDownExpand,
                     onDismissRequest = {
-                        expanded = false
+                        formulaDropDownExpand = false
                     }
                 ) {
                     formulasList.forEachIndexed { index, s ->
                         DropdownMenuItem(text = { Text(s) }, onClick = {
-                            selectedOption = index
-                            expanded = !expanded
+                            selectedFormula = index
+                            formulaDropDownExpand = !formulaDropDownExpand
                         })
                     }
                 }
@@ -175,7 +183,29 @@ fun GuidePriceScreen(
             )
         }
         if (wantsExtras) {
-            Text(text = "user wants extras")
+            formulasList.forEachIndexed { index, s ->
+                Row {
+                    Checkbox(
+                        checked = selectedItems.contains(s),
+                        onCheckedChange = { isChecked ->
+                            if (isChecked) {
+                                selectedItems.add(s)
+                            } else {
+                                selectedItems.remove(s)
+                            }
+                        },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = secondary,
+                            checkmarkColor = onSecondary,
+                            uncheckedColor = tertiary,
+                        ),
+                    )
+                    Text(
+                        text = s,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
         }
     }
 }
