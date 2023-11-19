@@ -32,6 +32,7 @@ import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.AutoCompleteComponent
 import com.example.templateapplication.ui.commons.DatumPart
 import com.example.templateapplication.ui.commons.ProgressieBar
+import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.commons.VolgendeKnop
 import java.util.Calendar
 
@@ -59,10 +60,6 @@ fun EvenementScreen(
     val beginTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
     val eindTijdState = rememberTimePickerState(is24Hour = true, initialHour = 12, initialMinute = 0)
 
-    // var invalidDates:LongArray = longArrayOf()
-
-    // val validatorFunction:(Long)->Boolean = {datum:Long-> !LongStream.of(*invalidDates).anyMatch{n->n==datum}}
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,7 +78,9 @@ fun EvenementScreen(
         TimePart(state = beginTijdState, welkeTijd = "Begin tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
-        Spacer(modifier = Modifier.height(35.dp))
+        Titel(
+            text = "Locatie",
+        )
         AutoCompleteComponent(eventAdresViewModel = eventAdresViewModel)
         Spacer(modifier = Modifier.height(35.dp))
 
@@ -108,7 +107,7 @@ fun TimePart(
         Text(
             text = welkeTijd,
             textAlign = TextAlign.Center,
-            fontSize = 40.sp,
+            fontSize = 32.sp,
         )
         Spacer(modifier = Modifier.height(20.dp))
         TimeInput(
