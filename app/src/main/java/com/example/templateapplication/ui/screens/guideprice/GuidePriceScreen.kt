@@ -178,6 +178,7 @@ fun GuidePriceScreen(
                     .clickable { keyboardController?.show() },
             )
         }
+        Spacer(modifier = Modifier.width(8.dp))
         if (selectedFormula != 0) {
             Row(
                 modifier = Modifier.height(50.dp),
