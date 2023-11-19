@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.ui.theme.onPrimary
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -72,6 +73,7 @@ fun DatumPart(
                 }
             },
             showModeToggle = false,
+            // TODO color cleanup
             colors = DatePickerDefaults.colors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichter))),
                 titleContentColor = Color.Black,
@@ -86,6 +88,7 @@ fun DatumPart(
                 dayInSelectionRangeContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichterder))),
                 dayInSelectionRangeContentColor = Color.White,
                 selectedDayContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
+                selectedDayContentColor = onPrimary,
             ),
         )
         Spacer(modifier = Modifier.height(20.dp))
