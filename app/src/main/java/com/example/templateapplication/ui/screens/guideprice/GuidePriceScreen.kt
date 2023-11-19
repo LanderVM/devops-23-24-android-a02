@@ -1,13 +1,14 @@
 package com.example.templateapplication.ui.screens.guideprice
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -24,10 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.templateapplication.data.Datasource
+import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
 import com.example.templateapplication.ui.commons.AutoCompleteComponent
@@ -59,6 +61,8 @@ fun GuidePriceScreen(
         ),
     )
 
+    var wantsExtras by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -77,50 +81,54 @@ fun GuidePriceScreen(
         Titel(
             text = "Details",
         )
-        DropdownMenu(expanded, formulasList, selectedOption)
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun DropdownMenu(
-    expanded: Boolean,
-    formulasList: List<String>,
-    selectedOption: Int
-) {
-    var expanded1 = expanded
-    var selectedOption1 = selectedOption
-    ExposedDropdownMenuBox(
-        expanded = expanded1,
-        onExpandedChange = { expanded1 = !expanded1 },
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        TextField(
-            readOnly = true,
-            value = formulasList[selectedOption1],
-            onValueChange = { },
-            label = { Text("Formule") },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded1
-                )
-            },
-            modifier = Modifier.menuAnchor(),
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
-        )
-        ExposedDropdownMenu(
-            expanded = expanded1,
-            onDismissRequest = {
-                expanded1 = false
-            }
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded },
         ) {
-            formulasList.forEachIndexed { index, s ->
-                DropdownMenuItem(text = { Text(s) }, onClick = {
-                    selectedOption1 = index
-                    expanded1 = !expanded1
-                })
+            TextField(
+                readOnly = true,
+                value = formulasList[selectedOption],
+                onValueChange = { },
+                label = { Text("Formule") },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = expanded
+                    )
+                },
+                modifier = Modifier.menuAnchor(),
+                colors = ExposedDropdownMenuDefaults.textFieldColors()
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = {
+                    expanded = false
+                }
+            ) {
+                formulasList.forEachIndexed { index, s ->
+                    DropdownMenuItem(text = { Text(s) }, onClick = {
+                        selectedOption = index
+                        expanded = !expanded
+                    })
+                }
             }
+        }
+        Row(
+            modifier = Modifier.height(50.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(text = "Extra materiaal nodig", modifier = Modifier.padding(horizontal = 12.dp))
+            Checkbox(
+                checked = wantsExtras,
+                onCheckedChange = { wantsExtras = !wantsExtras},
+                colors = CheckboxDefaults.colors(
+                    checkedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                    uncheckedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                    checkmarkColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
+                ),
+            )
+        }
+        if (wantsExtras) {
+            Text(text = "user wants extras")
         }
     }
 }
