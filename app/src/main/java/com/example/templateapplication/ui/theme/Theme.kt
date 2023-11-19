@@ -34,6 +34,7 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = onTertiary,
     onBackground = onBackground,
     onSurface = onSurface,
+    outline = tertiary,
 )
 
 @Composable
@@ -48,7 +49,7 @@ fun BlancheTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+        darkTheme -> LightColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current

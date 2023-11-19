@@ -1,11 +1,16 @@
 package com.example.templateapplication.ui.screens.guideprice
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -13,8 +18,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,8 +31,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.EventAdresViewModel
@@ -44,6 +53,7 @@ fun GuidePriceScreen(
     formulaViewModel: FormuleViewModel = viewModel(),
     eventAdresViewModel: EventAdresViewModel = viewModel()
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     val formulasList = listOf("Basic", "All in", "Extended")
     val formulaUIState by formulaViewModel.formuleUiState.collectAsState()
     val selectedStartDate = remember { mutableStateOf(formulaUIState.beginDatum) }
@@ -63,6 +73,8 @@ fun GuidePriceScreen(
 
     var wantsExtras by remember { mutableStateOf(false) }
 
+    var amountOfPersons by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,36 +93,71 @@ fun GuidePriceScreen(
         Titel(
             text = "Details",
         )
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
         ) {
-            TextField(
-                readOnly = true,
-                value = formulasList[selectedOption],
-                onValueChange = { },
-                label = { Text("Formule") },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = expanded
-                    )
-                },
-                modifier = Modifier.menuAnchor(),
-                colors = ExposedDropdownMenuDefaults.textFieldColors()
-            )
-            ExposedDropdownMenu(
+            ExposedDropdownMenuBox(
                 expanded = expanded,
-                onDismissRequest = {
-                    expanded = false
-                }
+                onExpandedChange = { expanded = !expanded },
             ) {
-                formulasList.forEachIndexed { index, s ->
-                    DropdownMenuItem(text = { Text(s) }, onClick = {
-                        selectedOption = index
-                        expanded = !expanded
-                    })
+                OutlinedTextField(
+                    readOnly = true,
+                    value = formulasList[selectedOption],
+                    onValueChange = { },
+                    label = {
+                        Text(
+                            text = "Formule",
+                            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+                        )
+                    },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(
+                            expanded = expanded
+                        )
+                    },
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(0.5f),
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = {
+                        expanded = false
+                    }
+                ) {
+                    formulasList.forEachIndexed { index, s ->
+                        DropdownMenuItem(text = { Text(s) }, onClick = {
+                            selectedOption = index
+                            expanded = !expanded
+                        })
+                    }
                 }
             }
+            Spacer(modifier = Modifier.width(8.dp))
+            OutlinedTextField(
+                value = amountOfPersons,
+                onValueChange = {
+                    if (it.isDigitsOnly()) {
+                        amountOfPersons = it
+                    }
+                },
+                label = {
+                    Text(
+                        text = "Aantal Pers.",
+                        color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() }
+                ),
+                modifier = Modifier
+                    .clickable { keyboardController?.show() },
+            )
         }
         Row(
             modifier = Modifier.height(50.dp),
@@ -119,7 +166,7 @@ fun GuidePriceScreen(
             Text(text = "Extra materiaal nodig", modifier = Modifier.padding(horizontal = 12.dp))
             Checkbox(
                 checked = wantsExtras,
-                onCheckedChange = { wantsExtras = !wantsExtras},
+                onCheckedChange = { wantsExtras = !wantsExtras },
                 colors = CheckboxDefaults.colors(
                     checkedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
                     uncheckedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
