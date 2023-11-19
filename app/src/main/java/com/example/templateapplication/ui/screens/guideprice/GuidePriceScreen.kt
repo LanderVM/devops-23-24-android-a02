@@ -1,6 +1,8 @@
 package com.example.templateapplication.ui.screens.guideprice
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -73,13 +76,21 @@ fun GuidePriceScreen(
     )
 
     val formulasList = listOf("Basic", "All in", "Extended")
-    val materialsList = listOf("Appel", "Peer", "Appelsien")
+    val materialsList = listOf(
+        "Barkoeler 320L",
+        "Lichtslinger",
+        "Diepvries 80L",
+        "Soepketel",
+        "Biertafelset",
+        "Schapenvacht"
+    )
 
     var formulaDropDownExpand by remember { mutableStateOf(false) }
     var selectedFormula by remember { mutableIntStateOf(0) }
     var amountOfPersons by remember { mutableStateOf("") }
 
 
+    var wantsTripelBier by remember { mutableStateOf(false) }
     var wantsExtras by remember { mutableStateOf(false) }
     val selectedItems = remember { mutableStateListOf<String>() }
 
@@ -167,6 +178,23 @@ fun GuidePriceScreen(
                     .clickable { keyboardController?.show() },
             )
         }
+        if (selectedFormula != 0) {
+            Row(
+                modifier = Modifier.height(50.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = "Ik wil tripel bier", modifier = Modifier.padding(horizontal = 12.dp))
+                Checkbox(
+                    checked = wantsTripelBier,
+                    onCheckedChange = { wantsTripelBier = !wantsTripelBier },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = secondary,
+                        checkmarkColor = onSecondary,
+                        uncheckedColor = tertiary,
+                    ),
+                )
+            }
+        }
         Row(
             modifier = Modifier.height(50.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -176,34 +204,52 @@ fun GuidePriceScreen(
                 checked = wantsExtras,
                 onCheckedChange = { wantsExtras = !wantsExtras },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-                    uncheckedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-                    checkmarkColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
+                    checkedColor = secondary,
+                    checkmarkColor = onSecondary,
+                    uncheckedColor = tertiary,
                 ),
             )
         }
         if (wantsExtras) {
-            formulasList.forEachIndexed { index, s ->
-                Row {
-                    Checkbox(
-                        checked = selectedItems.contains(s),
-                        onCheckedChange = { isChecked ->
-                            if (isChecked) {
-                                selectedItems.add(s)
-                            } else {
-                                selectedItems.remove(s)
-                            }
-                        },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = secondary,
-                            checkmarkColor = onSecondary,
-                            uncheckedColor = tertiary,
-                        ),
-                    )
-                    Text(
-                        text = s,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 85.dp)
+                    .wrapContentSize(Alignment.Center)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    materialsList.forEachIndexed { index, s ->
+                        Row(
+                            modifier = Modifier
+                                .height(50.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Checkbox(
+                                checked = selectedItems.contains(s),
+                                onCheckedChange = { isChecked ->
+                                    if (isChecked) {
+                                        selectedItems.add(s)
+                                    } else {
+                                        selectedItems.remove(s)
+                                    }
+                                },
+                                colors = CheckboxDefaults.colors(
+                                    checkedColor = secondary,
+                                    checkmarkColor = onSecondary,
+                                    uncheckedColor = tertiary,
+                                ),
+                            )
+                            Text(
+                                text = s,
+                                modifier = Modifier.padding(horizontal = 12.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
