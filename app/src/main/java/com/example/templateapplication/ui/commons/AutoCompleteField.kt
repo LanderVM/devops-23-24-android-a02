@@ -126,6 +126,7 @@ fun AutoCompleteComponent(
     }
 
     OutlinedTextField(
+        label = { Text(text = "Adres", color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))) },
         value = googleMapsPredictionState.input,
         onValueChange = {
             eventAddressViewModel.updateInput(it)
@@ -134,7 +135,7 @@ fun AutoCompleteComponent(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
             unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
         ),
-        modifier = Modifier.width(300.dp)
+        modifier = Modifier.width(300.dp),
     )
 
     when (googleMapsPredictionApiState) {
