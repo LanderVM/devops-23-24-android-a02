@@ -33,6 +33,7 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,8 +50,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
+import com.example.templateapplication.model.extraMateriaal.ExtraItemListState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
+import com.example.templateapplication.model.extraMateriaal.ExtraMateriaalApiState
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.VolgendeKnop
 import com.example.templateapplication.ui.theme.MainColor
@@ -60,7 +63,7 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 @Composable
 fun ExtrasScreen(
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel = viewModel(),
+    extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory),
     navigateSamenvatting: () -> Unit,
     isOverview: Boolean, )
 {
@@ -69,6 +72,18 @@ fun ExtrasScreen(
     var selectedIndex by remember { mutableStateOf(0) }
     val options = listOf("Prijs asc", "Prijs desc", "Naam asc", "Naam desc")
 
+    val extraItemsListState by extraItemViewModel.extraItemListState.collectAsState()
+    val extraMateriaalApiState = extraItemViewModel.extraMateriaalApiState
+
+    val extraItemState by extraItemViewModel.extraItemState.collectAsState()
+
+
+    when(extraMateriaalApiState){
+        is ExtraMateriaalApiState.Loading -> Text("Loading...")
+        is ExtraMateriaalApiState.Error -> {
+            val errorMessage = extraMateriaalApiState.errorMessage
+            Text("Couldn't load..., because of $errorMessage")}
+        is ExtraMateriaalApiState.Success -> {
 
     LazyColumn(
         modifier = Modifier
@@ -113,7 +128,9 @@ fun ExtrasScreen(
                 }
             }
         }
-        items(extraItemViewModel.getListSorted(selectedIndex)){ extraItem ->
+
+
+        items(extraItemsListState.currentExtraMateriaalList){ extraItem ->
             ExtraItemCard(
                 extraItem = extraItem,
                 onAmountChanged = {extraItem, amount ->
@@ -123,8 +140,8 @@ fun ExtrasScreen(
                 modifier = Modifier.padding(8.dp),
                 isOverview = isOverview
             )
-
         }
+
         if(true/*!isOverview*/){//TODO remove for demo
             item{
             VolgendeKnop(
@@ -132,6 +149,10 @@ fun ExtrasScreen(
                 enabled = true,
             )
         }}
+
+
+
+    }}
 
 
 
@@ -184,7 +205,7 @@ fun ExtraItemCard(
         ) {
             Column {
                 Text(text = extraItem.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                Text(text = extraItem.category, fontSize = 16.sp, color = Color.Gray)
+//                Text(text = extraItem.category, fontSize = 16.sp, color = Color.Gray)
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(text = "€${extraItem.price}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 

@@ -60,7 +60,7 @@ fun BlancheApp(
         var gegevensViewModel: ContactGegevensViewModel = viewModel()
         var adresViewModel: AdresViewModel = viewModel()
         var formuleViewModel: FormuleViewModel = viewModel()
-        var extraItemViewModel: ExtraItemViewModel = viewModel()
+        var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)

@@ -51,6 +51,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -279,7 +280,7 @@ fun EventGegevens(
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
     val formuleUiState by formuleViewModel.formuleUiState.collectAsState()
-    var show by remember { mutableStateOf(true) }
+    var show by rememberSaveable { mutableStateOf(true) }
 
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -343,7 +344,7 @@ fun ContactGegevens(
 ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
-    var show by remember { mutableStateOf(true) }
+    var show by rememberSaveable { mutableStateOf(true) }
 
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -417,7 +418,7 @@ fun ExtrasScreen(
     extraItemViewModel: ExtraItemViewModel = viewModel(),
 
 ) {
-    var show by remember { mutableStateOf(true) }
+    var show by rememberSaveable { mutableStateOf(true) }
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -476,7 +477,7 @@ fun ExtraItemCard(
         ) {
             Column {
                 Text(text = extraItem.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                Text(text = extraItem.category, fontSize = 16.sp, color = Color.Gray)
+//                Text(text = extraItem.category, fontSize = 16.sp, color = Color.Gray)
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(text = "€${extraItem.price}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
