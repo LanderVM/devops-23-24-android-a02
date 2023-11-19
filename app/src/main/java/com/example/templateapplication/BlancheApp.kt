@@ -180,7 +180,8 @@ fun BlancheApp(
                     composable(NavigationRoutes.guidePrice.name) {
                         GuidePriceScreen(
                             modifier = Modifier.padding(innerPadding),
-                            formulaViewModel = formuleViewModel
+                            formulaViewModel = formuleViewModel,
+                            eventAdresViewModel = eventAdresViewModel,
                         )
                     }
                 }

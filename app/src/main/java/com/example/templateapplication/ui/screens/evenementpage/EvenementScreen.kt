@@ -48,7 +48,6 @@ fun EvenementScreen(
     val selectedStartDate = remember { mutableStateOf(formuleUiState.beginDatum) }
     val selectedEndDate = remember { mutableStateOf(formuleUiState.eindDatum) }
 
-
     val scrollState = rememberScrollState()
 
     val datumState = rememberDateRangePickerState(
@@ -81,7 +80,7 @@ fun EvenementScreen(
         Titel(
             text = "Locatie",
         )
-        AutoCompleteComponent(eventAdresViewModel = eventAdresViewModel)
+        AutoCompleteComponent(eventAddressViewModel = eventAdresViewModel, showMap = true)
         Spacer(modifier = Modifier.height(35.dp))
 
         VolgendeKnop(

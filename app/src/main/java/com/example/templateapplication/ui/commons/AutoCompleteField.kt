@@ -3,7 +3,6 @@ package com.example.templateapplication.ui.commons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,37 +45,33 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AutoCompleteComponent(
     modifier: Modifier = Modifier,
-    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
+    eventAddressViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
+    showMap: Boolean,
 ) {
-    val googleMapsPredictionState by eventAdresViewModel.uiStatePrediction.collectAsState()
-    val googleMapsPredictionApiState = eventAdresViewModel.googleMapsPredictionApiState
+    val googleMapsPredictionState by eventAddressViewModel.uiStatePrediction.collectAsState()
+    val googleMapsPredictionApiState = eventAddressViewModel.googleMapsPredictionApiState
 
-    val googleMapsPlaceState by eventAdresViewModel.uiStatePlace.collectAsState()
-    val googleMapsPlaceApiState = eventAdresViewModel.googleMapsPlaceApiState
-
-    val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
-    val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
+    val googleMapsPlaceState by eventAddressViewModel.uiStatePlace.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(googleMapsPlaceState.marker, 15f)
     }
 
     LaunchedEffect(key1 = googleMapsPredictionState.input) {
-        // if (someInputText.isBlank()) return@LaunchedEffect
         withContext(Dispatchers.IO) {
             delay(1000)
-            eventAdresViewModel.getPredictions()
+            eventAddressViewModel.getPredictions()
         }
 
         withContext(Dispatchers.Main) {
             delay(1000)
-            // Update Camera position
             if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
                 cameraPositionState.position = CameraPosition.fromLatLngZoom(
                     LatLng(
                         googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
                         googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
-                    ), 12f)
+                    ), 12f
+                )
             } else {
                 cameraPositionState.position = CameraPosition.fromLatLngZoom(
                     googleMapsPlaceState.marker, 10f
@@ -85,53 +80,55 @@ fun AutoCompleteComponent(
         }
     }
 
-    Text(text = eventAdresViewModel.getDistanceString())
-
-    Box(
-        modifier = Modifier
-            .background(Color.LightGray)
-            .height(300.dp)
-            .width(300.dp)
-            .padding(2.dp)
-    ) {
-        GoogleMap(
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState,
+    if (showMap) {
+        Text(text = eventAddressViewModel.getDistanceString())
+        Box(
+            modifier = Modifier
+                .background(Color.LightGray)
+                .height(300.dp)
+                .width(300.dp)
+                .padding(2.dp)
         ) {
-            Marker(
-                state = MarkerState(position = googleMapsPlaceState.marker),
-                title = "Blanche",
-                snippet = "Onze opslagplaats"
-            )
-            if (eventAdresViewModel.checkForPlace()) {
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState,
+            ) {
                 Marker(
-                    state = MarkerState(position = LatLng(
-                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
-                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
-                    )),
-                    title = "Event plaats",
-                    snippet = "Uw gekozen plaats"
+                    state = MarkerState(position = googleMapsPlaceState.marker),
+                    title = "Blanche",
+                    snippet = "Onze opslagplaats"
                 )
-                Polyline(
-                    points = listOf(
-                        googleMapsPlaceState.marker,
-                        LatLng(
-                            googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
-                            googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                if (eventAddressViewModel.checkForPlace()) {
+                    Marker(
+                        state = MarkerState(
+                            position = LatLng(
+                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
+                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                            )
+                        ),
+                        title = "Event Locatie",
+                        snippet = "Uw gekozen locatie"
+                    )
+                    Polyline(
+                        points = listOf(
+                            googleMapsPlaceState.marker,
+                            LatLng(
+                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
+                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                            )
                         )
                     )
-                )
+                }
+                Circle(center = googleMapsPlaceState.marker, radius = 20000.0)
             }
-            Circle(center = googleMapsPlaceState.marker, radius = 20000.0)
         }
+        Spacer(modifier = Modifier.height(20.dp))
     }
-
-    Spacer(modifier = Modifier.height(20.dp))
 
     OutlinedTextField(
         value = googleMapsPredictionState.input,
         onValueChange = {
-            eventAdresViewModel.updateInput(it)
+            eventAddressViewModel.updateInput(it)
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
@@ -147,15 +144,14 @@ fun AutoCompleteComponent(
             AutoCompleteListComponent(
                 predictionsState = googleMapsPredictionState,
                 onPredictionClick = { prediction ->
-                    eventAdresViewModel.updateInput(prediction.description)
-                    eventAdresViewModel.updateMarker()
+                    eventAddressViewModel.updateInput(prediction.description)
+                    eventAddressViewModel.updateMarker()
                 }
             )
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AutoCompleteListComponent(
     predictionsState: GoogleMapsPredictionsState,
@@ -167,7 +163,10 @@ fun AutoCompleteListComponent(
 }
 
 @Composable
-fun AutocompleteCardItem(onPredictionClick: (GooglePrediction) -> Unit, prediction: GooglePrediction) {
+fun AutocompleteCardItem(
+    onPredictionClick: (GooglePrediction) -> Unit,
+    prediction: GooglePrediction
+) {
     Box(
         modifier = Modifier
             .padding(top = 10.dp)
@@ -193,6 +192,9 @@ fun PreviewCard() {
     Box(
         modifier = Modifier.height(50.dp)
     ) {
-        AutocompleteCardItem(onPredictionClick = {}, prediction = GooglePrediction("Aalst, België", listOf()))
+        AutocompleteCardItem(
+            onPredictionClick = {},
+            prediction = GooglePrediction("Aalst, België", listOf())
+        )
     }
 }

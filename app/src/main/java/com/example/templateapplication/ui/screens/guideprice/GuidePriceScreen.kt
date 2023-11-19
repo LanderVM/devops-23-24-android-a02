@@ -18,15 +18,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.data.Datasource
+import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.ui.commons.AutoCompleteComponent
 import com.example.templateapplication.ui.commons.DatumPart
+import com.example.templateapplication.ui.commons.Titel
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuidePriceScreen(
     modifier: Modifier = Modifier,
-    formulaViewModel: FormuleViewModel = viewModel()
+    formulaViewModel: FormuleViewModel = viewModel(),
+    eventAdresViewModel : EventAdresViewModel = viewModel()
 ) {
     val formulasList = Datasource().loadFormules()
     val formulaUIState by formulaViewModel.formuleUiState.collectAsState()
@@ -50,8 +54,10 @@ fun GuidePriceScreen(
             state = dataState,
             formulaViewModel = formulaViewModel,
         )
-        Spacer(modifier = Modifier.height(35.dp))
-//        AutoCompleteComponent(eventAdresViewModel = eventAdresViewModel)
+        Titel(
+            text = "Locatie",
+        )
+        AutoCompleteComponent(eventAddressViewModel = eventAdresViewModel, showMap = false)
         Spacer(modifier = Modifier.height(35.dp))
 
     }
