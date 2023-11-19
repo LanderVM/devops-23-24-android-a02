@@ -28,7 +28,6 @@ import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
-import com.example.templateapplication.model.guidePrice.GuidePriceViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
@@ -64,7 +63,6 @@ fun BlancheApp(
         var adresViewModel: AdresViewModel = viewModel()
         var formuleViewModel: FormuleViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel()
-        var guidePriceViewModel: GuidePriceViewModel = viewModel()
         var eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {
@@ -182,7 +180,7 @@ fun BlancheApp(
                     composable(NavigationRoutes.guidePrice.name) {
                         GuidePriceScreen(
                             modifier = Modifier.padding(innerPadding),
-                            guidePriceViewModel = guidePriceViewModel
+                            formulaViewModel = formuleViewModel
                         )
                     }
                 }

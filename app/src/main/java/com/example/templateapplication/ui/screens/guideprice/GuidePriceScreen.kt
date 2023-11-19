@@ -9,7 +9,7 @@ import com.example.templateapplication.data.Datasource
 @Composable
 fun GuidePriceScreen(
     modifier: Modifier = Modifier,
-    guidePriceViewModel: ViewModel = viewModel()
+    formulaViewModel: ViewModel = viewModel()
 ) {
     val formulasList = Datasource().loadFormules()
 }

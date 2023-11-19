@@ -37,6 +37,7 @@ class FormuleViewModel : ViewModel() {
                 "${dateFormat.format(_formuleUiState.value.eindDatum!!.timeInMillis)}"
     }
 
+    // todo implement in evenementscreen
     fun updateBeginUur(uur: LocalTime) {
         _formuleUiState.update {
             it.copy(beginUur = uur)
