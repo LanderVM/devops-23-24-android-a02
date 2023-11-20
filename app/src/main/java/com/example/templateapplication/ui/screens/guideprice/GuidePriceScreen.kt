@@ -37,9 +37,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
@@ -254,5 +256,19 @@ fun GuidePriceScreen(
                 }
             }
         }
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "Dit zal tussen de 350 en 500 euro liggen.",
+            modifier = Modifier.padding(horizontal = 12.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.W500,
+        )
+        Text(
+            text = "Disclaimer: deze prijs is een schatting en ligt dus niet vast.",
+            modifier = Modifier.padding(horizontal = 12.dp),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Light,
+        )
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
