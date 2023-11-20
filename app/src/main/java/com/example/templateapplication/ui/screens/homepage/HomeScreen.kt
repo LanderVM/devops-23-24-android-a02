@@ -2,6 +2,7 @@ package com.example.templateapplication.ui.screens.homepage
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -9,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.templateapplication.R
+import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.ui.commons.AlertPopUp
 import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
 import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
@@ -21,16 +23,17 @@ fun HomeScreen(
     onAllInNavigation: () -> Unit,
     onGevorderedNavigation: () -> Unit,
     onGuidePriceNavigation: () -> Unit,
+    homeViewModel: HomeViewModel,
     modifier: Modifier = Modifier
 ) {
-    var openAlertDialog by remember { mutableStateOf(true) }
+    val homeUiState by homeViewModel.homeUiState.collectAsState()
 
     when {
-        openAlertDialog -> {
+        homeUiState.openDialog -> {
             AlertPopUp(
-                onDismissRequest = { openAlertDialog = false },
+                onDismissRequest = { homeViewModel.updateOpenDialog(false)  },
                 onConfirmation = {
-                    openAlertDialog = false
+                    homeViewModel.updateOpenDialog(false)
                     onGuidePriceNavigation()
                 },
                 dialogTitle = "Snelle Inschatting",

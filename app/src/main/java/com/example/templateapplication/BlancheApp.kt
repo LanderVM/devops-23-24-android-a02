@@ -28,6 +28,7 @@ import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.adres.EventAdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
@@ -60,6 +61,7 @@ fun BlancheApp(
 
         // VIEWMODELS
         var gegevensViewModel: ContactGegevensViewModel = viewModel()
+        var homeViewModel: HomeViewModel = viewModel()
         var adresViewModel: AdresViewModel = viewModel()
         var formuleViewModel: FormuleViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel()
@@ -118,7 +120,8 @@ fun BlancheApp(
                             onGevorderedNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             onGuidePriceNavigation = {
                                 navController.navigate(NavigationRoutes.guidePrice.name)
-                            }
+                            },
+                            homeViewModel = homeViewModel
                         )
                     }
                     composable(NavigationRoutes.over.name) {
