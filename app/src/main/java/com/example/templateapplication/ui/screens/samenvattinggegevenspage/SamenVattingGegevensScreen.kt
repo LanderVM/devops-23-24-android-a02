@@ -83,6 +83,7 @@ fun SamenvattingGegevensScreen (
 ) {
     val scrollState = rememberScrollState()
 
+
     Column (
         modifier = Modifier
             .padding(horizontal = 30.dp)
@@ -123,7 +124,7 @@ fun SamenvattingGegevensScreen (
         Spacer(modifier = Modifier.height(30.dp))
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
         Spacer(modifier = Modifier.height(25.dp))
-        KostGegevens(extraItemViewModel= extraItemViewModel)
+        KostGegevens(extraItemViewModel= extraItemViewModel, eventAdresViewModel = eventAdresViewModel)
         Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {},
@@ -533,8 +534,10 @@ fun ExtraItemCard(
 @Composable
 fun KostGegevens (
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel
+    extraItemViewModel: ExtraItemViewModel,
+    eventAdresViewModel: EventAdresViewModel
 ) {
+
     Column (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -673,7 +676,9 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
-                        text="€2.25",
+                        text="€ ${(eventAdresViewModel.getDistanceLong()?.div(1000)?.minus(20))?.times(
+                            0.75
+                        )}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,

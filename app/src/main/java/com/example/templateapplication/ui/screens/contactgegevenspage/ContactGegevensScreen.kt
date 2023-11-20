@@ -88,34 +88,17 @@ fun ConatctGegevensScreen(
             postcode = adresUiState.postcode,
             onPostcodeChange = { adresViewModel.updatePostcode(it) },
             makeEmptyPostcode = { adresViewModel.updatePostcode("") },
+            btwNummer= adresUiState.btwNummer,
+            onBtwNummerChange= {adresViewModel.updateBtwNummer(it)},
+            makeEmptyBtwNummer= {adresViewModel.updateBtwNummer("")},
         )
         Spacer(modifier = Modifier.height(15.dp))
 
-        OptieFacturatieAdress(
-            facturatieAdressChecked = adresUiState.facturatieAdressChecked,
-            onFacturatieAdressCheckedChange = { adresViewModel.updateFacturatieAdressChecked(it) },
-        )
+
         Spacer(modifier = Modifier.height(15.dp))
 
-        if (!adresUiState.facturatieAdressChecked) {
-            Adressering(
-                welkeAdressering = "Facturatie adres",
-                straat = adresUiState.straatFacturatie,
-                onStraatChange = { adresViewModel.updateStraatFacturatie(it) },
-                makeEmptyStraat = { adresViewModel.updateStraatFacturatie("") },
-                huisnummer = adresUiState.huisnummerFacturatie,
-                onHuisnummerChange = { adresViewModel.updateHuisnummerFacturatie(it) },
-                makeEmptyHuisnummer = { adresViewModel.updateHuisnummerFacturatie("") },
-                gemeente = adresUiState.gemeenteFacturatie,
-                onGemeenteChange = { adresViewModel.updateGemeenteFacturatie(it) },
-                makeEmptyGemeente = { adresViewModel.updateGemeenteFacturatie("") },
-                postcode = adresUiState.postcodeFacturatie,
-                onPostcodeChange = { adresViewModel.updatePostcodeFacturatie(it) },
-                makeEmptyPostcode = { adresViewModel.updatePostcodeFacturatie("") },
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            InputVeld(label = "Btw-nummer", value = adresUiState.btwNummer, onChange = { adresViewModel.updateBtwNummer(it) }, makeEmpty = { adresViewModel.updateBtwNummer("")})
-        }
+
+
         Spacer(modifier = Modifier.height(30.dp))
         VolgendeKnop(
             navigeer = navigateExtras,
@@ -174,6 +157,9 @@ fun Adressering(
     postcode: String,
     onPostcodeChange: (String) -> Unit,
     makeEmptyPostcode: () -> Unit,
+    btwNummer: String,
+    onBtwNummerChange: (String) -> Unit,
+    makeEmptyBtwNummer: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -189,6 +175,9 @@ fun Adressering(
         InputVeld(label = "Gemeente", value = gemeente, onChange = onGemeenteChange, makeEmpty = makeEmptyGemeente)
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange, makeEmpty = makeEmptyPostcode)
+        Spacer(modifier = Modifier.height(20.dp))
+        InputVeld(label = "Btw-nummer", value = btwNummer, onChange = onBtwNummerChange, makeEmpty = makeEmptyBtwNummer)
+
     }
 }
 

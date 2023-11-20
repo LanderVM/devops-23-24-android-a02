@@ -2,8 +2,10 @@ package com.example.templateapplication.ui.screens.homepage
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.templateapplication.R
@@ -21,14 +23,14 @@ fun HomeScreen(
     onGuidePriceNavigation: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val openAlertDialog = remember { mutableStateOf(true) }
+    var openAlertDialog by remember { mutableStateOf(true) }
 
     when {
-        openAlertDialog.value -> {
+        openAlertDialog -> {
             AlertPopUp(
-                onDismissRequest = { openAlertDialog.value = false },
+                onDismissRequest = { openAlertDialog = false },
                 onConfirmation = {
-                    openAlertDialog.value = false
+                    openAlertDialog = false
                     onGuidePriceNavigation()
                 },
                 dialogTitle = "Snelle Inschatting",

@@ -51,16 +51,16 @@ fun NavigationDrawer(
             to = NavigationRoutes.over.name,
         ),
         NavigationItem(
-            title = NavigationRoutes.evenementGegevens.getString(context),
-            to = NavigationRoutes.evenementGegevens.name,
-        ),
-        NavigationItem(
             title = NavigationRoutes.formules.getString(context),
             to = NavigationRoutes.formules.name,
         ),
         NavigationItem(
             title = NavigationRoutes.extrasOverview.getString(context),
             to = NavigationRoutes.extrasOverview.name,
+        ),
+        NavigationItem(
+            title = NavigationRoutes.guidePrice.getString(context),
+            to = NavigationRoutes.guidePrice.name,
         ),
     )
 

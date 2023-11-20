@@ -92,14 +92,14 @@ class ExtraItemViewModel : ViewModel() {
 
     fun loadExtraItems(): List<ExtraItemState>{
         return listOf<ExtraItemState>(
-            ExtraItemState(1,"Stoel", "stoel", 2.99, 1, R.drawable.foto7 ),
-            ExtraItemState(2,"Tafel", "tafel", 2.99, 1, R.drawable.foto7 ),
-            ExtraItemState(3,"Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
-            ExtraItemState(4,"Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
-            ExtraItemState(5,"Stoel", "stoel", 2.99, 1, R.drawable.foto7 ),
-            ExtraItemState(6,"Tafel", "tafel", 2.99, 1, R.drawable.foto7 ),
-            ExtraItemState(7,"Stoel2", "stoel", 2.80, 1, R.drawable.foto6 ),
-            ExtraItemState(8,"Bank", "stoel", 10.0, 1, R.drawable.foto6 ),
+            ExtraItemState(1,"Stoel", "stoel", 2.99, 1, R.drawable.chair ),
+            ExtraItemState(2,"Tafel", "tafel", 2.99, 1, R.drawable.table ),
+            ExtraItemState(3,"Stoel2", "stoel", 2.80, 1, R.drawable.chair ),
+            ExtraItemState(4,"Bank", "stoel", 10.0, 1, R.drawable.bench ),
+            ExtraItemState(5,"Stoel", "stoel", 2.99, 1, R.drawable.chair ),
+            ExtraItemState(6,"Tafel", "tafel", 2.99, 1, R.drawable.table ),
+            ExtraItemState(7,"Stoel2", "stoel", 2.80, 1, R.drawable.chair ),
+            ExtraItemState(8,"Bank", "stoel", 10.0, 1, R.drawable.bench ),
         )
     }
 }

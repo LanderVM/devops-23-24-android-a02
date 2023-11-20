@@ -22,21 +22,9 @@ class AdresViewModel : ViewModel() {
 
     val huisnummer: String
         get() = adresUiState.value.huisnummer
+    val btwNummer: String
+        get() = adresUiState.value.btwNummer
 
-    val facturatieAdressChecked: Boolean
-        get() = adresUiState.value.facturatieAdressChecked
-
-    val postcodeFacturatie: String
-        get() = adresUiState.value.postcodeFacturatie
-
-    val gemeenteFacturatie: String
-        get() = adresUiState.value.gemeenteFacturatie
-
-    val huisnummerFacturatie: String
-        get() = adresUiState.value.huisnummerFacturatie
-
-    val straatFacturatie: String
-        get() = adresUiState.value.straatFacturatie
 
     init {
 
@@ -45,16 +33,8 @@ class AdresViewModel : ViewModel() {
     fun allFieldsFilled(): Boolean {
         val buttonEnabled:Boolean
         buttonEnabled = !(straat.isBlank()||straat.isEmpty() || huisnummer.isBlank()||huisnummer.isEmpty() ||
-                gemeente.isBlank()||gemeente.isEmpty() || postcode.isBlank()||postcode.isEmpty() ||
-                (!facturatieAdressChecked&&straatFacturatie.isEmpty())||(!facturatieAdressChecked&&straatFacturatie.isBlank())
-                ||
-                (!facturatieAdressChecked&&gemeenteFacturatie.isEmpty())||(!facturatieAdressChecked&&gemeenteFacturatie.isBlank())
-                ||
-                (!facturatieAdressChecked&&huisnummerFacturatie.isEmpty())||(!facturatieAdressChecked&&huisnummerFacturatie.isBlank())
-                ||
-                (!facturatieAdressChecked&&postcodeFacturatie.isEmpty())||(!facturatieAdressChecked&&postcodeFacturatie.isBlank())
-                || (!facturatieAdressChecked && adresUiState.value.btwNummer.isEmpty())
-                )
+                gemeente.isBlank()||gemeente.isEmpty() || postcode.isBlank()||postcode.isEmpty())
+
         return buttonEnabled
     }
 
@@ -82,35 +62,6 @@ class AdresViewModel : ViewModel() {
         }
     }
 
-    fun updateFacturatieAdressChecked(checked: Boolean) {
-        _adresUiState.update {
-            it.copy(facturatieAdressChecked = checked)
-        }
-    }
-
-    fun updateStraatFacturatie(straatFacturatie: String) {
-        _adresUiState.update {
-            it.copy(straatFacturatie = straatFacturatie)
-        }
-    }
-
-    fun updateHuisnummerFacturatie(huisnummerFacturatie: String) {
-        _adresUiState.update {
-            it.copy(huisnummerFacturatie = huisnummerFacturatie)
-        }
-    }
-
-    fun updateGemeenteFacturatie(gemeenteFacturatie: String) {
-        _adresUiState.update {
-            it.copy(gemeenteFacturatie = gemeenteFacturatie)
-        }
-    }
-
-    fun updatePostcodeFacturatie(postcodeFacturatie: String) {
-        _adresUiState.update {
-            it.copy(postcodeFacturatie = postcodeFacturatie)
-        }
-    }
 
     fun updateBtwNummer(btwNummer: String){
         _adresUiState.update {

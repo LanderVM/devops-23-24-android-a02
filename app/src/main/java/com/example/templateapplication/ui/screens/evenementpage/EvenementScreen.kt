@@ -69,6 +69,11 @@ fun EvenementScreen(
             text = "evenement",
             progressie = 0.25f,
         )
+        Titel(
+            text = "Locatie",
+        )
+        AutoCompleteComponent(eventAddressViewModel = eventAdresViewModel, showMap = true)
+        Spacer(modifier = Modifier.height(35.dp))
         DatumPart(
             state = datumState,
             formulaViewModel = formuleViewModel,
@@ -78,15 +83,11 @@ fun EvenementScreen(
         TimePart(state = beginTijdState, welkeTijd = "Begin tijd", formuleViewModel = formuleViewModel)
         Spacer(modifier = Modifier.height(20.dp))
         TimePart(state = eindTijdState, welkeTijd = "Eind tijd", formuleViewModel = formuleViewModel)
-        Titel(
-            text = "Locatie",
-        )
-        AutoCompleteComponent(eventAddressViewModel = eventAdresViewModel, showMap = true)
-        Spacer(modifier = Modifier.height(35.dp))
+
 
         VolgendeKnop(
             navigeer = navigateContactGegevensScreen,
-            enabled = eventAdresViewModel.checkForPlace() /*&& formuleViewModel.checkDate()*/,
+            enabled = true //eventAdresViewModel.checkForPlace() /*&& formuleViewModel.checkDate()*/,
         )
         Spacer(modifier = Modifier.height(40.dp))
     }

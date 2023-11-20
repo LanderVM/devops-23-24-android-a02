@@ -67,7 +67,7 @@ fun ExtrasScreen(
 
 
     var selectedIndex by remember { mutableStateOf(0) }
-    val options = listOf("Prijs asc", "Prijs desc", "Naam asc", "Naam desc")
+    val options = listOf("Prijs ↓", "Prijs ↑", "Naam ↓", "Naam ↑")
 
 
     LazyColumn(
@@ -108,7 +108,7 @@ fun ExtrasScreen(
                             inactiveContentColor = Color.Black,
                         ),
                     ) {
-                        Text(text = label, fontSize = 12.sp)
+                        Text(text = label, fontSize = 15.sp)
                     }
                 }
             }
@@ -125,7 +125,7 @@ fun ExtrasScreen(
             )
 
         }
-        if(true/*!isOverview*/){//TODO remove for demo
+        if(!isOverview){
             item{
             VolgendeKnop(
                 navigeer = navigateSamenvatting,
