@@ -9,13 +9,12 @@ import androidx.compose.runtime.setValue
 data class ExtraItemState(
     val extraItemId: Int = 0,
     val title: String = "",
-    val attributes: Array<String> = emptyArray(),
+    val attributes: List<String> = emptyList(),
     val price: Double = 0.00,
     val stock: Int = 112,
-    val initialAmount: Int = 1,
     @DrawableRes val imageResourceId: Int = 0,
 
 ){
-    var amount by mutableIntStateOf(initialAmount)
+    var amount by mutableIntStateOf(0)
     var isEditing by mutableStateOf(false)
 }

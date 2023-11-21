@@ -2,6 +2,7 @@ package com.example.templateapplication.data
 
 
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
+import com.example.templateapplication.network.extraMateriaal.EquipmentData
 import com.example.templateapplication.network.extraMateriaal.ExtraMateriaalApiService
 import com.example.templateapplication.network.extraMateriaal.asDomainObjects
 

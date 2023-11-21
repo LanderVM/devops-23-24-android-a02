@@ -520,7 +520,7 @@ fun ExtraItemCard(
             }
             Spacer(modifier = Modifier.width(50.dp))
             Image(
-                painter = painterResource(id = extraItem.imageResourceId),
+                painter = painterResource(id = R.drawable.foto7),
                 contentDescription = null,
                 modifier = Modifier
                     .size(150.dp)

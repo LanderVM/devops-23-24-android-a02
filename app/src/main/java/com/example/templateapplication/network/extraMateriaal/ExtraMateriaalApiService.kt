@@ -20,7 +20,7 @@ import retrofit2.http.GET
 interface ExtraMateriaalApiService {
     //suspend is added to force the user to call this in a coroutine scope
     @GET("equipment")
-    suspend fun getExtraMateriaal(): List<ApiExtraMateriaal>
+    suspend fun getExtraMateriaal(): EquipmentData
 }
 
 

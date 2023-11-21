@@ -132,10 +132,9 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
         return listOf<ExtraItemState>(
             ExtraItemState(extraItemId = 1,
                     title = "Sample Product",
-            attributes = arrayOf("attribute1", "attribute2", "attribute3"),
+            attributes = listOf("attribute1", "attribute2", "attribute3"),
             price = 29.99,
             stock = 100,
-            initialAmount = 10
         ),
 //            ExtraItemState(2, "Tafel", "tafel", 2.99, 1, R.drawable.foto7, it.imageResourceId),
 //            ExtraItemState(3, "Stoel2", "stoel", 2.80, 1, R.drawable.foto6, it.imageResourceId),
