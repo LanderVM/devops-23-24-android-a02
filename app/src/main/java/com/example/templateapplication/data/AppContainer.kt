@@ -31,6 +31,7 @@ class DefaultAppContainer(): AppContainer {
             json.asConverterFactory("application/json".toMediaType())
         )
         .baseUrl(googleMapsBaseUrl)
+        .client(client)
         .build()
 
     private val extraMateriaalRetrofit = Retrofit.Builder()
