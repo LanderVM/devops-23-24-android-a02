@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.templateapplication.api.ExtraMateriaalApplication
 import com.example.templateapplication.api.GoogleMapsApplication
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.network.GoogleDistanceResponse
@@ -136,7 +137,7 @@ class EventAdresViewModel(private val tasksRepository: GoogleMapsRepository) : V
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as GoogleMapsApplication)
+                val application = (this[APPLICATION_KEY] as ExtraMateriaalApplication)
                 val tasksRepository = application.container.googleMapsRepository
                 EventAdresViewModel(tasksRepository = tasksRepository
                 )

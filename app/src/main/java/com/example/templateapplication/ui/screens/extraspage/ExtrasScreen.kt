@@ -1,6 +1,7 @@
 package com.example.templateapplication.ui.screens.extraspage
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -25,7 +26,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -33,6 +36,7 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,24 +47,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
+import com.example.templateapplication.model.extraMateriaal.ExtraItemListState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
+import com.example.templateapplication.model.extraMateriaal.ExtraMateriaalApiState
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.VolgendeKnop
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
+import java.util.jar.Attributes
 
 @ExperimentalMaterial3Api
 @Composable
 fun ExtrasScreen(
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel = viewModel(),
+    extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory),
     navigateSamenvatting: () -> Unit,
     isOverview: Boolean, )
 {
@@ -69,6 +78,18 @@ fun ExtrasScreen(
     var selectedIndex by remember { mutableStateOf(0) }
     val options = listOf("Prijs ↓", "Prijs ↑", "Naam ↓", "Naam ↑")
 
+    val extraItemsListState by extraItemViewModel.extraItemListState.collectAsState()
+    val extraMateriaalApiState = extraItemViewModel.extraMateriaalApiState
+
+    val extraItemState by extraItemViewModel.extraItemState.collectAsState()
+
+
+    when(extraMateriaalApiState){
+        is ExtraMateriaalApiState.Loading -> Text("Loading...")
+        is ExtraMateriaalApiState.Error -> {
+            val errorMessage = extraMateriaalApiState.errorMessage
+            Text("Couldn't load..., because of $errorMessage")}
+        is ExtraMateriaalApiState.Success -> {
 
     LazyColumn(
         modifier = Modifier
@@ -113,7 +134,9 @@ fun ExtrasScreen(
                 }
             }
         }
-        items(extraItemViewModel.getListSorted(selectedIndex)){ extraItem ->
+
+
+        items(extraItemsListState.currentExtraMateriaalList){ extraItem ->
             ExtraItemCard(
                 extraItem = extraItem,
                 onAmountChanged = {extraItem, amount ->
@@ -123,6 +146,7 @@ fun ExtrasScreen(
                 modifier = Modifier.padding(8.dp),
                 isOverview = isOverview
             )
+        }
 
         }
         if(!isOverview){
@@ -132,6 +156,10 @@ fun ExtrasScreen(
                 enabled = true,
             )
         }}
+
+
+
+    }}
 
 
 
@@ -166,7 +194,6 @@ fun ExtraItemCard(
     modifier: Modifier = Modifier,
     isOverview: Boolean) {
 
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -177,29 +204,80 @@ fun ExtraItemCard(
         shape = RoundedCornerShape(8.dp),
         colors = CardColors(containerColor = MainLightestColor, contentColor = Color.Black, disabledContainerColor = Color.Gray, disabledContentColor = Color.Black)
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .height(IntrinsicSize.Min)
+                .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Column {
-                Text(text = extraItem.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                Text(text = extraItem.category, fontSize = 16.sp, color = Color.Gray)
-                Spacer(modifier = Modifier.height(15.dp))
-                Text(text = "€${extraItem.price}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            // Image
+            Image(
+                painter = painterResource(id = R.drawable.foto7), // Replace with actual image
+                contentDescription = null, // Content description can be set based on your use case
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
 
-                if(!isOverview){
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Item Details
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Title
+                Text(
+                    modifier = Modifier.size(170.dp, 40.dp),
+                    text = "${extraItem.title}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                // Price
+                Text(
+                    text = "$${extraItem.price}",
+                    style = MaterialTheme.typography.headlineSmall,
+
+                )
+            }
+            Text(
+                text = buildAnnotatedString {
+                    extraItem.attributes.forEachIndexed { index, attribute ->
+                        append(attribute)
+                        if (index < extraItem.attributes.size - 1) {
+                            // Append a new line if it's not the last item
+                            append("\n")
+                        }
+                    }
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically){
+
+
+            Text(
+                text = "${extraItem.stock} in stock",
+                style = MaterialTheme.typography.bodyLarge,
+
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            if(true /*!isOverView*/){
                     if (extraItem.isEditing) {
                         Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             OutlinedTextField(
-                                value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "",
+                                value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "1",
                                 onValueChange = {
                                     val enteredAmount = it.toIntOrNull()
                                     extraItem.amount = when {
-                                        enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(999)
+                                        enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(extraItem.stock)
                                         else ->0
                                     }
                                     onAddItem(extraItem)
@@ -229,7 +307,7 @@ fun ExtraItemCard(
                     } else {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(vertical = 8.dp)
+
                         ) {
                             Button(
                                 onClick = {
@@ -243,19 +321,11 @@ fun ExtraItemCard(
                         }
                     }
                 }
-
+            Spacer(modifier = Modifier.height(16.dp))
             }
-            Spacer(modifier = Modifier.width(50.dp))
-            Image(
-                painter = painterResource(id = extraItem.imageResourceId),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(150.dp)
-                    .clip(RoundedCornerShape(4.dp))
-            )
-        }
+        }}
     }
 
-}
+
 
 

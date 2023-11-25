@@ -64,7 +64,7 @@ fun BlancheApp(
         var homeViewModel: HomeViewModel = viewModel()
         var adresViewModel: AdresViewModel = viewModel()
         var formuleViewModel: FormuleViewModel = viewModel()
-        var extraItemViewModel: ExtraItemViewModel = viewModel()
+        var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
         var eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {

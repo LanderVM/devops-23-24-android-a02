@@ -1,44 +1,50 @@
 package com.example.templateapplication.model.extraMateriaal
 
-import androidx.annotation.DrawableRes
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.R
+import com.example.templateapplication.api.ExtraMateriaalApplication
+import com.example.templateapplication.data.ExtraMateriaalRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.io.IOException
 
-class ExtraItemViewModel : ViewModel() {
+class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRepository) : ViewModel() {
     private val _extraItemState = MutableStateFlow(ExtraItemState())
     val extraItemState = _extraItemState.asStateFlow()
 
+    private val _extraItemListState = MutableStateFlow(ExtraItemListState())
+    val extraItemListState = _extraItemListState.asStateFlow()
+
+    var extraMateriaalApiState: ExtraMateriaalApiState by mutableStateOf(ExtraMateriaalApiState.Loading)
+        private set
+
+    init {
+        getApiExtraMateriaal()
+    }
+
+    //veranderen
     private val _listExtraItems = loadExtraItems().toMutableStateList()
 
+
     private var addedItems = listOf<ExtraItemState>().toMutableStateList()
-
-
 
     val listExtraItems: List<ExtraItemState>
         get() = _listExtraItems
 
-    val title: String
-        get() = extraItemState.value.title
-
-    val category: String
-        get()= extraItemState.value.category
-
-    val price: Double
-        get() = extraItemState.value.price
-
-    val amount: Int
-        get() = extraItemState.value.amount
-
-    val imageResourceId: Int
-        get() = extraItemState.value.imageResourceId
 
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
-        listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
+        _listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
             extraItem.amount = amount
         }
     fun getTotalPrice() : Double{
@@ -57,6 +63,38 @@ class ExtraItemViewModel : ViewModel() {
             existingItem.amount = item.amount
         } else {
             addedItems.add(item)
+        }
+    }
+
+    private fun getApiExtraMateriaal(){
+        viewModelScope.launch {
+            try{
+                //use the repository
+                //val tasksRepository = ApiTasksRepository() //repo is now injected
+                val listResult = extraMateriaalRepository.getExtraMateriaal()
+                _extraItemListState.update {
+                    it.copy(currentExtraMateriaalList = listResult)
+                }
+                extraMateriaalApiState = ExtraMateriaalApiState.Success(listResult)
+            }
+            catch (e: IOException){
+                val errorMessage = e.message ?: "An error occurred"
+
+                // Set the error state with the error message
+                extraMateriaalApiState = ExtraMateriaalApiState.Error(errorMessage)
+            }
+
+        }
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as ExtraMateriaalApplication)
+                val extraMateriaalRepository = application.container.extraMateriaalRepository
+                ExtraItemViewModel(extraMateriaalRepository = extraMateriaalRepository
+                )
+            }
         }
     }
 
