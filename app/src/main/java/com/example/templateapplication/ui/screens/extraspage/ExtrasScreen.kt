@@ -136,7 +136,7 @@ fun ExtrasScreen(
         }
 
 
-        items(extraItemsListState.currentExtraMateriaalList){ extraItem ->
+        items(extraItemViewModel.getListSorted(selectedIndex)){ extraItem ->
             ExtraItemCard(
                 extraItem = extraItem,
                 onAmountChanged = {extraItem, amount ->
@@ -148,8 +148,8 @@ fun ExtrasScreen(
             )
         }
 
-        }
-        if(!isOverview){
+
+        if(true /*!isOverview*/){
             item{
             VolgendeKnop(
                 navigeer = navigateSamenvatting,

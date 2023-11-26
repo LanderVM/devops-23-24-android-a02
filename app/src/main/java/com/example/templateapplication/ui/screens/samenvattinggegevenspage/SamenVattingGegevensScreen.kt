@@ -281,7 +281,7 @@ fun EventGegevens(
     val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
     val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
 
-    var show by remember { mutableStateOf(true) }
+
     var show by rememberSaveable { mutableStateOf(true) }
 
     Column (

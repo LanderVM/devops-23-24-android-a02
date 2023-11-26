@@ -34,24 +34,22 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
     }
 
     //veranderen
-    private val _listExtraItems = loadExtraItems().toMutableStateList()
+
 
 
     private var addedItems = listOf<ExtraItemState>().toMutableStateList()
 
-    val listExtraItems: List<ExtraItemState>
-        get() = _listExtraItems
 
 
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
-        _listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
+       extraItemListState.value.currentExtraMateriaalList.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
             extraItem.amount = amount
         }
     fun getTotalPrice() : Double{
         return addedItems.sumOf { it.price * it.amount }
     }
     fun changeExtraItemEditing(item: ExtraItemState, editing: Boolean) =
-        listExtraItems.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
+        _extraItemListState.value.currentExtraMateriaalList.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
             extraItem.isEditing = editing
         }
 
@@ -115,10 +113,10 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
-            0 ->  listExtraItems.sortedBy { it.price } // Sort asc
-            1 ->  listExtraItems.sortedByDescending { it.price } // Sort desc
-            2 ->  listExtraItems.sortedBy { it.title } // Sort by name asc
-            3 ->  listExtraItems.sortedByDescending { it.title } // Sort by name desc
+            0 ->   _extraItemListState.value.currentExtraMateriaalList.sortedBy { it.price } // Sort asc
+            1 ->   _extraItemListState.value.currentExtraMateriaalList.sortedByDescending { it.price } // Sort desc
+            2 ->   _extraItemListState.value.currentExtraMateriaalList.sortedBy { it.title } // Sort by name asc
+            3 ->   _extraItemListState.value.currentExtraMateriaalList.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")
 
 
@@ -128,16 +126,4 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
     }
 
 
-    fun loadExtraItems(): List<ExtraItemState>{
-        return listOf<ExtraItemState>(
-            ExtraItemState(1,"Stoel", "stoel", 2.99, 1, R.drawable.chair ),
-            ExtraItemState(2,"Tafel", "tafel", 2.99, 1, R.drawable.table ),
-            ExtraItemState(3,"Stoel2", "stoel", 2.80, 1, R.drawable.chair ),
-            ExtraItemState(4,"Bank", "stoel", 10.0, 1, R.drawable.bench ),
-            ExtraItemState(5,"Stoel", "stoel", 2.99, 1, R.drawable.chair ),
-            ExtraItemState(6,"Tafel", "tafel", 2.99, 1, R.drawable.table ),
-            ExtraItemState(7,"Stoel2", "stoel", 2.80, 1, R.drawable.chair ),
-            ExtraItemState(8,"Bank", "stoel", 10.0, 1, R.drawable.bench ),
-        )
-    }
 }
