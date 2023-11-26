@@ -1,5 +1,6 @@
 package com.example.templateapplication.ui.commons
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.ui.theme.onPrimary
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +35,7 @@ fun DateRangePicker(
     state: DateRangePickerState,
     formulaViewModel: FormulaViewModel,
     showCalenderToggle: Boolean,
+    enableRecheckFunction: () -> Unit = {},
 ) {
     Titel(
         text = "Datum",
@@ -46,6 +49,13 @@ fun DateRangePicker(
 
         LaunchedEffect(state.selectedStartDateMillis) {
             formulaViewModel.updateDateRange(state.selectedStartDateMillis, state.selectedEndDateMillis)
+            enableRecheckFunction()
+            Log.i("Bla", "updatingA: ${state.selectedStartDateMillis.toString()} ---- ${state.selectedEndDateMillis.toString()}")
+        }
+
+        LaunchedEffect(state.selectedEndDateMillis) {
+            formulaViewModel.updateDateRange(state.selectedStartDateMillis, state.selectedEndDateMillis)
+            Log.i("Bla", "updatingB: ${state.selectedStartDateMillis.toString()} ---- ${state.selectedEndDateMillis.toString()}")
         }
 
         DateRangePicker(
@@ -83,7 +93,6 @@ fun DateRangePicker(
                 }
             },
             showModeToggle = showCalenderToggle,
-            // TODO color cleanup
             colors = DatePickerDefaults.colors(
                 containerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichter))),
                 titleContentColor = Color.Black,
@@ -112,6 +121,6 @@ fun DateRangePicker(
 private fun getFormattedDate(timeInMillis: Long): String {
     val calender = Calendar.getInstance()
     calender.timeInMillis = timeInMillis
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
     return dateFormat.format(calender.timeInMillis)
 }

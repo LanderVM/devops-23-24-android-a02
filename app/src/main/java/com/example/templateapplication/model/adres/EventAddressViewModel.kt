@@ -24,8 +24,8 @@ import java.io.IOException
 
 class EventAddressViewModel(private val tasksRepository: GoogleMapsRepository) : ViewModel() {
     // Autocomplete
-    private val _uiStatePrediciton = MutableStateFlow(GoogleMapsPredictionsState(GooglePredictionsResponse(arrayListOf())))
-    val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediciton.asStateFlow()
+    private val _uiStatePrediction = MutableStateFlow(GoogleMapsPredictionsState(GooglePredictionsResponse(arrayListOf())))
+    val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediction.asStateFlow()
 
     var googleMapsPredictionApiState: ApiResponse<GoogleMapsPredictionsState> by mutableStateOf(ApiResponse.Loading)
         private set
@@ -48,7 +48,7 @@ class EventAddressViewModel(private val tasksRepository: GoogleMapsRepository) :
     }
 
     fun updateInput(input: String) {
-        _uiStatePrediciton.update {
+        _uiStatePrediction.update {
             it.copy(input = input)
         }
     }
@@ -56,8 +56,8 @@ class EventAddressViewModel(private val tasksRepository: GoogleMapsRepository) :
     fun getPredictions(){
         viewModelScope.launch {
             try{
-                val listResult = tasksRepository.getPredictions(input = _uiStatePrediciton.value.input)
-                _uiStatePrediciton.update {
+                val listResult = tasksRepository.getPredictions(input = _uiStatePrediction.value.input)
+                _uiStatePrediction.update {
                     it.copy(predictionsResponse = listResult)
                 }
                 googleMapsPredictionApiState = ApiResponse.Success(
@@ -71,8 +71,8 @@ class EventAddressViewModel(private val tasksRepository: GoogleMapsRepository) :
         }
     }
 
-    fun updateDistance() {
-        if (checkForPlace()) {
+    private fun updateDistance() {
+        if (placeFound()) {
             viewModelScope.launch {
                 try {
                     val distanceResult = tasksRepository.getDistance(
@@ -96,7 +96,7 @@ class EventAddressViewModel(private val tasksRepository: GoogleMapsRepository) :
     fun updateMarker() {
         viewModelScope.launch {
             try {
-                val placeResult = tasksRepository.getPlace(input = _uiStatePrediciton.value.input)
+                val placeResult = tasksRepository.getPlace(input = _uiStatePrediction.value.input)
                 _uiStatePlace.update {
                     it.copy(placeResponse = placeResult)
                 }
@@ -125,12 +125,10 @@ class EventAddressViewModel(private val tasksRepository: GoogleMapsRepository) :
         return "Afstand: " + uiStateDistance.value.distanceResponse.rows[0].elements[0].distance.text
     }
 
-    // Check of er een plaats is gevonden met de autocomplete
-    fun checkForPlace() : Boolean {
-        if (uiStatePlace.value.placeResponse.candidates.isNotEmpty()) {
-            return true
-        }
-        return false
+    fun placeFound() : Boolean {
+        return if (uiStatePlace.value.placeResponse.candidates.size != 0)
+            uiStatePlace.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
+        else false
     }
 
     companion object {

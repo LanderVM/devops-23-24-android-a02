@@ -47,6 +47,7 @@ fun AutoCompleteComponent(
     modifier: Modifier = Modifier,
     eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
     showMap: Boolean,
+    enableRecheckFunction: () -> Unit,
 ) {
     val googleMapsPredictionState by eventAddressViewModel.uiStatePrediction.collectAsState()
     val googleMapsPredictionApiState = eventAddressViewModel.googleMapsPredictionApiState
@@ -98,7 +99,7 @@ fun AutoCompleteComponent(
                     title = "Blanche",
                     snippet = "Onze opslagplaats"
                 )
-                if (eventAddressViewModel.checkForPlace()) {
+                if (eventAddressViewModel.placeFound()) {
                     Marker(
                         state = MarkerState(
                             position = LatLng(
@@ -147,6 +148,7 @@ fun AutoCompleteComponent(
                 onPredictionClick = { prediction ->
                     eventAddressViewModel.updateInput(prediction.description)
                     eventAddressViewModel.updateMarker()
+                    enableRecheckFunction()
                 }
             )
         }

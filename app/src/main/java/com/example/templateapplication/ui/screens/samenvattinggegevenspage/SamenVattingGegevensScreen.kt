@@ -26,6 +26,7 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
@@ -269,7 +270,7 @@ fun EventGegevens(
     ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
-    val formuleUiState by formulaViewModel.formuleUiState.collectAsState()
+    val formuleUiState by formulaViewModel.formulaUiState.collectAsState()
 
     val googleMapsPredictionState by eventAddressViewModel.uiStatePrediction.collectAsState()
     val googleMapsPredictionApiState = eventAddressViewModel.googleMapsPredictionApiState
@@ -500,7 +501,11 @@ fun ExtraItemCard(
                             keyboardType = KeyboardType.Number
                         ),
                         label = { Text("Aantal") },
-                        colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            disabledContainerColor = Color.White,
+                        ),
                         modifier = Modifier
                             .width(70.dp)
 
@@ -508,8 +513,8 @@ fun ExtraItemCard(
                     Spacer(modifier = Modifier.width(10.dp))
                     IconButton(
                         onClick = {
-                            extraItem.isEditing = false;
-                            onRemoveItem(extraItem);
+                            extraItem.isEditing = false
+                            onRemoveItem(extraItem)
                         },
                         colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
 
@@ -595,7 +600,11 @@ fun KostGegevens (
                         fontWeight = FontWeight.Bold,
                     )
                 }
-                Divider(color = Color.Gray, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 2.dp,
+                    color = Color.Gray
+                )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.height(35.dp)
@@ -686,7 +695,11 @@ fun KostGegevens (
                         color = Color.Black,
                     )
                 }
-                Divider(color = Color.Gray, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 2.dp,
+                    color = Color.Gray
+                )
                 Row(
                     //horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -729,7 +742,11 @@ fun KostGegevens (
                         color = Color.Black,
                     )
                 }
-                Divider(color = Color.Gray, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 2.dp,
+                    color = Color.Gray
+                )
                 Row(
                     //horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,

@@ -13,7 +13,7 @@ import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 
 @Composable
-fun VolgendeKnop(
+fun NextPageButton(
     modifier: Modifier = Modifier,
     navigeer: () -> Unit,
     enabled: Boolean = true,
@@ -39,7 +39,7 @@ fun VolgendeKnop(
 fun VolgendeKnopPreview(
     modifier: Modifier = Modifier,
 ) {
-    VolgendeKnop(
+    NextPageButton(
         navigeer = {}
     )
 }

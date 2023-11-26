@@ -1,5 +1,6 @@
 package com.example.templateapplication.model.formules
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,7 +11,7 @@ import java.util.Locale
 
 class FormulaViewModel : ViewModel() {
     private val _formuleUiState = MutableStateFlow(FormuleUiState())
-    val formuleUiState = _formuleUiState.asStateFlow()
+    val formulaUiState = _formuleUiState.asStateFlow()
 
     fun updateDateRange(beginDate: Long?, endDate: Long?) {
         val begin = Calendar.getInstance()
@@ -24,6 +25,7 @@ class FormulaViewModel : ViewModel() {
         _formuleUiState.update {
             it.copy(startDate = begin, endDate = end)
         }
+        Log.i("Bla", "updating: ${beginDate.toString()} ---- ${endDate.toString()}")
     }
 
     fun getDateRange(): String {

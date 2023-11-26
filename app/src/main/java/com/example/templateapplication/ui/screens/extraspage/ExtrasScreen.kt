@@ -55,7 +55,7 @@ import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraMateriaalApiState
 import com.example.templateapplication.ui.commons.ProgressieBar
-import com.example.templateapplication.ui.commons.VolgendeKnop
+import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 
@@ -145,7 +145,7 @@ fun ExtrasScreen(
 
         if(true /*!isOverview*/){
             item{
-            VolgendeKnop(
+            NextPageButton(
                 navigeer = navigateSamenvatting,
                 enabled = true,
             )
@@ -281,7 +281,11 @@ fun ExtraItemCard(
                                     keyboardType = KeyboardType.Number
                                 ),
                                 label = { Text(text = "Aantal", fontSize = 10.sp) },
-                                colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.White,
+                                    unfocusedContainerColor = Color.White,
+                                    disabledContainerColor = Color.White,
+                                ),
                                 modifier = Modifier
                                     .width(70.dp)
 
@@ -289,8 +293,8 @@ fun ExtraItemCard(
                             Spacer(modifier = Modifier.width(10.dp))
                             IconButton(
                                 onClick = {
-                                    extraItem.isEditing = false;
-                                    onRemoveItem(extraItem);
+                                    extraItem.isEditing = false
+                                    onRemoveItem(extraItem)
                                 },
                                 colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
 
@@ -305,7 +309,7 @@ fun ExtraItemCard(
                         ) {
                             Button(
                                 onClick = {
-                                    extraItem.isEditing = true;
+                                    extraItem.isEditing = true
                                     onAddItem(extraItem)
                                 },
                                 colors = ButtonColors(containerColor = MainColor, contentColor = Color.White, disabledContentColor = Color.White, disabledContainerColor = MainColor)

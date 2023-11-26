@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -34,14 +35,14 @@ import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.Titel
-import com.example.templateapplication.ui.commons.VolgendeKnop
+import com.example.templateapplication.ui.commons.NextPageButton
 
 @Composable
 fun ConatctGegevensScreen(
+    modifier: Modifier = Modifier,
     gegevensViewModel: ContactGegevensViewModel = viewModel(),
     adresViewModel: AdresViewModel = viewModel(),
     navigateExtras: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
@@ -100,7 +101,7 @@ fun ConatctGegevensScreen(
 
 
         Spacer(modifier = Modifier.height(30.dp))
-        VolgendeKnop(
+        NextPageButton(
             navigeer = navigateExtras,
             enabled = gegevensViewModel.allFieldsFilled() && adresViewModel.allFieldsFilled(),
         )
@@ -199,14 +200,14 @@ fun InputVeld(
             .defaultMinSize(minHeight = 75.dp)
             .height(75.dp)
             .padding(horizontal = 40.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
             unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
         ),
         trailingIcon = {
             IconButton(
                 onClick = makeEmpty,
-                enabled = !value.isEmpty(),
+                enabled = value.isNotEmpty(),
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),

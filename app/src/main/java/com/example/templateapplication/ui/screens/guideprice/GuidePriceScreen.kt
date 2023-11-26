@@ -65,7 +65,7 @@ fun GuidePriceScreen(
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
     val scrollState = rememberScrollState()
-    val formulaUIState by formulaViewModel.formuleUiState.collectAsState()
+    val formulaUIState by formulaViewModel.formulaUiState.collectAsState()
 
     val selectedStartDate by remember { mutableStateOf(formulaUIState.startDate) }
     val selectedEndDate by remember { mutableStateOf(formulaUIState.endDate) }
@@ -111,7 +111,11 @@ fun GuidePriceScreen(
         Titel(
             text = "Locatie",
         )
-        AutoCompleteComponent(eventAddressViewModel = eventAddressViewModel, showMap = false)
+        AutoCompleteComponent(
+            eventAddressViewModel = eventAddressViewModel,
+            showMap = false,
+            enableRecheckFunction = {}
+        )
         Titel(
             text = "Details",
         )
