@@ -4,7 +4,7 @@ import android.app.Application
 import com.example.templateapplication.data.AppContainer
 import com.example.templateapplication.data.DefaultAppContainer
 
-class ExtraMateriaalApplication: Application() {
+class RestApiApplication: Application() {
     lateinit var container: AppContainer
 
     override fun onCreate() {

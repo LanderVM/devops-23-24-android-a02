@@ -1,8 +1,7 @@
 package com.example.templateapplication.data
 
 import com.example.templateapplication.network.GooglePlacesApiService
-import com.example.templateapplication.network.extraMateriaal.ExtraMateriaalApiService
-import com.example.templateapplication.network.guidePriceEstimation.GuidePriceEstimationApiService
+import com.example.templateapplication.network.restApi.RestApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,8 +12,7 @@ import retrofit2.Retrofit
 
 interface AppContainer {
     val googleMapsRepository: GoogleMapsRepository
-    val extraMateriaalRepository: ExtraMateriaalRepository
-    val guidePriceEstimationRepository: GuidePriceEstimationRepository
+    val apiRepository: ApiRepository
 }
 
 class DefaultAppContainer(): AppContainer {
@@ -44,35 +42,18 @@ class DefaultAppContainer(): AppContainer {
         .client(client)
         .build()
 
-    private val guidePriceEstimationRetrofit = Retrofit.Builder()
-        .addConverterFactory(
-            json.asConverterFactory("application/json".toMediaType())
-        )
-        .baseUrl(restApiBaseUrl)
-        .client(client)
-        .build()
-
     private val googleMapsRetrofitService: GooglePlacesApiService by lazy {
         googleMapsRetrofit.create(GooglePlacesApiService::class.java)
     }
 
-    private val extraMateriaalRetrofitService: ExtraMateriaalApiService by lazy {
-        extraMateriaalRetrofit.create(ExtraMateriaalApiService::class.java)
+    private val restApiRetrofitService: RestApiService by lazy {
+        extraMateriaalRetrofit.create(RestApiService::class.java)
     }
-
-    private val guidePriceEstimationRetrofitService: GuidePriceEstimationApiService by lazy {
-        guidePriceEstimationRetrofit.create(GuidePriceEstimationApiService::class.java)
-    }
-
     override val googleMapsRepository: ApiGoogleMapsRepository by lazy {
         ApiGoogleMapsRepository(googleMapsRetrofitService)
     }
 
-    override val extraMateriaalRepository: ExtraMateriaalRepository by lazy {
-        ApiExtraMateriaalRepository(extraMateriaalRetrofitService)
-    }
-
-    override val guidePriceEstimationRepository: GuidePriceEstimationRepository by lazy {
-        ApiGuidePriceEstimationRepository(guidePriceEstimationRetrofitService)
+    override val apiRepository: ApiRepository by lazy {
+        RestApiRepository(restApiRetrofitService)
     }
 }

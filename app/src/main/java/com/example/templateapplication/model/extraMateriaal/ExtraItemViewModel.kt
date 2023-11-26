@@ -10,15 +10,15 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.templateapplication.api.ExtraMateriaalApplication
-import com.example.templateapplication.data.ExtraMateriaalRepository
+import com.example.templateapplication.api.RestApiApplication
+import com.example.templateapplication.data.ApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ExtraItemViewModel(private val extraMateriaalRepository: ExtraMateriaalRepository) :
+class ExtraItemViewModel(private val apiRepository: ApiRepository) :
     ViewModel() {
     private val _extraItemState = MutableStateFlow(ExtraItemState())
     val extraItemState = _extraItemState.asStateFlow()
@@ -71,7 +71,7 @@ class ExtraItemViewModel(private val extraMateriaalRepository: ExtraMateriaalRep
             try {
                 //use the repository
                 //val tasksRepository = ApiTasksRepository() //repo is now injected
-                val listResult = extraMateriaalRepository.getExtraMateriaal()
+                val listResult = apiRepository.getQuotationExtraEquipment()
                 _extraItemListState.update {
                     it.copy(currentExtraMateriaalList = listResult)
                 }
@@ -89,10 +89,10 @@ class ExtraItemViewModel(private val extraMateriaalRepository: ExtraMateriaalRep
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as ExtraMateriaalApplication)
-                val extraMateriaalRepository = application.container.extraMateriaalRepository
+                val application = (this[APPLICATION_KEY] as RestApiApplication)
+                val extraMateriaalRepository = application.container.apiRepository
                 ExtraItemViewModel(
-                    extraMateriaalRepository = extraMateriaalRepository
+                    apiRepository = extraMateriaalRepository
                 )
             }
         }

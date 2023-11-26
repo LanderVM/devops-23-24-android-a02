@@ -1,11 +1,11 @@
 package com.example.templateapplication.model.guidePriceEstimation
 
-import com.example.templateapplication.network.guidePriceEstimation.EquipmentData
-import com.example.templateapplication.network.guidePriceEstimation.FormulaData
+import com.example.templateapplication.network.restApi.EstimationEquipmentData
+import com.example.templateapplication.network.restApi.EstimationFormulaData
 
 data class PriceEstimationDetailsState(
-    val formulas: List<FormulaData>,
-    val equipment: List<EquipmentData>,
+    val formulas: List<EstimationFormulaData>,
+    val equipment: List<EstimationEquipmentData>,
     val unavailableDays: List<Long>,
 )
 
