@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.templateapplication.R
 import com.example.templateapplication.api.ExtraMateriaalApplication
 import com.example.templateapplication.data.ExtraMateriaalRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +18,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRepository) : ViewModel() {
+class ExtraItemViewModel(private val extraMateriaalRepository: ExtraMateriaalRepository) :
+    ViewModel() {
     private val _extraItemState = MutableStateFlow(ExtraItemState())
     val extraItemState = _extraItemState.asStateFlow()
 
@@ -36,22 +36,24 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
     //veranderen
 
 
-
     private var addedItems = listOf<ExtraItemState>().toMutableStateList()
 
 
-
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
-       extraItemListState.value.currentExtraMateriaalList.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
-            extraItem.amount = amount
-        }
-    fun getTotalPrice() : Double{
+        extraItemListState.value.currentExtraMateriaalList.find { it.extraItemId == item.extraItemId }
+            ?.let { extraItem ->
+                extraItem.amount = amount
+            }
+
+    fun getTotalPrice(): Double {
         return addedItems.sumOf { it.price * it.amount }
     }
+
     fun changeExtraItemEditing(item: ExtraItemState, editing: Boolean) =
-        _extraItemListState.value.currentExtraMateriaalList.find { it.extraItemId == item.extraItemId }?.let { extraItem ->
-            extraItem.isEditing = editing
-        }
+        _extraItemListState.value.currentExtraMateriaalList.find { it.extraItemId == item.extraItemId }
+            ?.let { extraItem ->
+                extraItem.isEditing = editing
+            }
 
     fun addItemToCart(item: ExtraItemState) {
 
@@ -64,9 +66,9 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
         }
     }
 
-    private fun getApiExtraMateriaal(){
+    private fun getApiExtraMateriaal() {
         viewModelScope.launch {
-            try{
+            try {
                 //use the repository
                 //val tasksRepository = ApiTasksRepository() //repo is now injected
                 val listResult = extraMateriaalRepository.getExtraMateriaal()
@@ -74,8 +76,7 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
                     it.copy(currentExtraMateriaalList = listResult)
                 }
                 extraMateriaalApiState = ExtraMateriaalApiState.Success(listResult)
-            }
-            catch (e: IOException){
+            } catch (e: IOException) {
                 val errorMessage = e.message ?: "An error occurred"
 
                 // Set the error state with the error message
@@ -90,7 +91,8 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
             initializer {
                 val application = (this[APPLICATION_KEY] as ExtraMateriaalApplication)
                 val extraMateriaalRepository = application.container.extraMateriaalRepository
-                ExtraItemViewModel(extraMateriaalRepository = extraMateriaalRepository
+                ExtraItemViewModel(
+                    extraMateriaalRepository = extraMateriaalRepository
                 )
             }
         }
@@ -106,17 +108,17 @@ class ExtraItemViewModel(private val extraMateriaalRepository : ExtraMateriaalRe
     }
 
 
-    fun getListAddedItems() : List<ExtraItemState> {
+    fun getListAddedItems(): List<ExtraItemState> {
         return addedItems
     }
 
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
-            0 ->   _extraItemListState.value.currentExtraMateriaalList.sortedBy { it.price } // Sort asc
-            1 ->   _extraItemListState.value.currentExtraMateriaalList.sortedByDescending { it.price } // Sort desc
-            2 ->   _extraItemListState.value.currentExtraMateriaalList.sortedBy { it.title } // Sort by name asc
-            3 ->   _extraItemListState.value.currentExtraMateriaalList.sortedByDescending { it.title } // Sort by name desc
+            0 -> _extraItemListState.value.currentExtraMateriaalList.sortedBy { it.price } // Sort asc
+            1 -> _extraItemListState.value.currentExtraMateriaalList.sortedByDescending { it.price } // Sort desc
+            2 -> _extraItemListState.value.currentExtraMateriaalList.sortedBy { it.title } // Sort by name asc
+            3 -> _extraItemListState.value.currentExtraMateriaalList.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")
 
 

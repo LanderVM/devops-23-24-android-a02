@@ -1,8 +1,6 @@
 package com.example.templateapplication.network.extraMateriaal
 
-import android.annotation.SuppressLint
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -28,7 +26,6 @@ data class ImageData(
 
 
 
-@SuppressLint("ResourceType")
 fun EquipmentData.asDomainObjects(): List<ExtraItemState> {
     var domainList = this.equipment.map {
         ExtraItemState(it.id, it.title, it.attributes, it.price,it.stock, imageResourceId = 1, )

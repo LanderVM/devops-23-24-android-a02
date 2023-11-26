@@ -1,12 +1,6 @@
 package com.example.templateapplication.network.extraMateriaal
 
-import com.example.templateapplication.model.extraMateriaal.ExtraItemState
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
 import retrofit2.http.GET
-
 
 
 //create the actual function implementations (expensive!)

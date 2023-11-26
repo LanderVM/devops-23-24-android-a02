@@ -2,6 +2,7 @@ package com.example.templateapplication.data
 
 import com.example.templateapplication.network.GooglePlacesApiService
 import com.example.templateapplication.network.extraMateriaal.ExtraMateriaalApiService
+import com.example.templateapplication.network.guidePriceEstimation.GuidePriceEstimationApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,11 +14,12 @@ import retrofit2.Retrofit
 interface AppContainer {
     val googleMapsRepository: GoogleMapsRepository
     val extraMateriaalRepository: ExtraMateriaalRepository
+    val guidePriceEstimationRepository: GuidePriceEstimationRepository
 }
 
 class DefaultAppContainer(): AppContainer {
     private val googleMapsBaseUrl = GooglePlacesApiService.BASE_URL
-    private val extraMateriaalBaseUrl = "http://10.0.2.2:5292/api/"
+    private val restApiBaseUrl = "http://10.0.2.2:5292/api/"
 
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -38,7 +40,15 @@ class DefaultAppContainer(): AppContainer {
         .addConverterFactory(
             json.asConverterFactory("application/json".toMediaType())
         )
-        .baseUrl(extraMateriaalBaseUrl)
+        .baseUrl(restApiBaseUrl)
+        .client(client)
+        .build()
+
+    private val guidePriceEstimationRetrofit = Retrofit.Builder()
+        .addConverterFactory(
+            json.asConverterFactory("application/json".toMediaType())
+        )
+        .baseUrl(restApiBaseUrl)
         .client(client)
         .build()
 
@@ -50,11 +60,19 @@ class DefaultAppContainer(): AppContainer {
         extraMateriaalRetrofit.create(ExtraMateriaalApiService::class.java)
     }
 
+    private val guidePriceEstimationRetrofitService: GuidePriceEstimationApiService by lazy {
+        guidePriceEstimationRetrofit.create(GuidePriceEstimationApiService::class.java)
+    }
+
     override val googleMapsRepository: ApiGoogleMapsRepository by lazy {
         ApiGoogleMapsRepository(googleMapsRetrofitService)
     }
 
     override val extraMateriaalRepository: ExtraMateriaalRepository by lazy {
         ApiExtraMateriaalRepository(extraMateriaalRetrofitService)
+    }
+
+    override val guidePriceEstimationRepository: GuidePriceEstimationRepository by lazy {
+        ApiGuidePriceEstimationRepository(guidePriceEstimationRetrofitService)
     }
 }
