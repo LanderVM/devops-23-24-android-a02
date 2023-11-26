@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 fun ProgressieBar(
     modifier: Modifier = Modifier,
     text: String = "",
-    progressie: Float = 0.0f
+    progression: Float = 0.0f
 ) {
     Spacer(modifier = Modifier.height(35.dp))
     LinearProgressIndicator(
-        progress = { progressie },
+        progress = { progression },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 50.dp),
@@ -45,6 +45,6 @@ fun ProgressieBarPreview(
 ) {
     ProgressieBar(
         text = "Test",
-        progressie = 0.5f,
+        progression = 0.5f,
     )
 }

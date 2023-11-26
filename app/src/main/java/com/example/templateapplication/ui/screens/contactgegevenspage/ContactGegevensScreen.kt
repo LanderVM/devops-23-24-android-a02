@@ -56,7 +56,7 @@ fun ConatctGegevensScreen(
     ) {
         ProgressieBar(
             text = "Personalia",
-            progressie = 0.50f,
+            progression = 0.50f,
         )
         ContactGegevens(
             naam = gegevensUiState.naam,

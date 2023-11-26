@@ -40,7 +40,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -59,10 +58,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.AdresViewModel
-import com.example.templateapplication.model.adres.EventAdresViewModel
+import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
-import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
@@ -75,9 +74,9 @@ fun SamenvattingGegevensScreen (
     modifier: Modifier = Modifier,
     gegevensViewModel: ContactGegevensViewModel = viewModel(),
     adresViewModel: AdresViewModel = viewModel(),
-    formuleViewModel: FormuleViewModel = viewModel(),
+    formulaViewModel: FormulaViewModel = viewModel(),
     extraItemViewModel: ExtraItemViewModel = viewModel(),
-    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
+    eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
     navigateEventGegevens: ()->Unit,
     navigateContactGegevens:()->Unit,
     navigateExtras: () -> Unit,
@@ -105,8 +104,8 @@ fun SamenvattingGegevensScreen (
         EventGegevens(
             gegevensViewModel = gegevensViewModel,
             adresViewModel = adresViewModel,
-            formuleViewModel = formuleViewModel,
-            eventAdresViewModel = eventAdresViewModel,
+            formulaViewModel = formulaViewModel,
+            eventAddressViewModel = eventAddressViewModel,
         )
         Spacer(modifier = Modifier.height(30.dp))
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
@@ -125,7 +124,7 @@ fun SamenvattingGegevensScreen (
         Spacer(modifier = Modifier.height(30.dp))
         Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
         Spacer(modifier = Modifier.height(25.dp))
-        KostGegevens(extraItemViewModel= extraItemViewModel, eventAdresViewModel = eventAdresViewModel)
+        KostGegevens(extraItemViewModel= extraItemViewModel, eventAddressViewModel = eventAddressViewModel)
         Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {},
@@ -265,21 +264,21 @@ fun EventGegevens(
     modifier: Modifier = Modifier,
     adresViewModel: AdresViewModel,
     gegevensViewModel: ContactGegevensViewModel,
-    formuleViewModel: FormuleViewModel,
-    eventAdresViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
+    formulaViewModel: FormulaViewModel,
+    eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
     ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
-    val formuleUiState by formuleViewModel.formuleUiState.collectAsState()
+    val formuleUiState by formulaViewModel.formuleUiState.collectAsState()
 
-    val googleMapsPredictionState by eventAdresViewModel.uiStatePrediction.collectAsState()
-    val googleMapsPredictionApiState = eventAdresViewModel.googleMapsPredictionApiState
+    val googleMapsPredictionState by eventAddressViewModel.uiStatePrediction.collectAsState()
+    val googleMapsPredictionApiState = eventAddressViewModel.googleMapsPredictionApiState
 
-    val googleMapsPlaceState by eventAdresViewModel.uiStatePlace.collectAsState()
-    val googleMapsPlaceApiState = eventAdresViewModel.googleMapsPlaceApiState
+    val googleMapsPlaceState by eventAddressViewModel.uiStatePlace.collectAsState()
+    val googleMapsPlaceApiState = eventAddressViewModel.googleMapsPlaceApiState
 
-    val googleMapsDistanceState by eventAdresViewModel.uiStateDistance.collectAsState()
-    val googleMapsDistanceApiState = eventAdresViewModel.googleMapsDistanceApiState
+    val googleMapsDistanceState by eventAddressViewModel.uiStateDistance.collectAsState()
+    val googleMapsDistanceApiState = eventAddressViewModel.googleMapsDistanceApiState
 
 
     var show by rememberSaveable { mutableStateOf(true) }
@@ -308,7 +307,7 @@ fun EventGegevens(
                     Text(text="Datum",fontSize = 18.sp)},
                 supportingContent = {
                     Text(
-                        text=formuleViewModel.getDatumsInString(),
+                        text=formulaViewModel.getDatumsInString(),
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(
@@ -537,7 +536,7 @@ fun ExtraItemCard(
 fun KostGegevens (
     modifier: Modifier = Modifier,
     extraItemViewModel: ExtraItemViewModel,
-    eventAdresViewModel: EventAdresViewModel
+    eventAddressViewModel: EventAddressViewModel
 ) {
 
     Column (
@@ -678,7 +677,7 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
-                        text="€ ${(eventAdresViewModel.getDistanceLong()?.div(1000)?.minus(20))?.times(
+                        text="€ ${(eventAddressViewModel.getDistanceLong()?.div(1000)?.minus(20))?.times(
                             0.75
                         )}",
                         textAlign = TextAlign.Left,

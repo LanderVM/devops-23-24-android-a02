@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.ExtraMateriaalApplication
-import com.example.templateapplication.api.GoogleMapsApplication
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.network.GoogleDistanceResponse
 import com.example.templateapplication.network.GooglePlaceResponse
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class EventAdresViewModel(private val tasksRepository: GoogleMapsRepository) : ViewModel() {
+class EventAddressViewModel(private val tasksRepository: GoogleMapsRepository) : ViewModel() {
     // Autocomplete
     private val _uiStatePrediciton = MutableStateFlow(GoogleMapsPredictionsState(GooglePredictionsResponse(arrayListOf())))
     val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediciton.asStateFlow()
@@ -139,7 +138,7 @@ class EventAdresViewModel(private val tasksRepository: GoogleMapsRepository) : V
             initializer {
                 val application = (this[APPLICATION_KEY] as ExtraMateriaalApplication)
                 val tasksRepository = application.container.googleMapsRepository
-                EventAdresViewModel(tasksRepository = tasksRepository
+                EventAddressViewModel(tasksRepository = tasksRepository
                 )
             }
         }

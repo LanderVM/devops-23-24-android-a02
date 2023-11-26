@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
-import com.example.templateapplication.model.adres.EventAdresViewModel
+import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.adres.GoogleMapsPredictionsState
 import com.example.templateapplication.network.GooglePrediction
 import com.google.android.gms.maps.model.CameraPosition
@@ -45,7 +45,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AutoCompleteComponent(
     modifier: Modifier = Modifier,
-    eventAddressViewModel: EventAdresViewModel = viewModel(factory = EventAdresViewModel.Factory),
+    eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
     showMap: Boolean,
 ) {
     val googleMapsPredictionState by eventAddressViewModel.uiStatePrediction.collectAsState()
