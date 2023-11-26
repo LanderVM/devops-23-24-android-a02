@@ -15,8 +15,14 @@ data class EstimationEquipmentData(
 )
 
 @Serializable
+data class EstimationUnavailableDateRanges(
+    val startTime: Long,
+    val endTime: Long,
+)
+
+@Serializable
 data class EstimationDetailsData(
     val formulas: List<EstimationFormulaData>?,
     val equipment: List<EstimationEquipmentData>?,
-    val unavailableDays: List<Long>?,
+    val unavailableDates: List<EstimationUnavailableDateRanges>?,
 )

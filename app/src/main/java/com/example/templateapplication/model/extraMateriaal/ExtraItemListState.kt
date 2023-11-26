@@ -3,8 +3,8 @@ package com.example.templateapplication.model.extraMateriaal
 data class ExtraItemListState(
     val currentExtraMateriaalList: List<ExtraItemState> = emptyList())
 
-sealed interface ExtraMateriaalApiState{
-    data class Success(val extraMateriaal: List<ExtraItemState>) : ExtraMateriaalApiState
-    data class Error(val errorMessage: String): ExtraMateriaalApiState
-    object Loading : ExtraMateriaalApiState
+sealed interface ExtraItemDetailsApiState{
+    data class Success(val result: List<ExtraItemState>) : ExtraItemDetailsApiState
+    data class Error(val errorMessage: String): ExtraItemDetailsApiState
+    object Loading : ExtraItemDetailsApiState
 }

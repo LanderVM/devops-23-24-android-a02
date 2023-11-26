@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.templateapplication.api.GuidePriceEstimationApplication
+import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.network.restApi.EstimationDetailsData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,17 +20,17 @@ import java.io.IOException
 class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
     ViewModel() {
 
-    private val _extraItemListState = MutableStateFlow(EstimationDetailsData(null, null, null))
-    val extraItemListState = _extraItemListState.asStateFlow()
+    private val _estimationDetailsState = MutableStateFlow(EstimationDetailsData(null, null, null))
+    val estimationDetailsState = _estimationDetailsState.asStateFlow()
     private fun getApiEstimationDetails() {
         viewModelScope.launch {
             try {
                 val result = restApiRepository.getEstimationDetails()
-                _extraItemListState.update {
+                _estimationDetailsState.update {
                     it.copy(
                         formulas = result.formulas,
                         equipment = result.equipment,
-                        unavailableDays = result.unavailableDays
+                        unavailableDates  = result.unavailableDates,
                     )
                 }
                 priceEstimationApiState = PriceEstimationDetailsApiState.Success(result)
@@ -55,7 +55,7 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
-                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GuidePriceEstimationApplication)
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as RestApiApplication)
                 val guidePriceEstimationRepository =
                     application.container.apiRepository
                 PriceEstimationViewModel(

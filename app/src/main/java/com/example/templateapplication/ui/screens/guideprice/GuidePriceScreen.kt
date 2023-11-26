@@ -48,6 +48,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
+import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.commons.AutoCompleteComponent
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.Titel
@@ -60,6 +61,7 @@ import java.util.Calendar
 @Composable
 fun GuidePriceScreen(
     modifier: Modifier = Modifier,
+    priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
     formulaViewModel: FormulaViewModel = viewModel(),
     eventAddressViewModel: EventAddressViewModel = viewModel(),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
@@ -78,7 +80,9 @@ fun GuidePriceScreen(
         ),
     )
 
-    val formulasList = listOf("Basic", "All in", "Extended")
+    val estimationDetailsState by priceEstimationViewModel.estimationDetailsState.collectAsState()
+
+    val formulasList = estimationDetailsState.formulas
     val materialsList = listOf(
         "Barkoeler 320L",
         "Lichtslinger",
@@ -119,7 +123,7 @@ fun GuidePriceScreen(
         Titel(
             text = "Details",
         )
-        Row(
+        /*        Row(
             modifier = Modifier
                 .fillMaxWidth(0.75f)
         ) {
@@ -127,33 +131,35 @@ fun GuidePriceScreen(
                 expanded = formulaDropDownExpand,
                 onExpandedChange = { formulaDropDownExpand = !formulaDropDownExpand },
             ) {
-                OutlinedTextField(
-                    readOnly = true,
-                    value = formulasList[selectedFormula],
-                    onValueChange = { },
-                    label = {
-                        Text(
-                            text = "Formule",
-                            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
-                        )
-                    },
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(
-                            expanded = formulaDropDownExpand
-                        )
-                    },
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth(0.5f),
-                )
+                formulasList?.get(selectedFormula)?.let {
+                    OutlinedTextField(
+                        readOnly = true,
+                        value = it.title,
+                        onValueChange = { },
+                        label = {
+                            Text(
+                                text = "Formule",
+                                color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+                            )
+                        },
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(
+                                expanded = formulaDropDownExpand
+                            )
+                        },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(0.5f),
+                    )
+                }
                 ExposedDropdownMenu(
                     expanded = formulaDropDownExpand,
                     onDismissRequest = {
                         formulaDropDownExpand = false
                     }
                 ) {
-                    formulasList.forEachIndexed { index, s ->
-                        DropdownMenuItem(text = { Text(s) }, onClick = {
+                    formulasList?.forEachIndexed { index, s ->
+                        DropdownMenuItem(text = { Text(s.title) }, onClick = {
                             selectedFormula = index
                             formulaDropDownExpand = !formulaDropDownExpand
                         })
@@ -274,6 +280,6 @@ fun GuidePriceScreen(
             fontSize = 12.sp,
             fontWeight = FontWeight.Light,
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))*/
     }
 }

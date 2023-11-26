@@ -26,7 +26,7 @@ class ExtraItemViewModel(private val apiRepository: ApiRepository) :
     private val _extraItemListState = MutableStateFlow(ExtraItemListState())
     val extraItemListState = _extraItemListState.asStateFlow()
 
-    var extraMateriaalApiState: ExtraMateriaalApiState by mutableStateOf(ExtraMateriaalApiState.Loading)
+    var extraMateriaalApiState: ExtraItemDetailsApiState by mutableStateOf(ExtraItemDetailsApiState.Loading)
         private set
 
     init {
@@ -75,12 +75,12 @@ class ExtraItemViewModel(private val apiRepository: ApiRepository) :
                 _extraItemListState.update {
                     it.copy(currentExtraMateriaalList = listResult)
                 }
-                extraMateriaalApiState = ExtraMateriaalApiState.Success(listResult)
+                extraMateriaalApiState = ExtraItemDetailsApiState.Success(listResult)
             } catch (e: IOException) {
                 val errorMessage = e.message ?: "An error occurred"
 
                 // Set the error state with the error message
-                extraMateriaalApiState = ExtraMateriaalApiState.Error(errorMessage)
+                extraMateriaalApiState = ExtraItemDetailsApiState.Error(errorMessage)
             }
 
         }

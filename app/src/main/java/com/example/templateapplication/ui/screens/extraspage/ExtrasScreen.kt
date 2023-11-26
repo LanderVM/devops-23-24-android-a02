@@ -53,7 +53,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
-import com.example.templateapplication.model.extraMateriaal.ExtraMateriaalApiState
+import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.theme.MainColor
@@ -79,11 +79,11 @@ fun ExtrasScreen(
 
 
     when(extraMateriaalApiState){
-        is ExtraMateriaalApiState.Loading -> Text("Loading...")
-        is ExtraMateriaalApiState.Error -> {
+        is ExtraItemDetailsApiState.Loading -> Text("Loading...")
+        is ExtraItemDetailsApiState.Error -> {
             val errorMessage = extraMateriaalApiState.errorMessage
             Text("Couldn't load..., because of $errorMessage")}
-        is ExtraMateriaalApiState.Success -> {
+        is ExtraItemDetailsApiState.Success -> {
 
     LazyColumn(
         modifier = Modifier
