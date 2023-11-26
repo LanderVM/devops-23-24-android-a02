@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.commons
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,14 +47,18 @@ fun DateRangePicker(
     ) {
 
         LaunchedEffect(state.selectedStartDateMillis) {
-            formulaViewModel.updateDateRange(state.selectedStartDateMillis, state.selectedEndDateMillis)
+            formulaViewModel.updateDateRange(
+                state.selectedStartDateMillis,
+                state.selectedEndDateMillis
+            )
             enableRecheckFunction()
-            Log.i("Bla", "updatingA: ${state.selectedStartDateMillis.toString()} ---- ${state.selectedEndDateMillis.toString()}")
         }
 
         LaunchedEffect(state.selectedEndDateMillis) {
-            formulaViewModel.updateDateRange(state.selectedStartDateMillis, state.selectedEndDateMillis)
-            Log.i("Bla", "updatingB: ${state.selectedStartDateMillis.toString()} ---- ${state.selectedEndDateMillis.toString()}")
+            formulaViewModel.updateDateRange(
+                state.selectedStartDateMillis,
+                state.selectedEndDateMillis
+            )
         }
 
         DateRangePicker(
