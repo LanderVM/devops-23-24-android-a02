@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -45,10 +46,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.adres.EventAdresViewModel
-import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.model.adres.EventAddressViewModel
+import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.ui.commons.AutoCompleteComponent
-import com.example.templateapplication.ui.commons.DatumPart
+import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.Titel
 import com.example.templateapplication.ui.theme.onSecondary
 import com.example.templateapplication.ui.theme.secondary
@@ -59,18 +60,18 @@ import java.util.Calendar
 @Composable
 fun GuidePriceScreen(
     modifier: Modifier = Modifier,
-    formulaViewModel: FormuleViewModel = viewModel(),
-    eventAdresViewModel: EventAdresViewModel = viewModel()
+    formulaViewModel: FormulaViewModel = viewModel(),
+    eventAddressViewModel: EventAddressViewModel = viewModel(),
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
     val formulaUIState by formulaViewModel.formuleUiState.collectAsState()
 
-    val selectedStartDate = remember { mutableStateOf(formulaUIState.beginDatum) }
-    val selectedEndDate = remember { mutableStateOf(formulaUIState.eindDatum) }
-    val dataState = rememberDateRangePickerState(
-        initialSelectedStartDateMillis = selectedStartDate.value?.timeInMillis,
-        initialSelectedEndDateMillis = selectedEndDate.value?.timeInMillis,
+    val selectedStartDate by remember { mutableStateOf(formulaUIState.startDate) }
+    val selectedEndDate by remember { mutableStateOf(formulaUIState.endDate) }
+    val dateRangePickerState = rememberDateRangePickerState(
+        initialSelectedStartDateMillis = selectedStartDate?.timeInMillis,
+        initialSelectedEndDateMillis = selectedEndDate?.timeInMillis,
         yearRange = IntRange(
             start = 2023,
             endInclusive = Calendar.getInstance().get(Calendar.YEAR) + 1
@@ -102,15 +103,15 @@ fun GuidePriceScreen(
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        DatumPart(
-            state = dataState,
+        DateRangePicker(
+            state = dateRangePickerState,
             formulaViewModel = formulaViewModel,
             showCalenderToggle = true,
         )
         Titel(
             text = "Locatie",
         )
-        AutoCompleteComponent(eventAddressViewModel = eventAdresViewModel, showMap = false)
+        AutoCompleteComponent(eventAddressViewModel = eventAddressViewModel, showMap = false)
         Titel(
             text = "Details",
         )

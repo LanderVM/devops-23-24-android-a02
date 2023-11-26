@@ -307,7 +307,7 @@ fun EventGegevens(
                     Text(text="Datum",fontSize = 18.sp)},
                 supportingContent = {
                     Text(
-                        text=formulaViewModel.getDatumsInString(),
+                        text=formulaViewModel.getDateRange(),
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(

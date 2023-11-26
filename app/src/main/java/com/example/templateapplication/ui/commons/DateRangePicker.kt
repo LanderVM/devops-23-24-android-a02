@@ -21,17 +21,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
-import com.example.templateapplication.model.formules.FormuleViewModel
+import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.ui.theme.onPrimary
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatumPart(
+fun DateRangePicker(
     modifier: Modifier = Modifier,
     state: DateRangePickerState,
-    formulaViewModel: FormuleViewModel,
+    formulaViewModel: FormulaViewModel,
     showCalenderToggle: Boolean,
 ) {
     Titel(
@@ -44,9 +44,10 @@ fun DatumPart(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        LaunchedEffect(state.selectedStartDateMillis, state.selectedEndDateMillis) {
-            formulaViewModel.updateDatums(state.selectedStartDateMillis, state.selectedEndDateMillis)
+        LaunchedEffect(state.selectedStartDateMillis) {
+            formulaViewModel.updateDateRange(state.selectedStartDateMillis, state.selectedEndDateMillis)
         }
+
         DateRangePicker(
             state,
             modifier = Modifier.height(450.dp),
@@ -66,10 +67,18 @@ fun DatumPart(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Box(Modifier.weight(1f)) {
-                        (if (state.selectedStartDateMillis != null) state.selectedStartDateMillis?.let { getFormattedDate(it) } else "Start datum")?.let { Text(text = it) }
+                        (if (state.selectedStartDateMillis != null) state.selectedStartDateMillis?.let {
+                            getFormattedDate(
+                                it
+                            )
+                        } else "Start datum")?.let { Text(text = it) }
                     }
                     Box(Modifier.weight(1f)) {
-                        (if (state.selectedEndDateMillis != null) state.selectedEndDateMillis?.let { getFormattedDate(it) } else "Eind datum")?.let { Text(text = it) }
+                        (if (state.selectedEndDateMillis != null) state.selectedEndDateMillis?.let {
+                            getFormattedDate(
+                                it
+                            )
+                        } else "Eind datum")?.let { Text(text = it) }
                     }
                 }
             },
@@ -86,7 +95,11 @@ fun DatumPart(
                 selectedYearContainerColor = Color.Red,
                 disabledDayContentColor = Color.Gray,
                 todayDateBorderColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
-                dayInSelectionRangeContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichterder))),
+                dayInSelectionRangeContainerColor = Color(
+                    android.graphics.Color.parseColor(
+                        stringResource(R.string.lichterder)
+                    )
+                ),
                 dayInSelectionRangeContentColor = Color.White,
                 selectedDayContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
                 selectedDayContentColor = onPrimary,
