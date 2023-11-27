@@ -28,6 +28,7 @@ import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
+import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
@@ -66,6 +67,7 @@ fun BlancheApp(
         var formulaViewModel: FormulaViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
         var eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory)
+        var priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
@@ -185,6 +187,7 @@ fun BlancheApp(
                             modifier = Modifier.padding(innerPadding),
                             formulaViewModel = formulaViewModel,
                             eventAddressViewModel = eventAddressViewModel,
+                            priceEstimationViewModel = priceEstimationViewModel
                         )
                     }
                 }
