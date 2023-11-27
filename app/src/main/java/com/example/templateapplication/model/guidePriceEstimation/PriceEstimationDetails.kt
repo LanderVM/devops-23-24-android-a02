@@ -24,6 +24,7 @@ data class EstimationDetails(
 data class EstimationScreenState(
     var dbDetails: EstimationDetails = EstimationDetails(),
     var selectedFormula: Int = 1,
+    var amountOfPeople: String = "",
 )
 
 sealed interface PriceEstimationDetailsApiState{

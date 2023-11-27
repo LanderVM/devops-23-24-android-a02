@@ -3,6 +3,7 @@ package com.example.templateapplication.model.guidePriceEstimation
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -68,6 +69,16 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
     val estimationDetailsState = _estimationDetailsState.asStateFlow()
 
     fun selectFormula(id: Int) {
-        _estimationDetailsState.value.selectedFormula = id
+        _estimationDetailsState.update {
+            it.copy(selectedFormula = id)
+        }
+    }
+
+    fun setAmountOfPeople(amountOfPeople: String) {
+        if (amountOfPeople.isDigitsOnly()) {
+            _estimationDetailsState.update {
+                it.copy(amountOfPeople = amountOfPeople)
+            }
+        }
     }
 }

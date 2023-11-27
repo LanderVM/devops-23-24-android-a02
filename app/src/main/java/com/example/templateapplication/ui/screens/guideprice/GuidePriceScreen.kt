@@ -27,7 +27,6 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +42,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.EventAddressViewModel
@@ -84,9 +82,6 @@ fun GuidePriceScreen(
     val screenDataState by priceEstimationViewModel.estimationDetailsState.collectAsState()
 
     var formulaDropDownExpand by remember { mutableStateOf(false) }
-    var selectedFormula by remember { mutableIntStateOf(1) }
-    var amountOfPersons by remember { mutableStateOf("") }
-
 
     var wantsTripelBier by remember { mutableStateOf(false) }
     var wantsExtras by remember { mutableStateOf(false) }
@@ -157,11 +152,9 @@ fun GuidePriceScreen(
             }
             Spacer(modifier = Modifier.width(8.dp))
             OutlinedTextField(
-                value = amountOfPersons,
+                value = screenDataState.amountOfPeople,
                 onValueChange = {
-                    if (it.isDigitsOnly()) {
-                        amountOfPersons = it
-                    }
+                    priceEstimationViewModel.setAmountOfPeople(it)
                 },
                 label = {
                     Text(
