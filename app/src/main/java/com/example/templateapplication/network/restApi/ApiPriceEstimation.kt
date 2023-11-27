@@ -26,19 +26,19 @@ data class EstimationUnavailableDateRangesData(
 
 @Serializable
 data class EstimationDetailsData(
-    val formulas: List<EstimationFormulaData>?,
-    val equipment: List<EstimationEquipmentData>?,
-    val unavailableDates: List<EstimationUnavailableDateRangesData>?,
+    val formulas: List<EstimationFormulaData> = emptyList(),
+    val equipment: List<EstimationEquipmentData> = emptyList(),
+    val unavailableDates: List<EstimationUnavailableDateRangesData> = emptyList(),
 )
 
 fun EstimationDetailsData.asDomainObject(): EstimationDetails {
-    var formulas = this.formulas?.map {
+    var formulas = this.formulas.map {
         EstimationFormula(it.id, it.title)
     }
-    var equipment = this.equipment?.map {
+    var equipment = this.equipment.map {
         EstimationEquipment(it.id, it.title)
     }
-    var dateRanges = this.unavailableDates?.map {
+    var dateRanges = this.unavailableDates.map {
         EstimationUnavailableDateRanges(it.startTime, it.endTime)
     }
     return EstimationDetails(formulas, equipment, dateRanges)

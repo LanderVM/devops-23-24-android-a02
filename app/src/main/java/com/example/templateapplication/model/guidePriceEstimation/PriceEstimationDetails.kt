@@ -16,9 +16,14 @@ data class EstimationUnavailableDateRanges(
 )
 
 data class EstimationDetails(
-    val formulas: List<EstimationFormula>?,
-    val equipment: List<EstimationEquipment>?,
-    val unavailableDates: List<EstimationUnavailableDateRanges>?,
+    val formulas: List<EstimationFormula> = emptyList(),
+    val equipment: List<EstimationEquipment> = emptyList(),
+    val unavailableDates: List<EstimationUnavailableDateRanges> = emptyList(),
+)
+
+data class EstimationScreenState(
+    var dbDetails: EstimationDetails = EstimationDetails(),
+    var selectedFormula: Int = 1,
 )
 
 sealed interface PriceEstimationDetailsApiState{

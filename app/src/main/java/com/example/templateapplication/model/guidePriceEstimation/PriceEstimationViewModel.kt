@@ -19,17 +19,26 @@ import java.io.IOException
 class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
     ViewModel() {
 
-    private val _estimationDetailsState = MutableStateFlow(EstimationDetails(null, null, null))
-    val estimationDetailsState = _estimationDetailsState.asStateFlow()
+    init {
+        getApiEstimationDetails()
+    }
+
+    var priceEstimationApiState: PriceEstimationDetailsApiState by mutableStateOf(
+        PriceEstimationDetailsApiState.Loading
+    )
+        private set
+
     private fun getApiEstimationDetails() {
         viewModelScope.launch {
             try {
                 val result = restApiRepository.getEstimationDetails()
                 _estimationDetailsState.update {
                     it.copy(
-                        formulas = result.formulas,
-                        equipment = result.equipment,
-                        unavailableDates  = result.unavailableDates,
+                        dbDetails = EstimationDetails(
+                            formulas = result.formulas,
+                            equipment = result.equipment,
+                            unavailableDates = result.unavailableDates,
+                        )
                     )
                 }
                 priceEstimationApiState = PriceEstimationDetailsApiState.Success(result)
@@ -39,15 +48,6 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
             }
 
         }
-    }
-
-    var priceEstimationApiState: PriceEstimationDetailsApiState by mutableStateOf(
-        PriceEstimationDetailsApiState.Loading
-    )
-        private set
-
-    init {
-        getApiEstimationDetails()
     }
 
     companion object {
@@ -62,5 +62,12 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
                 )
             }
         }
+    }
+
+    private val _estimationDetailsState = MutableStateFlow(EstimationScreenState())
+    val estimationDetailsState = _estimationDetailsState.asStateFlow()
+
+    fun selectFormula(id: Int) {
+        _estimationDetailsState.value.selectedFormula = id
     }
 }

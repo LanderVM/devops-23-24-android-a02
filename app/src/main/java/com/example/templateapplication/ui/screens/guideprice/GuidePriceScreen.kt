@@ -84,7 +84,7 @@ fun GuidePriceScreen(
     val screenDataState by priceEstimationViewModel.estimationDetailsState.collectAsState()
 
     var formulaDropDownExpand by remember { mutableStateOf(false) }
-    var selectedFormula by remember { mutableIntStateOf(0) }
+    var selectedFormula by remember { mutableIntStateOf(1) }
     var amountOfPersons by remember { mutableStateOf("") }
 
 
@@ -122,36 +122,34 @@ fun GuidePriceScreen(
                 expanded = formulaDropDownExpand,
                 onExpandedChange = { formulaDropDownExpand = !formulaDropDownExpand },
             ) {
-                screenDataState.formulas?.get(selectedFormula)?.let {
-                    OutlinedTextField(
-                        readOnly = true,
-                        value = it.title,
-                        onValueChange = { },
-                        label = {
-                            Text(
-                                text = "Formule",
-                                color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
-                            )
-                        },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(
-                                expanded = formulaDropDownExpand
-                            )
-                        },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth(0.5f),
-                    )
-                }
+                OutlinedTextField(
+                    readOnly = true,
+                    value = if (screenDataState.dbDetails.formulas.isEmpty()) "" else screenDataState.dbDetails.formulas[screenDataState.selectedFormula - 1].title,
+                    onValueChange = { },
+                    label = {
+                        Text(
+                            text = "Formule",
+                            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+                        )
+                    },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(
+                            expanded = formulaDropDownExpand
+                        )
+                    },
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(0.5f),
+                )
                 ExposedDropdownMenu(
                     expanded = formulaDropDownExpand,
                     onDismissRequest = {
                         formulaDropDownExpand = false
                     }
                 ) {
-                    screenDataState.formulas?.forEachIndexed { _, s ->
+                    screenDataState.dbDetails.formulas.forEachIndexed { _, s ->
                         DropdownMenuItem(text = { Text(s.title) }, onClick = {
-                            selectedFormula = s.id
+                            priceEstimationViewModel.selectFormula(s.id)
                             formulaDropDownExpand = !formulaDropDownExpand
                         })
                     }
@@ -183,7 +181,7 @@ fun GuidePriceScreen(
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
-        if (selectedFormula != 0) {
+        if (screenDataState.selectedFormula != 1) {
             Row(
                 modifier = Modifier.height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -226,7 +224,7 @@ fun GuidePriceScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    screenDataState.equipment?.forEachIndexed { _, equipment ->
+                    screenDataState.dbDetails.equipment.forEachIndexed { _, equipment ->
                         Row(
                             modifier = Modifier
                                 .height(50.dp)
