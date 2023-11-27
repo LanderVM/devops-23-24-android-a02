@@ -22,9 +22,12 @@ data class EstimationDetails(
 )
 
 data class EstimationScreenState(
-    var dbDetails: EstimationDetails = EstimationDetails(),
+    var dbData: EstimationDetails = EstimationDetails(),
     var selectedFormula: Int = 1,
     var amountOfPeople: String = "",
+    var wantsTripelBeer: Boolean = false,
+    var wantsExtras: Boolean = false,
+    var formulaDropDownIsExpanded: Boolean = false,
 )
 
 sealed interface PriceEstimationDetailsApiState{

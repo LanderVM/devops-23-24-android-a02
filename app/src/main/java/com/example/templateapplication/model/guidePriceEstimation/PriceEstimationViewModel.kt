@@ -3,6 +3,7 @@ package com.example.templateapplication.model.guidePriceEstimation
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -35,7 +36,7 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
                 val result = restApiRepository.getEstimationDetails()
                 _estimationDetailsState.update {
                     it.copy(
-                        dbDetails = EstimationDetails(
+                        dbData = EstimationDetails(
                             formulas = result.formulas,
                             equipment = result.equipment,
                             unavailableDates = result.unavailableDates,
@@ -79,6 +80,37 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
             _estimationDetailsState.update {
                 it.copy(amountOfPeople = amountOfPeople)
             }
+        }
+    }
+
+    fun setWantsTripelBeer(wantsTripelBeer: Boolean) {
+        _estimationDetailsState.update {
+            it.copy(wantsTripelBeer = wantsTripelBeer)
+        }
+    }
+
+    fun setWantsExtras(wantsExtras: Boolean) {
+        _estimationDetailsState.update {
+            it.copy(wantsExtras = wantsExtras)
+        }
+    }
+
+    private var selectedExtras = listOf<EstimationEquipment>().toMutableStateList()
+
+    fun extraItemsOnCheckedChange(extraItem: EstimationEquipment) {
+        if (selectedExtras.contains(extraItem))
+            selectedExtras.remove(extraItem)
+        else
+            selectedExtras.add(extraItem)
+    }
+
+    fun hasSelectedExtraItem(extraItem: EstimationEquipment): Boolean {
+        return selectedExtras.contains(extraItem)
+    }
+
+    fun setDropDownExpanded(value: Boolean) {
+        _estimationDetailsState.update {
+            it.copy(formulaDropDownIsExpanded = value)
         }
     }
 }

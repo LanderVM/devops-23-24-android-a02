@@ -27,10 +27,8 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,7 +44,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
-import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.commons.AutoCompleteComponent
 import com.example.templateapplication.ui.commons.DateRangePicker
@@ -67,6 +64,7 @@ fun GuidePriceScreen(
 ) {
     val scrollState = rememberScrollState()
     val formulaUIState by formulaViewModel.formulaUiState.collectAsState()
+    val priceEstimationUIState by priceEstimationViewModel.estimationDetailsState.collectAsState()
 
     val selectedStartDate by remember { mutableStateOf(formulaUIState.startDate) }
     val selectedEndDate by remember { mutableStateOf(formulaUIState.endDate) }
@@ -78,14 +76,6 @@ fun GuidePriceScreen(
             endInclusive = Calendar.getInstance().get(Calendar.YEAR) + 1
         ),
     )
-
-    val screenDataState by priceEstimationViewModel.estimationDetailsState.collectAsState()
-
-    var formulaDropDownExpand by remember { mutableStateOf(false) }
-
-    var wantsTripelBier by remember { mutableStateOf(false) }
-    var wantsExtras by remember { mutableStateOf(false) }
-    val selectedItems = remember { mutableStateListOf<EstimationEquipment>() }
 
     Column(
         modifier = Modifier
@@ -114,12 +104,12 @@ fun GuidePriceScreen(
                 .fillMaxWidth(0.75f)
         ) {
             ExposedDropdownMenuBox(
-                expanded = formulaDropDownExpand,
-                onExpandedChange = { formulaDropDownExpand = !formulaDropDownExpand },
+                expanded = priceEstimationUIState.formulaDropDownIsExpanded,
+                onExpandedChange = { priceEstimationViewModel.setDropDownExpanded(!priceEstimationUIState.formulaDropDownIsExpanded) },
             ) {
                 OutlinedTextField(
                     readOnly = true,
-                    value = if (screenDataState.dbDetails.formulas.isEmpty()) "" else screenDataState.dbDetails.formulas[screenDataState.selectedFormula - 1].title,
+                    value = if (priceEstimationUIState.dbData.formulas.isEmpty()) "" else priceEstimationUIState.dbData.formulas[priceEstimationUIState.selectedFormula - 1].title,
                     onValueChange = { },
                     label = {
                         Text(
@@ -129,7 +119,7 @@ fun GuidePriceScreen(
                     },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(
-                            expanded = formulaDropDownExpand
+                            expanded = priceEstimationUIState.formulaDropDownIsExpanded
                         )
                     },
                     modifier = Modifier
@@ -137,22 +127,22 @@ fun GuidePriceScreen(
                         .fillMaxWidth(0.5f),
                 )
                 ExposedDropdownMenu(
-                    expanded = formulaDropDownExpand,
+                    expanded = priceEstimationUIState.formulaDropDownIsExpanded,
                     onDismissRequest = {
-                        formulaDropDownExpand = false
+                        priceEstimationViewModel.setDropDownExpanded(false)
                     }
                 ) {
-                    screenDataState.dbDetails.formulas.forEachIndexed { _, s ->
+                    priceEstimationUIState.dbData.formulas.forEachIndexed { _, s ->
                         DropdownMenuItem(text = { Text(s.title) }, onClick = {
                             priceEstimationViewModel.selectFormula(s.id)
-                            formulaDropDownExpand = !formulaDropDownExpand
+                            priceEstimationViewModel.setDropDownExpanded(!priceEstimationUIState.formulaDropDownIsExpanded)
                         })
                     }
                 }
             }
             Spacer(modifier = Modifier.width(8.dp))
             OutlinedTextField(
-                value = screenDataState.amountOfPeople,
+                value = priceEstimationUIState.amountOfPeople,
                 onValueChange = {
                     priceEstimationViewModel.setAmountOfPeople(it)
                 },
@@ -174,15 +164,15 @@ fun GuidePriceScreen(
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
-        if (screenDataState.selectedFormula != 1) {
+        if (priceEstimationUIState.selectedFormula != 1) {
             Row(
                 modifier = Modifier.height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = "Ik wil tripel bier", modifier = Modifier.padding(horizontal = 12.dp))
                 Checkbox(
-                    checked = wantsTripelBier,
-                    onCheckedChange = { wantsTripelBier = !wantsTripelBier },
+                    checked = priceEstimationUIState.wantsTripelBeer,
+                    onCheckedChange = { priceEstimationViewModel.setWantsTripelBeer(!priceEstimationUIState.wantsTripelBeer) },
                     colors = CheckboxDefaults.colors(
                         checkedColor = secondary,
                         checkmarkColor = onSecondary,
@@ -190,6 +180,8 @@ fun GuidePriceScreen(
                     ),
                 )
             }
+        } else {
+            priceEstimationViewModel.setWantsTripelBeer(false)
         }
         Row(
             modifier = Modifier.height(50.dp),
@@ -197,8 +189,8 @@ fun GuidePriceScreen(
         ) {
             Text(text = "Extra materiaal nodig", modifier = Modifier.padding(horizontal = 12.dp))
             Checkbox(
-                checked = wantsExtras,
-                onCheckedChange = { wantsExtras = !wantsExtras },
+                checked = priceEstimationUIState.wantsExtras,
+                onCheckedChange = { priceEstimationViewModel.setWantsExtras(!priceEstimationUIState.wantsExtras) },
                 colors = CheckboxDefaults.colors(
                     checkedColor = secondary,
                     checkmarkColor = onSecondary,
@@ -206,7 +198,7 @@ fun GuidePriceScreen(
                 ),
             )
         }
-        if (wantsExtras) {
+        if (priceEstimationUIState.wantsExtras) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -217,7 +209,7 @@ fun GuidePriceScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    screenDataState.dbDetails.equipment.forEachIndexed { _, equipment ->
+                    priceEstimationUIState.dbData.equipment.forEachIndexed { _, equipment ->
                         Row(
                             modifier = Modifier
                                 .height(50.dp)
@@ -226,11 +218,8 @@ fun GuidePriceScreen(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Checkbox(
-                                checked = selectedItems.contains(equipment),
-                                onCheckedChange = { isChecked ->
-                                    if (isChecked) selectedItems.add(equipment)
-                                    else selectedItems.remove(equipment)
-                                },
+                                checked = priceEstimationViewModel.hasSelectedExtraItem(equipment),
+                                onCheckedChange = { priceEstimationViewModel.extraItemsOnCheckedChange(equipment) },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = secondary,
                                     checkmarkColor = onSecondary,
