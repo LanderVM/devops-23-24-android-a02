@@ -33,7 +33,7 @@ import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressieBar
-import com.example.templateapplication.ui.commons.Titel
+import com.example.templateapplication.ui.commons.SeperatingTitle
 
 @Composable
 fun ConatctGegevensScreen(
@@ -127,7 +127,7 @@ fun ContactGegevens(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Titel(
+        SeperatingTitle(
             text = "Contact gegevens",
         )
         InputVeld(label = "Naam", value = naam, onChange = onNaamChange, makeEmpty = makeEmptyNaam)
@@ -164,7 +164,7 @@ fun Adressering(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Titel(
+        SeperatingTitle(
             text = welkeAdressering,
         )
         InputVeld(label = "Straat", value = straat, onChange = onStraatChange, makeEmpty = makeEmptyStraat)
@@ -217,33 +217,3 @@ fun InputVeld(
         },
     )
 }
-
-@Composable
-fun OptieFacturatieAdress(
-    modifier: Modifier = Modifier,
-    facturatieAdressChecked: Boolean,
-    onFacturatieAdressCheckedChange: (Boolean) -> Unit,
-) {
-    Row(
-        modifier = Modifier.height(50.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Checkbox(
-            checked = facturatieAdressChecked,
-            onCheckedChange = onFacturatieAdressCheckedChange,
-            colors = CheckboxDefaults.colors(
-                checkedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-                uncheckedColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-                checkmarkColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
-            ),
-
-        )
-        Text(text = "Adres is ook facturatie adress", modifier = Modifier.padding(horizontal = 12.dp))
-    }
-}
-
-// @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
-// @Composable
-// fun FavoriteCollectionCardPreview() {
-//    InputVeld(label = "naam")
-// }

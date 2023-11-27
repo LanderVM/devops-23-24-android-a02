@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -43,7 +44,7 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AutoCompleteComponent(
+fun AddressTextField(
     modifier: Modifier = Modifier,
     eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
     showMap: Boolean,
@@ -132,7 +133,7 @@ fun AutoCompleteComponent(
         onValueChange = {
             eventAddressViewModel.updateInput(it)
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
             unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
         ),

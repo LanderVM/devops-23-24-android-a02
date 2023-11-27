@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.evenementpage
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
-import com.example.templateapplication.ui.commons.AutoCompleteComponent
+import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.ProgressieBar
-import com.example.templateapplication.ui.commons.Titel
+import com.example.templateapplication.ui.commons.SeperatingTitle
 import com.example.templateapplication.ui.commons.NextPageButton
 import java.util.Calendar
 
@@ -67,10 +66,10 @@ fun EvenementScreen(
             text = "Evenement",
             progression = 0.25f,
         )
-        Titel(
+        SeperatingTitle(
             text = "Locatie",
         )
-        AutoCompleteComponent(
+        AddressTextField(
             eventAddressViewModel = eventAddressViewModel,
             showMap = true,
             enableRecheckFunction = { recheckNextButtonStatus = true })

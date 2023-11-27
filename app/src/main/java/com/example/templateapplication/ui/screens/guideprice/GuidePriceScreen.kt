@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.guideprice
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,16 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
@@ -31,23 +24,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
-import com.example.templateapplication.ui.commons.AutoCompleteComponent
+import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
-import com.example.templateapplication.ui.commons.Titel
+import com.example.templateapplication.ui.commons.NumberOutlinedTextField
+import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.screens.guideprice.components.FormulaDropDownSelect
 import com.example.templateapplication.ui.theme.onSecondary
 import com.example.templateapplication.ui.theme.secondary
 import com.example.templateapplication.ui.theme.tertiary
@@ -88,79 +78,34 @@ fun GuidePriceScreen(
             formulaViewModel = formulaViewModel,
             showCalenderToggle = true,
         )
-        Titel(
+        SeperatingTitle(
             text = "Locatie",
         )
-        AutoCompleteComponent(
+        AddressTextField(
             eventAddressViewModel = eventAddressViewModel,
             showMap = false,
             enableRecheckFunction = {}
         )
-        Titel(
+        SeperatingTitle(
             text = "Details",
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.75f)
         ) {
-            ExposedDropdownMenuBox(
-                expanded = priceEstimationUIState.formulaDropDownIsExpanded,
-                onExpandedChange = { priceEstimationViewModel.setDropDownExpanded(!priceEstimationUIState.formulaDropDownIsExpanded) },
-            ) {
-                OutlinedTextField(
-                    readOnly = true,
-                    value = if (priceEstimationUIState.dbData.formulas.isEmpty()) "" else priceEstimationUIState.dbData.formulas[priceEstimationUIState.selectedFormula - 1].title,
-                    onValueChange = { },
-                    label = {
-                        Text(
-                            text = "Formule",
-                            color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
-                        )
-                    },
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(
-                            expanded = priceEstimationUIState.formulaDropDownIsExpanded
-                        )
-                    },
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth(0.5f),
-                )
-                ExposedDropdownMenu(
-                    expanded = priceEstimationUIState.formulaDropDownIsExpanded,
-                    onDismissRequest = {
-                        priceEstimationViewModel.setDropDownExpanded(false)
-                    }
-                ) {
-                    priceEstimationUIState.dbData.formulas.forEachIndexed { _, s ->
-                        DropdownMenuItem(text = { Text(s.title) }, onClick = {
-                            priceEstimationViewModel.selectFormula(s.id)
-                            priceEstimationViewModel.setDropDownExpanded(!priceEstimationUIState.formulaDropDownIsExpanded)
-                        })
-                    }
-                }
-            }
+            FormulaDropDownSelect(
+                isExpanded = priceEstimationUIState.formulaDropDownIsExpanded,
+                setExpanded = { priceEstimationViewModel.setDropDownExpanded(it) },
+                selectedOption = priceEstimationUIState.selectedFormula - 1,
+                setSelectedOption = { priceEstimationViewModel.selectFormula(it) },
+                options = priceEstimationUIState.dbData.formulas,
+            )
             Spacer(modifier = Modifier.width(8.dp))
-            OutlinedTextField(
+            NumberOutlinedTextField(
+                label = "Aantal Pers.",
                 value = priceEstimationUIState.amountOfPeople,
-                onValueChange = {
-                    priceEstimationViewModel.setAmountOfPeople(it)
-                },
-                label = {
-                    Text(
-                        text = "Aantal Pers.",
-                        color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
-                    )
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { keyboardController?.hide() }
-                ),
-                modifier = Modifier
-                    .clickable { keyboardController?.show() },
+                onValueChange = { priceEstimationViewModel.setAmountOfPeople(it) },
+                keyboardController = keyboardController
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -219,7 +164,11 @@ fun GuidePriceScreen(
                         ) {
                             Checkbox(
                                 checked = priceEstimationViewModel.hasSelectedExtraItem(equipment),
-                                onCheckedChange = { priceEstimationViewModel.extraItemsOnCheckedChange(equipment) },
+                                onCheckedChange = {
+                                    priceEstimationViewModel.extraItemsOnCheckedChange(
+                                        equipment
+                                    )
+                                },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = secondary,
                                     checkmarkColor = onSecondary,
@@ -238,13 +187,11 @@ fun GuidePriceScreen(
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Dit zal tussen de 350 en 500 euro liggen.",
-            modifier = Modifier.padding(horizontal = 12.dp),
             fontSize = 20.sp,
             fontWeight = FontWeight.W500,
         )
         Text(
             text = "Disclaimer: deze prijs is een schatting en ligt dus niet vast.",
-            modifier = Modifier.padding(horizontal = 12.dp),
             fontSize = 12.sp,
             fontWeight = FontWeight.Light,
         )

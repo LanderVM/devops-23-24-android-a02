@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Titel(
+fun SeperatingTitle(
     modifier: Modifier = Modifier,
     text: String = "Titel",
 ) {
@@ -60,5 +60,5 @@ fun Titel(
 fun TitelPreview(
     modifier: Modifier = Modifier,
 ) {
-    Titel(text = "Test titel")
+    SeperatingTitle(text = "Test titel")
 }

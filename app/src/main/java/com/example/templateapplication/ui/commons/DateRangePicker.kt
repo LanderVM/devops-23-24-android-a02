@@ -36,7 +36,7 @@ fun DateRangePicker(
     showCalenderToggle: Boolean,
     enableRecheckFunction: () -> Unit = {},
 ) {
-    Titel(
+    SeperatingTitle(
         text = "Datum",
     )
     Column(
