@@ -10,7 +10,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
-import com.example.templateapplication.network.restApi.EstimationDetailsData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +19,7 @@ import java.io.IOException
 class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
     ViewModel() {
 
-    private val _estimationDetailsState = MutableStateFlow(EstimationDetailsData(null, null, null))
+    private val _estimationDetailsState = MutableStateFlow(EstimationDetails(null, null, null))
     val estimationDetailsState = _estimationDetailsState.asStateFlow()
     private fun getApiEstimationDetails() {
         viewModelScope.launch {

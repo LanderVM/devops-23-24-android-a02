@@ -1,17 +1,28 @@
 package com.example.templateapplication.model.guidePriceEstimation
 
-import com.example.templateapplication.network.restApi.EstimationEquipmentData
-import com.example.templateapplication.network.restApi.EstimationUnavailableDateRanges
-import com.example.templateapplication.network.restApi.EstimationFormulaData
+data class EstimationFormula(
+    val id: Int,
+    val title: String,
+)
 
-data class PriceEstimationDetailsState(
-    val formulas: List<EstimationFormulaData>,
-    val equipment: List<EstimationEquipmentData>,
-    val unavailableDates: List<EstimationUnavailableDateRanges>,
+data class EstimationEquipment(
+    val id: Int,
+    val title: String,
+)
+
+data class EstimationUnavailableDateRanges(
+    val startTime: Long,
+    val endTime: Long,
+)
+
+data class EstimationDetails(
+    val formulas: List<EstimationFormula>?,
+    val equipment: List<EstimationEquipment>?,
+    val unavailableDates: List<EstimationUnavailableDateRanges>?,
 )
 
 sealed interface PriceEstimationDetailsApiState{
-    data class Success(val result: PriceEstimationDetailsState) : PriceEstimationDetailsApiState
+    data class Success(val result: EstimationDetails) : PriceEstimationDetailsApiState
     data class Error(val errorMessage: String): PriceEstimationDetailsApiState
     object Loading : PriceEstimationDetailsApiState
 }

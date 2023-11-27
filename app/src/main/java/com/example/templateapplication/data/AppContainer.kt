@@ -34,7 +34,7 @@ class DefaultAppContainer(): AppContainer {
         .client(client)
         .build()
 
-    private val extraMateriaalRetrofit = Retrofit.Builder()
+    private val retrofitApi = Retrofit.Builder()
         .addConverterFactory(
             json.asConverterFactory("application/json".toMediaType())
         )
@@ -47,7 +47,7 @@ class DefaultAppContainer(): AppContainer {
     }
 
     private val restApiRetrofitService: RestApiService by lazy {
-        extraMateriaalRetrofit.create(RestApiService::class.java)
+        retrofitApi.create(RestApiService::class.java)
     }
     override val googleMapsRepository: ApiGoogleMapsRepository by lazy {
         ApiGoogleMapsRepository(googleMapsRetrofitService)
