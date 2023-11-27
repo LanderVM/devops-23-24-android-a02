@@ -48,6 +48,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
+import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.commons.AutoCompleteComponent
 import com.example.templateapplication.ui.commons.DateRangePicker
@@ -80,17 +81,7 @@ fun GuidePriceScreen(
         ),
     )
 
-    val estimationDetailsState by priceEstimationViewModel.estimationDetailsState.collectAsState()
-
-    val formulasList = estimationDetailsState.formulas
-    val materialsList = listOf(
-        "Barkoeler 320L",
-        "Lichtslinger",
-        "Diepvries 80L",
-        "Soepketel",
-        "Biertafelset",
-        "Schapenvacht"
-    )
+    val screenDataState by priceEstimationViewModel.estimationDetailsState.collectAsState()
 
     var formulaDropDownExpand by remember { mutableStateOf(false) }
     var selectedFormula by remember { mutableIntStateOf(0) }
@@ -99,7 +90,7 @@ fun GuidePriceScreen(
 
     var wantsTripelBier by remember { mutableStateOf(false) }
     var wantsExtras by remember { mutableStateOf(false) }
-    val selectedItems = remember { mutableStateListOf<String>() }
+    val selectedItems = remember { mutableStateListOf<EstimationEquipment>() }
 
     Column(
         modifier = Modifier
@@ -123,7 +114,7 @@ fun GuidePriceScreen(
         Titel(
             text = "Details",
         )
-        /*        Row(
+        Row(
             modifier = Modifier
                 .fillMaxWidth(0.75f)
         ) {
@@ -131,7 +122,7 @@ fun GuidePriceScreen(
                 expanded = formulaDropDownExpand,
                 onExpandedChange = { formulaDropDownExpand = !formulaDropDownExpand },
             ) {
-                formulasList?.get(selectedFormula)?.let {
+                screenDataState.formulas?.get(selectedFormula)?.let {
                     OutlinedTextField(
                         readOnly = true,
                         value = it.title,
@@ -158,9 +149,9 @@ fun GuidePriceScreen(
                         formulaDropDownExpand = false
                     }
                 ) {
-                    formulasList?.forEachIndexed { index, s ->
+                    screenDataState.formulas?.forEachIndexed { _, s ->
                         DropdownMenuItem(text = { Text(s.title) }, onClick = {
-                            selectedFormula = index
+                            selectedFormula = s.id
                             formulaDropDownExpand = !formulaDropDownExpand
                         })
                     }
@@ -235,7 +226,7 @@ fun GuidePriceScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    materialsList.forEachIndexed { index, s ->
+                    screenDataState.equipment?.forEachIndexed { _, equipment ->
                         Row(
                             modifier = Modifier
                                 .height(50.dp)
@@ -244,13 +235,10 @@ fun GuidePriceScreen(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Checkbox(
-                                checked = selectedItems.contains(s),
+                                checked = selectedItems.contains(equipment),
                                 onCheckedChange = { isChecked ->
-                                    if (isChecked) {
-                                        selectedItems.add(s)
-                                    } else {
-                                        selectedItems.remove(s)
-                                    }
+                                    if (isChecked) selectedItems.add(equipment)
+                                    else selectedItems.remove(equipment)
                                 },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = secondary,
@@ -259,7 +247,7 @@ fun GuidePriceScreen(
                                 ),
                             )
                             Text(
-                                text = s,
+                                text = equipment.title,
                                 modifier = Modifier.padding(horizontal = 12.dp)
                             )
                         }
@@ -280,6 +268,6 @@ fun GuidePriceScreen(
             fontSize = 12.sp,
             fontWeight = FontWeight.Light,
         )
-        Spacer(modifier = Modifier.height(24.dp))*/
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
