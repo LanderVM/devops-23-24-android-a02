@@ -41,10 +41,20 @@ class FormulaViewModel : ViewModel() {
     }
 
     fun selectFormula(id: Int) {
-//        Log.i("UPDATE", "Old value: ${formulaUiState.value.selectedFormula}")
         _formuleUiState.update {
             it.copy(selectedFormula = id)
         }
-//        Log.i("UPDATE", "New value: ${formulaUiState.value.selectedFormula}")
+    }
+
+    fun selectBeer(wantsTripelBeer: Int) {
+        _formuleUiState.update {
+            it.copy(wantsTripelBeer = wantsTripelBeer == 1)
+        }
+    }
+
+    fun setDropDownExpanded(value: Boolean) {
+        _formuleUiState.update {
+            it.copy(dropDownExpanded = value)
+        }
     }
 }
