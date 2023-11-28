@@ -35,9 +35,9 @@ import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
+import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
-import com.example.templateapplication.ui.screens.guideprice.components.FormulaDropDownSelect
 import com.example.templateapplication.ui.theme.onSecondary
 import com.example.templateapplication.ui.theme.secondary
 import com.example.templateapplication.ui.theme.tertiary
@@ -93,12 +93,13 @@ fun GuidePriceScreen(
             modifier = Modifier
                 .fillMaxWidth(0.75f)
         ) {
-            FormulaDropDownSelect(
+            DropDownSelect(
+                label = "Formule",
                 isExpanded = priceEstimationUIState.formulaDropDownIsExpanded,
                 setExpanded = { priceEstimationViewModel.setDropDownExpanded(it) },
                 selectedOption = priceEstimationUIState.selectedFormula - 1,
                 setSelectedOption = { priceEstimationViewModel.selectFormula(it) },
-                options = priceEstimationUIState.dbData.formulas,
+                dropDownOptions = priceEstimationUIState.dbData.formulas,
             )
             Spacer(modifier = Modifier.width(8.dp))
             NumberOutlinedTextField(

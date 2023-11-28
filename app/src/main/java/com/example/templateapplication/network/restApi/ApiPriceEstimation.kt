@@ -2,8 +2,8 @@ package com.example.templateapplication.network.restApi
 
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment
-import com.example.templateapplication.model.guidePriceEstimation.EstimationFormula
 import com.example.templateapplication.model.guidePriceEstimation.EstimationUnavailableDateRanges
+import com.example.templateapplication.ui.commons.DropDownOption
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -33,7 +33,7 @@ data class EstimationDetailsData(
 
 fun EstimationDetailsData.asDomainObject(): EstimationDetails {
     var formulas = this.formulas.map {
-        EstimationFormula(it.id, it.title)
+        DropDownOption(it.title, it.id)
     }
     var equipment = this.equipment.map {
         EstimationEquipment(it.id, it.title)

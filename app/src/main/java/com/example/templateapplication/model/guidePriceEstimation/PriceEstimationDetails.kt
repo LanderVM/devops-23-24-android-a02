@@ -1,9 +1,6 @@
 package com.example.templateapplication.model.guidePriceEstimation
 
-data class EstimationFormula(
-    val id: Int,
-    val title: String,
-)
+import com.example.templateapplication.ui.commons.DropDownOption
 
 data class EstimationEquipment(
     val id: Int,
@@ -16,7 +13,7 @@ data class EstimationUnavailableDateRanges(
 )
 
 data class EstimationDetails(
-    val formulas: List<EstimationFormula> = emptyList(),
+    val formulas: List<DropDownOption> = emptyList(),
     val equipment: List<EstimationEquipment> = emptyList(),
     val unavailableDates: List<EstimationUnavailableDateRanges> = emptyList(),
 )
