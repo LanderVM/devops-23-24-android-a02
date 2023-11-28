@@ -16,17 +16,13 @@ interface ApiRepository {
 
 class RestApiRepository(
     private val restApiService: RestApiService
-): ApiRepository{
-    override suspend fun getQuotationExtraEquipment(): List<ExtraItemState> {
-        return restApiService.getQuotationEquipment().asDomainObjects()
-    }
+) : ApiRepository {
+    override suspend fun getQuotationExtraEquipment() =
+        restApiService.getQuotationEquipment().asDomainObjects()
 
-    override suspend fun getEstimationDetails(): EstimationDetails {
-        return restApiService.getEstimationDetails().asDomainObject()
-    }
+    override suspend fun getEstimationDetails() =
+        restApiService.getEstimationDetails().asDomainObject()
 
-    override suspend fun calculatePrice(): BigDecimal {
-        return restApiService.calculatePrice()
-    }
+    override suspend fun calculatePrice() = restApiService.calculatePrice()
 
 }

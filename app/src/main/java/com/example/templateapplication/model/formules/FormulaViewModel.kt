@@ -39,4 +39,12 @@ class FormulaViewModel : ViewModel() {
     fun checkDate(): Boolean {
         return _formuleUiState.value.startDate != null && _formuleUiState.value.endDate != null
     }
+
+    fun selectFormula(id: Int) {
+//        Log.i("UPDATE", "Old value: ${formulaUiState.value.selectedFormula}")
+        _formuleUiState.update {
+            it.copy(selectedFormula = id)
+        }
+//        Log.i("UPDATE", "New value: ${formulaUiState.value.selectedFormula}")
+    }
 }

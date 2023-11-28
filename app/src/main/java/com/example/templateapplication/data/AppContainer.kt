@@ -15,9 +15,9 @@ interface AppContainer {
     val apiRepository: ApiRepository
 }
 
-class DefaultAppContainer(): AppContainer {
+class DefaultAppContainer: AppContainer {
     private val googleMapsBaseUrl = GooglePlacesApiService.BASE_URL
-    private val restApiBaseUrl = "http://10.0.2.2:5292/api/"
+    private val restApiBaseUrl = "http://10.0.2.2:5292/api/" // TODO move & quick test
 
     private val json = Json { ignoreUnknownKeys = true }
 

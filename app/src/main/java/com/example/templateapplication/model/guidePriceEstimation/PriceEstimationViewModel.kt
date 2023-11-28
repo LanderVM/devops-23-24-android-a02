@@ -46,7 +46,8 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
                 priceEstimationApiState = PriceEstimationDetailsApiState.Success(result)
             } catch (e: IOException) {
                 val errorMessage = e.message ?: "An error occurred"
-                priceEstimationApiState = PriceEstimationDetailsApiState.Error(errorMessage)
+                priceEstimationApiState =
+                    PriceEstimationDetailsApiState.Error(errorMessage) // TODO use this in ui
             }
 
         }

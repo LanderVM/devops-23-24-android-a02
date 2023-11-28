@@ -5,4 +5,5 @@ import java.util.Calendar
 data class FormuleUiState(
     val startDate: Calendar? = null,
     val endDate: Calendar? = null,
+    val selectedFormula: Int = -1,
 )

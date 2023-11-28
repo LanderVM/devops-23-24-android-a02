@@ -66,8 +66,10 @@ fun BlancheApp(
         var adresViewModel: AdresViewModel = viewModel()
         var formulaViewModel: FormulaViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
-        var eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory)
-        var priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory)
+        var eventAddressViewModel: EventAddressViewModel =
+            viewModel(factory = EventAddressViewModel.Factory)
+        var priceEstimationViewModel: PriceEstimationViewModel =
+            viewModel(factory = PriceEstimationViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
@@ -117,9 +119,18 @@ fun BlancheApp(
                             },
                             modifier = Modifier.padding(innerPadding),
                             onExtraNavigation = { navController.navigate(NavigationRoutes.extrasOverview.name) },
-                            onBasicNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
-                            onAllInNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
-                            onGevorderedNavigation = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
+                            onBasicNavigation = {
+                                formulaViewModel.selectFormula(1) // TODO merge offerte aanvraag pages into one viewmodel & use proper ids from fetched db formulas
+                                navController.navigate(NavigationRoutes.evenementGegevens.name)
+                            },
+                            onAllInNavigation = {
+                                formulaViewModel.selectFormula(2)
+                                navController.navigate(NavigationRoutes.evenementGegevens.name)
+                            },
+                            onGevorderedNavigation = {
+                                formulaViewModel.selectFormula(3)
+                                navController.navigate(NavigationRoutes.evenementGegevens.name)
+                            },
                             onGuidePriceNavigation = {
                                 navController.navigate(NavigationRoutes.guidePrice.name)
                             },
@@ -148,7 +159,11 @@ fun BlancheApp(
                     composable(NavigationRoutes.evenementGegevens.name) {
                         EvenementScreen(
                             modifier = Modifier.padding(innerPadding),
-                            navigateContactGegevensScreen = { navController.navigate(NavigationRoutes.contactGegevens.name) },
+                            navigateContactGegevensScreen = {
+                                navController.navigate(
+                                    NavigationRoutes.contactGegevens.name
+                                )
+                            },
                             formulaViewModel = formulaViewModel,
                             eventAddressViewModel = eventAddressViewModel,
                         )
@@ -170,7 +185,7 @@ fun BlancheApp(
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
                             extraItemViewModel = extraItemViewModel,
-                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)},
+                            navigateSamenvatting = { navController.navigate(NavigationRoutes.samenvattingGegevens.name) },
                             isOverview = false
                         )
                     }
@@ -178,7 +193,7 @@ fun BlancheApp(
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
                             extraItemViewModel = extraItemViewModel,
-                            navigateSamenvatting = {navController.navigate(NavigationRoutes.samenvattingGegevens.name)},
+                            navigateSamenvatting = { navController.navigate(NavigationRoutes.samenvattingGegevens.name) },
                             isOverview = true
                         )
                     }
