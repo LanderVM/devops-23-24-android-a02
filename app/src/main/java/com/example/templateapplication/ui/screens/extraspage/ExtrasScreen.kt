@@ -104,13 +104,7 @@ fun ExtrasScreen(
                         onClick = { selectedIndex = index },
                         selected = index == selectedIndex,
                         colors = SegmentedButtonColors(
-                            activeContainerColor = Color(
-                                android.graphics.Color.parseColor(
-                                    stringResource(
-                                        R.string.lichterder,
-                                    ),
-                                ),
-                            ),
+                            activeContainerColor = Color(0xFFe9dcc5),
                             activeBorderColor = Color.Black,
                             activeContentColor = Color.Black,
                             disabledActiveBorderColor = Color.Black,

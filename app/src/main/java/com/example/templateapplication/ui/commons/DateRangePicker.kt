@@ -12,6 +12,7 @@ import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -90,7 +91,7 @@ fun DateRangePicker(
             },
             showModeToggle = showCalenderToggle,
             colors = DatePickerDefaults.colors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.lichter))),
+                containerColor = Color(0xFFe9dcc5),
                 titleContentColor = Color.Black,
                 headlineContentColor = Color.Black,
                 weekdayContentColor = Color.Black,
@@ -99,14 +100,10 @@ fun DateRangePicker(
                 currentYearContentColor = Color.Red,
                 selectedYearContainerColor = Color.Red,
                 disabledDayContentColor = Color.Gray,
-                todayDateBorderColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
-                dayInSelectionRangeContainerColor = Color(
-                    android.graphics.Color.parseColor(
-                        stringResource(R.string.lichterder)
-                    )
-                ),
+                todayDateBorderColor = Color(0xFFC8A86E),
+                dayInSelectionRangeContainerColor = Color(0xFFe9dcc5),
                 dayInSelectionRangeContentColor = Color.White,
-                selectedDayContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
+                selectedDayContainerColor =  Color(0xFFC8A86E),
                 selectedDayContentColor = md_theme_light_onPrimary,
             ),
         )

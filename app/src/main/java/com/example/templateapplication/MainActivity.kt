@@ -28,10 +28,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun AppPreview(darkTheme: Boolean = true) {
-    BlancheTheme {
+fun AppPreview() {
+    BlancheTheme(darkTheme = false) {
+        BlancheApp()
+    }
+}
+@Preview
+@Composable
+fun AppPreviewDarkMode() {
+    BlancheTheme(darkTheme = true) {
         BlancheApp()
     }
 }

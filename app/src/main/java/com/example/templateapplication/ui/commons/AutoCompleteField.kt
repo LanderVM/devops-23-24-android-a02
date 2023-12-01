@@ -1,5 +1,6 @@
 package com.example.templateapplication.ui.commons
 
+import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -127,7 +129,7 @@ fun AddressTextField(
         label = {
             Text(
                 text = "Adres",
-                color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+                color = Color(0xFFe9dcc5)
             )
         },
         value = uiState.googleMaps.eventAddress,
@@ -135,8 +137,8 @@ fun AddressTextField(
             quotationRequestViewModel.updateInput(it)
         },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-            unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+            focusedBorderColor = Color(0xFFe9dcc5),
+            unfocusedBorderColor = Color(0xFFe9dcc5),
         ),
         modifier = Modifier.width(300.dp),
     )

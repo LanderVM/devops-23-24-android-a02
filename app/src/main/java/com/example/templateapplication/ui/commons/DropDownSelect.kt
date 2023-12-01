@@ -36,7 +36,7 @@ fun DropDownSelect(
             label = {
                 Text(
                     text = label,
-                    color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))
+                    color = Color(0xFFe9dcc5)
                 )
             },
             trailingIcon = {

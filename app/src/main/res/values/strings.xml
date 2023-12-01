@@ -1,14 +1,16 @@
 <resources>
-    <string name="app_name">Template Application</string>
-    <string name="donkerder">#b49763</string>
-    <string name="main">#C8A86E</string>
-    <string name="lichter">#D3B98B</string>
-    <string name="lichterder">#e9dcc5</string>
-    <string name="lichts">#efe5d4</string>
-    <string name="extrakleur1">#e0d1b4</string>
-    <string name="extrakleur2">#f2e6ce</string>
-    <string name="wit">#FFFFFF</string>
-    <string name="disabledButtonColor">#f8f1e4</string>
+    <string name="app_name">Blanche</string>
+
+    <string name="alertPopUp_title">Snelle Inschatting</string>
+    <string name="alertPopUp_text">Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?</string>
+    <string name="alertPopUp_confirm">Ja</string>
+    <string name="alertPopUp_dismiss">Ik wacht nog even</string>
+
+    <string name="formula_basic_title">Basic</string>
+    <string name="formula_allIn_title">All-In</string>
+    <string name="formula_advanced_title">Gevorderd</string>
+    <string name="formula_extraMaterials_title">Extra Materiaal</string>
+
     <string name="home_title">Home</string>
     <string name="over_title">Over</string>
     <string name="contact_gegevens_title">Contact gegevens</string>

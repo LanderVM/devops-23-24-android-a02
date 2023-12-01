@@ -185,7 +185,7 @@ fun InputVeld(
     makeEmpty: () -> Unit,
 ) {
     OutlinedTextField(
-        label = { Text(text = label, color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))) },
+        label = { Text(text = label, color = Color(0xFFe9dcc5)) },
         value = value,
         onValueChange = onChange,
         modifier = Modifier
@@ -194,8 +194,8 @@ fun InputVeld(
             .height(75.dp)
             .padding(horizontal = 40.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
-            unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+            focusedBorderColor = Color(0xFFe9dcc5),
+            unfocusedBorderColor = Color(0xFFe9dcc5),
         ),
         trailingIcon = {
             IconButton(
@@ -203,7 +203,7 @@ fun InputVeld(
                 enabled = value.isNotEmpty(),
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = Color.Transparent,
-                    contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
+                    contentColor = Color(0xFFe9dcc5),
                     disabledContainerColor = Color.Transparent,
                     disabledContentColor = Color.Transparent,
                 ),

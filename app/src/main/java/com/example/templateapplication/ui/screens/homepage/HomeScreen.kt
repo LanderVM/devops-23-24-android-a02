@@ -4,11 +4,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.templateapplication.R
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.ui.commons.AlertPopUp
@@ -17,14 +15,14 @@ import com.example.templateapplication.ui.screens.homepage.components.HomeScreen
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     openDrawer: () -> Unit = {},
     onExtraNavigation: () -> Unit,
     onBasicNavigation: () -> Unit,
     onAllInNavigation: () -> Unit,
     onGevorderedNavigation: () -> Unit,
     onGuidePriceNavigation: () -> Unit,
-    homeViewModel: HomeViewModel,
-    modifier: Modifier = Modifier
+    homeViewModel: HomeViewModel
 ) {
     val homeUiState by homeViewModel.homeUiState.collectAsState()
 
@@ -36,10 +34,10 @@ fun HomeScreen(
                     homeViewModel.updateOpenDialog(false)
                     onGuidePriceNavigation()
                 },
-                dialogTitle = "Snelle Inschatting",
-                dialogText = "Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?",
-                confirmText = "Ja",
-                dismissText = "Ik wacht nog even"
+                dialogTitle = stringResource(R.string.alertPopUp_title),
+                dialogText = stringResource(R.string.alertPopUp_text),
+                confirmText = stringResource(R.string.alertPopUp_confirm),
+                dismissText = stringResource(R.string.alertPopUp_dismiss)
             )
         }
     }
@@ -54,16 +52,16 @@ fun HomeScreen(
             HomeScreenTop(openDrawer = openDrawer)
         }
         item {
-            FormuleCard("Basic", image1, onButtonClicked = onBasicNavigation)
+            FormuleCard(stringResource(id = R.string.formula_basic_title), image1, onButtonClicked = onBasicNavigation)
         }
         item {
-            FormuleCard("All-In", image2, onButtonClicked = onAllInNavigation)
+            FormuleCard(stringResource(id = R.string.formula_allIn_title), image2, onButtonClicked = onAllInNavigation)
         }
         item {
-            FormuleCard("Gevorderd", image3, onButtonClicked = onGevorderedNavigation)
+            FormuleCard(stringResource(id = R.string.formula_advanced_title), image3, onButtonClicked = onGevorderedNavigation)
         }
         item {
-            FormuleCard("Extra Materiaal", image4, onButtonClicked = onExtraNavigation)
+            FormuleCard(stringResource(id = R.string.formula_extraMaterials_title), image4, onButtonClicked = onExtraNavigation)
         }
     }
 }

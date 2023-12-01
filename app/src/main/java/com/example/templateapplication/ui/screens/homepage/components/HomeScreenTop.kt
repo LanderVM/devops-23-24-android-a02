@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,13 +32,14 @@ import com.example.templateapplication.ui.theme.ImperialScript
 @Composable
 fun HomeScreenTop(
     modifier: Modifier = Modifier,
-
     openDrawer: () -> Unit = {}
 ) {
     val image = painterResource(R.drawable.homescreen_background)
 
     Box(
-        modifier = modifier.fillMaxHeight(0.4f).testTag("homeScreenTop")
+        modifier = modifier
+            .fillMaxHeight(0.4f)
+            .testTag("homeScreenTop")
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -46,7 +48,9 @@ fun HomeScreenTop(
                 painter = image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize().shadow(8.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .shadow(8.dp)
             )
 
             Box(
@@ -70,7 +74,7 @@ fun HomeScreenTop(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Blanche",
+                        text = stringResource(id = R.string.app_name),
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 80.sp,
                         color = Color.White,

@@ -308,7 +308,7 @@ fun EventGegevens(
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                    containerColor = Color(0XFFD3B98B)
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
@@ -323,7 +323,7 @@ fun EventGegevens(
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                    containerColor = Color(0XFFD3B98B)
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
@@ -370,7 +370,7 @@ fun ContactGegevens(
                 headlineContent = {Text(text="Naam",fontSize = 18.sp)},
                 supportingContent = {Text(text=gegevensUiState.naam+" "+gegevensUiState.voornaam,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                    containerColor = Color(0XFFD3B98B)
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
@@ -379,7 +379,7 @@ fun ContactGegevens(
                 headlineContent = {Text(text="Email",fontSize = 18.sp)},
                 supportingContent = {Text(text=gegevensUiState.email,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                    containerColor = Color(0XFFD3B98B)
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
@@ -388,7 +388,7 @@ fun ContactGegevens(
                 headlineContent = {Text(text="Telefoonnummer",fontSize = 18.sp)},
                 supportingContent = {Text(text=gegevensUiState.telefoonnummer,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                    containerColor = Color(0XFFD3B98B)
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
@@ -401,7 +401,7 @@ fun ContactGegevens(
                         fontSize = 16.sp
                     )},
                 colors = ListItemDefaults.colors(
-                    containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichterder)))
+                    containerColor = Color(0XFFD3B98B)
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
             )}

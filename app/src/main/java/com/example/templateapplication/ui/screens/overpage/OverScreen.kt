@@ -124,10 +124,10 @@ fun Info (
             onClick = openPopUp,
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.main))),
-                disabledContainerColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.disabledButtonColor))),
-                contentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit))),
-                disabledContentColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.wit)))
+                containerColor = Color(0xFFC8A86E),
+                disabledContainerColor = Color(0xFFf8f1e4),
+                contentColor = Color.White,
+                disabledContentColor = Color.White
             ),
         ) {
             Text (text= "Meer info",fontSize = 22.sp)
@@ -149,7 +149,7 @@ fun PopUp1(
                 .height(200.dp)
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
-            color = Color(android.graphics.Color.parseColor(stringResource(R.string.extrakleur2))),
+            color = Color(0XFFf2e6ce),
         ) {
             Column (
                 modifier = Modifier.fillMaxWidth(),
@@ -200,7 +200,7 @@ fun PopUp2(
                 .height(200.dp)
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
-            color = Color(android.graphics.Color.parseColor(stringResource(R.string.extrakleur2))),
+            color = Color(0XFFf2e6ce),
         ) {
             Column (
                 modifier = Modifier.fillMaxWidth(),
@@ -245,7 +245,7 @@ fun InputVeld(
 ) {
 
     OutlinedTextField(
-        label = { Text(text = label, color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))) },
+        label = { Text(text = label, color = Color(0XFFD3B98B)) },
         value = value,
         onValueChange =onChange,
         modifier = Modifier
@@ -254,8 +254,8 @@ fun InputVeld(
             .height(55.dp)
             .padding(horizontal = 30.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.donkerder))),
-            unfocusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.donkerder)))
+            focusedBorderColor = Color(0XFFb49763),
+            unfocusedBorderColor = Color(0XFFb49763)
         ),
 
     )
