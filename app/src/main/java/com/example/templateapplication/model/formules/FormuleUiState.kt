@@ -12,5 +12,6 @@ data class FormuleUiState(
     val beerDropDownOptions: List<DropDownOption> = listOf(
         DropDownOption("Pils", 0),
         DropDownOption("Tripel", 1)
-    )
+    ),
+    val amountOfPeople: String = "",
 )

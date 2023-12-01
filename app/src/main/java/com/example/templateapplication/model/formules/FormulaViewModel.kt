@@ -1,5 +1,6 @@
 package com.example.templateapplication.model.formules
 
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,8 +37,11 @@ class FormulaViewModel : ViewModel() {
                 dateFormat.format(_formuleUiState.value.endDate!!.timeInMillis)
     }
 
-    fun checkDate(): Boolean {
-        return _formuleUiState.value.startDate != null && _formuleUiState.value.endDate != null
+    fun canNavigateNext(): Boolean {
+        return _formuleUiState.value.amountOfPeople.isDigitsOnly()
+                && _formuleUiState.value.amountOfPeople.isNotBlank()
+                && _formuleUiState.value.startDate != null
+                && _formuleUiState.value.endDate != null
     }
 
     fun selectFormula(id: Int) {
@@ -55,6 +59,14 @@ class FormulaViewModel : ViewModel() {
     fun setDropDownExpanded(value: Boolean) {
         _formuleUiState.update {
             it.copy(dropDownExpanded = value)
+        }
+    }
+
+    fun setAmountOfPeople(amountOfPeople: String) {
+        if (amountOfPeople.isDigitsOnly()) {
+            _formuleUiState.update {
+                it.copy(amountOfPeople = amountOfPeople)
+            }
         }
     }
 }

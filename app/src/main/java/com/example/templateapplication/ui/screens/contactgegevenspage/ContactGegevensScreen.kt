@@ -1,7 +1,6 @@
 package com.example.templateapplication.ui.screens.contactgegevenspage
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -176,7 +173,6 @@ fun Adressering(
         InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange, makeEmpty = makeEmptyPostcode)
         Spacer(modifier = Modifier.height(20.dp))
         InputVeld(label = "Btw-nummer", value = btwNummer, onChange = onBtwNummerChange, makeEmpty = makeEmptyBtwNummer)
-
     }
 }
 

@@ -1,14 +1,11 @@
 package com.example.templateapplication.ui.screens.evenementpage
 
-import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.rememberDateRangePickerState
@@ -29,12 +26,10 @@ import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NextPageButton
+import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.Instant
-import java.time.ZoneId
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -84,7 +79,6 @@ fun EvenementScreen(
                 for ((start, end) in dateRanges) {
                     val startMillis = dateFormat.parse(start).time
                     val endMillis = dateFormat.parse(end).time
-
                     if (utcTimeMillis >= startMillis && utcTimeMillis <= endMillis) {
                         return false
                     }
@@ -94,7 +88,7 @@ fun EvenementScreen(
         })
 
     LaunchedEffect(recheckNextButtonStatus) {
-        nextButtonEnabled = eventAddressViewModel.placeFound() && formulaViewModel.checkDate()
+        nextButtonEnabled = eventAddressViewModel.placeFound() && formulaViewModel.canNavigateNext()
         recheckNextButtonStatus = false
     }
 
@@ -122,10 +116,18 @@ fun EvenementScreen(
             showCalenderToggle = false,
             enableRecheckFunction = { recheckNextButtonStatus = true }
         )
+        SeperatingTitle(
+            text = "Details",
+        )
+        NumberOutlinedTextField(
+            label = "Aantal Personen",
+            value = formulaUiState.amountOfPeople,
+            onValueChange = {
+                formulaViewModel.setAmountOfPeople(it)
+                recheckNextButtonStatus = true
+            },
+        )
         if (formulaUiState.selectedFormula != 1) {
-            SeperatingTitle(
-                text = "Extra Opties",
-            )
             DropDownSelect(
                 label = "Biersoort",
                 isExpanded = formulaUiState.dropDownExpanded,
