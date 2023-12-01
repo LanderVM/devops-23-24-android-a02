@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.evenementpage
+package com.example.templateapplication.ui.screens.quotationRequest
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

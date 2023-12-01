@@ -35,7 +35,7 @@ import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
-import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
+import com.example.templateapplication.ui.screens.quotationRequest.EvenementScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 import com.example.templateapplication.ui.screens.guideprice.GuidePriceScreen
