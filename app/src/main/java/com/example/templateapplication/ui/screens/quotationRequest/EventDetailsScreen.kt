@@ -35,7 +35,7 @@ import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EvenementScreen(
+fun EventDetailsScreen(
     modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
     navigateContactGegevensScreen: () -> Unit,

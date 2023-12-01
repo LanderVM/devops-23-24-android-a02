@@ -35,7 +35,7 @@ import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
-import com.example.templateapplication.ui.screens.quotationRequest.EvenementScreen
+import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
 import com.example.templateapplication.ui.screens.guideprice.GuidePriceScreen
@@ -119,15 +119,15 @@ fun BlancheApp(
                             modifier = Modifier.padding(innerPadding),
                             onExtraNavigation = { navController.navigate(NavigationRoutes.extrasOverview.name) },
                             onBasicNavigation = {
-                                formulaViewModel.selectFormula(1)
+                                quotationRequestViewModel.selectFormula(1)
                                 navController.navigate(NavigationRoutes.evenementGegevens.name)
                             },
                             onAllInNavigation = {
-                                formulaViewModel.selectFormula(2)
+                                quotationRequestViewModel.selectFormula(2)
                                 navController.navigate(NavigationRoutes.evenementGegevens.name)
                             },
                             onGevorderedNavigation = {
-                                formulaViewModel.selectFormula(3)
+                                quotationRequestViewModel.selectFormula(3)
                                 navController.navigate(NavigationRoutes.evenementGegevens.name)
                             },
                             onGuidePriceNavigation = {
@@ -156,7 +156,7 @@ fun BlancheApp(
                         )
                     }
                     composable(NavigationRoutes.evenementGegevens.name) {
-                        EvenementScreen(
+                        EventDetailsScreen(
                             modifier = Modifier.padding(innerPadding),
                             navigateContactGegevensScreen = {
                                 navController.navigate(
