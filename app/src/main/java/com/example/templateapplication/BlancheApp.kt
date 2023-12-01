@@ -25,7 +25,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.model.adres.AdresViewModel
-import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
@@ -34,6 +33,7 @@ import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
+import com.example.templateapplication.ui.screens.QuotationViewModel
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
 import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
@@ -66,8 +66,7 @@ fun BlancheApp(
         var adresViewModel: AdresViewModel = viewModel()
         var formulaViewModel: FormulaViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
-        var eventAddressViewModel: EventAddressViewModel =
-            viewModel(factory = EventAddressViewModel.Factory)
+        var quotationViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory)
         var priceEstimationViewModel: PriceEstimationViewModel =
             viewModel(factory = PriceEstimationViewModel.Factory)
 
@@ -165,7 +164,7 @@ fun BlancheApp(
                                 )
                             },
                             formulaViewModel = formulaViewModel,
-                            eventAddressViewModel = eventAddressViewModel,
+                            eventAddressViewModel = quotationViewModel,
                         )
                     }
                     composable(NavigationRoutes.samenvattingGegevens.name) {
@@ -175,7 +174,7 @@ fun BlancheApp(
                             adresViewModel = adresViewModel,
                             formulaViewModel = formulaViewModel,
                             extraItemViewModel = extraItemViewModel,
-                            eventAddressViewModel = eventAddressViewModel,
+                            eventAddressViewModel = quotationViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.contactGegevens.name) },
                             navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },
@@ -201,7 +200,7 @@ fun BlancheApp(
                         GuidePriceScreen(
                             modifier = Modifier.padding(innerPadding),
                             formulaViewModel = formulaViewModel,
-                            eventAddressViewModel = eventAddressViewModel,
+                            eventAddressViewModel = quotationViewModel,
                             priceEstimationViewModel = priceEstimationViewModel
                         )
                     }

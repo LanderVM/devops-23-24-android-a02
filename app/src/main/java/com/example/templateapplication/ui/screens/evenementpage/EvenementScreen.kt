@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
@@ -29,6 +28,7 @@ import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.screens.QuotationViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -39,7 +39,7 @@ import java.util.TimeZone
 fun EvenementScreen(
     modifier: Modifier = Modifier,
     formulaViewModel: FormulaViewModel = viewModel(),
-    eventAddressViewModel: EventAddressViewModel = viewModel(),
+    eventAddressViewModel: QuotationViewModel = viewModel(),
     navigateContactGegevensScreen: () -> Unit,
 ) {
     val scrollState = rememberScrollState()

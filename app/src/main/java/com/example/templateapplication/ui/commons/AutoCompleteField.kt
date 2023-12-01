@@ -13,7 +13,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
-import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.adres.GoogleMapsPredictionsState
 import com.example.templateapplication.network.GooglePrediction
+import com.example.templateapplication.ui.screens.QuotationViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Circle
@@ -46,7 +45,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AddressTextField(
     modifier: Modifier = Modifier,
-    eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
+    eventAddressViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory),
     showMap: Boolean,
     enableRecheckFunction: () -> Unit,
 ) {

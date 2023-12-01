@@ -59,11 +59,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.AdresViewModel
-import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
+import com.example.templateapplication.ui.screens.QuotationViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
@@ -77,7 +77,7 @@ fun SamenvattingGegevensScreen (
     adresViewModel: AdresViewModel = viewModel(),
     formulaViewModel: FormulaViewModel = viewModel(),
     extraItemViewModel: ExtraItemViewModel = viewModel(),
-    eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
+    eventAddressViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory),
     navigateEventGegevens: ()->Unit,
     navigateContactGegevens:()->Unit,
     navigateExtras: () -> Unit,
@@ -128,7 +128,9 @@ fun SamenvattingGegevensScreen (
         KostGegevens(extraItemViewModel= extraItemViewModel, eventAddressViewModel = eventAddressViewModel)
         Spacer(modifier = Modifier.height(30.dp))
         Button (
-            onClick = {},
+            onClick = {
+
+            },
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MainColor,
@@ -266,7 +268,7 @@ fun EventGegevens(
     adresViewModel: AdresViewModel,
     gegevensViewModel: ContactGegevensViewModel,
     formulaViewModel: FormulaViewModel,
-    eventAddressViewModel: EventAddressViewModel = viewModel(factory = EventAddressViewModel.Factory),
+    eventAddressViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory),
     ) {
     val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
     val adresUiState by adresViewModel.adresUiState.collectAsState()
@@ -541,7 +543,7 @@ fun ExtraItemCard(
 fun KostGegevens (
     modifier: Modifier = Modifier,
     extraItemViewModel: ExtraItemViewModel,
-    eventAddressViewModel: EventAddressViewModel
+    eventAddressViewModel: QuotationViewModel
 ) {
 
     Column (

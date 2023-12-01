@@ -30,7 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.templateapplication.model.adres.EventAddressViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.commons.AddressTextField
@@ -38,6 +37,7 @@ import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.screens.QuotationViewModel
 import com.example.templateapplication.ui.theme.onSecondary
 import com.example.templateapplication.ui.theme.secondary
 import com.example.templateapplication.ui.theme.tertiary
@@ -49,7 +49,7 @@ fun GuidePriceScreen(
     modifier: Modifier = Modifier,
     priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
     formulaViewModel: FormulaViewModel = viewModel(),
-    eventAddressViewModel: EventAddressViewModel = viewModel(),
+    eventAddressViewModel: QuotationViewModel = viewModel(),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
     val scrollState = rememberScrollState()
