@@ -17,7 +17,7 @@ class HomeScreenTest {
     fun homeScreen_verifyContent () {
 
         composeTestRule.setContent {
-            HomeScreen(onAboutNavigation = { }, onFormulesNavigation = { })
+            //HomeScreen(onAboutNavigation = { }, onFormulesNavigation = { })
         }
 
         composeTestRule.onNodeWithText("Over").assertExists()

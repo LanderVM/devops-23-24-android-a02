@@ -38,9 +38,9 @@ import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
 import com.example.templateapplication.ui.screens.QuotationRequestViewModel
-import com.example.templateapplication.ui.theme.onSecondary
-import com.example.templateapplication.ui.theme.secondary
-import com.example.templateapplication.ui.theme.tertiary
+import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
+import com.example.templateapplication.ui.theme.md_theme_light_secondary
+import com.example.templateapplication.ui.theme.md_theme_light_tertiary
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -125,9 +125,9 @@ fun GuidePriceScreen(
                     checked = priceEstimationUIState.wantsTripelBeer,
                     onCheckedChange = { priceEstimationViewModel.setWantsTripelBeer(!priceEstimationUIState.wantsTripelBeer) },
                     colors = CheckboxDefaults.colors(
-                        checkedColor = secondary,
-                        checkmarkColor = onSecondary,
-                        uncheckedColor = tertiary,
+                        checkedColor = md_theme_light_secondary,
+                        checkmarkColor = md_theme_light_onSecondary,
+                        uncheckedColor = md_theme_light_tertiary,
                     ),
                 )
             }
@@ -143,9 +143,9 @@ fun GuidePriceScreen(
                 checked = priceEstimationUIState.wantsExtras,
                 onCheckedChange = { priceEstimationViewModel.setWantsExtras(!priceEstimationUIState.wantsExtras) },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = secondary,
-                    checkmarkColor = onSecondary,
-                    uncheckedColor = tertiary,
+                    checkedColor = md_theme_light_secondary,
+                    checkmarkColor = md_theme_light_onSecondary,
+                    uncheckedColor = md_theme_light_tertiary,
                 ),
             )
         }
@@ -176,9 +176,9 @@ fun GuidePriceScreen(
                                     )
                                 },
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = secondary,
-                                    checkmarkColor = onSecondary,
-                                    uncheckedColor = tertiary,
+                                    checkedColor = md_theme_light_secondary,
+                                    checkmarkColor = md_theme_light_onSecondary,
+                                    uncheckedColor = md_theme_light_tertiary,
                                 ),
                             )
                             Text(

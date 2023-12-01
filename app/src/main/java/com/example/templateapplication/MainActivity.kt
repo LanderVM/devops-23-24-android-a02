@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun AppPreview() {
+fun AppPreview(darkTheme: Boolean = true) {
     BlancheTheme {
         BlancheApp()
     }

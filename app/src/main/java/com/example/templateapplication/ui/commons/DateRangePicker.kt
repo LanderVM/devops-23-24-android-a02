@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
-import com.example.templateapplication.ui.theme.onPrimary
+import com.example.templateapplication.ui.theme.md_theme_light_onPrimary
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -107,7 +107,7 @@ fun DateRangePicker(
                 ),
                 dayInSelectionRangeContentColor = Color.White,
                 selectedDayContainerColor = Color(android.graphics.Color.parseColor(stringResource(R.string.main))),
-                selectedDayContentColor = onPrimary,
+                selectedDayContentColor = md_theme_light_onPrimary,
             ),
         )
         Spacer(modifier = Modifier.height(20.dp))

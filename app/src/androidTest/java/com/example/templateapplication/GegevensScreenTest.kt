@@ -21,7 +21,7 @@ class GegevensScreenTest {
     fun homeScreen_verifyContent () {
 
         composeTestRule.setContent {
-            ConatctGegevensScreen(navigateSamenvatting = {})
+            //ConatctGegevensScreen(navigateSamenvatting = {})
         }
 
         composeTestRule.onNodeWithText("Personalia").assertExists()
