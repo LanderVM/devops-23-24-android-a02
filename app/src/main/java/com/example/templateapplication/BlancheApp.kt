@@ -120,7 +120,7 @@ fun BlancheApp(
                             modifier = Modifier.padding(innerPadding),
                             onExtraNavigation = { navController.navigate(NavigationRoutes.extrasOverview.name) },
                             onBasicNavigation = {
-                                formulaViewModel.selectFormula(1) // TODO merge offerte aanvraag pages into one viewmodel & use proper ids from fetched db formulas
+                                formulaViewModel.selectFormula(1)
                                 navController.navigate(NavigationRoutes.evenementGegevens.name)
                             },
                             onAllInNavigation = {
