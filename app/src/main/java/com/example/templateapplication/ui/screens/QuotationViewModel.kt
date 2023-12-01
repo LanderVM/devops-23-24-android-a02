@@ -17,11 +17,11 @@ import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.adres.GoogleMapsDistanceState
 import com.example.templateapplication.model.adres.GoogleMapsPlaceState
 import com.example.templateapplication.model.adres.GoogleMapsPredictionsState
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsDistance
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlace
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsPrediction
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
-import com.example.templateapplication.network.GoogleDistanceResponse
-import com.example.templateapplication.network.GooglePlaceResponse
-import com.example.templateapplication.network.GooglePredictionsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -125,7 +125,7 @@ class QuotationViewModel(
 
     private val _uiStatePrediction = MutableStateFlow(
         GoogleMapsPredictionsState(
-            GooglePredictionsResponse(arrayListOf())
+            GoogleMapsPrediction(arrayListOf())
         )
     )
     val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediction.asStateFlow()
@@ -137,7 +137,7 @@ class QuotationViewModel(
 
     // Plaats
     private val _uiStatePlace =
-        MutableStateFlow(GoogleMapsPlaceState(GooglePlaceResponse(arrayListOf())))
+        MutableStateFlow(GoogleMapsPlaceState(GoogleMapsPlace(arrayListOf())))
     val uiStatePlace: StateFlow<GoogleMapsPlaceState> = _uiStatePlace.asStateFlow()
 
     var googleMapsPlaceApiState: ApiResponse<GoogleMapsPlaceState> by mutableStateOf(ApiResponse.Loading)
@@ -145,7 +145,7 @@ class QuotationViewModel(
 
     // Afstand
     private val _uiStateDistance =
-        MutableStateFlow(GoogleMapsDistanceState(GoogleDistanceResponse(arrayListOf())))
+        MutableStateFlow(GoogleMapsDistanceState(GoogleMapsDistance(arrayListOf())))
     val uiStateDistance: StateFlow<GoogleMapsDistanceState> = _uiStateDistance.asStateFlow()
 
     var googleMapsDistanceApiState: ApiResponse<GoogleMapsDistanceState> by mutableStateOf(

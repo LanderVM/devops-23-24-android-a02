@@ -1,18 +1,10 @@
-package com.example.templateapplication.network
+package com.example.templateapplication.network.googleMapsApi
 
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsDistance
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ApiGoogleDistanceResponse(
-    val rows: ArrayList<GoogleDistanceElement>
-) {
-}
-
-fun ApiGoogleDistanceResponse.asDomainObject(): GoogleDistanceResponse {
-    return GoogleDistanceResponse(rows)
-}
-
-data class GoogleDistanceResponse(
     val rows: ArrayList<GoogleDistanceElement>
 )
 
@@ -32,3 +24,8 @@ data class GoogleDistanceField(
 data class GoogleDistanceElement(
     val elements: ArrayList<GoogleDistanceField>,
 )
+
+fun ApiGoogleDistanceResponse.asDomainObject(): GoogleMapsDistance {
+    return GoogleMapsDistance(rows)
+}
+

@@ -1,6 +1,6 @@
 package com.example.templateapplication.data
 
-import com.example.templateapplication.network.GooglePlacesApiService
+import com.example.templateapplication.network.googleMapsApi.GooglePlacesApiService
 import com.example.templateapplication.network.restApi.RestApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json

@@ -27,7 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.adres.GoogleMapsPredictionsState
-import com.example.templateapplication.network.GooglePrediction
+import com.example.templateapplication.network.googleMapsApi.GooglePrediction
 import com.example.templateapplication.ui.screens.QuotationViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng

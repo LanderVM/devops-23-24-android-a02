@@ -8,6 +8,7 @@ data class QuotationEquipmentData(
     val equipment: List<ApiQuotationEquipment>,
     val totalAmount: Int
 )
+
 @Serializable
 data class ApiQuotationEquipment(
     val id: Int,
@@ -18,6 +19,7 @@ data class ApiQuotationEquipment(
     val imageData: QuotationImageData,
     val formulaIds: List<Int>
 )
+
 @Serializable
 data class QuotationImageData(
     val imageUrl: String,
@@ -25,10 +27,8 @@ data class QuotationImageData(
 )
 
 
-
 fun QuotationEquipmentData.asDomainObjects(): List<ExtraItemState> {
-    var domainList = this.equipment.map {
-        ExtraItemState(it.id, it.title, it.attributes, it.price,it.stock, imageResourceId = 1, )
+    return this.equipment.map {
+        ExtraItemState(it.id, it.title, it.attributes, it.price, it.stock, imageResourceId = 1)
     }
-    return domainList
 }

@@ -1,4 +1,4 @@
-package com.example.templateapplication.network
+package com.example.templateapplication.network.googleMapsApi
 
 import retrofit2.http.GET
 import retrofit2.http.Query
