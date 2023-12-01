@@ -33,7 +33,7 @@ import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
-import com.example.templateapplication.ui.screens.QuotationViewModel
+import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
 import com.example.templateapplication.ui.screens.evenementpage.EvenementScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
@@ -66,7 +66,7 @@ fun BlancheApp(
         var adresViewModel: AdresViewModel = viewModel()
         var formulaViewModel: FormulaViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
-        var quotationViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory)
+        var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
         var priceEstimationViewModel: PriceEstimationViewModel =
             viewModel(factory = PriceEstimationViewModel.Factory)
 
@@ -163,7 +163,7 @@ fun BlancheApp(
                                     NavigationRoutes.contactGegevens.name
                                 )
                             },
-                            quotationRequestViewModel = quotationViewModel,
+                            quotationRequestViewModel = quotationRequestViewModel,
                         )
                     }
                     composable(NavigationRoutes.samenvattingGegevens.name) {
@@ -173,7 +173,7 @@ fun BlancheApp(
                             adresViewModel = adresViewModel,
                             formulaViewModel = formulaViewModel,
                             extraItemViewModel = extraItemViewModel,
-                            eventAddressViewModel = quotationViewModel,
+                            eventAddressViewModel = quotationRequestViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.evenementGegevens.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.contactGegevens.name) },
                             navigateExtras = { navController.navigate(NavigationRoutes.extras.name) },
@@ -199,7 +199,7 @@ fun BlancheApp(
                         GuidePriceScreen(
                             modifier = Modifier.padding(innerPadding),
                             formulaViewModel = formulaViewModel,
-                            quotationRequestViewModel = quotationViewModel,
+                            quotationRequestViewModel = quotationRequestViewModel,
                             priceEstimationViewModel = priceEstimationViewModel
                         )
                     }

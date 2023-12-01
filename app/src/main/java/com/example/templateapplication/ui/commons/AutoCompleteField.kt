@@ -28,7 +28,7 @@ import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlace
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
-import com.example.templateapplication.ui.screens.QuotationViewModel
+import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Circle
@@ -44,13 +44,13 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AddressTextField(
     modifier: Modifier = Modifier,
-    eventAddressViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory),
+    quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory), // TODO remove passing viewmodel to addresstextfield composable
     placeResponse: GoogleMapsPlace,
     showMap: Boolean,
     enableRecheckFunction: () -> Unit,
 ) {
-    val uiState by eventAddressViewModel.quotationUiState.collectAsState()
-    val googleMapsApiState = eventAddressViewModel.googleMapsApiState
+    val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
+    val googleMapsApiState = quotationRequestViewModel.googleMapsApiState
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(uiState.googleMaps.marker, 15f)
@@ -59,7 +59,7 @@ fun AddressTextField(
     LaunchedEffect(key1 = uiState.googleMaps.eventAddress) {
         withContext(Dispatchers.IO) {
             delay(1000)
-            eventAddressViewModel.getPredictions()
+            quotationRequestViewModel.getPredictions()
         }
 
         withContext(Dispatchers.Main) {
@@ -96,7 +96,7 @@ fun AddressTextField(
                     title = "Blanche",
                     snippet = "Onze opslagplaats"
                 )
-                if (eventAddressViewModel.placeFound()) {
+                if (quotationRequestViewModel.placeFound()) {
                     Marker(
                         state = MarkerState(
                             position = LatLng(
@@ -132,7 +132,7 @@ fun AddressTextField(
         },
         value = uiState.googleMaps.eventAddress,
         onValueChange = {
-            eventAddressViewModel.updateInput(it)
+            quotationRequestViewModel.updateInput(it)
         },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter))),
@@ -148,8 +148,8 @@ fun AddressTextField(
             AutoCompleteListComponent(
                 predictionsState = uiState,
                 onPredictionClick = { prediction ->
-                    eventAddressViewModel.updateInput(prediction.description)
-                    eventAddressViewModel.updateMarker()
+                    quotationRequestViewModel.updateInput(prediction.description)
+                    quotationRequestViewModel.updateMarker()
                     enableRecheckFunction()
                 }
             )

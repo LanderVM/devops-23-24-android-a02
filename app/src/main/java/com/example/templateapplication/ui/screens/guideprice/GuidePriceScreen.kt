@@ -37,7 +37,7 @@ import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
-import com.example.templateapplication.ui.screens.QuotationViewModel
+import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.onSecondary
 import com.example.templateapplication.ui.theme.secondary
 import com.example.templateapplication.ui.theme.tertiary
@@ -49,7 +49,7 @@ fun GuidePriceScreen(
     modifier: Modifier = Modifier,
     priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
     formulaViewModel: FormulaViewModel = viewModel(),
-    quotationRequestViewModel: QuotationViewModel = viewModel(),
+    quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
@@ -86,7 +86,7 @@ fun GuidePriceScreen(
             text = "Locatie",
         )
         AddressTextField(
-            eventAddressViewModel = quotationRequestViewModel,
+            quotationRequestViewModel = quotationRequestViewModel,
             showMap = false,
             enableRecheckFunction = {},
             placeResponse = requestState.placeResponse

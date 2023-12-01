@@ -27,7 +27,7 @@ import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
-import com.example.templateapplication.ui.screens.QuotationViewModel
+import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -37,7 +37,7 @@ import java.util.TimeZone
 @Composable
 fun EvenementScreen(
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationViewModel = viewModel(),
+    quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
     navigateContactGegevensScreen: () -> Unit,
 ) {
 
@@ -109,7 +109,7 @@ fun EvenementScreen(
             text = "Locatie",
         )
         AddressTextField(
-            eventAddressViewModel = quotationRequestViewModel,
+            quotationRequestViewModel = quotationRequestViewModel,
             showMap = true,
             enableRecheckFunction = { recheckNextButtonStatus = true },
             placeResponse = requestState.placeResponse,

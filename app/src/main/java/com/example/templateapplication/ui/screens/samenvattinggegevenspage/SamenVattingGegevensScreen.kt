@@ -3,7 +3,6 @@ package com.example.templateapplication.ui.screens.samenvattinggegevenspage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,30 +13,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,7 +39,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,7 +46,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -66,7 +57,7 @@ import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.klant.ContactGegevensViewModel
-import com.example.templateapplication.ui.screens.QuotationViewModel
+import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
@@ -80,7 +71,7 @@ fun SamenvattingGegevensScreen (
     adresViewModel: AdresViewModel = viewModel(),
     formulaViewModel: FormulaViewModel = viewModel(),
     extraItemViewModel: ExtraItemViewModel = viewModel(),
-    eventAddressViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory),
+    eventAddressViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
     navigateEventGegevens: ()->Unit,
     navigateContactGegevens:()->Unit,
     navigateExtras: () -> Unit,
@@ -283,7 +274,7 @@ fun Navigation (
 fun EventGegevens(
     modifier: Modifier = Modifier,
     formulaViewModel: FormulaViewModel,
-    eventAddressViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory),
+    eventAddressViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
     ) {
     val googleMapsRequestState by eventAddressViewModel.quotationRequestState.collectAsState()
 
@@ -501,7 +492,7 @@ fun ExtraItemCard(
                 // Title
                 Text(
                     modifier = Modifier.size(170.dp, 40.dp),
-                    text = "${extraItem.title}",
+                    text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -531,7 +522,7 @@ fun ExtraItemCard(
 fun KostGegevens (
     modifier: Modifier = Modifier,
     extraItemViewModel: ExtraItemViewModel,
-    eventAddressViewModel: QuotationViewModel
+    eventAddressViewModel: QuotationRequestViewModel
 ) {
 
     Column (

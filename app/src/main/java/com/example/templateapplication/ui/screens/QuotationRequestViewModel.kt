@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class QuotationViewModel(
+class QuotationRequestViewModel(
     private val restApiRepository: ApiRepository,
     private val tasksRepository: GoogleMapsRepository
 ) :
@@ -40,7 +40,7 @@ class QuotationViewModel(
                 val tasksRepository = application.container.googleMapsRepository
                 val guidePriceEstimationRepository =
                     application.container.apiRepository
-                QuotationViewModel(
+                QuotationRequestViewModel(
                     restApiRepository = guidePriceEstimationRepository,
                     tasksRepository = tasksRepository
                 )
