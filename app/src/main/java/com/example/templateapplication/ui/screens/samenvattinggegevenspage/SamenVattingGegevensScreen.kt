@@ -107,8 +107,6 @@ fun SamenvattingGegevensScreen (
         )
         Spacer(modifier = Modifier.height(25.dp))
         EventGegevens(
-            gegevensViewModel = gegevensViewModel,
-            adresViewModel = adresViewModel,
             formulaViewModel = formulaViewModel,
             eventAddressViewModel = eventAddressViewModel,
         )
@@ -281,23 +279,10 @@ fun Navigation (
 @Composable
 fun EventGegevens(
     modifier: Modifier = Modifier,
-    adresViewModel: AdresViewModel,
-    gegevensViewModel: ContactGegevensViewModel,
     formulaViewModel: FormulaViewModel,
     eventAddressViewModel: QuotationViewModel = viewModel(factory = QuotationViewModel.Factory),
     ) {
-    val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
-    val adresUiState by adresViewModel.adresUiState.collectAsState()
-    val formuleUiState by formulaViewModel.formulaUiState.collectAsState()
-
-    val googleMapsPredictionState by eventAddressViewModel.quotationUiState.collectAsState()
-
-    val googleMapsPlaceState by eventAddressViewModel.quotationUiState.collectAsState()
     val googleMapsRequestState by eventAddressViewModel.quotationRequestState.collectAsState()
-    val googleMapsPlaceApiState = eventAddressViewModel.googleMapsApiState
-
-    val googleMapsDistanceState by eventAddressViewModel.quotationUiState.collectAsState()
-
 
     var show by rememberSaveable { mutableStateOf(true) }
 

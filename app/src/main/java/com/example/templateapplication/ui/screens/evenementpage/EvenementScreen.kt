@@ -42,6 +42,9 @@ fun EvenementScreen(
     eventAddressViewModel: QuotationViewModel = viewModel(),
     navigateContactGegevensScreen: () -> Unit,
 ) {
+
+    val requestState by eventAddressViewModel.quotationRequestState.collectAsState()
+
     val scrollState = rememberScrollState()
     var nextButtonEnabled by remember { mutableStateOf(false) }
     var recheckNextButtonStatus by remember { mutableStateOf(false) }
@@ -108,7 +111,9 @@ fun EvenementScreen(
         AddressTextField(
             eventAddressViewModel = eventAddressViewModel,
             showMap = true,
-            enableRecheckFunction = { recheckNextButtonStatus = true })
+            enableRecheckFunction = { recheckNextButtonStatus = true },
+            placeResponse = requestState.placeResponse,
+        )
         Spacer(modifier = Modifier.height(35.dp))
         DateRangePicker(
             state = dateRangePickerState,

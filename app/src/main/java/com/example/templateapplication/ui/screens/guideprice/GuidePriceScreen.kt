@@ -52,6 +52,8 @@ fun GuidePriceScreen(
     eventAddressViewModel: QuotationViewModel = viewModel(),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
+    val requestState by eventAddressViewModel.quotationRequestState.collectAsState()
+
     val scrollState = rememberScrollState()
     val formulaUIState by formulaViewModel.formulaUiState.collectAsState()
     val priceEstimationUIState by priceEstimationViewModel.estimationDetailsState.collectAsState()
@@ -84,7 +86,8 @@ fun GuidePriceScreen(
         AddressTextField(
             eventAddressViewModel = eventAddressViewModel,
             showMap = false,
-            enableRecheckFunction = {}
+            enableRecheckFunction = {},
+            placeResponse = requestState.placeResponse
         )
         SeperatingTitle(
             text = "Details",
