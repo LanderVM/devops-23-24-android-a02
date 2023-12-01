@@ -1,5 +1,6 @@
 package com.example.templateapplication.ui.screens.extraspage
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -272,8 +273,9 @@ fun ExtraItemCard(
                                     val enteredAmount = it.toIntOrNull()
                                     extraItem.amount = when {
                                         enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(extraItem.stock)
-                                        else ->0
+                                        else ->1
                                     }
+                                    Log.i("amount", enteredAmount.toString())
                                     onAddItem(extraItem)
 
                                 },
