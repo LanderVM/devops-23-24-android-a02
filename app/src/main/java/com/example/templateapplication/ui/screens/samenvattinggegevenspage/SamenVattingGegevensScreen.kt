@@ -33,6 +33,7 @@ import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -51,9 +52,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -474,70 +477,55 @@ fun ExtraItemCard(
         shape = RoundedCornerShape(8.dp),
         colors = CardColors(containerColor = MainLightestColor, contentColor = Color.Black, disabledContainerColor = Color.Gray, disabledContentColor = Color.Black)
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .height(IntrinsicSize.Min)
+                .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Column {
-                Text(text = extraItem.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-//                Text(text = extraItem.category, fontSize = 16.sp, color = Color.Gray)
-                Spacer(modifier = Modifier.height(15.dp))
-                Text(text = "€${extraItem.price}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                ) {
-                    TextField(
-                        value = extraItem.amount.toString(),
-                        onValueChange = {
-                            if (it.isNotBlank()) {
-                                extraItem.amount = it.toInt()
-                            } else {
-                                extraItem.amount = 0
-                            }
-                        },
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        label = { Text("Aantal") },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            disabledContainerColor = Color.White,
-                        ),
-                        modifier = Modifier
-                            .width(70.dp)
-
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    IconButton(
-                        onClick = {
-                            extraItem.isEditing = false
-                            onRemoveItem(extraItem)
-                        },
-                        colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
-
-                    ) {
-                        Icon(Icons.Filled.Delete, "Delete Button", modifier=Modifier.size(35.dp))
-                    }
-
-                }
-            }
-            Spacer(modifier = Modifier.width(50.dp))
+            // Image
             Image(
-                painter = painterResource(id = R.drawable.foto7),
-                contentDescription = null,
+                painter = painterResource(id = R.drawable.foto7), // Replace with actual image
+                contentDescription = null, // Content description can be set based on your use case
                 modifier = Modifier
-                    .size(150.dp)
-                    .clip(RoundedCornerShape(4.dp))
+                    .fillMaxWidth()
+                    .height(200.dp)
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
 
-        }
-    }
+            // Item Details
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Title
+                Text(
+                    modifier = Modifier.size(170.dp, 40.dp),
+                    text = "${extraItem.title}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                // Price
+                Text(
+                    text = "$${extraItem.price}",
+                    style = MaterialTheme.typography.headlineSmall,
+
+                    )
+            }
+            Text(
+                text = buildAnnotatedString {
+                    extraItem.attributes.forEachIndexed { index, attribute ->
+                        append(attribute)
+                        if (index < extraItem.attributes.size - 1) {
+                            // Append a new line if it's not the last item
+                            append("\n")
+                        }
+                    }
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )}}
 }
 @Composable
 fun KostGegevens (
@@ -577,7 +565,7 @@ fun KostGegevens (
                 ) {
                     Text(
                         text="Omschrijving",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -586,7 +574,7 @@ fun KostGegevens (
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
                         text="Prijs",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -595,7 +583,7 @@ fun KostGegevens (
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
                         text="Subtotaal",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -612,8 +600,16 @@ fun KostGegevens (
                     modifier = Modifier.height(35.dp)
                 ) {
                     Text(
-                        text="basic formule 1x",
-                        textAlign = TextAlign.Start,
+                        text="Basic formule",
+                        textAlign = TextAlign.Left,
+                        modifier= Modifier.width(90.dp),
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Text(
+                        text="€350",
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -621,15 +617,7 @@ fun KostGegevens (
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
                         text="€350",
-                        textAlign = TextAlign.Start,
-                        modifier= Modifier,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                    )
-                    Spacer(modifier = Modifier.width(50.dp))
-                    Text(
-                        text="€350",
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
@@ -642,11 +630,12 @@ fun KostGegevens (
                         modifier = Modifier.height(35.dp)
                     ) {
                         Text(
-                            text="${extraItem.title} x${extraItem.amount}",
+                            text="${extraItem.title} x ${extraItem.amount}",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier,
+                            modifier= Modifier.width(90.dp),
                             fontSize = 12.sp,
                             color = Color.Black,
+                            overflow =TextOverflow.Ellipsis,
                         )
                         Spacer(modifier = Modifier.width(50.dp))
                         Text(
@@ -674,13 +663,13 @@ fun KostGegevens (
                     Text(
                         text="Vervoerskosten",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier,
+                        modifier= Modifier.width(90.dp),
                         fontSize = 12.sp,
                         color = Color.Black,
                     )
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
-                        text="€0.75",
+                        text="€ 0.75",
                         textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
@@ -765,7 +754,7 @@ fun KostGegevens (
                     Spacer(modifier = Modifier.width(100.dp))
                     Text(
                         text="€ ${String.format("%.2f", (extraItemViewModel.getTotalPrice() + 2.25 + 350) + (extraItemViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
-                        textAlign = TextAlign.Right,
+                        textAlign = TextAlign.End,
                         modifier= Modifier,
                         fontSize = 12.sp,
                         color = Color.Black,
