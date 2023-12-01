@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
-import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.ui.theme.onPrimary
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -32,7 +31,7 @@ import java.util.Locale
 fun DateRangePicker(
     modifier: Modifier = Modifier,
     state: DateRangePickerState,
-    formulaViewModel: FormulaViewModel,
+    onSelectDateRange: (Long?, Long?) -> Unit,
     showCalenderToggle: Boolean,
     enableRecheckFunction: () -> Unit = {},
 ) {
@@ -47,18 +46,12 @@ fun DateRangePicker(
     ) {
 
         LaunchedEffect(state.selectedStartDateMillis) {
-            formulaViewModel.updateDateRange(
-                state.selectedStartDateMillis,
-                state.selectedEndDateMillis
-            )
+            onSelectDateRange(state.selectedStartDateMillis, state.selectedEndDateMillis)
             enableRecheckFunction()
         }
 
         LaunchedEffect(state.selectedEndDateMillis) {
-            formulaViewModel.updateDateRange(
-                state.selectedStartDateMillis,
-                state.selectedEndDateMillis
-            )
+            onSelectDateRange(state.selectedStartDateMillis, state.selectedEndDateMillis)
         }
 
         DateRangePicker(

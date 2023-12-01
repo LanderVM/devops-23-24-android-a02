@@ -79,13 +79,13 @@ class QuotationViewModel(
                 dateFormat.format(_quotationRequestState.value.endDate!!.timeInMillis)
     }
 
+    // TODO validate each field separately. Only check if hasErrors = true here.
     fun canNavigateNext(): Boolean {
-//        return !quotationUiState.value.hasError
-//        return _quotationRequestState.value.amountOfPeople.isDigitsOnly()
-//                && _quotationRequestState.value.amountOfPeople.isNotBlank()
-//                && _quotationRequestState.value.amountOfPeople >
-//        }
-        return _quotationUiState.value.hasError
+        return _quotationRequestState.value.amountOfPeople.isDigitsOnly()
+                && _quotationRequestState.value.amountOfPeople.isNotBlank()
+                && _quotationRequestState.value.startDate != null
+                && _quotationRequestState.value.endDate != null
+                && placeFound()
     }
 
     fun selectFormula(id: Int) {

@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
@@ -38,19 +37,20 @@ import java.util.TimeZone
 @Composable
 fun EvenementScreen(
     modifier: Modifier = Modifier,
-    formulaViewModel: FormulaViewModel = viewModel(),
-    eventAddressViewModel: QuotationViewModel = viewModel(),
+    quotationRequestViewModel: QuotationViewModel = viewModel(),
     navigateContactGegevensScreen: () -> Unit,
 ) {
 
-    val requestState by eventAddressViewModel.quotationRequestState.collectAsState()
-
     val scrollState = rememberScrollState()
+    val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
+    val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
+
     var nextButtonEnabled by remember { mutableStateOf(false) }
     var recheckNextButtonStatus by remember { mutableStateOf(false) }
-    val formulaUiState by formulaViewModel.formulaUiState.collectAsState()
-    val selectedStartDate by remember { mutableStateOf(formulaUiState.startDate) }
-    val selectedEndDate by remember { mutableStateOf(formulaUiState.endDate) }
+
+
+    val selectedStartDate by remember { mutableStateOf(requestState.startDate) }
+    val selectedEndDate by remember { mutableStateOf(requestState.endDate) }
     val dateRangePickerState = rememberDateRangePickerState(
         initialSelectedStartDateMillis = selectedStartDate?.timeInMillis,
         initialSelectedEndDateMillis = selectedEndDate?.timeInMillis,
@@ -91,7 +91,7 @@ fun EvenementScreen(
         })
 
     LaunchedEffect(recheckNextButtonStatus) {
-        nextButtonEnabled = eventAddressViewModel.placeFound() && formulaViewModel.canNavigateNext()
+        nextButtonEnabled = quotationRequestViewModel.canNavigateNext()
         recheckNextButtonStatus = false
     }
 
@@ -109,7 +109,7 @@ fun EvenementScreen(
             text = "Locatie",
         )
         AddressTextField(
-            eventAddressViewModel = eventAddressViewModel,
+            eventAddressViewModel = quotationRequestViewModel,
             showMap = true,
             enableRecheckFunction = { recheckNextButtonStatus = true },
             placeResponse = requestState.placeResponse,
@@ -117,7 +117,9 @@ fun EvenementScreen(
         Spacer(modifier = Modifier.height(35.dp))
         DateRangePicker(
             state = dateRangePickerState,
-            formulaViewModel = formulaViewModel,
+            onSelectDateRange = { startDate, endDate ->
+                quotationRequestViewModel.updateDateRange(startDate, endDate)
+            },
             showCalenderToggle = false,
             enableRecheckFunction = { recheckNextButtonStatus = true }
         )
@@ -126,20 +128,20 @@ fun EvenementScreen(
         )
         NumberOutlinedTextField(
             label = "Aantal Personen",
-            value = formulaUiState.amountOfPeople,
+            value = requestState.amountOfPeople,
             onValueChange = {
-                formulaViewModel.setAmountOfPeople(it)
+                quotationRequestViewModel.setAmountOfPeople(it)
                 recheckNextButtonStatus = true
             },
         )
-        if (formulaUiState.selectedFormula != 1) {
+        if (requestState.selectedFormula != 1) {
             DropDownSelect(
                 label = "Biersoort",
-                isExpanded = formulaUiState.dropDownExpanded,
-                setExpanded = { formulaViewModel.setDropDownExpanded(it) },
-                dropDownOptions = formulaUiState.beerDropDownOptions,
-                selectedOption = if (formulaUiState.wantsTripelBeer) 1 else 0,
-                setSelectedOption = { formulaViewModel.selectBeer(it) }
+                isExpanded = uiState.dropDownExpanded,
+                setExpanded = { quotationRequestViewModel.setDropDownExpanded(it) },
+                dropDownOptions = uiState.beerDropDownOptions,
+                selectedOption = if (requestState.wantsTripelBeer) 1 else 0,
+                setSelectedOption = { quotationRequestViewModel.selectBeer(it) }
             )
         }
         Spacer(modifier = Modifier.height(20.dp))

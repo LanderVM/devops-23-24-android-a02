@@ -3,6 +3,7 @@ package com.example.templateapplication.model.quotationRequest
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsDistance
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPrediction
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
+import com.example.templateapplication.ui.commons.DropDownOption
 import com.google.android.gms.maps.model.LatLng
 
 data class QuotationUiState(
@@ -10,8 +11,11 @@ data class QuotationUiState(
     val hasError: Boolean = false,
     val dateError: String? = null, // TODO
     val eventAddressError: String = "",
-    val googleMaps: GoogleMapsResponse = GoogleMapsResponse()
-
+    val beerDropDownOptions: List<DropDownOption> = listOf(
+        DropDownOption("Pils", 0),
+        DropDownOption("Tripel", 1),
+    ),
+    val googleMaps: GoogleMapsResponse = GoogleMapsResponse(),
 ) {
     data class GoogleMapsResponse(
         val predictionsResponse: GoogleMapsPrediction = GoogleMapsPrediction(), // TODO rename

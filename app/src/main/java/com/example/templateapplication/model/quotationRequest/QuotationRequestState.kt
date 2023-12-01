@@ -11,8 +11,4 @@ data class QuotationRequestState(
     val placeResponse: GoogleMapsPlace = GoogleMapsPlace(), // TODO check: this or eventAddress?
     val amountOfPeople: String = "",
     val wantsTripelBeer: Boolean = false,
-    val beerDropDownOptions: List<DropDownOption> = listOf(
-        DropDownOption("Pils", 0),
-        DropDownOption("Tripel", 1),
-    ),
 )

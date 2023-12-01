@@ -49,10 +49,10 @@ fun GuidePriceScreen(
     modifier: Modifier = Modifier,
     priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
     formulaViewModel: FormulaViewModel = viewModel(),
-    eventAddressViewModel: QuotationViewModel = viewModel(),
+    quotationRequestViewModel: QuotationViewModel = viewModel(),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
-    val requestState by eventAddressViewModel.quotationRequestState.collectAsState()
+    val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
 
     val scrollState = rememberScrollState()
     val formulaUIState by formulaViewModel.formulaUiState.collectAsState()
@@ -77,14 +77,16 @@ fun GuidePriceScreen(
     ) {
         DateRangePicker(
             state = dateRangePickerState,
-            formulaViewModel = formulaViewModel,
+            onSelectDateRange = { startDate, endDate ->
+                quotationRequestViewModel.updateDateRange(startDate, endDate)
+            },
             showCalenderToggle = true,
         )
         SeperatingTitle(
             text = "Locatie",
         )
         AddressTextField(
-            eventAddressViewModel = eventAddressViewModel,
+            eventAddressViewModel = quotationRequestViewModel,
             showMap = false,
             enableRecheckFunction = {},
             placeResponse = requestState.placeResponse

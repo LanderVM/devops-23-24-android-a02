@@ -163,8 +163,7 @@ fun BlancheApp(
                                     NavigationRoutes.contactGegevens.name
                                 )
                             },
-                            formulaViewModel = formulaViewModel,
-                            eventAddressViewModel = quotationViewModel,
+                            quotationRequestViewModel = quotationViewModel,
                         )
                     }
                     composable(NavigationRoutes.samenvattingGegevens.name) {
@@ -200,7 +199,7 @@ fun BlancheApp(
                         GuidePriceScreen(
                             modifier = Modifier.padding(innerPadding),
                             formulaViewModel = formulaViewModel,
-                            eventAddressViewModel = quotationViewModel,
+                            quotationRequestViewModel = quotationViewModel,
                             priceEstimationViewModel = priceEstimationViewModel
                         )
                     }
