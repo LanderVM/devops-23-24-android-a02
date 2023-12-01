@@ -14,16 +14,9 @@ import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.adres.ApiResponse
-import com.example.templateapplication.model.adres.GoogleMapsDistanceState
-import com.example.templateapplication.model.adres.GoogleMapsPlaceState
-import com.example.templateapplication.model.adres.GoogleMapsPredictionsState
-import com.example.templateapplication.model.common.googleMaps.GoogleMapsDistance
-import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlace
-import com.example.templateapplication.model.common.googleMaps.GoogleMapsPrediction
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -123,39 +116,14 @@ class QuotationViewModel(
 
     // -------------------------------------------------------------------------------------------------------------- GOOGLE MAPS
 
-    private val _uiStatePrediction = MutableStateFlow(
-        GoogleMapsPredictionsState(
-            GoogleMapsPrediction(arrayListOf())
-        )
-    )
-    val uiStatePrediction: StateFlow<GoogleMapsPredictionsState> = _uiStatePrediction.asStateFlow()
-
-    var googleMapsPredictionApiState: ApiResponse<GoogleMapsPredictionsState> by mutableStateOf(
-        ApiResponse.Loading
-    )
-        private set
-
-    // Plaats
-    private val _uiStatePlace =
-        MutableStateFlow(GoogleMapsPlaceState(GoogleMapsPlace(arrayListOf())))
-    val uiStatePlace: StateFlow<GoogleMapsPlaceState> = _uiStatePlace.asStateFlow()
-
-    var googleMapsPlaceApiState: ApiResponse<GoogleMapsPlaceState> by mutableStateOf(ApiResponse.Loading)
-        private set
-
-    // Afstand
-    private val _uiStateDistance =
-        MutableStateFlow(GoogleMapsDistanceState(GoogleMapsDistance(arrayListOf())))
-    val uiStateDistance: StateFlow<GoogleMapsDistanceState> = _uiStateDistance.asStateFlow()
-
-    var googleMapsDistanceApiState: ApiResponse<GoogleMapsDistanceState> by mutableStateOf(
+    var googleMapsApiState: ApiResponse<QuotationUiState.GoogleMapsResponse> by mutableStateOf(
         ApiResponse.Loading
     )
         private set
 
     fun updateInput(input: String) {
-        _uiStatePrediction.update {
-            it.copy(input = input)
+        _quotationUiState.update {
+            it.copy(googleMaps = it.googleMaps.copy(eventAddress = input))
         }
     }
 
@@ -163,15 +131,15 @@ class QuotationViewModel(
         viewModelScope.launch {
             try {
                 val listResult =
-                    tasksRepository.getPredictions(input = _uiStatePrediction.value.input)
-                _uiStatePrediction.update {
-                    it.copy(predictionsResponse = listResult)
+                    tasksRepository.getPredictions(input = _quotationUiState.value.googleMaps.eventAddress)
+                _quotationUiState.update {
+                    it.copy(googleMaps = it.googleMaps.copy(predictionsResponse = listResult))
                 }
-                googleMapsPredictionApiState = ApiResponse.Success(
-                    GoogleMapsPredictionsState(listResult)
+                googleMapsApiState = ApiResponse.Success(
+                    QuotationUiState.GoogleMapsResponse(predictionsResponse = listResult)
                 )
             } catch (e: IOException) {
-                googleMapsPredictionApiState = ApiResponse.Error
+                googleMapsApiState = ApiResponse.Error
                 Log.i("Error", e.toString())
             }
         }
@@ -182,17 +150,16 @@ class QuotationViewModel(
             viewModelScope.launch {
                 try {
                     val distanceResult = tasksRepository.getDistance(
-                        vertrekPlaats = "${_uiStatePlace.value.marker.latitude}, ${_uiStatePlace.value.marker.longitude}",
-                        eventPlaats = _uiStatePlace.value.placeResponse.candidates[0].formatted_address
+                        vertrekPlaats = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
+                        eventPlaats = _quotationRequestState.value.placeResponse.candidates[0].formatted_address
                     )
-                    _uiStateDistance.update {
-                        it.copy(distanceResponse = distanceResult)
+                    _quotationUiState.update {
+                        it.copy(googleMaps = it.googleMaps.copy(distanceResponse = distanceResult))
                     }
-                    googleMapsDistanceApiState = ApiResponse.Success(
-                        GoogleMapsDistanceState(distanceResult)
-                    )
+                    googleMapsApiState =
+                        ApiResponse.Success(QuotationUiState.GoogleMapsResponse(distanceResponse = distanceResult))
                 } catch (e: IOException) {
-                    googleMapsDistanceApiState = ApiResponse.Error
+                    googleMapsApiState = ApiResponse.Error
                     Log.i("Error", e.toString())
                 }
             }
@@ -202,38 +169,39 @@ class QuotationViewModel(
     fun updateMarker() {
         viewModelScope.launch {
             try {
-                val placeResult = tasksRepository.getPlace(input = _uiStatePrediction.value.input)
-                _uiStatePlace.update {
+                val placeResult =
+                    tasksRepository.getPlace(input = _quotationUiState.value.googleMaps.eventAddress)
+                _quotationRequestState.update {
                     it.copy(placeResponse = placeResult)
                 }
-                googleMapsPlaceApiState = ApiResponse.Success(
-                    GoogleMapsPlaceState(placeResult)
+                googleMapsApiState = ApiResponse.Success(
+                    QuotationUiState.GoogleMapsResponse(eventAddress = placeResult.toString())
                 )
                 updateDistance()
             } catch (e: IOException) {
-                googleMapsPlaceApiState = ApiResponse.Error
+                googleMapsApiState = ApiResponse.Error
                 Log.i("Error", e.toString())
             }
         }
     }
 
     fun getDistanceLong(): Long? {
-        if (uiStateDistance.value.distanceResponse.rows.isEmpty() or uiStatePrediction.value.input.isBlank()) {
+        if (_quotationUiState.value.googleMaps.distanceResponse.rows.isEmpty() or _quotationUiState.value.googleMaps.eventAddress.isBlank()) {
             return null
         }
-        return uiStateDistance.value.distanceResponse.rows[0].elements[0].distance.value
+        return _quotationUiState.value.googleMaps.distanceResponse.rows[0].elements[0].distance.value
     }
 
     fun getDistanceString(): String {
-        if (uiStateDistance.value.distanceResponse.rows.isEmpty() or uiStatePrediction.value.input.isBlank()) {
+        if (_quotationUiState.value.googleMaps.distanceResponse.rows.isEmpty() or _quotationUiState.value.googleMaps.eventAddress.isBlank()) {
             return ""
         }
-        return "Afstand: " + uiStateDistance.value.distanceResponse.rows[0].elements[0].distance.text
+        return "Afstand: " + _quotationUiState.value.googleMaps.distanceResponse.rows[0].elements[0].distance.text
     }
 
     fun placeFound(): Boolean {
-        return if (uiStatePlace.value.placeResponse.candidates.size != 0)
-            uiStatePlace.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
+        return if (_quotationRequestState.value.placeResponse.candidates.isNotEmpty())
+            _quotationRequestState.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
         else false
     }
 

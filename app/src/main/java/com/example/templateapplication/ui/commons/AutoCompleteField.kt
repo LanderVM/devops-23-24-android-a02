@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
-import com.example.templateapplication.model.adres.GoogleMapsPredictionsState
+import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
 import com.example.templateapplication.ui.screens.QuotationViewModel
 import com.google.android.gms.maps.model.CameraPosition
@@ -49,16 +49,15 @@ fun AddressTextField(
     showMap: Boolean,
     enableRecheckFunction: () -> Unit,
 ) {
-    val googleMapsPredictionState by eventAddressViewModel.uiStatePrediction.collectAsState()
-    val googleMapsPredictionApiState = eventAddressViewModel.googleMapsPredictionApiState
-
-    val googleMapsPlaceState by eventAddressViewModel.uiStatePlace.collectAsState()
+    val requestState by eventAddressViewModel.quotationRequestState.collectAsState()
+    val uiState by eventAddressViewModel.quotationUiState.collectAsState()
+    val googleMapsPredictionApiState = eventAddressViewModel.googleMapsApiState
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(googleMapsPlaceState.marker, 15f)
+        position = CameraPosition.fromLatLngZoom(uiState.googleMaps.marker, 15f)
     }
 
-    LaunchedEffect(key1 = googleMapsPredictionState.input) {
+    LaunchedEffect(key1 = uiState.googleMaps.eventAddress) {
         withContext(Dispatchers.IO) {
             delay(1000)
             eventAddressViewModel.getPredictions()
@@ -66,16 +65,16 @@ fun AddressTextField(
 
         withContext(Dispatchers.Main) {
             delay(1000)
-            if (googleMapsPlaceState.placeResponse.candidates.isNotEmpty()) {
+            if (requestState.placeResponse.candidates.isNotEmpty()) {
                 cameraPositionState.position = CameraPosition.fromLatLngZoom(
                     LatLng(
-                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
-                        googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                        requestState.placeResponse.candidates[0].geometry.location.lat,
+                        requestState.placeResponse.candidates[0].geometry.location.lng
                     ), 12f
                 )
             } else {
                 cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                    googleMapsPlaceState.marker, 10f
+                    uiState.googleMaps.marker, 10f
                 )
             }
         }
@@ -95,7 +94,7 @@ fun AddressTextField(
                 cameraPositionState = cameraPositionState,
             ) {
                 Marker(
-                    state = MarkerState(position = googleMapsPlaceState.marker),
+                    state = MarkerState(position = uiState.googleMaps.marker),
                     title = "Blanche",
                     snippet = "Onze opslagplaats"
                 )
@@ -103,8 +102,8 @@ fun AddressTextField(
                     Marker(
                         state = MarkerState(
                             position = LatLng(
-                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
-                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                                requestState.placeResponse.candidates[0].geometry.location.lat,
+                                requestState.placeResponse.candidates[0].geometry.location.lng
                             )
                         ),
                         title = "Event Locatie",
@@ -112,15 +111,15 @@ fun AddressTextField(
                     )
                     Polyline(
                         points = listOf(
-                            googleMapsPlaceState.marker,
+                            uiState.googleMaps.marker,
                             LatLng(
-                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lat,
-                                googleMapsPlaceState.placeResponse.candidates[0].geometry.location.lng
+                                requestState.placeResponse.candidates[0].geometry.location.lat,
+                                requestState.placeResponse.candidates[0].geometry.location.lng
                             )
                         )
                     )
                 }
-                Circle(center = googleMapsPlaceState.marker, radius = 20000.0)
+                Circle(center = uiState.googleMaps.marker, radius = 20000.0)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -128,7 +127,7 @@ fun AddressTextField(
 
     OutlinedTextField(
         label = { Text(text = "Adres", color = Color(android.graphics.Color.parseColor(stringResource(id = R.string.lichter)))) },
-        value = googleMapsPredictionState.input,
+        value = uiState.googleMaps.eventAddress,
         onValueChange = {
             eventAddressViewModel.updateInput(it)
         },
@@ -144,7 +143,7 @@ fun AddressTextField(
         is ApiResponse.Error -> Text(text = "Error")
         is ApiResponse.Success -> {
             AutoCompleteListComponent(
-                predictionsState = googleMapsPredictionState,
+                predictionsState = uiState,
                 onPredictionClick = { prediction ->
                     eventAddressViewModel.updateInput(prediction.description)
                     eventAddressViewModel.updateMarker()
@@ -157,10 +156,10 @@ fun AddressTextField(
 
 @Composable
 fun AutoCompleteListComponent(
-    predictionsState: GoogleMapsPredictionsState,
+    predictionsState: QuotationUiState,
     onPredictionClick: (GooglePrediction) -> Unit
 ) {
-    predictionsState.predictionsResponse.predictions.forEach {
+    predictionsState.googleMaps.predictionsResponse.predictions.forEach {
         AutocompleteCardItem(onPredictionClick, it)
     }
 }

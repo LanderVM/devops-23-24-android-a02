@@ -100,7 +100,11 @@ fun SamenvattingGegevensScreen (
             navigateExtras = navigateExtras
         )
         Spacer(modifier = Modifier.height(30.dp))
-        Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 15.dp),
+            thickness = 4.dp,
+            color = Color.LightGray
+        )
         Spacer(modifier = Modifier.height(25.dp))
         EventGegevens(
             gegevensViewModel = gegevensViewModel,
@@ -109,7 +113,11 @@ fun SamenvattingGegevensScreen (
             eventAddressViewModel = eventAddressViewModel,
         )
         Spacer(modifier = Modifier.height(30.dp))
-        Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 15.dp),
+            thickness = 4.dp,
+            color = Color.LightGray
+        )
         Spacer(modifier = Modifier.height(25.dp))
         ContactGegevens(
             gegevensViewModel = gegevensViewModel,
@@ -118,12 +126,20 @@ fun SamenvattingGegevensScreen (
         Spacer(modifier = Modifier.height(30.dp))
 
         if(!extraItemViewModel.getListAddedItems().isEmpty()){
-            Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 15.dp),
+                thickness = 4.dp,
+                color = Color.LightGray
+            )
             Spacer(modifier = Modifier.height(30.dp))
             ExtrasScreen (extraItemViewModel = extraItemViewModel)
         }
         Spacer(modifier = Modifier.height(30.dp))
-        Divider(color = Color.LightGray, thickness = 4.dp, modifier = Modifier.padding(horizontal = 15.dp))
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 15.dp),
+            thickness = 4.dp,
+            color = Color.LightGray
+        )
         Spacer(modifier = Modifier.height(25.dp))
         KostGegevens(extraItemViewModel= extraItemViewModel, eventAddressViewModel = eventAddressViewModel)
         Spacer(modifier = Modifier.height(30.dp))
@@ -165,11 +181,11 @@ fun HeadOfPage(
             color = MainColor,
         )
         LinearProgressIndicator(
+            progress = { 1.00f },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             color = MainColor,
-            progress = 1.00f,
             trackColor = MainLightestColor,
         )
     }
@@ -247,7 +263,7 @@ fun Navigation (
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
-                painter = painterResource(id = com.example.templateapplication.R.drawable.filled_circle),
+                painter = painterResource(id = R.drawable.filled_circle),
                 contentDescription = "een gevulde circel",
                 modifier = Modifier.size(13.dp,13.dp)
             )
@@ -274,14 +290,13 @@ fun EventGegevens(
     val adresUiState by adresViewModel.adresUiState.collectAsState()
     val formuleUiState by formulaViewModel.formulaUiState.collectAsState()
 
-    val googleMapsPredictionState by eventAddressViewModel.uiStatePrediction.collectAsState()
-    val googleMapsPredictionApiState = eventAddressViewModel.googleMapsPredictionApiState
+    val googleMapsPredictionState by eventAddressViewModel.quotationUiState.collectAsState()
 
-    val googleMapsPlaceState by eventAddressViewModel.uiStatePlace.collectAsState()
-    val googleMapsPlaceApiState = eventAddressViewModel.googleMapsPlaceApiState
+    val googleMapsPlaceState by eventAddressViewModel.quotationUiState.collectAsState()
+    val googleMapsRequestState by eventAddressViewModel.quotationRequestState.collectAsState()
+    val googleMapsPlaceApiState = eventAddressViewModel.googleMapsApiState
 
-    val googleMapsDistanceState by eventAddressViewModel.uiStateDistance.collectAsState()
-    val googleMapsDistanceApiState = eventAddressViewModel.googleMapsDistanceApiState
+    val googleMapsDistanceState by eventAddressViewModel.quotationUiState.collectAsState()
 
 
     var show by rememberSaveable { mutableStateOf(true) }
@@ -325,7 +340,7 @@ fun EventGegevens(
                 },
                 supportingContent = {
                     Text(
-                        text=googleMapsPlaceState.placeResponse.candidates[0].formatted_address,
+                        text=googleMapsRequestState.placeResponse.candidates[0].formatted_address,
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(

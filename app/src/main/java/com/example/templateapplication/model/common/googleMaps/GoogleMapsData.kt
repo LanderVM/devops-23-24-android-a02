@@ -5,13 +5,13 @@ import com.example.templateapplication.network.googleMapsApi.GooglePlace
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
 
 data class GoogleMapsDistance(
-    val rows: ArrayList<GoogleDistanceElement>
+    val rows: List<GoogleDistanceElement> = emptyList()
 )
 
 data class GoogleMapsPlace(
-    val candidates: ArrayList<GooglePlace>
+    val candidates: List<GooglePlace> = emptyList()
 )
 
 data class GoogleMapsPrediction(
-    val predictions: ArrayList<GooglePrediction>
+    val predictions: List<GooglePrediction> = emptyList()
 )
