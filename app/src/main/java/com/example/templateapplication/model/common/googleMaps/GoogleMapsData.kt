@@ -8,7 +8,7 @@ data class GoogleMapsDistance(
     val rows: List<GoogleDistanceElement> = emptyList()
 )
 
-data class GoogleMapsPlace(
+data class GoogleMapsPlaceCandidates(
     val candidates: List<GooglePlace> = emptyList()
 )
 

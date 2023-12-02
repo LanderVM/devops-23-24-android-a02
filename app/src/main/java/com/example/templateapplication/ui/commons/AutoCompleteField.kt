@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.commons
 
-import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -27,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
-import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlace
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
 import com.example.templateapplication.ui.screens.QuotationRequestViewModel
@@ -47,7 +45,7 @@ import kotlinx.coroutines.withContext
 fun AddressTextField(
     modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory), // TODO remove passing viewmodel to addresstextfield composable
-    placeResponse: GoogleMapsPlace,
+    placeResponse: GoogleMapsPlaceCandidates,
     showMap: Boolean,
     enableRecheckFunction: () -> Unit,
 ) {

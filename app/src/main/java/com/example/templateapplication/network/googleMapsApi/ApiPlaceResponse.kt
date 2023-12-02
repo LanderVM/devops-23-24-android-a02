@@ -1,6 +1,6 @@
 package com.example.templateapplication.network.googleMapsApi
 
-import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlace
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -25,6 +25,6 @@ data class GooglePlace(
     val geometry: GooglePlaceGeometry,
 )
 
-fun ApiGooglePlaceResponse.asDomainObject(): GoogleMapsPlace {
-    return GoogleMapsPlace(candidates)
+fun ApiGooglePlaceResponse.asDomainObject(): GoogleMapsPlaceCandidates {
+    return GoogleMapsPlaceCandidates(candidates)
 }
