@@ -15,6 +15,6 @@ data class ExtraItemState(
     @DrawableRes val imageResourceId: Int = 0,
 
 ){
-    var amount by mutableIntStateOf(1)
+    var amount by mutableIntStateOf(0)
     var isEditing by mutableStateOf(false)
 }

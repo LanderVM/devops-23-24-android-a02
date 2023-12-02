@@ -304,7 +304,7 @@ fun EventGegevens(
                     Text(text="Datum",fontSize = 18.sp)},
                 supportingContent = {
                     Text(
-                        text=formulaViewModel.getDateRange(),
+                        text=eventAddressViewModel.getDateRange(),
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(
@@ -404,7 +404,24 @@ fun ContactGegevens(
                     containerColor = Color(0XFFD3B98B)
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
-            )}
+            )
+            if(adresUiState.btwNummer.isNotEmpty() || adresUiState.btwNummer.isNotBlank()){
+                Spacer(modifier = Modifier.height(20.dp))
+                ListItem(
+                    headlineContent = {Text(text=stringResource(id = R.string.contactDetails_vat_number), fontSize = 18.sp)},
+                    supportingContent = {
+                        Text(
+                            text=adresUiState.btwNummer,
+                            fontSize = 16.sp
+                        )},
+                    colors = ListItemDefaults.colors(
+                        containerColor = Color(0XFFD3B98B)
+                    ),
+                    modifier = Modifier.padding(horizontal = 30.dp)
+                )
+            }
+
+        }
 
 
     }
@@ -484,39 +501,23 @@ fun ExtraItemCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Item Details
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                // Title
-                Text(
-                    modifier = Modifier.size(170.dp, 40.dp),
-                    text = extraItem.title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                // Price
-                Text(
-                    text = "$${extraItem.price}",
-                    style = MaterialTheme.typography.headlineSmall,
-
-                    )
-            }
             Text(
-                text = buildAnnotatedString {
-                    extraItem.attributes.forEachIndexed { index, attribute ->
-                        append(attribute)
-                        if (index < extraItem.attributes.size - 1) {
-                            // Append a new line if it's not the last item
-                            append("\n")
-                        }
-                    }
-                },
+                modifier = Modifier.fillMaxWidth(),
+                text = extraItem.title,
+                style = MaterialTheme.typography.headlineSmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            // Price
+            Text(
+                text = "€ ${extraItem.price} x ${extraItem.amount} stuks",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
-            )}}
-}
+
+                )
+
+        }
+
+}}
 @Composable
 fun KostGegevens (
     modifier: Modifier = Modifier,

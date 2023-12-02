@@ -249,12 +249,13 @@ fun ExtraItemCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             OutlinedTextField(
-                                value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "1",
+
+                                value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "",
                                 onValueChange = {
                                     val enteredAmount = it.toIntOrNull()
                                     extraItem.amount = when {
                                         enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(extraItem.stock)
-                                        else ->1
+                                        else ->0
                                     }
                                     Log.i("amount", enteredAmount.toString())
                                     onAddItem(extraItem)
@@ -292,6 +293,7 @@ fun ExtraItemCard(
                         ) {
                             Button(
                                 onClick = {
+                                    extraItem.amount = 1
                                     extraItem.isEditing = true
                                     onAddItem(extraItem)
                                 },
