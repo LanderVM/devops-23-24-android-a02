@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Blanche</string>
+    <string name="home_info">Van catering tot feestuitrusting, Blanche is uw one-stop oplossing voor feestplezier.</string>
 
     <string name="alertPopUp_title">Snelle Inschatting</string>
     <string name="alertPopUp_text">Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?</string>
@@ -10,6 +11,36 @@
     <string name="formula_allIn_title">All-In</string>
     <string name="formula_advanced_title">Gevorderd</string>
     <string name="formula_extraMaterials_title">Extra Materiaal</string>
+
+    <string name="guidedPrice_location_separator">Locatie</string>
+    <string name="guidedPrice_details_separator">Details</string>
+    <string name="guidedPrice_formula_dropdown">Formule</string>
+    <string name="guidedPrice_formula_numberOfPeople">Aantal Pers.</string>
+    <string name="guidedPrice_formula_tripleBeer">Ik wil tripel bier</string>
+    <string name="guidedPrice_formula_extraMaterial">Extra materiaal nodig</string>
+    <string name="guidedPrice_estimatedPrice">Dit zal tussen de 350 en 500 euro liggen.</string>
+    <string name="guidedPrice_disclaimer">Disclaimer: deze prijs is een schatting en ligt dus niet vast.</string>
+
+    <string name="about_screen_title">Over de foodtruck</string>
+    <string name="about_minimum_space">Minimaal te voorziene ruimte:</string>
+    <string name="about_space_dimensions">5m x 2m x 2m</string>
+    <string name="about_requirements">Benodigdheden:</string>
+    <string name="about_on_site_person">Iemand ter plaatse</string>
+    <string name="about_power_outlet">Stopcontact</string>
+    <string name="about_passage">Doorgang:</string>
+    <string name="about_narrowest_point">Smalste punt op de route naar</string>
+    <string name="about_minimum_width">plaats van opstelling dient minimaal</string>
+    <string name="about_minimum_width_value">3m te zijn!</string>
+    <string name="about_more_info">Meer info</string>
+    <string name="about_popup1_title">Voer uw email in</string>
+    <string name="about_email_label">E-mail</string>
+    <string name="about_continue">Verder</string>
+    <string name="about_popup2_title">Er is een email verstuurd naar</string>
+    <string name="about_close">Sluit</string>
+    <string name="about_foodtruck_image_description">foto van de foodtruck</string>
+    <string name="about_people_pouring_drinks_image_description">foto van mensen die glazen inschenken</string>
+    <string name="about_poured_glass_image_description">foto van ingeschonken glas</string>
+    <string name="about_tap_image_description">foto van een tap</string>
 
     <string name="home_title">Home</string>
     <string name="over_title">Over</string>

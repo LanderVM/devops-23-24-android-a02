@@ -21,9 +21,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,12 +31,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.Dialog
 import com.example.templateapplication.R
@@ -96,29 +96,29 @@ fun Info (
     ) {
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "Over de foodtruck",
+            text = stringResource(R.string.about_screen_title),
             fontFamily = ImperialScript,
             fontSize = 50.sp,
             color = Color.DarkGray,
         )
         Spacer(modifier = Modifier.height(22.dp))
-        Text(text="Minimaal te voorziene ruimte:",style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
+        Text(text=stringResource(R.string.about_minimum_space),style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text="5m x 2m x 2m", fontSize = 18.sp)
+        Text(text=stringResource(R.string.about_space_dimensions), fontSize = 18.sp)
         Spacer(modifier = Modifier.height(22.dp))
-        Text(text="Benodigtheden:",style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
+        Text(text=stringResource(R.string.about_requirements),style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text="Iemand ter plaatse", fontSize = 18.sp)
+        Text(text=stringResource(R.string.about_on_site_person), fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text="Stopcontact", fontSize = 18.sp)
+        Text(text=stringResource(R.string.about_power_outlet), fontSize = 18.sp)
         Spacer(modifier = Modifier.height(22.dp))
-        Text(text="Doorgang:",style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
+        Text(text=stringResource(R.string.about_passage),style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text="Smalste punt op de route naar", fontSize = 18.sp)
+        Text(text=stringResource(R.string.about_narrowest_point), fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text="plaats van opstelling dient minimaal", fontSize = 18.sp)
+        Text(text=stringResource(R.string.about_minimum_width), fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text="3m te zijn!", fontSize = 18.sp)
+        Text(text=stringResource(R.string.about_minimum_width_value), fontSize = 18.sp)
         Spacer(modifier = Modifier.height(35.dp))
         Button (
             onClick = openPopUp,
@@ -130,7 +130,7 @@ fun Info (
                 disabledContentColor = Color.White
             ),
         ) {
-            Text (text= "Meer info",fontSize = 22.sp)
+            Text (text= stringResource(R.string.about_more_info),fontSize = 22.sp)
         }
     }
 }
@@ -157,12 +157,12 @@ fun PopUp1(
             ) {
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    text = "Voer uw email in",
+                    text = stringResource(id = R.string.about_popup1_title),
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 InputVeld(
-                    label = "E-mail", value = email, onChange = onEmailChange
+                    label = stringResource(id =R.string.about_email_label), value = email, onChange = onEmailChange
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Button (
@@ -180,7 +180,7 @@ fun PopUp1(
                         disabledContentColor = Color.White
                     ),
                 ) {
-                    Text(text="Verder")
+                    Text(text= stringResource(id = R.string.about_continue))
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }
@@ -209,7 +209,7 @@ fun PopUp2(
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "Er is een email verstuurt naar",
+                    text = stringResource(id = R.string.about_popup2_title),
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -230,7 +230,7 @@ fun PopUp2(
                         disabledContentColor = Color.White
                     ),
                 ) {
-                    Text(text="Sluit")
+                    Text(text=stringResource(id = R.string.about_close))
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }
@@ -253,9 +253,9 @@ fun InputVeld(
             .defaultMinSize(minHeight = 55.dp)
             .height(55.dp)
             .padding(horizontal = 30.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0XFFb49763),
-            unfocusedBorderColor = Color(0XFFb49763)
+            unfocusedBorderColor = Color(0XFFb49763),
         ),
 
     )
@@ -276,7 +276,7 @@ fun Pictures () {
         ) {
             Image(
                 painter = painterResource(R.drawable.foto3),
-                contentDescription = "foto van de foodtruck",
+                contentDescription = stringResource(id = R.string.about_foodtruck_image_description),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
@@ -295,7 +295,7 @@ fun Pictures () {
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto4),
-                    contentDescription = "foto van mensen die glazen inschenken",
+                    contentDescription = stringResource(id = R.string.about_people_pouring_drinks_image_description),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -307,7 +307,7 @@ fun Pictures () {
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto7),
-                    contentDescription = "foto van ingeschonken glas",
+                    contentDescription = stringResource(id = R.string.about_poured_glass_image_description),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -319,7 +319,7 @@ fun Pictures () {
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto8),
-                    contentDescription = "foto van een tap",
+                    contentDescription = stringResource(id = R.string.about_tap_image_description),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )

@@ -52,16 +52,16 @@ fun HomeScreen(
             HomeScreenTop(openDrawer = openDrawer)
         }
         item {
-            FormuleCard(stringResource(id = R.string.formula_basic_title), image1, onButtonClicked = onBasicNavigation)
+            FormuleCard(title = stringResource(id = R.string.formula_basic_title), image = image1, onButtonClicked = onBasicNavigation)
         }
         item {
-            FormuleCard(stringResource(id = R.string.formula_allIn_title), image2, onButtonClicked = onAllInNavigation)
+            FormuleCard(title =stringResource(id = R.string.formula_allIn_title), image = image2, onButtonClicked = onAllInNavigation)
         }
         item {
-            FormuleCard(stringResource(id = R.string.formula_advanced_title), image3, onButtonClicked = onGevorderedNavigation)
+            FormuleCard(title =stringResource(id = R.string.formula_advanced_title), image = image3, onButtonClicked = onGevorderedNavigation)
         }
         item {
-            FormuleCard(stringResource(id = R.string.formula_extraMaterials_title), image4, onButtonClicked = onExtraNavigation)
+            FormuleCard(title =stringResource(id = R.string.formula_extraMaterials_title), image = image4, onButtonClicked = onExtraNavigation)
         }
     }
 }

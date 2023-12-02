@@ -93,7 +93,7 @@ fun HomeScreenTop(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Van catering tot feestuitrusting, Blanche is uw one-stop oplossing voor feestplezier.",
+            text = stringResource(id = R.string.home_info),
             fontSize = 24.sp,
             textAlign = TextAlign.Center,
             color = Color.Black

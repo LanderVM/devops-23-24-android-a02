@@ -26,10 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.templateapplication.R
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.commons.AddressTextField
@@ -83,7 +85,7 @@ fun GuidePriceScreen(
             showCalenderToggle = true,
         )
         SeperatingTitle(
-            text = "Locatie",
+            text = stringResource(id = R.string.guidedPrice_location_separator),
         )
         AddressTextField(
             quotationRequestViewModel = quotationRequestViewModel,
@@ -92,14 +94,14 @@ fun GuidePriceScreen(
             placeResponse = requestState.placeResponse
         )
         SeperatingTitle(
-            text = "Details",
+            text = stringResource(id = R.string.guidedPrice_details_separator),
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.75f)
         ) {
             DropDownSelect(
-                label = "Formule",
+                label =  stringResource(id = R.string.guidedPrice_formula_dropdown),
                 isExpanded = priceEstimationUIState.formulaDropDownIsExpanded,
                 setExpanded = { priceEstimationViewModel.setDropDownExpanded(it) },
                 selectedOption = priceEstimationUIState.selectedFormula - 1,
@@ -108,7 +110,7 @@ fun GuidePriceScreen(
             )
             Spacer(modifier = Modifier.width(8.dp))
             NumberOutlinedTextField(
-                label = "Aantal Pers.",
+                label = stringResource(id = R.string.guidedPrice_formula_numberOfPeople),
                 value = priceEstimationUIState.amountOfPeople,
                 onValueChange = { priceEstimationViewModel.setAmountOfPeople(it) },
                 keyboardController = keyboardController
@@ -120,7 +122,7 @@ fun GuidePriceScreen(
                 modifier = Modifier.height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = "Ik wil tripel bier", modifier = Modifier.padding(horizontal = 12.dp))
+                Text(text =  stringResource(id = R.string.guidedPrice_formula_tripleBeer), modifier = Modifier.padding(horizontal = 12.dp))
                 Checkbox(
                     checked = priceEstimationUIState.wantsTripelBeer,
                     onCheckedChange = { priceEstimationViewModel.setWantsTripelBeer(!priceEstimationUIState.wantsTripelBeer) },
@@ -138,7 +140,7 @@ fun GuidePriceScreen(
             modifier = Modifier.height(50.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = "Extra materiaal nodig", modifier = Modifier.padding(horizontal = 12.dp))
+            Text(text = stringResource(id = R.string.guidedPrice_formula_extraMaterial), modifier = Modifier.padding(horizontal = 12.dp))
             Checkbox(
                 checked = priceEstimationUIState.wantsExtras,
                 onCheckedChange = { priceEstimationViewModel.setWantsExtras(!priceEstimationUIState.wantsExtras) },
@@ -192,12 +194,12 @@ fun GuidePriceScreen(
         }
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "Dit zal tussen de 350 en 500 euro liggen.",
+            text = stringResource(id = R.string.guidedPrice_estimatedPrice),
             fontSize = 20.sp,
             fontWeight = FontWeight.W500,
         )
         Text(
-            text = "Disclaimer: deze prijs is een schatting en ligt dus niet vast.",
+            text = stringResource(id = R.string.guidedPrice_disclaimer),
             fontSize = 12.sp,
             fontWeight = FontWeight.Light,
         )

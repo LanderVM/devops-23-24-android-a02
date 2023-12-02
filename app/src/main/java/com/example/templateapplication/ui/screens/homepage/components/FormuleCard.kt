@@ -30,10 +30,10 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun FormuleCard(
+    modifier: Modifier = Modifier,
     title: String,
     image: Painter,
-    onButtonClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    onButtonClicked: () -> Unit
 ) {
 
     Card(
