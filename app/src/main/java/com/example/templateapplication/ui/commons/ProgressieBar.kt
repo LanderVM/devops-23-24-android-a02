@@ -24,13 +24,13 @@ fun ProgressieBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 50.dp),
-        color = Color(android.graphics.Color.parseColor("#C8A86E")),
-        trackColor = Color(android.graphics.Color.parseColor("#efe5d4")),
+        color = Color(0XFFC8A86E),
+        trackColor = Color(0XFFefe5d4),
     )
     Spacer(modifier = Modifier.height(10.dp))
     Text(
         text = text,
-        color = Color(android.graphics.Color.parseColor("#C8A86E")),
+        color = Color(0XFFC8A86E),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 50.dp)

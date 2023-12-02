@@ -116,7 +116,7 @@ fun SamenvattingGegevensScreen (
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        if(!extraItemViewModel.getListAddedItems().isEmpty()){
+        if(extraItemViewModel.getListAddedItems().isNotEmpty()){
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 15.dp),
                 thickness = 4.dp,
@@ -450,7 +450,6 @@ fun ExtrasScreen(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExtraItemCard(
     extraItem: ExtraItemState,
@@ -613,7 +612,7 @@ fun KostGegevens (
                         color = Color.Black,
                     )
                 }
-                extraItemViewModel.getListAddedItems().forEach(){
+                extraItemViewModel.getListAddedItems().forEach{
                     extraItem ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

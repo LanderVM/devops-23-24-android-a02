@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SeperatingTitle(
     modifier: Modifier = Modifier,
-    text: String = "Titel",
+    text: String = "",
 ) {
     Spacer(modifier = Modifier.height(30.dp))
     Row(
@@ -60,5 +60,5 @@ fun SeperatingTitle(
 fun TitelPreview(
     modifier: Modifier = Modifier,
 ) {
-    SeperatingTitle(text = "Test titel")
+    SeperatingTitle(text = "Test title")
 }

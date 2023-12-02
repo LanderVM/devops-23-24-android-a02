@@ -37,7 +37,7 @@ fun DateRangePicker(
     enableRecheckFunction: () -> Unit = {},
 ) {
     SeperatingTitle(
-        text = "Datum",
+        text = stringResource(id = R.string.dateRangePicker_separator),
     )
     Column(
         modifier = Modifier
@@ -61,7 +61,7 @@ fun DateRangePicker(
             dateFormatter = DatePickerDefaults.dateFormatter("yy MM dd", "yy MM dd", "yy MM dd"),
             title = {
                 Text(
-                    text = "Selecteer begin dag tot eind dag evenement",
+                    text = stringResource(id = R.string.dateRangePicker_info),
                     modifier = Modifier
                         .padding(16.dp),
                 )
@@ -78,14 +78,14 @@ fun DateRangePicker(
                             getFormattedDate(
                                 it
                             )
-                        } else "Start datum")?.let { Text(text = it) }
+                        } else stringResource(id = R.string.dateRangePicker_startDate))?.let { Text(text = it) }
                     }
                     Box(Modifier.weight(1f)) {
                         (if (state.selectedEndDateMillis != null) state.selectedEndDateMillis?.let {
                             getFormattedDate(
                                 it
                             )
-                        } else "Eind datum")?.let { Text(text = it) }
+                        } else stringResource(id = R.string.dateRangePicker_endDate))?.let { Text(text = it) }
                     }
                 }
             },

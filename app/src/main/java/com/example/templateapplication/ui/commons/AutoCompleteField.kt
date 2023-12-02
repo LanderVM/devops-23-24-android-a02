@@ -95,8 +95,8 @@ fun AddressTextField(
             ) {
                 Marker(
                     state = MarkerState(position = uiState.googleMaps.marker),
-                    title = "Blanche",
-                    snippet = "Onze opslagplaats"
+                    title = stringResource(id = R.string.autoComplete_storageLocation_title),
+                    snippet = stringResource(id = R.string.autoComplete_storageLocation_snippet)
                 )
                 if (quotationRequestViewModel.placeFound()) {
                     Marker(
@@ -106,8 +106,8 @@ fun AddressTextField(
                                 placeResponse.candidates[0].geometry.location.lng
                             )
                         ),
-                        title = "Event Locatie",
-                        snippet = "Uw gekozen locatie"
+                        title = stringResource(id = R.string.autoComplete_eventLocation_title),
+                        snippet = stringResource(id = R.string.autoComplete_eventLocation_snippet)
                     )
                     Polyline(
                         points = listOf(
@@ -179,7 +179,7 @@ fun AutocompleteCardItem(
             .padding(top = 10.dp)
             .fillMaxHeight()
             .width(300.dp)
-            .background(color = Color(android.graphics.Color.parseColor("#C8A86E")))
+            .background(color = Color(0XFFC8A86E))
             .clickable { onPredictionClick(prediction) },
         contentAlignment = Alignment.Center
     ) {

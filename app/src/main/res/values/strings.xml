@@ -82,4 +82,19 @@
     <string name="formulas_title">Formules</string>
     <string name="aboutEmail_title">Meer info</string>
     <string name="guidePrice_title">Snelle inschatting</string>
+
+    <string name="autoComplete_storageLocation_title">Blanche</string>
+    <string name="autoComplete_storageLocation_snippet">Onze opslagplaats</string>
+    <string name="autoComplete_eventLocation_title">Event Locatie</string>
+    <string name="autoComplete_eventLocation_snippet">Uw gekozen locatie</string>
+
+    <string name="dateRangePicker_separator">Datum</string>
+    <string name="dateRangePicker_info">Selecteer begin dag tot eind dag evenement</string>
+    <string name="dateRangePicker_startDate">Start datum</string>
+    <string name="dateRangePicker_endDate">Eind datum</string>
+
+    <string name="nextPageButton_text">Volgende</string>
+
+
+
 </resources>
