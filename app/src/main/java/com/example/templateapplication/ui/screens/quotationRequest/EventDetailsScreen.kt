@@ -18,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.templateapplication.R
 import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
@@ -80,10 +82,12 @@ fun EventDetailsScreen(
                 )
                 //itereer door de lijst van dateRange en convert naar millisecondes
                 for ((start, end) in dateRanges) {
-                    val startMillis = dateFormat.parse(start).time
-                    val endMillis = dateFormat.parse(end).time
-                    if (utcTimeMillis >= startMillis && utcTimeMillis <= endMillis) {
-                        return false
+                    val startMillis = dateFormat.parse(start)?.time
+                    val endMillis = dateFormat.parse(end)?.time
+                    if (startMillis != null && endMillis != null) {
+                        if (utcTimeMillis in startMillis..endMillis) {
+                            return false
+                        }
                     }
                 }
                 return true
@@ -102,11 +106,11 @@ fun EventDetailsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ProgressieBar(
-            text = "Evenement",
+            text = stringResource(id = R.string.eventDetails_progressbar),
             progression = 0.25f,
         )
         SeperatingTitle(
-            text = "Locatie",
+            text = stringResource(id = R.string.eventDetails_location_separator),
         )
         AddressTextField(
             quotationRequestViewModel = quotationRequestViewModel,
@@ -124,10 +128,10 @@ fun EventDetailsScreen(
             enableRecheckFunction = { recheckNextButtonStatus = true }
         )
         SeperatingTitle(
-            text = "Details",
+            text = stringResource(id = R.string.eventDetails_details_separator),
         )
         NumberOutlinedTextField(
-            label = "Aantal Personen",
+            label = stringResource(id = R.string.eventDetails_numberOfPeople),
             value = requestState.amountOfPeople,
             onValueChange = {
                 quotationRequestViewModel.setAmountOfPeople(it)
@@ -136,7 +140,7 @@ fun EventDetailsScreen(
         )
         if (requestState.selectedFormula != 1) {
             DropDownSelect(
-                label = "Biersoort",
+                label = stringResource(id = R.string.eventDetails_beerType),
                 isExpanded = uiState.dropDownExpanded,
                 setExpanded = { quotationRequestViewModel.setDropDownExpanded(it) },
                 dropDownOptions = uiState.beerDropDownOptions,

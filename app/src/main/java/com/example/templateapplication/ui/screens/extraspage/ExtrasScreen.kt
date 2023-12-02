@@ -43,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,13 +70,13 @@ fun ExtrasScreen(
 
 
     var selectedIndex by remember { mutableIntStateOf(0) }
-    val options = listOf("Prijs ↓", "Prijs ↑", "Naam ↓", "Naam ↑")
+    val options = listOf(stringResource(id = R.string.extraMaterial_sort_price_desc), stringResource(id = R.string.extraMaterial_sort_price_asc), stringResource(id = R.string.extraMaterial_sort_name_desc), stringResource(id = R.string.extraMaterial_sort_name_asc))
 
     when(val extraMateriaalApiState = extraItemViewModel.extraMateriaalApiState){
-        is ExtraItemDetailsApiState.Loading -> Text("Loading...")
+        is ExtraItemDetailsApiState.Loading -> Text(stringResource(id = R.string.loading))
         is ExtraItemDetailsApiState.Error -> {
             val errorMessage = extraMateriaalApiState.errorMessage
-            Text("Couldn't load..., because of $errorMessage")}
+            Text(stringResource(id = R.string.error, errorMessage))}
         is ExtraItemDetailsApiState.Success -> {
 
     LazyColumn(
@@ -150,8 +151,8 @@ fun HeadOfPage(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ProgressieBar(
-            text = "Extra Materiaal",
-            progression = 0.75f,
+            text = stringResource(id = R.string.progressbar_extraMaterial),
+            progression = 0.75f
         )
     }
 }

@@ -43,24 +43,24 @@ fun NavigationDrawer(
 
     val navItems = listOf(
         NavigationItem(
-            title = NavigationRoutes.home.getString(context),
-            to = NavigationRoutes.home.name,
+            title = NavigationRoutes.Home.getString(context),
+            to = NavigationRoutes.Home.name,
         ),
         NavigationItem(
-            title = NavigationRoutes.over.getString(context),
-            to = NavigationRoutes.over.name,
+            title = NavigationRoutes.About.getString(context),
+            to = NavigationRoutes.About.name,
         ),
         NavigationItem(
-            title = NavigationRoutes.formules.getString(context),
-            to = NavigationRoutes.formules.name,
+            title = NavigationRoutes.Formulas.getString(context),
+            to = NavigationRoutes.Formulas.name,
         ),
         NavigationItem(
-            title = NavigationRoutes.extrasOverview.getString(context),
-            to = NavigationRoutes.extrasOverview.name,
+            title = NavigationRoutes.ExtrasOverview.getString(context),
+            to = NavigationRoutes.ExtrasOverview.name,
         ),
         NavigationItem(
-            title = NavigationRoutes.guidePrice.getString(context),
-            to = NavigationRoutes.guidePrice.name,
+            title = NavigationRoutes.GuidePrice.getString(context),
+            to = NavigationRoutes.GuidePrice.name,
         ),
     )
 

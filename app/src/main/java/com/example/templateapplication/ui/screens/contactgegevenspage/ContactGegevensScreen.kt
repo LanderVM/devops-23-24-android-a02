@@ -51,7 +51,7 @@ fun ConatctGegevensScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ProgressieBar(
-            text = "Personalia",
+            text = stringResource(id = R.string.contactDetails_personal_info),
             progression = 0.50f,
         )
         ContactGegevens(
@@ -71,7 +71,7 @@ fun ConatctGegevensScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         Adressering(
-            welkeAdressering = "Adres gegevens",
+            welkeAdressering = stringResource(id = R.string.contactDetails_address_info),
             straat = adresUiState.straat,
             onStraatChange = { adresViewModel.updateStraat(it) },
             makeEmptyStraat = { adresViewModel.updateStraat("") },
@@ -90,10 +90,7 @@ fun ConatctGegevensScreen(
         )
         Spacer(modifier = Modifier.height(15.dp))
 
-
         Spacer(modifier = Modifier.height(15.dp))
-
-
 
         Spacer(modifier = Modifier.height(30.dp))
         NextPageButton(
@@ -125,15 +122,15 @@ fun ContactGegevens(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SeperatingTitle(
-            text = "Contact gegevens",
+            text = stringResource(id = R.string.contactDetails_contact_info),
         )
-        InputVeld(label = "Naam", value = naam, onChange = onNaamChange, makeEmpty = makeEmptyNaam)
+        InputVeld(label = stringResource(id = R.string.contactDetails_first_name), value = voornaam, onChange = onVoornaamChange, makeEmpty = makeEmptyVoornaam)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Voornaam", value = voornaam, onChange = onVoornaamChange, makeEmpty = makeEmptyVoornaam)
+        InputVeld(label = stringResource(id = R.string.contactDetails_name), value = naam, onChange = onNaamChange, makeEmpty = makeEmptyNaam)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Telefoonnummer", value = telefoonnummer, onChange = onTelefoonnummerChange, makeEmpty = makeEmptyTelefoonnummer)
+        InputVeld(label = stringResource(id = R.string.contactDetails_phone_number), value = telefoonnummer, onChange = onTelefoonnummerChange, makeEmpty = makeEmptyTelefoonnummer)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Email", value = email, onChange = onEmailChange, makeEmpty = makeEmptyEmail)
+        InputVeld(label = stringResource(id = R.string.contactDetails_email), value = email, onChange = onEmailChange, makeEmpty = makeEmptyEmail)
     }
 }
 
@@ -164,15 +161,15 @@ fun Adressering(
         SeperatingTitle(
             text = welkeAdressering,
         )
-        InputVeld(label = "Straat", value = straat, onChange = onStraatChange, makeEmpty = makeEmptyStraat)
+        InputVeld(label = stringResource(id = R.string.contactDetails_street), value = straat, onChange = onStraatChange, makeEmpty = makeEmptyStraat)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Huisnummer", value = huisnummer, onChange = onHuisnummerChange, makeEmpty = makeEmptyHuisnummer)
+        InputVeld(label = stringResource(id = R.string.contactDetails_house_number), value = huisnummer, onChange = onHuisnummerChange, makeEmpty = makeEmptyHuisnummer)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Gemeente", value = gemeente, onChange = onGemeenteChange, makeEmpty = makeEmptyGemeente)
+        InputVeld(label = stringResource(id = R.string.contactDetails_city), value = gemeente, onChange = onGemeenteChange, makeEmpty = makeEmptyGemeente)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Postcode", value = postcode, onChange = onPostcodeChange, makeEmpty = makeEmptyPostcode)
+        InputVeld(label = stringResource(id = R.string.contactDetails_postal_code), value = postcode, onChange = onPostcodeChange, makeEmpty = makeEmptyPostcode)
         Spacer(modifier = Modifier.height(20.dp))
-        InputVeld(label = "Btw-nummer", value = btwNummer, onChange = onBtwNummerChange, makeEmpty = makeEmptyBtwNummer)
+        InputVeld(label = stringResource(id = R.string.contactDetails_vat_number), value = btwNummer, onChange = onBtwNummerChange, makeEmpty = makeEmptyBtwNummer)
     }
 }
 

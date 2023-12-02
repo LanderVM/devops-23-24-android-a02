@@ -34,7 +34,7 @@ class BlancheAppNavigationTest {
 
     @Test
     fun blancheNavHost_verifyStartDestination() {
-        navController.assertCurrentRouteName(NavigationRoutes.home.name)
+        navController.assertCurrentRouteName(NavigationRoutes.Home.name)
     }
     @Test
     fun blancheNavHost_assertTopAppBarDoesntExist() {
@@ -46,13 +46,13 @@ class BlancheAppNavigationTest {
         val route1 = navController.currentBackStackEntry?.destination?.route
         sni.performClick()
         val route2 = navController.currentBackStackEntry?.destination?.route
-        navController.assertCurrentRouteName(NavigationRoutes.formules.name)
+        navController.assertCurrentRouteName(NavigationRoutes.Formulas.name)
     }
     @Test
     fun blancheNavHost_clickOver_navigateToOverScreen () {
         val sni:SemanticsNodeInteraction = composeTestRule.onNodeWithText("Over")
         sni.performClick()
-        navController.assertCurrentRouteName(NavigationRoutes.over.name)
+        navController.assertCurrentRouteName(NavigationRoutes.About.name)
     }
     private fun navigateToOver() {
         composeTestRule.onNodeWithText("Over").performClick()
@@ -61,7 +61,7 @@ class BlancheAppNavigationTest {
     fun blancheNavHost_clickMeerInfo_navigateToEmailScreen () {
         navigateToOver()
         composeTestRule.onNodeWithText("Meer info").performClick()
-        navController.assertCurrentRouteName(NavigationRoutes.emailInfo.name)
+        navController.assertCurrentRouteName(NavigationRoutes.AboutEmail.name)
     }
 
 

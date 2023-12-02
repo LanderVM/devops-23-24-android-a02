@@ -27,7 +27,7 @@ fun BlancheAppBar(
     navigateUp: () -> Unit = {},
     openDrawer: () -> Unit = {},
 ) {
-    if (currentScreen != NavigationRoutes.home) {
+    if (currentScreen != NavigationRoutes.Home) {
         Surface(shadowElevation = 10.dp) {
             TopAppBar(
                 title = {

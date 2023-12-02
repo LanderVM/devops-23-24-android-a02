@@ -2,6 +2,9 @@
     <string name="app_name">Blanche</string>
     <string name="home_info">Van catering tot feestuitrusting, Blanche is uw one-stop oplossing voor feestplezier.</string>
 
+    <string name="loading">Loading…</string>
+    <string name="error">Couldn\'t load…, because of %s</string>
+
     <string name="alertPopUp_title">Snelle Inschatting</string>
     <string name="alertPopUp_text">Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?</string>
     <string name="alertPopUp_confirm">Ja</string>
@@ -42,14 +45,41 @@
     <string name="about_poured_glass_image_description">foto van ingeschonken glas</string>
     <string name="about_tap_image_description">foto van een tap</string>
 
+    <string name="eventDetails_progressbar">Evenement</string>
+    <string name="eventDetails_location_separator">Locatie</string>
+    <string name="eventDetails_details_separator">Details</string>
+    <string name="eventDetails_numberOfPeople">Aantal Personen</string>
+    <string name="eventDetails_beerType">Biersoort</string>
+
+    <string name="extraMaterial_sort_price_desc">Prijs ↓</string>
+    <string name="extraMaterial_sort_price_asc">Prijs ↑</string>
+    <string name="extraMaterial_sort_name_desc">Naam ↓</string>
+    <string name="extraMaterial_sort_name_asc">Naam ↑</string>
+    <string name="extraMaterial_next_page">Volgende Pagina</string>
+
+    <string name="progressbar_extraMaterial">Extra Materiaal</string>
+
+    <string name="contactDetails_personal_info">Personalia</string>
+    <string name="contactDetails_address_info">Adres gegevens</string>
+    <string name="contactDetails_contact_info">Contact gegevens</string>
+    <string name="contactDetails_first_name">Voornaam</string>
+    <string name="contactDetails_name">Naam</string>
+    <string name="contactDetails_phone_number">Telefoonnummer</string>
+    <string name="contactDetails_email">Email</string>
+    <string name="contactDetails_street">Straat</string>
+    <string name="contactDetails_house_number">Huisnummer</string>
+    <string name="contactDetails_city">Gemeente</string>
+    <string name="contactDetails_postal_code">Postcode</string>
+    <string name="contactDetails_vat_number">Btw-nummer</string>
+
     <string name="home_title">Home</string>
-    <string name="over_title">Over</string>
-    <string name="contact_gegevens_title">Contact gegevens</string>
-    <string name="evenement_gegevens_titel">Evenement gegevens</string>
-    <string name="samenvatting_gegevens_titel">Samenvatting gegevens</string>
-    <string name="extras_title">Extra materiaal</string>
-    <string name="extrasOverview">Extra materiaal</string>
-    <string name="formules_title">Formules</string>
-    <string name="over_email">Meer info</string>
-    <string name="guide_price">Snelle inschatting</string>
+    <string name="about_title">Over</string>
+    <string name="contactDetails_title">Contact gegevens</string>
+    <string name="eventDetails_title">Evenement gegevens</string>
+    <string name="summaryData_title">Samenvatting gegevens</string>
+    <string name="extraItems_title">Extra materiaal</string>
+    <string name="extrasOverview_title">Extra materiaal</string>
+    <string name="formulas_title">Formules</string>
+    <string name="aboutEmail_title">Meer info</string>
+    <string name="guidePrice_title">Snelle inschatting</string>
 </resources>
