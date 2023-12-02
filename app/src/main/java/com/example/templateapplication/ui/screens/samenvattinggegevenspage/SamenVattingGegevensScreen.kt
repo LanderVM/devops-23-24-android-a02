@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -146,7 +147,7 @@ fun SamenvattingGegevensScreen (
                 disabledContentColor = Color.White
             ),
         ) {
-            Text (text= "Offerte aanvragen")
+            Text (text= stringResource(id = R.string.summaryData_quoteRequest))
         }
         Spacer(modifier = Modifier.height(20.dp))
     }
@@ -162,7 +163,7 @@ fun HeadOfPage(
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text= "Overzicht",
+            text= stringResource(id = R.string.summaryData_overview),
             textAlign = TextAlign.Center,
             modifier= Modifier
                 .fillMaxWidth()
@@ -193,7 +194,7 @@ fun Navigation (
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         Text(
-            text= "Ga naar",
+            text= stringResource(id = R.string.summaryData_navigation_goto),
             textAlign = TextAlign.Left,
             modifier= Modifier
                 .fillMaxWidth()
@@ -210,12 +211,12 @@ fun Navigation (
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.filled_circle),
-                contentDescription = "een gevulde circel",
+                contentDescription = stringResource(id = R.string.summaryData_navigation_circle),
                 modifier = Modifier.size(13.dp,13.dp)
             )
             Spacer(modifier = Modifier.width(30.dp))
             ClickableText(
-                text = AnnotatedString("Evenement") ,
+                text = AnnotatedString(stringResource(id = R.string.summaryData_navigation_event)) ,
                 onClick = {
                     navigateEventGegevens()
                 },
@@ -233,12 +234,12 @@ fun Navigation (
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.filled_circle),
-                contentDescription = "een gevulde circel",
+                contentDescription = stringResource(id = R.string.summaryData_navigation_circle),
                 modifier = Modifier.size(13.dp,13.dp)
             )
             Spacer(modifier = Modifier.width(30.dp))
             ClickableText(
-                text = AnnotatedString("Contact en facturatie gegevens"),
+                text = AnnotatedString(stringResource(id = R.string.summaryData_navigation_contact)),
                 onClick = {
                     navigateContactGegevens()
                 },
@@ -255,12 +256,12 @@ fun Navigation (
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.filled_circle),
-                contentDescription = "een gevulde circel",
+                contentDescription = stringResource(id = R.string.summaryData_navigation_circle),
                 modifier = Modifier.size(13.dp,13.dp)
             )
             Spacer(modifier = Modifier.width(30.dp))
             ClickableText(
-                text = AnnotatedString("Extra materiaal"),
+                text = AnnotatedString(stringResource(id = R.string.summaryData_navigation_extraMaterial)),
                 onClick = {navigateExtras()},
                 style = TextStyle(fontSize = 22.sp)
             )
@@ -286,7 +287,7 @@ fun EventGegevens(
         Row(modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically){
             Text(
-                text= "Evenement",
+                text= stringResource(id = R.string.summaryData_eventDetails_title),
                 textAlign = TextAlign.Start,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -314,7 +315,7 @@ fun EventGegevens(
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
                 headlineContent = {
-                    Text(text="Locatie",fontSize = 18.sp)
+                    Text(text=stringResource(id = R.string.summaryData_eventDetails_location),fontSize = 18.sp)
                 },
                 supportingContent = {
                     Text(
@@ -352,7 +353,7 @@ fun ContactGegevens(
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
-                text= "Contact en facturatie gegevens",
+                text= stringResource(id = R.string.summaryData_contactDetails_title),
                 textAlign = TextAlign.Start,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -366,7 +367,7 @@ fun ContactGegevens(
         if(show){
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
-                headlineContent = {Text(text="Naam",fontSize = 18.sp)},
+                headlineContent = {Text(text=stringResource(id = R.string.contactDetails_name),fontSize = 18.sp)},
                 supportingContent = {Text(text=gegevensUiState.naam+" "+gegevensUiState.voornaam,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
                     containerColor = Color(0XFFD3B98B)
@@ -375,7 +376,7 @@ fun ContactGegevens(
             )
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
-                headlineContent = {Text(text="Email",fontSize = 18.sp)},
+                headlineContent = {Text(text=stringResource(id = R.string.contactDetails_email),fontSize = 18.sp)},
                 supportingContent = {Text(text=gegevensUiState.email,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
                     containerColor = Color(0XFFD3B98B)
@@ -384,7 +385,7 @@ fun ContactGegevens(
             )
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
-                headlineContent = {Text(text="Telefoonnummer",fontSize = 18.sp)},
+                headlineContent = {Text(text=stringResource(id = R.string.contactDetails_phone_number),fontSize = 18.sp)},
                 supportingContent = {Text(text=gegevensUiState.telefoonnummer,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
                     containerColor = Color(0XFFD3B98B)
@@ -393,7 +394,7 @@ fun ContactGegevens(
             )
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
-                headlineContent = {Text(text="Adres", fontSize = 18.sp)},
+                headlineContent = {Text(text=stringResource(id = R.string.summaryData_contactDetails_adress), fontSize = 18.sp)},
                 supportingContent = {
                     Text(
                         text=adresUiState.straat+" "+adresUiState.huisnummer+" "+adresUiState.gemeente,
@@ -423,7 +424,7 @@ fun ExtrasScreen(
         Row(modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically){
             Text(
-                text= "Extra Materiaal",
+                text= stringResource(id = R.string.extraItems_title),
                 textAlign = TextAlign.Start,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -528,7 +529,7 @@ fun KostGegevens (
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text= "Kost",
+            text= stringResource(id = R.string.summaryData_priceDetails_title),
             textAlign = TextAlign.Start,
             modifier= Modifier.fillMaxWidth(),
             fontSize = 20.sp,
@@ -553,7 +554,7 @@ fun KostGegevens (
                     modifier = Modifier.height(35.dp)
                 ) {
                     Text(
-                        text="Omschrijving",
+                        text= stringResource(id = R.string.summaryData_priceDetails_description),
                         textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
@@ -562,7 +563,7 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
-                        text="Prijs",
+                        text= stringResource(id = R.string.summaryData_priceDetails_price),
                         textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
@@ -571,7 +572,7 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
-                        text="Subtotaal",
+                        text=stringResource(id = R.string.summaryData_priceDetails_subtotal),
                         textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,

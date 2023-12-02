@@ -72,6 +72,24 @@
     <string name="contactDetails_postal_code">Postcode</string>
     <string name="contactDetails_vat_number">Btw-nummer</string>
 
+    <string name="summaryData_quoteRequest">Offerte aanvragen</string>
+    <string name="summaryData_overview">Overzicht</string>
+    <string name="summaryData_navigation_goto">Ga naar</string>
+    <string name="summaryData_navigation_circle">een gevulde circel</string>
+    <string name="summaryData_navigation_event">Evenement</string>
+    <string name="summaryData_navigation_contact">Contact en facturatie gegevens</string>
+    <string name="summaryData_navigation_extraMaterial">Extra materiaal</string>
+    <string name="summaryData_eventDetails_title">Evenement</string>
+    <string name="summaryData_eventDetails_location">Locatie</string>
+    <string name="summaryData_contactDetails_title">Contact en facturatie gegevens</string>
+    <string name="summaryData_contactDetails_adress">Adres</string>
+    <string name="summaryData_priceDetails_title">Kost</string>
+    <string name="summaryData_priceDetails_description">Omschrijving</string>
+    <string name="summaryData_priceDetails_price">Prijs</string>
+    <string name="summaryData_priceDetails_subtotal">Subtotaal</string>
+
+
+
     <string name="home_title">Home</string>
     <string name="about_title">Over</string>
     <string name="contactDetails_title">Contact gegevens</string>
