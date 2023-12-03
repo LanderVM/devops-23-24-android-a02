@@ -1,7 +1,5 @@
 package com.example.templateapplication.ui.screens.contactgegevenspage
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,12 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -55,7 +47,6 @@ fun PersonalDetailsScreen(
             progression = 0.50f,
         )
         PersonalDetailsForm(
-            quotationRequestViewModel= quotationRequestViewModel,
             firstName = requestState.customer.firstName,
             onFirstNameChange = { quotationRequestViewModel.setFirstName(it) },
             lastName = requestState.customer.lastName,
@@ -67,7 +58,7 @@ fun PersonalDetailsScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
         FacturationForm(
-            quotationRequestViewModel= quotationRequestViewModel,
+            quotationRequestViewModel= quotationRequestViewModel, // TODO remove this
             streetState = requestState.customer.billingAddress.street,
             onStretChange = { quotationRequestViewModel.setStreet(it) },
             houseNumberState = requestState.customer.billingAddress.houseNumber,
@@ -91,7 +82,6 @@ fun PersonalDetailsScreen(
 @Composable
 fun PersonalDetailsForm (
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel,
     firstName: String,
     onFirstNameChange: (String) -> Unit,
     lastName: String,
