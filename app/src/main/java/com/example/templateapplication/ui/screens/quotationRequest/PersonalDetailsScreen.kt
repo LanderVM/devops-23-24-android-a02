@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -46,6 +45,8 @@ fun PersonalDetailsScreen(
         )
         PersonalDetailsForm(
             firstName = requestState.customer.firstName,
+            formState = quotationRequestViewModel.formState,
+            onEvent = { quotationRequestViewModel.onEvent(it) },
             onFirstNameChange = { quotationRequestViewModel.setFirstName(it) },
             lastName = requestState.customer.lastName,
             onLastNameChange = { quotationRequestViewModel.setLastName(it) },
@@ -56,8 +57,9 @@ fun PersonalDetailsScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
         FacturationForm(
-            quotationRequestViewModel= quotationRequestViewModel, // TODO remove this
+            formState = quotationRequestViewModel.formState,
             streetState = requestState.customer.billingAddress.street,
+            onEvent = { quotationRequestViewModel.onEvent(it) },
             onStretChange = { quotationRequestViewModel.setStreet(it) },
             houseNumberState = requestState.customer.billingAddress.houseNumber,
             onHouseNumberChange = { quotationRequestViewModel.setHouseNumber(it) },
@@ -80,6 +82,8 @@ fun PersonalDetailsScreen(
 @Composable
 fun PersonalDetailsForm (
     modifier: Modifier = Modifier,
+    formState: MainState,
+    onEvent: (MainEvent) -> Unit,
     firstName: String,
     onFirstNameChange: (String) -> Unit,
     lastName: String,
@@ -108,10 +112,15 @@ fun PersonalDetailsForm (
             onValueChange = onLastNameChange
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_phone_number),
-            value = phoneNumber,
-            onValueChange = onPhoneNumberChange
+        CustomTextFieldApp(
+            placeholder = stringResource(id = R.string.strPhoneNumber),
+            text = formState.phoneNumber,
+            onValueChange = {newValue -> onEvent(MainEvent.PhoneNumberChanged(newValue))},
+            keyboardType = KeyboardType.Phone,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.phoneNumberError != null,
+            errorMessage = formState.phoneNumberError,
         )
         Spacer(modifier = Modifier.height(20.dp))
         ClearableOutlinedTextField(
@@ -125,7 +134,8 @@ fun PersonalDetailsForm (
 @Composable
 fun FacturationForm(
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel,
+    onEvent: (MainEvent) -> Unit,
+    formState: MainState,
     streetState: String,
     onStretChange: (String) -> Unit,
     houseNumberState: String,
@@ -173,32 +183,18 @@ fun FacturationForm(
             value = vatNumberState,
             onValueChange = onVatNumberChange
         )
+        Spacer(modifier = Modifier.height(20.dp))
         CustomTextFieldApp(
             placeholder = stringResource(id = R.string.strEmail),
-            text = quotationRequestViewModel.formState.email,
-            onValueChange = {
-                quotationRequestViewModel.onEvent(MainEvent.EmailChanged(it))
-            },
+            text = formState.email,
+            onValueChange = { newValue -> onEvent(MainEvent.EmailChanged(newValue))},
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             singleLine = true,
-            isError = quotationRequestViewModel.formState.emailError != null,
-            errorMessage = quotationRequestViewModel.formState.emailError,
+            isError = formState.emailError != null,
+            errorMessage = formState.emailError,
         )
-        CustomTextFieldApp(
-            placeholder = stringResource(id = R.string.strPhoneNumber),
-            text = quotationRequestViewModel.formState.phoneNumber,
-            onValueChange = {
-                quotationRequestViewModel.onEvent(MainEvent.PhoneNumberChanged(it))
-            },
-            keyboardType = KeyboardType.Phone,
-            imeAction = ImeAction.Next,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            singleLine = true,
-            isError = quotationRequestViewModel.formState.phoneNumberError != null,
-            errorMessage = quotationRequestViewModel.formState.phoneNumberError,
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
 
     }

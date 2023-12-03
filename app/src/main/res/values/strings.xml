@@ -114,8 +114,8 @@
     <string name="nextPageButton_text">Volgende</string>
 
     <string name="strEmail">Email</string>
-    <string name="strPhoneNumber">Phone Number</string>
-    <string name="strPassword">Password</string>
+    <string name="strPhoneNumber">Telefoon Nummer</string>
+    <string name="strPassword">Wachtwoord</string>
     <string name="strLogin">Login</string>
     <string name="strDontHaveAccount">Don\'t have account? Register</string>
     <string name="strTheEmailCanNotBeBlank">The email can\'t be blank</string>

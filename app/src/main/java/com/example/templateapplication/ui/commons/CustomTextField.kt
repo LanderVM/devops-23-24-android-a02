@@ -1,4 +1,5 @@
 package com.example.templateapplication.ui.commons
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -44,60 +45,63 @@ fun CustomTextFieldApp(
     singleLine: Boolean = false,
     maxLines: Int = 1
 ) {
-    val isKeyboardTypeNumber =
-        keyboardType == KeyboardType.Phone || keyboardType == KeyboardType.Number
-    val context = LocalContext.current
+    val isKeyboardTypeNumber = keyboardType == KeyboardType.Phone || keyboardType == KeyboardType.Number
+    val focusRequester = remember { FocusRequester() }
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val focusRequester = remember { FocusRequester() }
-    val colorBorder = if (isError) MaterialTheme.colorScheme.error else if (isFocused)
-        MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+    val displayError = isError && errorMessage != null
 
-    Column {
+    val colorBorder = when {
+        isError -> MaterialTheme.colorScheme.error
+        isFocused -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+    }
+
+    Column(modifier) {
+        val context = LocalContext.current
         OutlinedTextField(
             label = { Text(text = placeholder) },
             value = text,
             onValueChange = { newInput ->
-                if (isKeyboardTypeNumber) {
-                    val sanitizedInput = newInput.filter { it.isDigit() || it == '+' }
-                    onValueChange(sanitizedInput)
-                } else {
-                    onValueChange(newInput)
-                }
+                onValueChange(
+                    if (isKeyboardTypeNumber) newInput.filter { it.isDigit() || it == '+' }
+                    else newInput
+                )
             },
             maxLines = maxLines,
             singleLine = singleLine,
             interactionSource = interactionSource,
-            visualTransformation =
-            if (keyboardType == KeyboardType.Password) {
-                if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
-            } else {
-                VisualTransformation.None
+            visualTransformation = when {
+                keyboardType == KeyboardType.Password && !isVisible -> PasswordVisualTransformation()
+                else -> VisualTransformation.None
             },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction
-            ),
-            isError = isError && errorMessage != null,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
+            isError = displayError,
             trailingIcon = {
                 if (text.isNotEmpty()) {
-                    IconButton(
-                        onClick = { onValueChange("") }
-                    ) {
-                        Icon(
-                            Icons.Default.Clear,
-                            contentDescription = stringResource(id = R.string.clearableOutlinedTextField_iconDescription)
-                        )
-                    }
+                    ClearTextIconButton(onValueChange)
                 }
             }
         )
-        if (isError && errorMessage != null) {
-            Text(
-                text = errorMessage.asString(context),
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
+        ErrorMessage(errorMessage, displayError, context)
     }
 }
+
+@Composable
+private fun ClearTextIconButton(onValueChange: (String) -> Unit) {
+    IconButton(onClick = { onValueChange("") }) {
+        Icon(Icons.Default.Clear, contentDescription = stringResource(id = R.string.clearableOutlinedTextField_iconDescription))
+    }
+}
+
+@Composable
+private fun ErrorMessage(errorMessage: UiText?, displayError: Boolean, context: Context) {
+    if (displayError) {
+        Text(
+            text = errorMessage!!.asString(context),
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
+
