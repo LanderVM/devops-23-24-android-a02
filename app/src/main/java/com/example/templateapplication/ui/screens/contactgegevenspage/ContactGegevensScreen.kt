@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -20,13 +21,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.commons.ClearableOutlinedTextField
+import com.example.templateapplication.ui.commons.CustomTextFieldApp
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.screens.MainEvent
 import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 
 @Composable
@@ -50,6 +55,7 @@ fun PersonalDetailsScreen(
             progression = 0.50f,
         )
         PersonalDetailsForm(
+            quotationRequestViewModel= quotationRequestViewModel,
             firstName = requestState.customer.firstName,
             onFirstNameChange = { quotationRequestViewModel.setFirstName(it) },
             lastName = requestState.customer.lastName,
@@ -61,6 +67,7 @@ fun PersonalDetailsScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
         FacturationForm(
+            quotationRequestViewModel= quotationRequestViewModel,
             streetState = requestState.customer.billingAddress.street,
             onStretChange = { quotationRequestViewModel.setStreet(it) },
             houseNumberState = requestState.customer.billingAddress.houseNumber,
@@ -84,6 +91,7 @@ fun PersonalDetailsScreen(
 @Composable
 fun PersonalDetailsForm (
     modifier: Modifier = Modifier,
+    quotationRequestViewModel: QuotationRequestViewModel,
     firstName: String,
     onFirstNameChange: (String) -> Unit,
     lastName: String,
@@ -129,6 +137,7 @@ fun PersonalDetailsForm (
 @Composable
 fun FacturationForm(
     modifier: Modifier = Modifier,
+    quotationRequestViewModel: QuotationRequestViewModel,
     streetState: String,
     onStretChange: (String) -> Unit,
     houseNumberState: String,
@@ -175,6 +184,19 @@ fun FacturationForm(
             label = stringResource(id = R.string.contactDetails_vat_number),
             value = vatNumberState,
             onValueChange = onVatNumberChange
+        )
+        CustomTextFieldApp(
+            placeholder = stringResource(id = R.string.strEmail),
+            text = quotationRequestViewModel.formState.email,
+            onValueChange = {
+                quotationRequestViewModel.onEvent(MainEvent.EmailChanged(it))
+            },
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            singleLine = true,
+            isError = quotationRequestViewModel.formState.emailError != null,
+            errorMessage = quotationRequestViewModel.formState.emailError,
         )
     }
 }

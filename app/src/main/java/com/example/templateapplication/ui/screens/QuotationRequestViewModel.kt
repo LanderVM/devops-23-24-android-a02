@@ -13,9 +13,12 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
+import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
+import com.example.templateapplication.validation.ValidateEmailUseCase
+import com.example.templateapplication.validation.ValidatePasswordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -300,4 +303,61 @@ class QuotationRequestViewModel(
             )
         }
     }
+
+// ---------------------------------------- VALIDATION
+
+    private val validateEmailUseCase = ValidateEmailUseCase()
+    private val validatePasswordUseCase = ValidatePasswordUseCase()
+
+    var formState by mutableStateOf(MainState())
+
+    fun onEvent(event: MainEvent) {
+        when (event) {
+            is MainEvent.EmailChanged -> {
+                formState = formState.copy(email = event.email)
+                validateEmail()
+            }
+
+            is MainEvent.PasswordChanged -> {
+                formState = formState.copy(password = event.password)
+                validatePassword()
+            }
+
+            is MainEvent.VisiblePassword -> {
+                formState = formState.copy(isVisiblePassword = event.isVisiblePassword)
+            }
+
+            is MainEvent.Submit -> {
+                if (validateEmail() && validatePassword()) {
+
+                }
+            }
+        }
+    }
+    private fun validateEmail(): Boolean {
+        val emailResult = validateEmailUseCase.execute(formState.email)
+        formState = formState.copy(emailError = emailResult.errorMessage)
+        return emailResult.successful
+    }
+
+    private fun validatePassword(): Boolean {
+        val passwordResult = validatePasswordUseCase.execute(formState.password)
+        formState = formState.copy(passwordError = passwordResult.errorMessage)
+        return passwordResult.successful
+    }
 }
+
+sealed class MainEvent {
+    data class EmailChanged(val email: String) : MainEvent()
+    data class PasswordChanged(val password: String) : MainEvent()
+    data class VisiblePassword(val isVisiblePassword: Boolean) : MainEvent()
+    object Submit : MainEvent()
+}
+
+data class MainState(
+    val email: String = "",
+    val emailError: UiText? = null,
+    val password: String = "",
+    val passwordError: UiText? = null,
+    val isVisiblePassword: Boolean = false
+)
