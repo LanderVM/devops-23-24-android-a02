@@ -90,8 +90,6 @@
     <string name="summaryData_priceDetails_price">Prijs</string>
     <string name="summaryData_priceDetails_subtotal">Subtotaal</string>
 
-
-
     <string name="home_title">Home</string>
     <string name="about_title">Over</string>
     <string name="contactDetails_title">Contact gegevens</string>
@@ -115,6 +113,15 @@
 
     <string name="nextPageButton_text">Volgende</string>
 
-
+    <string name="strEmail">Email</string>
+    <string name="strPassword">Password</string>
+    <string name="strLogin">Login</string>
+    <string name="strDontHaveAccount">Don\'t have account? Register</string>
+    <string name="strTheEmailCanNotBeBlank">The email can\'t be blank</string>
+    <string name="strThatsNotAValidEmail">That\'s not a valid email</string>
+    <string name="strThePasswordNeedsToConsistOfAtLeastEightCharacters">The password needs to consist of at least 8 characters</string>
+    <string name="strThePasswordNeedsToContainAtLeastOneLetterAndDigit">The password needs to contain at least one letter and digit</string>
+    <string name="strThePhoneCanNotBeBlank">The phone can\'t be blank</string>
+    <string name="strThePhoneNumberShouldBeContentJustDigit">The phone number should be content just digit</string>
 
 </resources>
