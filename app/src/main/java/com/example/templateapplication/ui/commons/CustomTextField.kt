@@ -17,22 +17,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
 import com.example.templateapplication.validation.isNumber
-
 
 @Composable
 fun CustomTextFieldApp(
@@ -59,7 +54,8 @@ fun CustomTextFieldApp(
         MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
 
     Column {
-        BasicTextField(
+        OutlinedTextField(
+            label = { Text(text = placeholder) },
             value = if (isKeyboardTypeNumber) {
                 if (isNumber(text)) text else ""
             } else text,
@@ -68,7 +64,6 @@ fun CustomTextFieldApp(
                     if (isNumber(it)) onValueChange(it)
                 } else onValueChange(it)
             },
-            textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface),
             maxLines = maxLines,
             singleLine = singleLine,
             interactionSource = interactionSource,
@@ -82,61 +77,25 @@ fun CustomTextFieldApp(
                 keyboardType = keyboardType,
                 imeAction = imeAction
             ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-            decorationBox = { innerTextField ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier
-                        .border(
-                            width = 1.dp,
-                            shape = RoundedCornerShape(8.dp),
-                            color = colorBorder
-                        )
-                        .background(
-                            color = MaterialTheme.colorScheme.surface,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .focusRequester(focusRequester)
-                ) {
-                    if (leadingIcon != null) {
-                        leadingIcon()
-                    } else {
-                        Spacer(modifier = Modifier.padding(8.dp))
-                    }
-                    Box(
-                        modifier = Modifier
-                            .weight(1.0f)
-                            .padding(vertical = 16.dp)
+            isError = isError && errorMessage != null,
+            trailingIcon = {
+                if (text.isNotEmpty()) {
+                    IconButton(
+                        onClick = { onValueChange("") }
                     ) {
-                        if (text.isEmpty()) {
-                            Text(
-                                text = placeholder,
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        }
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            innerTextField()
-                        }
-                    }
-                    if (text.isNotEmpty()) {
-                        IconButton(onClick = { onValueChange("") }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(id = R.string.clearableOutlinedTextField_iconDescription)
-                            )
-                        }
-                    } else {
-                        Spacer(modifier = Modifier.padding(8.dp))
+                        Icon(
+                            Icons.Default.Clear,
+                            contentDescription = stringResource(id = R.string.clearableOutlinedTextField_iconDescription)
+                        )
                     }
                 }
-            },
+            }
         )
         if (isError && errorMessage != null) {
             Text(
                 text = errorMessage.asString(context),
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = modifier
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

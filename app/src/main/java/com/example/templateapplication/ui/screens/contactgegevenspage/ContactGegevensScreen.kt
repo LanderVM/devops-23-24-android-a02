@@ -55,7 +55,6 @@ fun PersonalDetailsScreen(
             progression = 0.50f,
         )
         PersonalDetailsForm(
-            quotationRequestViewModel= quotationRequestViewModel,
             firstName = requestState.customer.firstName,
             onFirstNameChange = { quotationRequestViewModel.setFirstName(it) },
             lastName = requestState.customer.lastName,
@@ -91,7 +90,6 @@ fun PersonalDetailsScreen(
 @Composable
 fun PersonalDetailsForm (
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel,
     firstName: String,
     onFirstNameChange: (String) -> Unit,
     lastName: String,
