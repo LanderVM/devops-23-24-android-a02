@@ -7,7 +7,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,41 +23,40 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
 import com.example.templateapplication.validation.isNumber
 
 
 @Composable
 fun CustomTextFieldApp(
+    modifier: Modifier = Modifier,
     placeholder: String,
     text: String = "",
     onValueChange: (String) -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    modifier: Modifier,
     errorMessage: UiText? = null,
     isError: Boolean = false,
     isVisible: Boolean = false,
     leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = false,
-    maxLine: Int = 1,
+    maxLines: Int = 1
 ) {
     val isKeyboardTypeNumber =
         keyboardType == KeyboardType.Phone || keyboardType == KeyboardType.Number
     val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val focusRequester = remember {
-        FocusRequester()
-    }
+    val focusRequester = remember { FocusRequester() }
     val colorBorder = if (isError) MaterialTheme.colorScheme.error else if (isFocused)
-        MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+        MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
 
     Column {
         BasicTextField(
@@ -65,7 +69,7 @@ fun CustomTextFieldApp(
                 } else onValueChange(it)
             },
             textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface),
-            maxLines = maxLine,
+            maxLines = maxLines,
             singleLine = singleLine,
             interactionSource = interactionSource,
             visualTransformation =
@@ -108,26 +112,32 @@ fun CustomTextFieldApp(
                             Text(
                                 text = placeholder,
                                 style = MaterialTheme.typography.bodySmall,
-                                //color = colorSilver,
                             )
                         }
                         Box(modifier = Modifier.fillMaxWidth()) {
                             innerTextField()
                         }
                     }
-                    if (trailingIcon != null) {
-                        trailingIcon()
+                    if (text.isNotEmpty()) {
+                        IconButton(onClick = { onValueChange("") }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(id = R.string.clearableOutlinedTextField_iconDescription)
+                            )
+                        }
                     } else {
                         Spacer(modifier = Modifier.padding(8.dp))
                     }
                 }
             },
         )
-        Text(
-            text = if (isError) errorMessage!!.asString(context) else "",
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = modifier
-        )
+        if (isError && errorMessage != null) {
+            Text(
+                text = errorMessage.asString(context),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = modifier
+            )
+        }
     }
 }
