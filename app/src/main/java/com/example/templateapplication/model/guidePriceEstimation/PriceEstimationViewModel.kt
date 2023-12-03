@@ -15,7 +15,7 @@ import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.adres.ApiResponse
-import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
-import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng

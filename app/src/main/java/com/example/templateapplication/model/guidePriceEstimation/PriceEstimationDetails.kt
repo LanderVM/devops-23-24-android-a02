@@ -1,7 +1,7 @@
 package com.example.templateapplication.model.guidePriceEstimation
 
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
-import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.ui.commons.DropDownOption
 import java.util.Calendar
 
@@ -30,10 +30,6 @@ data class EstimationUiState(
     var formulaDropDownIsExpanded: Boolean = false,
     val startDate: Calendar? = null,
     val endDate: Calendar? = null,
-    val beerDropDownOptions: List<DropDownOption> = listOf(
-        DropDownOption("Pils", 0),
-        DropDownOption("Tripel", 1)
-    ),
     val placeResponse: GoogleMapsPlaceCandidates = GoogleMapsPlaceCandidates(),
     val googleMaps: GoogleMapsResponse = GoogleMapsResponse(),
 )

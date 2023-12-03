@@ -15,7 +15,7 @@ import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
-import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.validation.ValidateEmailUseCase
