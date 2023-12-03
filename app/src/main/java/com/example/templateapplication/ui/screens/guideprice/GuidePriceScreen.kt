@@ -32,14 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
-import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
 import com.example.templateapplication.ui.theme.md_theme_light_secondary
 import com.example.templateapplication.ui.theme.md_theme_light_tertiary
@@ -50,18 +48,13 @@ import java.util.Calendar
 fun GuidePriceScreen(
     modifier: Modifier = Modifier,
     priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
-    formulaViewModel: FormulaViewModel = viewModel(),
-    quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
-    val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
-
     val scrollState = rememberScrollState()
-    val formulaUIState by formulaViewModel.formulaUiState.collectAsState()
     val priceEstimationUIState by priceEstimationViewModel.estimationDetailsState.collectAsState()
 
-    val selectedStartDate by remember { mutableStateOf(formulaUIState.startDate) }
-    val selectedEndDate by remember { mutableStateOf(formulaUIState.endDate) }
+    val selectedStartDate by remember { mutableStateOf(priceEstimationUIState.startDate) }
+    val selectedEndDate by remember { mutableStateOf(priceEstimationUIState.endDate) }
     val dateRangePickerState = rememberDateRangePickerState(
         initialSelectedStartDateMillis = selectedStartDate?.timeInMillis,
         initialSelectedEndDateMillis = selectedEndDate?.timeInMillis,
@@ -80,7 +73,7 @@ fun GuidePriceScreen(
         DateRangePicker(
             state = dateRangePickerState,
             onSelectDateRange = { startDate, endDate ->
-                quotationRequestViewModel.updateDateRange(startDate, endDate)
+                priceEstimationViewModel.updateDateRange(startDate, endDate)
             },
             showCalenderToggle = true,
         )
@@ -88,10 +81,13 @@ fun GuidePriceScreen(
             text = stringResource(id = R.string.guidedPrice_location_separator),
         )
         AddressTextField(
-            quotationRequestViewModel = quotationRequestViewModel,
             showMap = false,
-            enableRecheckFunction = {},
-            placeResponse = requestState.placeResponse
+            placeResponse = priceEstimationUIState.placeResponse,
+            getPredictionsFunction = { priceEstimationViewModel.getPredictions() },
+            apiStatus = priceEstimationViewModel.googleMapsApiState,
+            hasFoundPlace = { priceEstimationViewModel.placeFound() },
+            updateInputFunction = { priceEstimationViewModel.updateInput(it) },
+            googleMaps = priceEstimationUIState.googleMaps,
         )
         SeperatingTitle(
             text = stringResource(id = R.string.guidedPrice_details_separator),

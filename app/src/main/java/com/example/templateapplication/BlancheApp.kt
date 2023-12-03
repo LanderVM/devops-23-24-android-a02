@@ -60,7 +60,7 @@ fun BlancheApp(
 
         // VIEWMODELS
         var homeViewModel: HomeViewModel = viewModel()
-        var formulaViewModel: FormulaViewModel = viewModel()
+        var formulaViewModel: FormulaViewModel = viewModel() // Todo delete
         var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
         var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
         var priceEstimationViewModel: PriceEstimationViewModel =
@@ -190,8 +190,6 @@ fun BlancheApp(
                     composable(NavigationRoutes.GuidePrice.name) {
                         GuidePriceScreen(
                             modifier = Modifier.padding(innerPadding),
-                            formulaViewModel = formulaViewModel,
-                            quotationRequestViewModel = quotationRequestViewModel,
                             priceEstimationViewModel = priceEstimationViewModel
                         )
                     }

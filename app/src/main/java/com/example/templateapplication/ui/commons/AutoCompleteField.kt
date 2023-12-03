@@ -1,5 +1,6 @@
 package com.example.templateapplication.ui.commons
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,21 +15,17 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
-import com.example.templateapplication.model.quotationRequest.QuotationUiState
+import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
-import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Circle
@@ -44,22 +41,25 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AddressTextField(
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory), // TODO remove passing viewmodel to addresstextfield composable
+    getPredictionsFunction: () -> Unit,
+    hasFoundPlace: () -> Boolean,
+    updateInputFunction: (String) -> Unit,
     placeResponse: GoogleMapsPlaceCandidates,
-    showMap: Boolean,
-    enableRecheckFunction: () -> Unit,
+    showMap: Boolean, // TODO separate map from textfield composable
+    updateMarkerFunction: () -> Unit = {},
+    apiStatus: ApiResponse<GoogleMapsResponse>,
+    googleMaps: GoogleMapsResponse,
 ) {
-    val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
-    val googleMapsApiState = quotationRequestViewModel.googleMapsApiState
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(uiState.googleMaps.marker, 15f)
+        position = CameraPosition.fromLatLngZoom(googleMaps.marker, 15f)
     }
 
-    LaunchedEffect(key1 = uiState.googleMaps.eventAddress) {
+    LaunchedEffect(key1 = googleMaps.eventAddress) {
         withContext(Dispatchers.IO) {
             delay(1000)
-            quotationRequestViewModel.getPredictions()
+            getPredictionsFunction()
+            Log.i("test", "piung")
         }
 
         withContext(Dispatchers.Main) {
@@ -73,7 +73,7 @@ fun AddressTextField(
                 )
             } else {
                 cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                    uiState.googleMaps.marker, 10f
+                    googleMaps.marker, 10f
                 )
             }
         }
@@ -92,11 +92,11 @@ fun AddressTextField(
                 cameraPositionState = cameraPositionState,
             ) {
                 Marker(
-                    state = MarkerState(position = uiState.googleMaps.marker),
+                    state = MarkerState(position = googleMaps.marker),
                     title = stringResource(id = R.string.autoComplete_storageLocation_title),
                     snippet = stringResource(id = R.string.autoComplete_storageLocation_snippet)
                 )
-                if (quotationRequestViewModel.placeFound()) {
+                if (hasFoundPlace()) {
                     Marker(
                         state = MarkerState(
                             position = LatLng(
@@ -109,7 +109,7 @@ fun AddressTextField(
                     )
                     Polyline(
                         points = listOf(
-                            uiState.googleMaps.marker,
+                            googleMaps.marker,
                             LatLng(
                                 placeResponse.candidates[0].geometry.location.lat,
                                 placeResponse.candidates[0].geometry.location.lng
@@ -117,7 +117,7 @@ fun AddressTextField(
                         )
                     )
                 }
-                Circle(center = uiState.googleMaps.marker, radius = 20000.0)
+                Circle(center = googleMaps.marker, radius = 20000.0)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -130,9 +130,9 @@ fun AddressTextField(
                 color = Color(0xFFe9dcc5)
             )
         },
-        value = uiState.googleMaps.eventAddress,
+        value = googleMaps.eventAddress,
         onValueChange = {
-            quotationRequestViewModel.updateInput(it)
+            updateInputFunction(it)
         },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFFe9dcc5),
@@ -141,28 +141,26 @@ fun AddressTextField(
         modifier = Modifier.width(300.dp),
     )
 
-    when (googleMapsApiState) {
+    when (apiStatus) {
         is ApiResponse.Loading -> {}
         is ApiResponse.Error -> Text(text = "Error") // TODO proper error && as supporting in textfield, not as Text()
         is ApiResponse.Success -> {
             AutoCompleteListComponent(
-                predictionsState = uiState,
-                onPredictionClick = { prediction ->
-                    quotationRequestViewModel.updateInput(prediction.description)
-                    quotationRequestViewModel.updateMarker()
-                    enableRecheckFunction()
-                }
-            )
+                predictionsState = apiStatus.data.predictionsResponse.predictions
+            ) { prediction ->
+                updateInputFunction(prediction.description)
+                updateMarkerFunction()
+            }
         }
     }
 }
 
 @Composable
 fun AutoCompleteListComponent(
-    predictionsState: QuotationUiState,
+    predictionsState: List<GooglePrediction>,
     onPredictionClick: (GooglePrediction) -> Unit
 ) {
-    predictionsState.googleMaps.predictionsResponse.predictions.forEach {
+    predictionsState.forEach {
         AutocompleteCardItem(onPredictionClick, it)
     }
 }

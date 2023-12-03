@@ -113,10 +113,19 @@ fun EventDetailsScreen(
             text = stringResource(id = R.string.eventDetails_location_separator),
         )
         AddressTextField(
-            quotationRequestViewModel = quotationRequestViewModel,
             showMap = true,
-            enableRecheckFunction = { recheckNextButtonStatus = true },
             placeResponse = requestState.placeResponse,
+            apiStatus = quotationRequestViewModel.googleMapsApiState,
+            hasFoundPlace = { quotationRequestViewModel.placeFound() },
+            getPredictionsFunction = { quotationRequestViewModel.getPredictions() },
+            updateInputFunction = {
+                quotationRequestViewModel.updateInput(it)
+                recheckNextButtonStatus = true
+            },
+            updateMarkerFunction = {
+                quotationRequestViewModel.updateMarker()
+            },
+            googleMaps = uiState.googleMaps,
         )
         Spacer(modifier = Modifier.height(35.dp))
         DateRangePicker(

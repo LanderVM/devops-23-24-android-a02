@@ -16,12 +16,11 @@ data class QuotationUiState(
         DropDownOption("Tripel", 1),
     ),
     val googleMaps: GoogleMapsResponse = GoogleMapsResponse(),
-) {
-    data class GoogleMapsResponse(
-        val predictionsResponse: GoogleMapsPrediction = GoogleMapsPrediction(), // TODO rename
-        val predictions: List<GooglePrediction> = emptyList(),
-        val eventAddress: String = "",
-        val marker: LatLng = LatLng(50.93735122680664, 4.03336238861084),
-        val distanceResponse: GoogleMapsDistance = GoogleMapsDistance(),
-    )
-}
+)
+data class GoogleMapsResponse( // TODO move to common
+    val predictionsResponse: GoogleMapsPrediction = GoogleMapsPrediction(), // TODO rename
+    val predictions: List<GooglePrediction> = emptyList(),
+    val eventAddress: String = "",
+    val marker: LatLng = LatLng(50.93735122680664, 4.03336238861084),
+    val distanceResponse: GoogleMapsDistance = GoogleMapsDistance(),
+)

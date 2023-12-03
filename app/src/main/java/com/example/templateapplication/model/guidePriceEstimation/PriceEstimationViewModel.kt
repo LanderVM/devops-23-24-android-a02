@@ -1,5 +1,6 @@
 package com.example.templateapplication.model.guidePriceEstimation
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,14 +13,23 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
+import com.example.templateapplication.data.GoogleMapsRepository
+import com.example.templateapplication.model.adres.ApiResponse
+import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.util.Calendar
 
-class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
+class PriceEstimationViewModel(private val restApiRepository: ApiRepository,
+                               private val googleMapsRepository: GoogleMapsRepository
+) :
     ViewModel() {
+
+    private val _estimationDetailsState = MutableStateFlow(EstimationUiState())
+    val estimationDetailsState = _estimationDetailsState.asStateFlow()
 
     init {
         getApiEstimationDetails()
@@ -60,15 +70,14 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as RestApiApplication)
                 val guidePriceEstimationRepository =
                     application.container.apiRepository
+                val googleMapsRepository = application.container.googleMapsRepository
                 PriceEstimationViewModel(
-                    restApiRepository = guidePriceEstimationRepository
+                    restApiRepository = guidePriceEstimationRepository,
+                    googleMapsRepository = googleMapsRepository
                 )
             }
         }
     }
-
-    private val _estimationDetailsState = MutableStateFlow(EstimationScreenState())
-    val estimationDetailsState = _estimationDetailsState.asStateFlow()
 
     fun selectFormula(id: Int) {
         _estimationDetailsState.update {
@@ -114,4 +123,56 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository) :
             it.copy(formulaDropDownIsExpanded = value)
         }
     }
+
+    fun updateDateRange(beginDate: Long?, endDate: Long?) {
+        val begin = Calendar.getInstance()
+        val end = Calendar.getInstance()
+
+        if (beginDate != null) {
+            begin.timeInMillis = beginDate
+            if (endDate != null) end.timeInMillis = endDate else end.timeInMillis = beginDate
+        }
+
+        _estimationDetailsState.update {
+            it.copy(startDate = begin, endDate = end)
+        }
+    }
+    // ---------------------------------------- EVENT DETAILS: GOOGLE MAPS TODO code duplication?
+
+    var googleMapsApiState: ApiResponse<GoogleMapsResponse> by mutableStateOf(
+        ApiResponse.Loading
+    )
+        private set
+
+    fun updateInput(input: String) {
+        _estimationDetailsState.update {
+            it.copy(googleMaps = it.googleMaps.copy(eventAddress = input))
+        }
+    }
+
+    fun getPredictions() {
+        viewModelScope.launch {
+            try {
+                val listResult =
+                    googleMapsRepository.getPredictions(input = _estimationDetailsState.value.googleMaps.eventAddress)
+                _estimationDetailsState.update {
+                    it.copy(googleMaps = it.googleMaps.copy(predictionsResponse = listResult))
+                }
+                googleMapsApiState = ApiResponse.Success(
+                    GoogleMapsResponse(predictionsResponse = listResult)
+                )
+                Log.i("AAAAAAAA", listResult.toString())
+            } catch (e: IOException) {
+                googleMapsApiState = ApiResponse.Error
+                Log.i("Error", e.toString())
+            }
+        }
+    }
+
+    fun placeFound(): Boolean {
+        return if (_estimationDetailsState.value.placeResponse.candidates.isNotEmpty())
+            _estimationDetailsState.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
+        else false
+    }
+
 }

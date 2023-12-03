@@ -1,6 +1,9 @@
 package com.example.templateapplication.model.guidePriceEstimation
 
+import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
+import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
 import com.example.templateapplication.ui.commons.DropDownOption
+import java.util.Calendar
 
 data class EstimationEquipment(
     val id: Int,
@@ -18,17 +21,25 @@ data class EstimationDetails(
     val unavailableDates: List<EstimationUnavailableDateRanges> = emptyList(),
 )
 
-data class EstimationScreenState(
+data class EstimationUiState(
     var dbData: EstimationDetails = EstimationDetails(),
     var selectedFormula: Int = 1,
     var amountOfPeople: String = "",
     var wantsTripelBeer: Boolean = false,
     var wantsExtras: Boolean = false,
     var formulaDropDownIsExpanded: Boolean = false,
+    val startDate: Calendar? = null,
+    val endDate: Calendar? = null,
+    val beerDropDownOptions: List<DropDownOption> = listOf(
+        DropDownOption("Pils", 0),
+        DropDownOption("Tripel", 1)
+    ),
+    val placeResponse: GoogleMapsPlaceCandidates = GoogleMapsPlaceCandidates(),
+    val googleMaps: GoogleMapsResponse = GoogleMapsResponse(),
 )
 
-sealed interface PriceEstimationDetailsApiState{
+sealed interface PriceEstimationDetailsApiState {
     data class Success(val result: EstimationDetails) : PriceEstimationDetailsApiState
-    data class Error(val errorMessage: String): PriceEstimationDetailsApiState
+    data class Error(val errorMessage: String) : PriceEstimationDetailsApiState
     object Loading : PriceEstimationDetailsApiState
 }

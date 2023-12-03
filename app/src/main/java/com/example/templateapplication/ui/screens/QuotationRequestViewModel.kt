@@ -14,6 +14,7 @@ import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.adres.ApiResponse
+import com.example.templateapplication.model.quotationRequest.GoogleMapsResponse
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +28,7 @@ import java.util.Locale
 
 class QuotationRequestViewModel(
     private val restApiRepository: ApiRepository,
-    private val tasksRepository: GoogleMapsRepository
+    private val googleMapsRepository: GoogleMapsRepository
 ) :
     ViewModel() {
 
@@ -36,12 +37,12 @@ class QuotationRequestViewModel(
             initializer {
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as RestApiApplication)
-                val tasksRepository = application.container.googleMapsRepository
+                val googleMapsRepository = application.container.googleMapsRepository
                 val guidePriceEstimationRepository =
                     application.container.apiRepository
                 QuotationRequestViewModel(
                     restApiRepository = guidePriceEstimationRepository,
-                    tasksRepository = tasksRepository
+                    googleMapsRepository = googleMapsRepository
                 )
             }
         }
@@ -113,7 +114,7 @@ class QuotationRequestViewModel(
 
     // ---------------------------------------- EVENT DETAILS: GOOGLE MAPS
 
-    var googleMapsApiState: ApiResponse<QuotationUiState.GoogleMapsResponse> by mutableStateOf(
+    var googleMapsApiState: ApiResponse<GoogleMapsResponse> by mutableStateOf(
         ApiResponse.Loading
     )
         private set
@@ -128,12 +129,12 @@ class QuotationRequestViewModel(
         viewModelScope.launch {
             try {
                 val listResult =
-                    tasksRepository.getPredictions(input = _quotationUiState.value.googleMaps.eventAddress)
+                    googleMapsRepository.getPredictions(input = _quotationUiState.value.googleMaps.eventAddress)
                 _quotationUiState.update {
                     it.copy(googleMaps = it.googleMaps.copy(predictionsResponse = listResult))
                 }
                 googleMapsApiState = ApiResponse.Success(
-                    QuotationUiState.GoogleMapsResponse(predictionsResponse = listResult)
+                    GoogleMapsResponse(predictionsResponse = listResult)
                 )
             } catch (e: IOException) {
                 googleMapsApiState = ApiResponse.Error
@@ -146,7 +147,7 @@ class QuotationRequestViewModel(
         if (placeFound()) {
             viewModelScope.launch {
                 try {
-                    val distanceResult = tasksRepository.getDistance(
+                    val distanceResult = googleMapsRepository.getDistance(
                         vertrekPlaats = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
                         eventPlaats = _quotationRequestState.value.placeResponse.candidates[0].formatted_address
                     )
@@ -154,7 +155,7 @@ class QuotationRequestViewModel(
                         it.copy(googleMaps = it.googleMaps.copy(distanceResponse = distanceResult))
                     }
                     googleMapsApiState =
-                        ApiResponse.Success(QuotationUiState.GoogleMapsResponse(distanceResponse = distanceResult))
+                        ApiResponse.Success(GoogleMapsResponse(distanceResponse = distanceResult))
                 } catch (e: IOException) {
                     googleMapsApiState = ApiResponse.Error
                     Log.i("Error", e.toString())
@@ -167,12 +168,12 @@ class QuotationRequestViewModel(
         viewModelScope.launch {
             try {
                 val placeResult =
-                    tasksRepository.getPlace(input = _quotationUiState.value.googleMaps.eventAddress)
+                    googleMapsRepository.getPlace(input = _quotationUiState.value.googleMaps.eventAddress)
                 _quotationRequestState.update {
                     it.copy(placeResponse = placeResult)
                 }
                 googleMapsApiState = ApiResponse.Success(
-                    QuotationUiState.GoogleMapsResponse(eventAddress = placeResult.toString())
+                    GoogleMapsResponse(eventAddress = placeResult.toString())
                 )
                 updateDistance()
             } catch (e: IOException) {
