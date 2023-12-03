@@ -48,7 +48,11 @@ class QuotationRequestViewModel(
         }
     }
 
-    // --------------------------------------------------------------------------------------------------------------
+    fun canNavigateNext(): Boolean {
+        return true // TODO navigate using validation per page
+    }
+
+    // ---------------------------------------- EVENT DETAILS: EVENT DETAILS
     private val _quotationRequestState = MutableStateFlow(QuotationRequestState())
     val quotationRequestState = _quotationRequestState.asStateFlow()
 
@@ -70,7 +74,6 @@ class QuotationRequestViewModel(
     }
 
 
-
     fun getDateRange(): String {
         if (_quotationRequestState.value.startDate == null || _quotationRequestState.value.endDate == null) {
             return "/"
@@ -82,13 +85,6 @@ class QuotationRequestViewModel(
     }
 
     // TODO validate each field separately. Only check if hasErrors = true here.
-    fun canNavigateNext(): Boolean {
-        return _quotationRequestState.value.amountOfPeople.isDigitsOnly()
-                && _quotationRequestState.value.amountOfPeople.isNotBlank()
-                && _quotationRequestState.value.startDate != null
-                && _quotationRequestState.value.endDate != null
-                && placeFound()
-    }
 
     fun selectFormula(id: Int) {
         _quotationRequestState.update {
@@ -116,7 +112,7 @@ class QuotationRequestViewModel(
         }
     }
 
-    // -------------------------------------------------------------------------------------------------------------- GOOGLE MAPS
+    // ---------------------------------------- EVENT DETAILS: GOOGLE MAPS
 
     var googleMapsApiState: ApiResponse<QuotationUiState.GoogleMapsResponse> by mutableStateOf(
         ApiResponse.Loading
@@ -207,4 +203,102 @@ class QuotationRequestViewModel(
         else false
     }
 
+    // ----------------------------------------  PERSONAL DETAILS
+
+    fun setFirstName(firstName: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    firstName = firstName
+                )
+            )
+        }
+    }
+
+    fun setLastName(lastName: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    lastName = lastName
+                )
+            )
+        }
+    }
+
+    fun setPhoneNumber(phoneNumber: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    phoneNumber = phoneNumber
+                )
+            )
+        }    }
+
+    fun setEmail(email: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    email = email
+                )
+            )
+        }
+    }
+
+    fun setStreet(street: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    billingAddress = it.customer.billingAddress.copy(
+                        street = street
+                    )
+                )
+            )
+        }
+    }
+
+    fun setHouseNumber(houseNumber: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    billingAddress = it.customer.billingAddress.copy(
+                        houseNumber = houseNumber
+                    )
+                )
+            )
+        }
+    }
+
+    fun setCity(city: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    billingAddress = it.customer.billingAddress.copy(
+                        city = city
+                    )
+                )
+            )
+        }
+    }
+
+    fun setPostalCode(postalCode: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    billingAddress = it.customer.billingAddress.copy(
+                        postalCode = postalCode
+                    )
+                )
+            )
+        }
+    }
+
+    fun setVatNumber(vatNumber: String) {
+        _quotationRequestState.update {
+            it.copy(
+                customer = it.customer.copy(
+                    vatNumber = vatNumber
+                )
+            )
+        }
+    }
 }

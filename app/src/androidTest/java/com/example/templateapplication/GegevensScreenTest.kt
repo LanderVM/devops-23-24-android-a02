@@ -5,8 +5,6 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.navigation.testing.TestNavHostController
-import com.example.templateapplication.navigation.NavigationRoutes
-import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
 import org.junit.Rule
 import org.junit.Test
 

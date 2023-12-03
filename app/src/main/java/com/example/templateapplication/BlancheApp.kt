@@ -34,7 +34,7 @@ import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.QuotationRequestViewModel
-import com.example.templateapplication.ui.screens.contactgegevenspage.ConatctGegevensScreen
+import com.example.templateapplication.ui.screens.contactgegevenspage.PersonalDetailsScreen
 import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
@@ -143,10 +143,9 @@ fun BlancheApp(
                         )
                     }
                     composable(NavigationRoutes.ContactDetails.name) {
-                        ConatctGegevensScreen(
-                            gegevensViewModel = gegevensViewModel,
-                            adresViewModel = adresViewModel,
+                        PersonalDetailsScreen(
                             navigateExtras = { navController.navigate(NavigationRoutes.ExtraItems.name) },
+                            quotationRequestViewModel = quotationRequestViewModel,
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
