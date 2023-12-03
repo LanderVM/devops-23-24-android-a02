@@ -20,6 +20,7 @@ import com.example.templateapplication.model.quotationRequest.QuotationRequestSt
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.validation.ValidateEmailUseCase
 import com.example.templateapplication.validation.ValidatePasswordUseCase
+import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -309,6 +310,7 @@ class QuotationRequestViewModel(
 
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
+    private val validatePhoneNumber = ValidatePhoneNumberUseCase()
 
     var formState by mutableStateOf(MainState())
 
@@ -328,12 +330,22 @@ class QuotationRequestViewModel(
                 formState = formState.copy(isVisiblePassword = event.isVisiblePassword)
             }
 
+            is MainEvent.PhoneNumberChanged -> {
+                formState = formState.copy(phoneNumber = event.phoneNumber)
+                validatePhoneNumber()
+            }
+
             is MainEvent.Submit -> {
                 if (validateEmail() && validatePassword()) {
 
                 }
             }
         }
+    }
+    private fun validatePhoneNumber(): Boolean {
+        val result = validatePhoneNumber.execute(formState.phoneNumber)
+        formState = formState.copy(phoneNumberError = result.errorMessage)
+        return result.successful
     }
     private fun validateEmail(): Boolean {
         val emailResult = validateEmailUseCase.execute(formState.email)
@@ -352,12 +364,15 @@ sealed class MainEvent {
     data class EmailChanged(val email: String) : MainEvent()
     data class PasswordChanged(val password: String) : MainEvent()
     data class VisiblePassword(val isVisiblePassword: Boolean) : MainEvent()
+    data class PhoneNumberChanged(val phoneNumber: String) : MainEvent()
     object Submit : MainEvent()
 }
 
 data class MainState(
     val email: String = "",
+    val phoneNumber: String = "",
     val emailError: UiText? = null,
+    val phoneNumberError: UiText? = null,
     val password: String = "",
     val passwordError: UiText? = null,
     val isVisiblePassword: Boolean = false

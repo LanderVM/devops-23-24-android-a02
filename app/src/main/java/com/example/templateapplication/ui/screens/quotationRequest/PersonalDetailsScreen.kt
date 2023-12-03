@@ -186,5 +186,20 @@ fun FacturationForm(
             isError = quotationRequestViewModel.formState.emailError != null,
             errorMessage = quotationRequestViewModel.formState.emailError,
         )
+        CustomTextFieldApp(
+            placeholder = stringResource(id = R.string.strPhoneNumber),
+            text = quotationRequestViewModel.formState.phoneNumber,
+            onValueChange = {
+                quotationRequestViewModel.onEvent(MainEvent.PhoneNumberChanged(it))
+            },
+            keyboardType = KeyboardType.Phone,
+            imeAction = ImeAction.Next,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            singleLine = true,
+            isError = quotationRequestViewModel.formState.phoneNumberError != null,
+            errorMessage = quotationRequestViewModel.formState.phoneNumberError,
+        )
+
+
     }
 }

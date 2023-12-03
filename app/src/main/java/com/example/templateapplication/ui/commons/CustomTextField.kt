@@ -56,13 +56,14 @@ fun CustomTextFieldApp(
     Column {
         OutlinedTextField(
             label = { Text(text = placeholder) },
-            value = if (isKeyboardTypeNumber) {
-                if (isNumber(text)) text else ""
-            } else text,
-            onValueChange = {
+            value = text,
+            onValueChange = { newInput ->
                 if (isKeyboardTypeNumber) {
-                    if (isNumber(it)) onValueChange(it)
-                } else onValueChange(it)
+                    val sanitizedInput = newInput.filter { it.isDigit() || it == '+' }
+                    onValueChange(sanitizedInput)
+                } else {
+                    onValueChange(newInput)
+                }
             },
             maxLines = maxLines,
             singleLine = singleLine,
