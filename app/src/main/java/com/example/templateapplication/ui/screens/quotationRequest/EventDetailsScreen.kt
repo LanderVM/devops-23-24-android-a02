@@ -29,7 +29,6 @@ import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
-import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

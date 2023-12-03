@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.contactgegevenspage
+package com.example.templateapplication.ui.screens.quotationRequest
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,8 +23,6 @@ import com.example.templateapplication.ui.commons.CustomTextFieldApp
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
-import com.example.templateapplication.ui.screens.MainEvent
-import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 
 @Composable
 fun PersonalDetailsScreen(

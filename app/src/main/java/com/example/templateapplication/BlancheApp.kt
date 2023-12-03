@@ -25,14 +25,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
-import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
-import com.example.templateapplication.ui.screens.QuotationRequestViewModel
-import com.example.templateapplication.ui.screens.contactgegevenspage.PersonalDetailsScreen
+import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
+import com.example.templateapplication.ui.screens.quotationRequest.PersonalDetailsScreen
 import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
 import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
@@ -60,7 +59,6 @@ fun BlancheApp(
 
         // VIEWMODELS
         var homeViewModel: HomeViewModel = viewModel()
-        var formulaViewModel: FormulaViewModel = viewModel() // Todo delete
         var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
         var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
         var priceEstimationViewModel: PriceEstimationViewModel =

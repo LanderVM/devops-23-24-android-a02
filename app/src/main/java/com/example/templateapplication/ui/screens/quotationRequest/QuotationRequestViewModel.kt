@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens
+package com.example.templateapplication.ui.screens.quotationRequest
 
 import android.util.Log
 import androidx.compose.runtime.getValue
