@@ -21,7 +21,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,7 +43,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,11 +50,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
-import com.example.templateapplication.model.formules.FormulaViewModel
-import com.example.templateapplication.model.klant.ContactGegevensViewModel
+import com.example.templateapplication.model.quotationRequest.QuotationRequestState
+import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.ui.screens.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
@@ -67,16 +64,15 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 @Composable
 fun SamenvattingGegevensScreen (
     modifier: Modifier = Modifier,
-    gegevensViewModel: ContactGegevensViewModel = viewModel(),
-    adresViewModel: AdresViewModel = viewModel(),
-    formulaViewModel: FormulaViewModel = viewModel(),
     extraItemViewModel: ExtraItemViewModel = viewModel(),
-    eventAddressViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
+    quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
     navigateEventGegevens: ()->Unit,
     navigateContactGegevens:()->Unit,
     navigateExtras: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
+    val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
 
 
     Column (
@@ -101,8 +97,8 @@ fun SamenvattingGegevensScreen (
         )
         Spacer(modifier = Modifier.height(25.dp))
         EventGegevens(
-            formulaViewModel = formulaViewModel,
-            eventAddressViewModel = eventAddressViewModel,
+            requestState = requestState,
+            dateRange = quotationRequestViewModel.getDateRange()
         )
         Spacer(modifier = Modifier.height(30.dp))
         HorizontalDivider(
@@ -112,8 +108,8 @@ fun SamenvattingGegevensScreen (
         )
         Spacer(modifier = Modifier.height(25.dp))
         ContactGegevens(
-            gegevensViewModel = gegevensViewModel,
-            adresViewModel = adresViewModel
+            requestState = requestState,
+            uiState = uiState,
         )
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -133,7 +129,7 @@ fun SamenvattingGegevensScreen (
             color = Color.LightGray
         )
         Spacer(modifier = Modifier.height(25.dp))
-        KostGegevens(extraItemViewModel= extraItemViewModel, eventAddressViewModel = eventAddressViewModel)
+        KostGegevens(extraItemViewModel= extraItemViewModel, eventAddressViewModel = quotationRequestViewModel)
         Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {
@@ -273,10 +269,9 @@ fun Navigation (
 @Composable
 fun EventGegevens(
     modifier: Modifier = Modifier,
-    formulaViewModel: FormulaViewModel,
-    eventAddressViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
+    requestState: QuotationRequestState,
+    dateRange: String,
     ) {
-    val googleMapsRequestState by eventAddressViewModel.quotationRequestState.collectAsState()
 
     var show by rememberSaveable { mutableStateOf(true) }
 
@@ -304,7 +299,7 @@ fun EventGegevens(
                     Text(text="Datum",fontSize = 18.sp)},
                 supportingContent = {
                     Text(
-                        text=eventAddressViewModel.getDateRange(),
+                        text=dateRange,
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(
@@ -319,7 +314,7 @@ fun EventGegevens(
                 },
                 supportingContent = {
                     Text(
-                        text=googleMapsRequestState.placeResponse.candidates[0].formatted_address,
+                        text=requestState.placeResponse.candidates[0].formatted_address,
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(
@@ -337,11 +332,9 @@ fun EventGegevens(
 @Composable
 fun ContactGegevens(
     modifier: Modifier = Modifier,
-    adresViewModel: AdresViewModel,
-    gegevensViewModel: ContactGegevensViewModel
+    requestState: QuotationRequestState,
+    uiState: QuotationUiState,
 ) {
-    val gegevensUiState by gegevensViewModel.gegevensUiState.collectAsState()
-    val adresUiState by adresViewModel.adresUiState.collectAsState()
     var show by rememberSaveable { mutableStateOf(true) }
 
     Column (
@@ -367,8 +360,8 @@ fun ContactGegevens(
         if(show){
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
-                headlineContent = {Text(text=stringResource(id = R.string.contactDetails_name),fontSize = 18.sp)},
-                supportingContent = {Text(text=gegevensUiState.naam+" "+gegevensUiState.voornaam,fontSize = 16.sp)},
+                headlineContent = {Text(text=stringResource(id = R.string.summaryData_contactDetails_fullName),fontSize = 18.sp)},
+                supportingContent = {Text(text=requestState.customer.firstName+" "+requestState.customer.lastName,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
                     containerColor = Color(0XFFD3B98B)
                 ),
@@ -377,7 +370,7 @@ fun ContactGegevens(
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
                 headlineContent = {Text(text=stringResource(id = R.string.contactDetails_email),fontSize = 18.sp)},
-                supportingContent = {Text(text=gegevensUiState.email,fontSize = 16.sp)},
+                supportingContent = {Text(text=requestState.customer.email,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
                     containerColor = Color(0XFFD3B98B)
                 ),
@@ -386,7 +379,7 @@ fun ContactGegevens(
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
                 headlineContent = {Text(text=stringResource(id = R.string.contactDetails_phone_number),fontSize = 18.sp)},
-                supportingContent = {Text(text=gegevensUiState.telefoonnummer,fontSize = 16.sp)},
+                supportingContent = {Text(text=requestState.customer.phoneNumber,fontSize = 16.sp)},
                 colors = ListItemDefaults.colors(
                     containerColor = Color(0XFFD3B98B)
                 ),
@@ -397,7 +390,7 @@ fun ContactGegevens(
                 headlineContent = {Text(text=stringResource(id = R.string.summaryData_contactDetails_adress), fontSize = 18.sp)},
                 supportingContent = {
                     Text(
-                        text=adresUiState.straat+" "+adresUiState.huisnummer+" "+adresUiState.gemeente,
+                        text=requestState.customer.billingAddress.street+" "+requestState.customer.billingAddress.houseNumber+", "+requestState.customer.billingAddress.postalCode + " " + requestState.customer.billingAddress.city,
                         fontSize = 16.sp
                     )},
                 colors = ListItemDefaults.colors(
@@ -405,13 +398,13 @@ fun ContactGegevens(
                 ),
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
-            if(adresUiState.btwNummer.isNotEmpty() || adresUiState.btwNummer.isNotBlank()){
+            if(requestState.customer.vatNumber.isNotBlank()){
                 Spacer(modifier = Modifier.height(20.dp))
                 ListItem(
                     headlineContent = {Text(text=stringResource(id = R.string.contactDetails_vat_number), fontSize = 18.sp)},
                     supportingContent = {
                         Text(
-                            text=adresUiState.btwNummer,
+                            text=requestState.customer.vatNumber,
                             fontSize = 16.sp
                         )},
                     colors = ListItemDefaults.colors(

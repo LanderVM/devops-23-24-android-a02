@@ -24,12 +24,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.templateapplication.model.adres.AdresViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.formules.FormulaViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.model.home.HomeViewModel
-import com.example.templateapplication.model.klant.ContactGegevensViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
@@ -61,9 +59,7 @@ fun BlancheApp(
         val scope = rememberCoroutineScope()
 
         // VIEWMODELS
-        var gegevensViewModel: ContactGegevensViewModel = viewModel()
         var homeViewModel: HomeViewModel = viewModel()
-        var adresViewModel: AdresViewModel = viewModel()
         var formulaViewModel: FormulaViewModel = viewModel()
         var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
         var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
@@ -168,11 +164,8 @@ fun BlancheApp(
                     composable(NavigationRoutes.SummaryData.name) {
                         SamenvattingGegevensScreen(
                             modifier = Modifier.padding(innerPadding),
-                            gegevensViewModel = gegevensViewModel,
-                            adresViewModel = adresViewModel,
-                            formulaViewModel = formulaViewModel,
                             extraItemViewModel = extraItemViewModel,
-                            eventAddressViewModel = quotationRequestViewModel,
+                            quotationRequestViewModel = quotationRequestViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.EventDetails.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.ContactDetails.name) },
                             navigateExtras = { navController.navigate(NavigationRoutes.ExtraItems.name) },

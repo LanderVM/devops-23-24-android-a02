@@ -4,13 +4,13 @@ import retrofit2.http.GET
 import java.math.BigDecimal
 
 interface RestApiService {
-    @GET("equipment")
+    @GET("Equipment")
     suspend fun getQuotationEquipment(): QuotationEquipmentData
 
-    @GET("PriceEstimation/Details")
+    @GET("Quotation/Estimation/Details")
     suspend fun getEstimationDetails(): EstimationDetailsData
 
-    @GET("PriceEstimation/Calculate")
+    @GET("Quotation/Estimation/Calculate")
     suspend fun calculatePrice(): BigDecimal
 }
 

@@ -78,11 +78,12 @@
     <string name="summaryData_navigation_goto">Ga naar</string>
     <string name="summaryData_navigation_circle">een gevulde circel</string>
     <string name="summaryData_navigation_event">Evenement</string>
-    <string name="summaryData_navigation_contact">Contact en facturatie gegevens</string>
+    <string name="summaryData_navigation_contact">Personalia</string>
     <string name="summaryData_navigation_extraMaterial">Extra materiaal</string>
     <string name="summaryData_eventDetails_title">Evenement</string>
     <string name="summaryData_eventDetails_location">Locatie</string>
-    <string name="summaryData_contactDetails_title">Contact en facturatie gegevens</string>
+    <string name="summaryData_contactDetails_fullName">Naam</string>
+    <string name="summaryData_contactDetails_title">Personalia</string>
     <string name="summaryData_contactDetails_adress">Adres</string>
     <string name="summaryData_priceDetails_title">Kost</string>
     <string name="summaryData_priceDetails_description">Omschrijving</string>
