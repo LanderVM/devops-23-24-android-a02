@@ -65,6 +65,20 @@ class ValidateVatUseCase : BaseUseCase<String, ValidationResult> {
         )
     }
 }
+class ValidateNotEmptyUseCase : BaseUseCase<String, ValidationResult> {
+    override fun execute(input: String): ValidationResult {
+        if (input.isNullOrBlank()) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = UiText.StringResource(resId = R.string.strInvalidText)
+            )
+        }
+        return ValidationResult(
+            successful = true,
+            errorMessage = null
+        )
+    }
+}
 
 fun isNumber(value: String): Boolean {
     return value.isEmpty() || Regex("^\\d+\$").matches(value)
@@ -78,5 +92,5 @@ fun isEmailValid(email: String): Boolean {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 fun isVatValid(vat: String): Boolean {
-    return Regex("BE 0\\d{3} \\d{3} \\d{3}").matches(vat)
+    return Regex("BE ?0\\d{3} ?\\d{3} ?\\d{3}").matches(vat)
 }

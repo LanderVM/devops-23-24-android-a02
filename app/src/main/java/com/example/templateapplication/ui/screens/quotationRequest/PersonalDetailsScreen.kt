@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.commons.ClearableOutlinedTextField
-import com.example.templateapplication.ui.commons.CustomTextFieldApp
+import com.example.templateapplication.ui.commons.ValidationTextFieldApp
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
@@ -44,16 +44,8 @@ fun PersonalDetailsScreen(
             progression = 0.50f,
         )
         PersonalDetailsForm(
-            firstName = requestState.customer.firstName,
             formState = quotationRequestViewModel.formState,
             onEvent = { quotationRequestViewModel.onEvent(it) },
-            onFirstNameChange = { quotationRequestViewModel.setFirstName(it) },
-            lastName = requestState.customer.lastName,
-            onLastNameChange = { quotationRequestViewModel.setLastName(it) },
-            phoneNumber = requestState.customer.phoneNumber,
-            onPhoneNumberChange = { quotationRequestViewModel.setPhoneNumber(it) },
-            email = requestState.customer.email,
-            onEmailChange = { quotationRequestViewModel.setEmail(it) },
         )
         Spacer(modifier = Modifier.height(30.dp))
         FacturationForm(
@@ -84,14 +76,6 @@ fun PersonalDetailsForm (
     modifier: Modifier = Modifier,
     formState: MainState,
     onEvent: (MainEvent) -> Unit,
-    firstName: String,
-    onFirstNameChange: (String) -> Unit,
-    lastName: String,
-    onLastNameChange: (String) -> Unit,
-    phoneNumber: String,
-    onPhoneNumberChange: (String) -> Unit,
-    email: String,
-    onEmailChange: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -100,19 +84,29 @@ fun PersonalDetailsForm (
         SeperatingTitle(
             text = stringResource(id = R.string.contactDetails_contact_info),
         )
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_first_name),
-            value = firstName,
-            onValueChange = onFirstNameChange
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.contactDetails_first_name),
+            text = formState.firstName,
+            onValueChange = {newValue -> onEvent(MainEvent.FirstNameChanged(newValue))},
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.firstNameError != null,
+            errorMessage = formState.firstNameError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_name),
-            value = lastName,
-            onValueChange = onLastNameChange
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.contactDetails_name),
+            text = formState.lastName,
+            onValueChange = {newValue -> onEvent(MainEvent.LastNameChanged(newValue))},
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.lastNameError != null,
+            errorMessage = formState.lastNameError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        CustomTextFieldApp(
+        ValidationTextFieldApp(
             placeholder = stringResource(id = R.string.strPhoneNumber),
             text = formState.phoneNumber,
             onValueChange = {newValue -> onEvent(MainEvent.PhoneNumberChanged(newValue))},
@@ -123,7 +117,7 @@ fun PersonalDetailsForm (
             errorMessage = formState.phoneNumberError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        CustomTextFieldApp(
+        ValidationTextFieldApp(
             placeholder = stringResource(id = R.string.strEmail),
             text = formState.email,
             onValueChange = { newValue -> onEvent(MainEvent.EmailChanged(newValue))},
@@ -159,34 +153,59 @@ fun FacturationForm(
         SeperatingTitle(
             text = stringResource(id = R.string.contactDetails_address_info),
         )
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_street),
-            value = streetState,
-            onValueChange = onStretChange
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.contactDetails_street),
+            text = formState.street,
+            onValueChange = { newValue -> onEvent(MainEvent.StreetChanged(newValue))},
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.streetError != null,
+            errorMessage = formState.streetError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_house_number),
-            value = houseNumberState,
-            onValueChange = onHouseNumberChange
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.contactDetails_house_number),
+            text = formState.houseNumber,
+            onValueChange = { newValue -> onEvent(MainEvent.HouseNumberChanged(newValue))},
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.houseNumberError != null,
+            errorMessage = formState.houseNumberError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_city),
-            value = cityState,
-            onValueChange = onCityChange
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.contactDetails_city),
+            text = formState.city,
+            onValueChange = { newValue -> onEvent(MainEvent.CityChanged(newValue))},
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.cityError != null,
+            errorMessage = formState.cityError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_postal_code),
-            value = postalCode,
-            onValueChange = onPostalCodeChange
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.contactDetails_postal_code),
+            text = formState.postalCode,
+            onValueChange = { newValue -> onEvent(MainEvent.PostalCodeChanged(newValue))},
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.postalCodeError != null,
+            errorMessage = formState.postalCodeError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_vat_number),
-            value = vatNumberState,
-            onValueChange = onVatNumberChange
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.contactDetails_vat_number),
+            text = formState.vat,
+            onValueChange = { newValue -> onEvent(MainEvent.VatChanged(newValue))},
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.vatError != null,
+            errorMessage = formState.vatError,
         )
         Spacer(modifier = Modifier.height(20.dp))
     }

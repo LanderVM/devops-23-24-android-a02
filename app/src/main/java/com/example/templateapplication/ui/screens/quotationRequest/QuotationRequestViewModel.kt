@@ -21,7 +21,9 @@ import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.validation.ValidateEmailUseCase
+import com.example.templateapplication.validation.ValidateNotEmptyUseCase
 import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
+import com.example.templateapplication.validation.ValidateVatUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -315,29 +317,76 @@ class QuotationRequestViewModel(
 
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePhoneNumber = ValidatePhoneNumberUseCase()
+    private val validateText = ValidateNotEmptyUseCase()
+    private val validateVat = ValidateVatUseCase()
 
     var formState by mutableStateOf(MainState())
 
     fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.EmailChanged -> {
-                formState = formState.copy(email = event.email)
-                setEmail(event.email)
-                validateEmail()
+            is MainEvent.FirstNameChanged -> {
+                formState = formState.copy(firstName = event.firstName)
+                setFirstName(event.firstName)
+                validateFirstName()
             }
-
+            is MainEvent.LastNameChanged -> {
+                formState = formState.copy(lastName = event.lastName)
+                setLastName(event.lastName)
+                validateLastName()
+            }
             is MainEvent.PhoneNumberChanged -> {
                 formState = formState.copy(phoneNumber = event.phoneNumber)
                 setPhoneNumber(event.phoneNumber)
                 validatePhoneNumber()
             }
+            is MainEvent.EmailChanged -> {
+                formState = formState.copy(email = event.email)
+                setEmail(event.email)
+                validateEmail()
+            }
+            is MainEvent.StreetChanged -> {
+                formState = formState.copy(street = event.street)
+                setStreet(event.street)
+                validateStreet()
+            }
+            is MainEvent.HouseNumberChanged -> {
+                formState = formState.copy(houseNumber = event.houseNumber)
+                setHouseNumber(event.houseNumber)
+                validateHouseNumber()
+            }
+            is MainEvent.CityChanged -> {
+                formState = formState.copy(city = event.city)
+                setCity(event.city)
+                validateCity()
+            }
+            is MainEvent.PostalCodeChanged -> {
+                formState = formState.copy(postalCode = event.postalCode)
+                setPostalCode(event.postalCode)
+                validatePostalCode()
+            }
+            is MainEvent.VatChanged -> {
+                formState = formState.copy(vat = event.vat)
+                setVatNumber(event.vat)
+                validateVat()
+            }
+
 
             is MainEvent.Submit -> {
-                if (validateEmail() && validatePhoneNumber()) {
+                if ( validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() ) {
 
                 }
             }
         }
+    }
+    private fun validateFirstName(): Boolean {
+        val result = validateText.execute(formState.firstName)
+        formState = formState.copy(firstNameError = result.errorMessage)
+        return result.successful
+    }
+    private fun validateLastName(): Boolean {
+        val result = validateText.execute(formState.lastName)
+        formState = formState.copy(lastNameError = result.errorMessage)
+        return result.successful
     }
     private fun validatePhoneNumber(): Boolean {
         val result = validatePhoneNumber.execute(formState.phoneNumber)
@@ -348,6 +397,31 @@ class QuotationRequestViewModel(
         val emailResult = validateEmailUseCase.execute(formState.email)
         formState = formState.copy(emailError = emailResult.errorMessage)
         return emailResult.successful
+    }
+    private fun validateStreet(): Boolean {
+        val result = validateText.execute(formState.street)
+        formState = formState.copy(streetError = result.errorMessage)
+        return result.successful
+    }
+    private fun validateHouseNumber(): Boolean {
+        val result = validateText.execute(formState.houseNumber)
+        formState = formState.copy(houseNumberError = result.errorMessage)
+        return result.successful
+    }
+    private fun validateCity(): Boolean {
+        val result = validateText.execute(formState.city)
+        formState = formState.copy(cityError = result.errorMessage)
+        return result.successful
+    }
+    private fun validatePostalCode(): Boolean {
+        val result = validateText.execute(formState.postalCode)
+        formState = formState.copy(postalCodeError = result.errorMessage)
+        return result.successful
+    }
+    private fun validateVat(): Boolean {
+        val result = validateVat.execute(formState.vat)
+        formState = formState.copy(vatError = result.errorMessage)
+        return result.successful
     }
 
     // ---------------------------------------- VALIDATION
@@ -433,17 +507,35 @@ class QuotationRequestViewModel(
 }
 
 sealed class MainEvent {
+    data class FirstNameChanged(val firstName: String) : MainEvent()
+    data class LastNameChanged(val lastName: String) : MainEvent()
     data class EmailChanged(val email: String) : MainEvent()
     data class PhoneNumberChanged(val phoneNumber: String) : MainEvent()
+    data class StreetChanged(val street: String) : MainEvent()
+    data class HouseNumberChanged(val houseNumber: String) : MainEvent()
+    data class CityChanged(val city: String) : MainEvent()
+    data class PostalCodeChanged(val postalCode: String) : MainEvent()
+    data class VatChanged(val vat: String) : MainEvent()
     object Submit : MainEvent()
 }
 
 data class MainState(
-    val email: String = "",
+    val firstName: String = "",
+    val firstNameError: UiText? = null,
+    val lastName: String = "",
+    val lastNameError: UiText? = null,
     val phoneNumber: String = "",
-    val emailError: UiText? = null,
     val phoneNumberError: UiText? = null,
-    val password: String = "",
-    val passwordError: UiText? = null,
-    val isVisiblePassword: Boolean = false
+    val email: String = "",
+    val emailError: UiText? = null,
+    val street: String = "",
+    val streetError: UiText? = null,
+    val houseNumber: String = "",
+    val houseNumberError: UiText? = null,
+    val city: String = "",
+    val cityError: UiText? = null,
+    val postalCode: String = "",
+    val postalCodeError: UiText? = null,
+    val vat: String = "",
+    val vatError: UiText? = null,
 )

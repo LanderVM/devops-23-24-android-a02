@@ -1,12 +1,8 @@
 package com.example.templateapplication.ui.commons
 import android.content.Context
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -28,10 +24,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
-import com.example.templateapplication.validation.isNumber
 
 @Composable
-fun CustomTextFieldApp(
+fun ValidationTextFieldApp(
     modifier: Modifier = Modifier,
     placeholder: String,
     text: String = "",
