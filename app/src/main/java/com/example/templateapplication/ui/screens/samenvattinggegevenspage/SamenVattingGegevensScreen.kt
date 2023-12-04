@@ -50,10 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
-import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
@@ -64,7 +62,6 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 @Composable
 fun SamenvattingGegevensScreen (
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel = viewModel(),
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
     navigateEventGegevens: ()->Unit,
     navigateContactGegevens:()->Unit,
@@ -72,7 +69,6 @@ fun SamenvattingGegevensScreen (
 ) {
     val scrollState = rememberScrollState()
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
-    val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
 
 
     Column (
@@ -109,18 +105,17 @@ fun SamenvattingGegevensScreen (
         Spacer(modifier = Modifier.height(25.dp))
         ContactGegevens(
             requestState = requestState,
-            uiState = uiState,
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        if(extraItemViewModel.getListAddedItems().isNotEmpty()){
+        if(quotationRequestViewModel.getListAddedItems().isNotEmpty()){
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 15.dp),
                 thickness = 4.dp,
                 color = Color.LightGray
             )
             Spacer(modifier = Modifier.height(30.dp))
-            ExtrasScreen (extraItemViewModel = extraItemViewModel)
+            ExtrasScreen (quotationRequestViewModel = quotationRequestViewModel)
         }
         Spacer(modifier = Modifier.height(30.dp))
         HorizontalDivider(
@@ -129,7 +124,7 @@ fun SamenvattingGegevensScreen (
             color = Color.LightGray
         )
         Spacer(modifier = Modifier.height(25.dp))
-        KostGegevens(extraItemViewModel= extraItemViewModel, eventAddressViewModel = quotationRequestViewModel)
+        KostGegevens(quotationRequestViewModel = quotationRequestViewModel)
         Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {
@@ -333,7 +328,6 @@ fun EventGegevens(
 fun ContactGegevens(
     modifier: Modifier = Modifier,
     requestState: QuotationRequestState,
-    uiState: QuotationUiState,
 ) {
     var show by rememberSaveable { mutableStateOf(true) }
 
@@ -423,8 +417,7 @@ fun ContactGegevens(
 @Composable
 fun ExtrasScreen(
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel = viewModel(),
-
+    quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
 ) {
     var show by rememberSaveable { mutableStateOf(true) }
     Column(
@@ -445,12 +438,12 @@ fun ExtrasScreen(
             }
         }
         if(show){
-            extraItemViewModel.getListAddedItems().forEach { extraItem ->
+            quotationRequestViewModel.getListAddedItems().forEach { extraItem ->
                 ExtraItemCard(
                     extraItem = extraItem,
                     onAmountChanged = {extraItem, amount ->
-                        extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
-                    onRemoveItem= { extraItemViewModel.removeItemFromCart(extraItem) },
+                        quotationRequestViewModel.changeExtraItemAmount(extraItem, amount)},
+                    onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem) },
                     modifier = Modifier.padding(8.dp)
                 )
 
@@ -462,7 +455,7 @@ fun ExtrasScreen(
 }
 
 @Composable
-fun ExtraItemCard(
+fun ExtraItemCard( // TODO duplicate code -> make a component out of this
     extraItem: ExtraItemState,
     onAmountChanged: (ExtraItemState, Int) -> Unit,
     onRemoveItem: (ExtraItemState) -> Unit,
@@ -514,8 +507,7 @@ fun ExtraItemCard(
 @Composable
 fun KostGegevens (
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel,
-    eventAddressViewModel: QuotationRequestViewModel
+    quotationRequestViewModel: QuotationRequestViewModel // TODO rework so VM isn't passed into this composable
 ) {
 
     Column (
@@ -607,7 +599,7 @@ fun KostGegevens (
                         color = Color.Black,
                     )
                 }
-                extraItemViewModel.getListAddedItems().forEach{
+                quotationRequestViewModel.getListAddedItems().forEach{
                     extraItem ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -661,7 +653,7 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(50.dp))
                     Text(
-                        text="€ ${(eventAddressViewModel.getDistanceLong()?.div(1000)?.minus(20))?.times(
+                        text="€ ${(quotationRequestViewModel.getDistanceLong()?.div(1000)?.minus(20))?.times(
                             0.75
                         )}",
                         textAlign = TextAlign.Left,
@@ -689,7 +681,7 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(100.dp))
                     Text(
-                        text="€ ${String.format("%.2f", extraItemViewModel.getTotalPrice() + 2.25 + 350)}", //TODO change to variables
+                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalPrice() + 2.25 + 350)}", //TODO change to variables
                         textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
@@ -710,7 +702,7 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(100.dp))
                     Text(
-                        text="€ ${String.format("%.2f", (extraItemViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
+                        text="€ ${String.format("%.2f", (quotationRequestViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier,
                         fontSize = 12.sp,
@@ -737,7 +729,7 @@ fun KostGegevens (
                     )
                     Spacer(modifier = Modifier.width(100.dp))
                     Text(
-                        text="€ ${String.format("%.2f", (extraItemViewModel.getTotalPrice() + 2.25 + 350) + (extraItemViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
+                        text="€ ${String.format("%.2f", (quotationRequestViewModel.getTotalPrice() + 2.25 + 350) + (quotationRequestViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
                         textAlign = TextAlign.End,
                         modifier= Modifier,
                         fontSize = 12.sp,

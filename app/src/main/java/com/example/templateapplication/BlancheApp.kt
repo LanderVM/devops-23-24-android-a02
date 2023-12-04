@@ -24,7 +24,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
@@ -59,7 +58,6 @@ fun BlancheApp(
 
         // VIEWMODELS
         var homeViewModel: HomeViewModel = viewModel()
-        var extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory)
         var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
         var priceEstimationViewModel: PriceEstimationViewModel =
             viewModel(factory = PriceEstimationViewModel.Factory)
@@ -162,7 +160,6 @@ fun BlancheApp(
                     composable(NavigationRoutes.SummaryData.name) {
                         SamenvattingGegevensScreen(
                             modifier = Modifier.padding(innerPadding),
-                            extraItemViewModel = extraItemViewModel,
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.EventDetails.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.ContactDetails.name) },
