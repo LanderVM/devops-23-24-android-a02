@@ -85,7 +85,7 @@ fun ExtrasScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item{
-            HeadOfPage()
+            HeadOfPage1()
         }
         item{
             SingleChoiceSegmentedButtonRow {

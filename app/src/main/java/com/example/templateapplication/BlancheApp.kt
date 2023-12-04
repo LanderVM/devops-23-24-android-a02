@@ -37,7 +37,7 @@ import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
 import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
-import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SummaryScreen
+import com.example.templateapplication.ui.screens.quotationRequest.SummaryScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

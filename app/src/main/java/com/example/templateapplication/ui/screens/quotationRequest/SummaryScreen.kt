@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.samenvattinggegevenspage
+package com.example.templateapplication.ui.screens.quotationRequest
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +52,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
-import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
@@ -79,7 +78,7 @@ fun SummaryScreen (
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(15.dp))
-        HeadOfPage()
+        HeadOfPage1()
         Navigation(
             navigateContactGegevens=navigateContactGegevens,
             navigateEventGegevens = navigateEventGegevens,
@@ -145,7 +144,7 @@ fun SummaryScreen (
 
 }
 @Composable
-fun HeadOfPage(
+fun HeadOfPage1( // TODO there are two of these in this package?
     modifier: Modifier = Modifier
 ) {
     Column (
