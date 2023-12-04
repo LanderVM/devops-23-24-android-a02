@@ -37,7 +37,7 @@ import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
 import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
-import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SamenvattingGegevensScreen
+import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SummaryScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -158,7 +158,7 @@ fun BlancheApp(
                         )
                     }
                     composable(NavigationRoutes.SummaryData.name) {
-                        SamenvattingGegevensScreen(
+                        SummaryScreen(
                             modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.EventDetails.name) },

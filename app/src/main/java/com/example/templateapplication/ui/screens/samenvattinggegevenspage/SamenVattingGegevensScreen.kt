@@ -60,7 +60,7 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 
 
 @Composable
-fun SamenvattingGegevensScreen (
+fun SummaryScreen (
     modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
     navigateEventGegevens: ()->Unit,
@@ -115,7 +115,7 @@ fun SamenvattingGegevensScreen (
                 color = Color.LightGray
             )
             Spacer(modifier = Modifier.height(30.dp))
-            ExtrasScreen (quotationRequestViewModel = quotationRequestViewModel)
+            ExtraEquipment (quotationRequestViewModel = quotationRequestViewModel)
         }
         Spacer(modifier = Modifier.height(30.dp))
         HorizontalDivider(
@@ -415,7 +415,7 @@ fun ContactGegevens(
 }
 
 @Composable
-fun ExtrasScreen(
+fun ExtraEquipment(
     modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
 ) {
