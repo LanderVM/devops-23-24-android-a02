@@ -1,8 +1,8 @@
 package com.example.templateapplication.data
 
 
-import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
+import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.network.restApi.RestApiService
 import com.example.templateapplication.network.restApi.asDomainObject
 import com.example.templateapplication.network.restApi.asDomainObjects

@@ -1,6 +1,8 @@
 package com.example.templateapplication.model.extraMateriaal
 
-data class ExtraItemListState(
+import com.example.templateapplication.model.quotationRequest.ExtraItemState
+
+data class ExtraItemListState( // TODO move
     val currentExtraMateriaalList: List<ExtraItemState> = emptyList())
 
 sealed interface ExtraItemDetailsApiState{

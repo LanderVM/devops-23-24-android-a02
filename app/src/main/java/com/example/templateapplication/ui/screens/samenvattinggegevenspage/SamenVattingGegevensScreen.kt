@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.extraMateriaal.ExtraItemState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
+import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel

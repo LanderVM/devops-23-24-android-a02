@@ -16,6 +16,8 @@ import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
+import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
+import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.validation.ValidateEmailUseCase
@@ -34,6 +36,10 @@ class QuotationRequestViewModel(
     private val googleMapsRepository: GoogleMapsRepository
 ) :
     ViewModel() {
+
+    init {
+        getApiExtraEquipment()
+    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -343,6 +349,87 @@ class QuotationRequestViewModel(
         formState = formState.copy(emailError = emailResult.errorMessage)
         return emailResult.successful
     }
+
+    // ---------------------------------------- VALIDATION
+
+    var extraMateriaalApiState: ExtraItemDetailsApiState by mutableStateOf(ExtraItemDetailsApiState.Loading)
+        private set
+
+    fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
+        _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+            ?.let { extraItem ->
+                extraItem.amount = amount
+            }
+
+    fun getTotalPrice(): Double {
+        return _quotationRequestState.value.addedItems.sumOf { it.price * it.amount }
+    }
+
+    fun changeExtraItemEditing(item: ExtraItemState, editing: Boolean) =
+        _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+            ?.let { extraItem ->
+                extraItem.isEditing = editing
+            }
+
+    fun addItemToCart(item: ExtraItemState) {
+
+        val existingItem = _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+
+        if (existingItem != null) {
+            existingItem.amount = item.amount
+        } else {
+            _quotationRequestState.update {
+                it.copy(addedItems = it.addedItems + item)
+            }
+        }
+    }
+
+    private fun getApiExtraEquipment() {
+        viewModelScope.launch {
+            try {
+                val listResult = restApiRepository.getQuotationExtraEquipment()
+                _quotationRequestState.update {
+                    it.copy(addedItems = listResult)
+                }
+                extraMateriaalApiState = ExtraItemDetailsApiState.Success(listResult)
+            } catch (e: IOException) {
+                val errorMessage = e.message ?: "An error occurred"
+
+                extraMateriaalApiState = ExtraItemDetailsApiState.Error(errorMessage)
+            }
+
+        }
+    }
+
+    fun removeItemFromCart(item: ExtraItemState) {
+        val existingItem = _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+        if (existingItem != null) {
+            changeExtraItemAmount(existingItem, 0)
+            _quotationRequestState.update {
+                it.copy(addedItems = it.addedItems - item)
+            }
+        }
+    }
+
+
+    fun getListAddedItems(): List<ExtraItemState> {
+        return _quotationRequestState.value.addedItems
+    }
+
+
+    fun getListSorted(index: Int): List<ExtraItemState> {
+        val sortedList = when (index) {
+            0 -> _quotationRequestState.value.addedItems.sortedBy { it.price } // Sort asc
+            1 -> _quotationRequestState.value.addedItems.sortedByDescending { it.price } // Sort desc
+            2 -> _quotationRequestState.value.addedItems.sortedBy { it.title } // Sort by name asc
+            3 -> _quotationRequestState.value.addedItems.sortedByDescending { it.title } // Sort by name desc
+            else -> throw IllegalArgumentException("Invalid index: $index")
+        }
+        return sortedList
+
+    }
+
+
 }
 
 sealed class MainEvent {

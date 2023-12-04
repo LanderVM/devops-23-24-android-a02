@@ -12,13 +12,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
+import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ExtraItemViewModel(private val apiRepository: ApiRepository) :
+class ExtraItemViewModel(private val apiRepository: ApiRepository) : // Todo remove
     ViewModel() {
     private val _extraItemState = MutableStateFlow(ExtraItemState())
     val extraItemState = _extraItemState.asStateFlow()

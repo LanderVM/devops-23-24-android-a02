@@ -1,6 +1,6 @@
 package com.example.templateapplication.network.restApi
 
-import com.example.templateapplication.model.extraMateriaal.ExtraItemState
+import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import kotlinx.serialization.Serializable
 
 @Serializable

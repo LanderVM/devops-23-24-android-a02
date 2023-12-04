@@ -10,7 +10,8 @@ data class QuotationRequestState(
     val placeResponse: GoogleMapsPlaceCandidates = GoogleMapsPlaceCandidates(),
     val amountOfPeople: String = "",
     val wantsTripelBeer: Boolean = false,
-    val customer: Customer = Customer()
+    val customer: Customer = Customer(),
+    val addedItems: List<ExtraItemState> = emptyList(),
 ) {
     data class Customer(
         val firstName: String = "",

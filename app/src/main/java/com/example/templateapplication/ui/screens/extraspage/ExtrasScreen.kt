@@ -51,11 +51,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.extraMateriaal.ExtraItemState
-import com.example.templateapplication.model.extraMateriaal.ExtraItemViewModel
 import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
+import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.NextPageButton
+import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 
@@ -63,27 +63,26 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 @Composable
 fun ExtrasScreen(
     modifier: Modifier = Modifier,
-    extraItemViewModel: ExtraItemViewModel = viewModel(factory = ExtraItemViewModel.Factory),
+    quotationRequestViewModel: QuotationRequestViewModel =  viewModel(factory = QuotationRequestViewModel.Factory),
     navigateSamenvatting: () -> Unit,
     isOverview: Boolean, )
 {
 
-
+// TODO Fix viewmodel bug where adding extra items don't get added correctly
     var selectedIndex by remember { mutableIntStateOf(0) }
     val options = listOf(stringResource(id = R.string.extraMaterial_sort_price_desc), stringResource(id = R.string.extraMaterial_sort_price_asc), stringResource(id = R.string.extraMaterial_sort_name_desc), stringResource(id = R.string.extraMaterial_sort_name_asc))
 
-    when(val extraMateriaalApiState = extraItemViewModel.extraMateriaalApiState){
+    when(val extraEquipmentApiState = quotationRequestViewModel.extraMateriaalApiState){
         is ExtraItemDetailsApiState.Loading -> Text(stringResource(id = R.string.loading))
         is ExtraItemDetailsApiState.Error -> {
-            val errorMessage = extraMateriaalApiState.errorMessage
+            val errorMessage = extraEquipmentApiState.errorMessage
             Text(stringResource(id = R.string.error, errorMessage))}
         is ExtraItemDetailsApiState.Success -> {
 
     LazyColumn(
         modifier = Modifier
             .padding(horizontal = 30.dp)
-            .fillMaxWidth()
-        ,
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item{
@@ -118,13 +117,13 @@ fun ExtrasScreen(
         }
 
 
-        items(extraItemViewModel.getListSorted(selectedIndex)){ extraItem ->
+        items(quotationRequestViewModel.getListSorted(selectedIndex)){ extraItem ->
             ExtraItemCard(
                 extraItem = extraItem,
-                onAmountChanged = {extraItem, amount ->
-                    extraItemViewModel.changeExtraItemAmount(extraItem, amount)},
-                onAddItem= {extraItem -> extraItemViewModel.addItemToCart(extraItem)},
-                onRemoveItem= {extraItem -> extraItemViewModel.removeItemFromCart(extraItem)},
+                onAmountChanged = { _, amount ->
+                    quotationRequestViewModel.changeExtraItemAmount(extraItem, amount)},
+                onAddItem= { quotationRequestViewModel.addItemToCart(extraItem)},
+                onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem)},
                 modifier = Modifier.padding(8.dp),
                 isOverview = isOverview
             )
@@ -160,7 +159,6 @@ fun HeadOfPage(
 
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExtraItemCard(
     extraItem: ExtraItemState,
