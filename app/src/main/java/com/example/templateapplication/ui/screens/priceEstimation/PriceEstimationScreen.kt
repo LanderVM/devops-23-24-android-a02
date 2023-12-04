@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.guideprice
+package com.example.templateapplication.ui.screens.priceEstimation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

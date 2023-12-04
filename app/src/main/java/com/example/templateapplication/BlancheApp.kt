@@ -33,9 +33,9 @@ import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
 import com.example.templateapplication.ui.screens.quotationRequest.PersonalDetailsScreen
 import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
-import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
+import com.example.templateapplication.ui.screens.quotationRequest.ExtrasScreen
 import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
-import com.example.templateapplication.ui.screens.guideprice.GuidePriceScreen
+import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
 import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SamenvattingGegevensScreen

@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.extraspage
+package com.example.templateapplication.ui.screens.quotationRequest
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -55,7 +55,6 @@ import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiS
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.NextPageButton
-import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
 
