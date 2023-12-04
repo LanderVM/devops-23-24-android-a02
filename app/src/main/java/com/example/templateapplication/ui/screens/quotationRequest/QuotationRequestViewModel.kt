@@ -19,7 +19,6 @@ import com.example.templateapplication.model.common.googleMaps.GoogleMapsRespons
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.validation.ValidateEmailUseCase
-import com.example.templateapplication.validation.ValidatePasswordUseCase
 import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -309,7 +308,6 @@ class QuotationRequestViewModel(
 // ---------------------------------------- VALIDATION
 
     private val validateEmailUseCase = ValidateEmailUseCase()
-    private val validatePasswordUseCase = ValidatePasswordUseCase()
     private val validatePhoneNumber = ValidatePhoneNumberUseCase()
 
     var formState by mutableStateOf(MainState())
@@ -318,25 +316,18 @@ class QuotationRequestViewModel(
         when (event) {
             is MainEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
+                setEmail(event.email)
                 validateEmail()
-            }
-
-            is MainEvent.PasswordChanged -> {
-                formState = formState.copy(password = event.password)
-                validatePassword()
-            }
-
-            is MainEvent.VisiblePassword -> {
-                formState = formState.copy(isVisiblePassword = event.isVisiblePassword)
             }
 
             is MainEvent.PhoneNumberChanged -> {
                 formState = formState.copy(phoneNumber = event.phoneNumber)
+                setPhoneNumber(event.phoneNumber)
                 validatePhoneNumber()
             }
 
             is MainEvent.Submit -> {
-                if (validateEmail() && validatePassword()) {
+                if (validateEmail() && validatePhoneNumber()) {
 
                 }
             }
@@ -352,18 +343,10 @@ class QuotationRequestViewModel(
         formState = formState.copy(emailError = emailResult.errorMessage)
         return emailResult.successful
     }
-
-    private fun validatePassword(): Boolean {
-        val passwordResult = validatePasswordUseCase.execute(formState.password)
-        formState = formState.copy(passwordError = passwordResult.errorMessage)
-        return passwordResult.successful
-    }
 }
 
 sealed class MainEvent {
     data class EmailChanged(val email: String) : MainEvent()
-    data class PasswordChanged(val password: String) : MainEvent()
-    data class VisiblePassword(val isVisiblePassword: Boolean) : MainEvent()
     data class PhoneNumberChanged(val phoneNumber: String) : MainEvent()
     object Submit : MainEvent()
 }

@@ -123,10 +123,15 @@ fun PersonalDetailsForm (
             errorMessage = formState.phoneNumberError,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClearableOutlinedTextField(
-            label = stringResource(id = R.string.contactDetails_email),
-            value = email,
-            onValueChange = onEmailChange
+        CustomTextFieldApp(
+            placeholder = stringResource(id = R.string.strEmail),
+            text = formState.email,
+            onValueChange = { newValue -> onEvent(MainEvent.EmailChanged(newValue))},
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = formState.emailError != null,
+            errorMessage = formState.emailError,
         )
     }
 }
@@ -184,18 +189,5 @@ fun FacturationForm(
             onValueChange = onVatNumberChange
         )
         Spacer(modifier = Modifier.height(20.dp))
-        CustomTextFieldApp(
-            placeholder = stringResource(id = R.string.strEmail),
-            text = formState.email,
-            onValueChange = { newValue -> onEvent(MainEvent.EmailChanged(newValue))},
-            keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next,
-            singleLine = true,
-            isError = formState.emailError != null,
-            errorMessage = formState.emailError,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-
-
     }
 }
