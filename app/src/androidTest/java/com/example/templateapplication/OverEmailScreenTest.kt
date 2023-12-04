@@ -3,10 +3,8 @@ package com.example.templateapplication
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import com.example.templateapplication.ui.screens.homepage.HomeScreen
-import com.example.templateapplication.ui.screens.overpage.EmailForInformationScreen
+import com.example.templateapplication.ui.screens.aboutPage.EmailForInformationScreen
 import org.junit.Rule
 import org.junit.Test
 

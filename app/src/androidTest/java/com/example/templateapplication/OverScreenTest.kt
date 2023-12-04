@@ -3,9 +3,8 @@ package com.example.templateapplication
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import com.example.templateapplication.ui.screens.overpage.OverScreen
+import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,7 +17,7 @@ class OverScreenTest {
     fun overScreen_verifyContent () {
 
         composeTestRule.setContent {
-            OverScreen( navigateEmailScreen = {})
+            AboutScreen( navigateEmailScreen = {})
         }
 
         composeTestRule.onNodeWithText("Over de foodtruck").assertExists()

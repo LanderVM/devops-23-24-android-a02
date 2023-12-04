@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.overpage
+package com.example.templateapplication.ui.screens.aboutPage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -46,14 +46,14 @@ import com.example.templateapplication.ui.theme.MainColor
 
 
 @Composable
-fun OverScreen (
+fun AboutScreen (
     modifier: Modifier = Modifier,
     navigateEmailScreen:()->Unit,
 ) {
 
     var openDialog1 by remember { mutableStateOf(false) }
     var openDialog2 by remember { mutableStateOf(false) }
-    var emailAdress by remember { mutableStateOf("") }
+    var emailAddress by remember { mutableStateOf("") }
 
     val scrollState = rememberScrollState()
 
@@ -61,14 +61,14 @@ fun OverScreen (
         PopUp1(
             setOpenDialog = {value -> openDialog1 = value},
             openNextDialog = {openDialog2 = true},
-            onEmailChange = {emailAdress = it},
-            email = emailAdress,
+            onEmailChange = {emailAddress = it},
+            email = emailAddress,
         )
     }
     if (openDialog2) {
         PopUp2(
             setOpenDialog = {value -> openDialog2 = value},
-            emailAdress = emailAdress,
+            emailAdress = emailAddress,
         )
     }
 

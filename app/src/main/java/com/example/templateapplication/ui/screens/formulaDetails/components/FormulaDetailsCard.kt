@@ -1,4 +1,4 @@
-package com.example.templateapplication.ui.screens.formulepage.components
+package com.example.templateapplication.ui.screens.formulaDetails.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.templateapplication.model.formules.Formule
+import com.example.templateapplication.model.formules.Formula
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @Composable
-fun DetailsFormuleCard(
-    formule: Formule,
+fun FormulaDetailsCard(
+    formula: Formula,
     backgroundColor: Color = Color.White,
     textColor: Color = Color.Black,
 ) {
@@ -44,7 +44,7 @@ fun DetailsFormuleCard(
 
     ) {
         Text(
-            text = formule.title,
+            text = formula.title,
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             color = textColor,
@@ -52,14 +52,14 @@ fun DetailsFormuleCard(
                 .align(CenterHorizontally)
                 .padding(10.dp)
         )
-        Divider(
-            color = textColor,
+        HorizontalDivider(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .padding(10.dp)
-                .align(CenterHorizontally)
+                .align(CenterHorizontally),
+            color = textColor
         )
-        formule.listOfProperties.forEach { item ->
+        formula.listOfProperties.forEach { item ->
             Row(
                 modifier = Modifier
                     .padding(10.dp)
@@ -82,7 +82,7 @@ fun DetailsFormuleCard(
 
 @Preview
 @Composable
-fun DetailsFormuleCardPreview() {
+fun DetailsFormulaCardPreview() {
     val mockList = listOf(
         "lorem ipsum",
         "lorem ipsum",
@@ -90,7 +90,7 @@ fun DetailsFormuleCardPreview() {
     )
     val backgroundColor = MainLightestColor
     val textColor = Color.Black
-    val formule = Formule("Titel", mockList)
+    val formula = Formula("Titel", mockList)
 
-    DetailsFormuleCard(formule, backgroundColor, textColor)
+    FormulaDetailsCard(formula, backgroundColor, textColor)
 }

@@ -1,9 +1,7 @@
 package com.example.templateapplication.data
 
 import androidx.compose.ui.graphics.Color
-import com.example.templateapplication.R
-import com.example.templateapplication.model.extraMateriaal.ExtraItemState
-import com.example.templateapplication.model.formules.Formule
+import com.example.templateapplication.model.formules.Formula
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainDarkColor
 import com.example.templateapplication.ui.theme.MainLightColor
@@ -12,18 +10,18 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 
 //TODO interface van maken
 class Datasource() {
-    fun loadFormules(): List<Formule> {
+    fun loadFormules(): List<Formula> {
         val basis = listOf("Foodtruck", "Optioneel bier")
-        val formuleBasis = Formule("Basis", basis)
+        val formulaBasis = Formula("Basis", basis)
 
         val allIn = listOf("Foodtruck", "Vat(en)", "Glazen")
-        val formuleAllIn = Formule("All-In", allIn)
+        val formulaAllIn = Formula("All-In", allIn)
 
         val gevordered = listOf("Foodtruck", "Vat(en)", "Glazen", "BBQ")
-        val formuleGevordered = Formule("Gevordered", gevordered)
+        val formulaGevordered = Formula("Gevordered", gevordered)
 
-        return listOf<Formule>(
-            formuleBasis, formuleAllIn, formuleGevordered
+        return listOf<Formula>(
+            formulaBasis, formulaAllIn, formulaGevordered
         )
     }
 

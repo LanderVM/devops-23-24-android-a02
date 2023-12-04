@@ -34,10 +34,10 @@ import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequ
 import com.example.templateapplication.ui.screens.quotationRequest.PersonalDetailsScreen
 import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
 import com.example.templateapplication.ui.screens.extraspage.ExtrasScreen
-import com.example.templateapplication.ui.screens.formulepage.FormulesScreen
+import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
 import com.example.templateapplication.ui.screens.guideprice.GuidePriceScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
-import com.example.templateapplication.ui.screens.overpage.OverScreen
+import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
 import com.example.templateapplication.ui.screens.samenvattinggegevenspage.SamenvattingGegevensScreen
 import kotlinx.coroutines.launch
 
@@ -131,7 +131,7 @@ fun BlancheApp(
                         )
                     }
                     composable(NavigationRoutes.About.name) {
-                        OverScreen(
+                        AboutScreen(
                             modifier = Modifier.padding(innerPadding),
                             navigateEmailScreen = { navController.navigate(NavigationRoutes.AboutEmail.name) },
                         )
