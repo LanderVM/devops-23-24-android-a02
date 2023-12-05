@@ -50,22 +50,12 @@ fun PersonalDetailsScreen(
         Spacer(modifier = Modifier.height(30.dp))
         FacturationForm(
             formState = quotationRequestViewModel.formState,
-            streetState = requestState.customer.billingAddress.street,
             onEvent = { quotationRequestViewModel.onEvent(it) },
-            onStretChange = { quotationRequestViewModel.setStreet(it) },
-            houseNumberState = requestState.customer.billingAddress.houseNumber,
-            onHouseNumberChange = { quotationRequestViewModel.setHouseNumber(it) },
-            cityState = requestState.customer.billingAddress.city,
-            onCityChange = { quotationRequestViewModel.setCity(it) },
-            postalCode = requestState.customer.billingAddress.postalCode,
-            onPostalCodeChange = { quotationRequestViewModel.setPostalCode(it) },
-            vatNumberState = requestState.customer.vatNumber,
-            onVatNumberChange = { quotationRequestViewModel.setVatNumber(it) },
         )
         Spacer(modifier = Modifier.height(30.dp))
         NextPageButton(
             navigeer = navigateExtras,
-            enabled = quotationRequestViewModel.canNavigateNext(),
+            enabled = quotationRequestViewModel.quotationScreenCanNavigate(),
         )
         Spacer(modifier = Modifier.height(40.dp))
     }
@@ -135,16 +125,6 @@ fun FacturationForm(
     modifier: Modifier = Modifier,
     onEvent: (MainEvent) -> Unit,
     formState: MainState,
-    streetState: String,
-    onStretChange: (String) -> Unit,
-    houseNumberState: String,
-    onHouseNumberChange: (String) -> Unit,
-    cityState: String,
-    onCityChange: (String) -> Unit,
-    postalCode: String,
-    onPostalCodeChange: (String) -> Unit,
-    vatNumberState: String,
-    onVatNumberChange: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -202,7 +182,7 @@ fun FacturationForm(
             text = formState.vat,
             onValueChange = { newValue -> onEvent(MainEvent.VatChanged(newValue))},
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next,
+            imeAction = ImeAction.Done,
             singleLine = true,
             isError = formState.vatError != null,
             errorMessage = formState.vatError,

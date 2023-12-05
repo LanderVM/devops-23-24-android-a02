@@ -58,11 +58,9 @@ class QuotationRequestViewModel(
             }
         }
     }
-
     fun canNavigateNext(): Boolean {
-        return true // TODO navigate using validation per page
+        return true //TODO fix
     }
-
     // ---------------------------------------- EVENT DETAILS: EVENT DETAILS
     private val _quotationRequestState = MutableStateFlow(QuotationRequestState())
     val quotationRequestState = _quotationRequestState.asStateFlow()
@@ -365,19 +363,19 @@ class QuotationRequestViewModel(
                 validatePostalCode()
             }
             is MainEvent.VatChanged -> {
-                formState = formState.copy(vat = event.vat)
-                setVatNumber(event.vat)
+                formState = formState.copy(vat = event.vat.uppercase())
+                setVatNumber(event.vat.uppercase())
                 validateVat()
             }
 
-
             is MainEvent.Submit -> {
-                if ( validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() ) {
+                if ( validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() && validateStreet() && validateHouseNumber() && validateCity() && validatePostalCode() && validateVat() ) {
 
                 }
             }
         }
     }
+
     private fun validateFirstName(): Boolean {
         val result = validateText.execute(formState.firstName)
         formState = formState.copy(firstNameError = result.errorMessage)
@@ -387,6 +385,7 @@ class QuotationRequestViewModel(
         val result = validateText.execute(formState.lastName)
         formState = formState.copy(lastNameError = result.errorMessage)
         return result.successful
+
     }
     private fun validatePhoneNumber(): Boolean {
         val result = validatePhoneNumber.execute(formState.phoneNumber)
@@ -422,6 +421,9 @@ class QuotationRequestViewModel(
         val result = validateVat.execute(formState.vat)
         formState = formState.copy(vatError = result.errorMessage)
         return result.successful
+    }
+    fun quotationScreenCanNavigate(): Boolean{
+        return  validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() && validateStreet() && validateHouseNumber() && validateCity() && validatePostalCode() && validateVat()
     }
 
     // ---------------------------------------- VALIDATION

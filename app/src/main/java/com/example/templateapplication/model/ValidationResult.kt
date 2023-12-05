@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
 data class ValidationResult(
-    val successful: Boolean,
+    val successful: Boolean = false,
     val errorMessage: UiText? = null
 )
 
