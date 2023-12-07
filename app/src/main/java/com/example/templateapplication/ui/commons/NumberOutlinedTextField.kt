@@ -10,20 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import com.example.templateapplication.R
 
 @Composable
 fun NumberOutlinedTextField(
     label: String,
-    value: String,
+    value: Int,
     onValueChange: (String) -> Unit,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
     OutlinedTextField(
-        value = value,
+        value = if (value == 0) "" else value.toString(),
         onValueChange = { onValueChange(it) },
         label = {
             Text(

@@ -5,7 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -23,8 +22,9 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Calendar
 
-class PriceEstimationViewModel(private val restApiRepository: ApiRepository,
-                               private val googleMapsRepository: GoogleMapsRepository
+class PriceEstimationViewModel(
+    private val restApiRepository: ApiRepository,
+    private val googleMapsRepository: GoogleMapsRepository
 ) :
     ViewModel() {
 
@@ -86,10 +86,8 @@ class PriceEstimationViewModel(private val restApiRepository: ApiRepository,
     }
 
     fun setAmountOfPeople(amountOfPeople: String) {
-        if (amountOfPeople.isDigitsOnly()) {
-            _estimationDetailsState.update {
-                it.copy(amountOfPeople = amountOfPeople)
-            }
+        _estimationDetailsState.update {
+            it.copy(amountOfPeople = amountOfPeople.toInt())
         }
     }
 

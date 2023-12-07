@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -85,19 +84,19 @@ class QuotationRequestViewModel(
         }
 
         _quotationRequestState.update {
-            it.copy(startDate = begin, endDate = end)
+            it.copy(startTime = begin, endTime = end)
         }
     }
 
 
     fun getDateRange(): String {
-        if (_quotationRequestState.value.startDate == null || _quotationRequestState.value.endDate == null) {
+        if (_quotationRequestState.value.startTime == null || _quotationRequestState.value.endTime == null) {
             return "/"
         }
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
 
-        return "${dateFormat.format(_quotationRequestState.value.startDate!!.timeInMillis)} - " +
-                dateFormat.format(_quotationRequestState.value.endDate!!.timeInMillis)
+        return "${dateFormat.format(_quotationRequestState.value.startTime!!.timeInMillis)} - " +
+                dateFormat.format(_quotationRequestState.value.endTime!!.timeInMillis)
     }
 
     //// New getDateRanges
@@ -132,7 +131,7 @@ class QuotationRequestViewModel(
 
     fun selectBeer(wantsTripelBeer: Int) {
         _quotationRequestState.update {
-            it.copy(wantsTripelBeer = wantsTripelBeer == 1)
+            it.copy(isTripelBier = wantsTripelBeer == 1)
         }
     }
 
@@ -143,10 +142,8 @@ class QuotationRequestViewModel(
     }
 
     fun setAmountOfPeople(amountOfPeople: String) {
-        if (amountOfPeople.isDigitsOnly()) {
-            _quotationRequestState.update {
-                it.copy(amountOfPeople = amountOfPeople)
-            }
+        _quotationRequestState.update {
+            it.copy(numberOfPeople = amountOfPeople.toInt())
         }
     }
 
@@ -481,17 +478,17 @@ class QuotationRequestViewModel(
         private set
 
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
-        _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+        _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
             ?.let { extraItem ->
                 extraItem.amount = amount
             }
 
     fun getTotalPrice(): Double {
-        return _quotationRequestState.value.addedItems.sumOf { it.price * it.amount }
+        return _quotationRequestState.value.equipments.sumOf { it.price * it.amount }
     }
 
     fun changeExtraItemEditing(item: ExtraItemState, editing: Boolean) =
-        _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+        _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
             ?.let { extraItem ->
                 extraItem.isEditing = editing
             }
@@ -499,13 +496,13 @@ class QuotationRequestViewModel(
     fun addItemToCart(item: ExtraItemState) {
 
         val existingItem =
-            _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+            _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
 
         if (existingItem != null) {
             existingItem.amount = item.amount
         } else {
             _quotationRequestState.update {
-                it.copy(addedItems = it.addedItems + item)
+                it.copy(equipments = it.equipments + item)
             }
         }
     }
@@ -515,7 +512,7 @@ class QuotationRequestViewModel(
             try {
                 val listResult = restApiRepository.getQuotationExtraEquipment()
                 _quotationRequestState.update {
-                    it.copy(addedItems = listResult)
+                    it.copy(equipments = listResult)
                 }
                 extraMateriaalApiState = ExtraItemDetailsApiState.Success(listResult)
             } catch (e: IOException) {
@@ -529,27 +526,27 @@ class QuotationRequestViewModel(
 
     fun removeItemFromCart(item: ExtraItemState) {
         val existingItem =
-            _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+            _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
         if (existingItem != null) {
             changeExtraItemAmount(existingItem, 0)
             _quotationRequestState.update {
-                it.copy(addedItems = it.addedItems - item)
+                it.copy(equipments = it.equipments - item)
             }
         }
     }
 
 
     fun getListAddedItems(): List<ExtraItemState> {
-        return _quotationRequestState.value.addedItems
+        return _quotationRequestState.value.equipments
     }
 
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
-            0 -> _quotationRequestState.value.addedItems.sortedBy { it.price } // Sort asc
-            1 -> _quotationRequestState.value.addedItems.sortedByDescending { it.price } // Sort desc
-            2 -> _quotationRequestState.value.addedItems.sortedBy { it.title } // Sort by name asc
-            3 -> _quotationRequestState.value.addedItems.sortedByDescending { it.title } // Sort by name desc
+            0 -> _quotationRequestState.value.equipments.sortedBy { it.price } // Sort asc
+            1 -> _quotationRequestState.value.equipments.sortedByDescending { it.price } // Sort desc
+            2 -> _quotationRequestState.value.equipments.sortedBy { it.title } // Sort by name asc
+            3 -> _quotationRequestState.value.equipments.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")
         }
         return sortedList

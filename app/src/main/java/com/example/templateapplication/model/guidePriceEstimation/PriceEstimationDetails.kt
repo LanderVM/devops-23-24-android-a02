@@ -24,7 +24,7 @@ data class EstimationDetails(
 data class EstimationUiState(
     var dbData: EstimationDetails = EstimationDetails(),
     var selectedFormula: Int = 1,
-    var amountOfPeople: String = "",
+    var amountOfPeople: Int = 0,
     var wantsTripelBeer: Boolean = false,
     var wantsExtras: Boolean = false,
     var formulaDropDownIsExpanded: Boolean = false,

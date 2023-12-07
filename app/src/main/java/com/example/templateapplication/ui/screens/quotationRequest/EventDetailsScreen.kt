@@ -48,8 +48,8 @@ fun EventDetailsScreen(
     var recheckNextButtonStatus by remember { mutableStateOf(false) }
 
 
-    val selectedStartDate by remember { mutableStateOf(requestState.startDate) }
-    val selectedEndDate by remember { mutableStateOf(requestState.endDate) }
+    val selectedStartDate by remember { mutableStateOf(requestState.startTime) }
+    val selectedEndDate by remember { mutableStateOf(requestState.endTime) }
     val dateRangePickerState = rememberDateRangePickerState(
         initialSelectedStartDateMillis = selectedStartDate?.timeInMillis,
         initialSelectedEndDateMillis = selectedEndDate?.timeInMillis,
@@ -118,7 +118,7 @@ fun EventDetailsScreen(
         )
         NumberOutlinedTextField(
             label = stringResource(id = R.string.eventDetails_numberOfPeople),
-            value = requestState.amountOfPeople,
+            value = requestState.numberOfPeople,
             onValueChange = {
                 quotationRequestViewModel.setAmountOfPeople(it)
                 recheckNextButtonStatus = true
@@ -130,7 +130,7 @@ fun EventDetailsScreen(
                 isExpanded = uiState.dropDownExpanded,
                 setExpanded = { quotationRequestViewModel.setDropDownExpanded(it) },
                 dropDownOptions = uiState.beerDropDownOptions,
-                selectedOption = if (requestState.wantsTripelBeer) 1 else 0,
+                selectedOption = if (requestState.isTripelBier) 1 else 0,
                 setSelectedOption = { quotationRequestViewModel.selectBeer(it) }
             )
         }
