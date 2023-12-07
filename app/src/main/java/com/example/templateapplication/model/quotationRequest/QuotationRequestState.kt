@@ -15,10 +15,10 @@ data class QuotationRequestState(
     data class Customer(
         val firstName: String = "",
         val lastName: String = "",
-        val phoneNumber: String = "",
         val email: String = "",
-        val vatNumber: String = "",
         val billingAddress: Address = Address(),
+        val phoneNumber: String = "",
+        val vatNumber: String = "",
     )
 }
 
