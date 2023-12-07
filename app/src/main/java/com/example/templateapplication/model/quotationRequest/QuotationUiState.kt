@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.ui.commons.DropDownOption
+import java.time.Instant
 
 data class QuotationUiState(
     val dropDownExpanded: Boolean = false,
@@ -39,8 +40,8 @@ data class DisabledDateRangesState(
 )
 
 data class DisabledDatesState(
-    val startTime: String ="",
-    val endTime: String =""
+    val startTime: Instant,
+    val endTime: Instant,
 )
 
 

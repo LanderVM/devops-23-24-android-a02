@@ -1,26 +1,33 @@
-package com.example.templateapplication.network.restApi;
+package com.example.templateapplication.network.restApi
 
 import android.util.Log
-import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.quotationRequest.DisabledDatesState
-import com.example.templateapplication.ui.commons.DropDownOption
-import kotlinx.serialization.Serializable;
+import kotlinx.serialization.Serializable
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 @Serializable
 data class DatesRangeData(
-        val disabledDatesRange: List<DisabledDatesData> = emptyList(),
+    val dateRanges: List<DisabledDatesData>,
 )
 
 @Serializable
 data class DisabledDatesData(
         val startTime: String,
-        val endTime: String
+        val endTime: String,
 )
 
 fun DatesRangeData.asDomainObjects(): List<DisabledDatesState> {
-         var domainList = this.disabledDatesRange.map {
-                DisabledDatesState(it.startTime, it.endTime)
+    Log.i("RestAPI getDateRanges", "Converting data to list of DisabledDatesState..")
+         var domainList = this.dateRanges.map {
+             DisabledDatesState(
+                 DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.startTime, Instant::from),
+                 DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.endTime, Instant::from)
+             )
         }
-        return domainList
 
+    domainList.forEach {
+        Log.i("RestAPI getDateRanges", "Item converted to DisabledDatesState: from ${it.startTime} to ${it.endTime}")
+    }
+        return domainList
 }

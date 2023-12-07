@@ -113,8 +113,7 @@ class QuotationRequestViewModel(
                 dateRangesApiState = DateRangesApiState.Success(listDatesResult)
             } catch (e: IOException) {
                 val errorMessage = e.message ?: "An error occurred"
-
-                // Set the error state with the error message
+                Log.e("RestApi getDateRanges", e.message ?: "Failed to retrieve date ranges from api")
                 dateRangesApiState = DateRangesApiState.Error(errorMessage)
             }
 
@@ -402,7 +401,7 @@ class QuotationRequestViewModel(
 
             is MainEvent.Submit -> {
                 if ( validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() && validateStreet() && validateHouseNumber() && validateCity() && validatePostalCode() && validateVat() ) {
-
+ // TODO what is this?
                 }
             }
         }

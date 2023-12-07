@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.quotationRequest
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,11 +29,8 @@ import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
-import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
-import kotlin.math.log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,28 +61,13 @@ fun EventDetailsScreen(
         selectableDates = object : SelectableDates {
 
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val isTimeInPast = utcTimeMillis < System.currentTimeMillis()
+                if (isTimeInPast) return false
 
-                // maak de dateformat aan, deze wordt gebruikt om de datum om te zetten naar millis
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-
-                //blokeert alle dagen in het verleden
-                val isBeforeToday = utcTimeMillis < System.currentTimeMillis()
-                if (isBeforeToday) {
-                    return false
-                }
-
-                //itereer door de lijst van dateRange en convert naar millisecondes
-                for (item in dateState.listDateRanges) {
-                    Log.i("Result123", item.toString())
-                    val startMillis = dateFormat.parse(item.startTime)?.time
-                    val endMillis = dateFormat.parse(item.endTime)?.time
-                    if (startMillis != null && endMillis != null) {
-                        if (utcTimeMillis in startMillis..endMillis) {
+                for (item in dateState.listDateRanges)
+                        if (Instant.ofEpochMilli(utcTimeMillis) in item.startTime..item.endTime)
                             return false
-                        }
-                    }
-                }
+
                 return true
             }
         })

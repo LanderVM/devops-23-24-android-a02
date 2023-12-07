@@ -1,8 +1,8 @@
 package com.example.templateapplication.data
 
 
+import android.util.Log
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
-import com.example.templateapplication.model.quotationRequest.DisabledDateRangesState
 import com.example.templateapplication.model.quotationRequest.DisabledDatesState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.network.restApi.RestApiService
@@ -28,6 +28,7 @@ class RestApiRepository(
 
     override suspend fun calculatePrice() = restApiService.calculatePrice()
     override suspend fun getDateRanges(): List<DisabledDatesState> {
+        Log.i("RestAPI getDateRanges", "Retrieving list of date ranges from api..")
         return restApiService.getDates().asDomainObjects()
     }
 
