@@ -1,6 +1,5 @@
 package com.example.templateapplication.validation
 
-import android.util.Log
 import android.util.Patterns
 import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
@@ -84,9 +83,23 @@ class ValidateNotEmptyUseCase : BaseUseCase<String, ValidationResult> {
         )
     }
 }
+class ValidateRequiredNumberUseCase : BaseUseCase<String, ValidationResult> {
+    override fun execute(input: String): ValidationResult {
+        if (!isNumber(input)) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = UiText.StringResource(resId = R.string.strInvalidNumber)
+            )
+        }
+        return ValidationResult(
+            successful = true,
+            errorMessage = null
+        )
+    }
+}
 
 fun isNumber(value: String): Boolean {
-    return value.isEmpty() || Regex("^\\d+\$").matches(value)
+    return (!value.isNullOrEmpty()) && Regex("^\\d+\$").matches(value)
 }
 fun isPhoneNumber(input: String): Boolean {
     val belgianPhoneNumberPattern = """^(\+32\s?|0)4[56789]\d{7}$""".toRegex()

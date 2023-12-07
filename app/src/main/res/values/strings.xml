@@ -114,18 +114,16 @@
     <string name="nextPageButton_text">Volgende</string>
 
     <string name="strEmail">Email</string>
-    <string name="strPhoneNumber">Telefoon Nummer</string>
+    <string name="strPhoneNumber">Telefoonnummer</string>
     <string name="strPassword">Wachtwoord</string>
     <string name="strLogin">Login</string>
-    <string name="strDontHaveAccount">Don\'t have account? Register</string>
-    <string name="strTheEmailCanNotBeBlank">The email can\'t be blank</string>
-    <string name="strThatsNotAValidEmail">That\'s not a valid email</string>
-    <string name="strThePasswordNeedsToConsistOfAtLeastEightCharacters">The password needs to consist of at least 8 characters</string>
-    <string name="strThePasswordNeedsToContainAtLeastOneLetterAndDigit">The password needs to contain at least one letter and digit</string>
-    <string name="strThePhoneCanNotBeBlank">The phone can\'t be blank</string>
-    <string name="strThePhoneNumberShouldBeContentJustDigit">The phone number should be content just digit</string>
-    <string name="strThePhoneNumberShouldBeCorrect">This number isn\'t correct</string>
-    <string name="strInvalidVat">The VAT number isn\'t valid</string>
-    <string name="strInvalidText">This cannot be empty</string>
+    <string name="strTheEmailCanNotBeBlank">De e-mail mag niet leeg zijn</string>
+    <string name="strThatsNotAValidEmail">Dit is geen geldig e-mailadres</string>
+    <string name="strThePhoneCanNotBeBlank">Het telefoonnummer kan niet leeg zijn</string>
+    <string name="strThePhoneNumberShouldBeContentJustDigit">Het telefoonnummer moet alleen uit cijfers bestaan</string>
+    <string name="strThePhoneNumberShouldBeCorrect">Dit telefoonnummer is niet geldig</string>
+    <string name="strInvalidVat">Dit BTW-nummer is niet geldig</string>
+    <string name="strInvalidText">Dit mag niet leeg zijn</string>
+    <string name="strInvalidNumber">Waarde moet groter zijn dan 0</string>
 
 </resources>

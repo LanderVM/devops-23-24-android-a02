@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
@@ -29,6 +31,7 @@ import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.commons.ValidationTextFieldApp
 import java.time.Instant
 import java.util.Calendar
 
@@ -116,13 +119,15 @@ fun EventDetailsScreen(
         SeperatingTitle(
             text = stringResource(id = R.string.eventDetails_details_separator),
         )
-        NumberOutlinedTextField(
-            label = stringResource(id = R.string.eventDetails_numberOfPeople),
-            value = requestState.numberOfPeople,
-            onValueChange = {
-                quotationRequestViewModel.setAmountOfPeople(it)
-                recheckNextButtonStatus = true
-            },
+        ValidationTextFieldApp(
+            placeholder = stringResource(id = R.string.eventDetails_numberOfPeople),
+            text = quotationRequestViewModel.formState.numberOfPeople,
+            onValueChange = {quotationRequestViewModel.onEvent(MainEvent.NumberOfPeopleChanged(it))},
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next,
+            singleLine = true,
+            isError = quotationRequestViewModel.formState.numberOfPeopleError != null,
+            errorMessage = quotationRequestViewModel.formState.numberOfPeopleError,
         )
         if (requestState.formulaId != 1) {
             DropDownSelect(
@@ -137,7 +142,7 @@ fun EventDetailsScreen(
         Spacer(modifier = Modifier.height(20.dp))
         NextPageButton(
             navigeer = navigateContactGegevensScreen,
-            enabled = nextButtonEnabled,
+            enabled = quotationRequestViewModel.personalDetailScreenCanNavigate(),
         )
         Spacer(modifier = Modifier.height(40.dp))
     }

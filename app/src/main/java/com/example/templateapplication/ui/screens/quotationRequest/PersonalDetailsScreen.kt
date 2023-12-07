@@ -170,7 +170,7 @@ fun FacturationForm(
             placeholder = stringResource(id = R.string.contactDetails_postal_code),
             text = formState.postalCode,
             onValueChange = { newValue -> onEvent(MainEvent.PostalCodeChanged(newValue))},
-            keyboardType = KeyboardType.Text,
+            keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next,
             singleLine = true,
             isError = formState.postalCodeError != null,
