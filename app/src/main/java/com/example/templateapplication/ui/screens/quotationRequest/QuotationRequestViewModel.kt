@@ -17,6 +17,8 @@ import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
+import com.example.templateapplication.model.quotationRequest.DateRangesApiState
+import com.example.templateapplication.model.quotationRequest.DisabledDateRangesState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
@@ -41,6 +43,7 @@ class QuotationRequestViewModel(
 
     init {
         getApiExtraEquipment()
+        getDateRanges()
     }
 
     companion object {
@@ -68,6 +71,12 @@ class QuotationRequestViewModel(
     private val _quotationUiState = MutableStateFlow(QuotationUiState())
     val quotationUiState = _quotationUiState.asStateFlow()
 
+    private val _disableDatesUiState = MutableStateFlow(DisabledDateRangesState())
+    val disableDatesUiState = _disableDatesUiState.asStateFlow()
+    var dateRangesApiState: DateRangesApiState by mutableStateOf(DateRangesApiState.Loading)
+        private set
+
+
     fun updateDateRange(beginDate: Long?, endDate: Long?) {
         val begin = Calendar.getInstance()
         val end = Calendar.getInstance()
@@ -92,6 +101,29 @@ class QuotationRequestViewModel(
         return "${dateFormat.format(_quotationRequestState.value.startDate!!.timeInMillis)} - " +
                 dateFormat.format(_quotationRequestState.value.endDate!!.timeInMillis)
     }
+
+    //// New getDateRanges
+    fun getDateRanges() {
+        viewModelScope.launch {
+            try {
+                val listDatesResult = restApiRepository.getDateRanges()
+                _disableDatesUiState.update {
+                    it.copy(listDateRanges = listDatesResult)
+                }
+                dateRangesApiState = DateRangesApiState.Success(listDatesResult)
+            } catch (e: IOException) {
+                val errorMessage = e.message ?: "An error occurred"
+
+                // Set the error state with the error message
+                dateRangesApiState = DateRangesApiState.Error(errorMessage)
+            }
+
+        }
+    }
+
+
+
+
 
     // TODO validate each field separately. Only check if hasErrors = true here.
 

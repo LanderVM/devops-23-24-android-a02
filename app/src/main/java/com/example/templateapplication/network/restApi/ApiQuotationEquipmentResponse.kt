@@ -1,5 +1,7 @@
 package com.example.templateapplication.network.restApi
 
+import android.annotation.SuppressLint
+import android.util.Log
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import kotlinx.serialization.Serializable
 
@@ -26,7 +28,7 @@ data class QuotationImageData(
     val altText: String
 )
 
-
+@SuppressLint("ResourceType")
 fun QuotationEquipmentData.asDomainObjects(): List<ExtraItemState> {
     return this.equipment.map {
         ExtraItemState(it.id, it.title, it.attributes, it.price, it.stock, imageResourceId = 1)

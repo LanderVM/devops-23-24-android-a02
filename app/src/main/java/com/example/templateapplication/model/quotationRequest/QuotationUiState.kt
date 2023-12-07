@@ -34,3 +34,18 @@ data class ExtraItemState(
     var isEditing by mutableStateOf(false)
 }
 
+data class DisabledDateRangesState(
+    val listDateRanges: List<DisabledDatesState> = emptyList()
+)
+
+data class DisabledDatesState(
+    val startTime: String ="",
+    val endTime: String =""
+)
+
+
+sealed interface DateRangesApiState{
+    data class Success(val result: List<DisabledDatesState>) : DateRangesApiState
+    data class Error(val errorMessage: String): DateRangesApiState
+    object Loading : DateRangesApiState
+}
