@@ -86,7 +86,7 @@ fun GuidePriceScreen(
             getPredictionsFunction = { priceEstimationViewModel.getPredictions() },
             apiStatus = priceEstimationViewModel.googleMapsApiState,
             hasFoundPlace = { priceEstimationViewModel.placeFound() },
-            updateInputFunction = { priceEstimationViewModel.updateInput(it) },
+            onValueChange = { priceEstimationViewModel.updateInput(it) },
             googleMaps = priceEstimationUIState.googleMaps,
         )
         SeperatingTitle(

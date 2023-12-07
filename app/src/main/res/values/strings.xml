@@ -126,4 +126,6 @@
     <string name="strInvalidText">Dit mag niet leeg zijn</string>
     <string name="strInvalidNumber">Waarde moet groter zijn dan 0</string>
 
+    <string name="address_placeholder">adres</string>
+
 </resources>

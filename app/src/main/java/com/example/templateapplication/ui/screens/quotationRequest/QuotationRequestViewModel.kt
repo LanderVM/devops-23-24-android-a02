@@ -249,7 +249,7 @@ class QuotationRequestViewModel(
     )
         private set
 
-    fun updateInput(input: String) {
+    fun setAddressInput(input: String) {
         _quotationUiState.update {
             it.copy(googleMaps = it.googleMaps.copy(eventAddress = input))
         }
@@ -447,6 +447,12 @@ class QuotationRequestViewModel(
 
     fun onEvent(event: MainEvent) {
         when (event) {
+            is MainEvent.AddressChanged-> {
+                formState = formState.copy(address = event.address)
+                setAddressInput(event.address)
+                validateAddress()
+            }
+
             is MainEvent.NumberOfPeopleChanged-> {
                 formState = formState.copy(numberOfPeople = event.numberOfPeople)
                 if (validateNumberOfPeople()) {
@@ -519,6 +525,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    private fun validateAddress(): Boolean{
+        val result = validateText.execute(formState.address)
+        formState = formState.copy(addressError = result.errorMessage)
+        return result.successful
+    }
     private fun validateNumberOfPeople(): Boolean {
         val result = validateNumber.execute(formState.numberOfPeople)
         formState = formState.copy(numberOfPeopleError = result.errorMessage)
@@ -544,9 +555,9 @@ class QuotationRequestViewModel(
     }
 
     private fun validateEmail(): Boolean {
-        val emailResult = validateEmailUseCase.execute(formState.email)
-        formState = formState.copy(emailError = emailResult.errorMessage)
-        return emailResult.successful
+        val result = validateEmailUseCase.execute(formState.email)
+        formState = formState.copy(emailError = result.errorMessage)
+        return result.successful
     }
 
     private fun validateStreet(): Boolean {
@@ -665,6 +676,7 @@ class QuotationRequestViewModel(
 }
 
 sealed class MainEvent {
+    data class AddressChanged(val address: String): MainEvent()
     data class NumberOfPeopleChanged(val numberOfPeople: String) : MainEvent()
     data class FirstNameChanged(val firstName: String) : MainEvent()
     data class LastNameChanged(val lastName: String) : MainEvent()
@@ -678,6 +690,8 @@ sealed class MainEvent {
 }
 
 data class MainState(
+    val address: String = "",
+    val addressError: UiText? = null,
     val numberOfPeople: String = "",
     val numberOfPeopleError: UiText? = null,
     val firstName: String = "",
@@ -711,6 +725,7 @@ data class MainState(
                 vatError == null
     }
     fun isReadyForPersonalDetails(): Boolean {
-        return numberOfPeople.isNotEmpty() && numberOfPeopleError == null
+        return numberOfPeople.isNotEmpty() && numberOfPeopleError == null &&
+                address.isNotEmpty() && addressError == null
     }
 }

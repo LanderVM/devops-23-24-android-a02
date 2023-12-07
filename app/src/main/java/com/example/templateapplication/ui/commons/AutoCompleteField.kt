@@ -19,9 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
+import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
@@ -43,14 +46,15 @@ fun AddressTextField(
     modifier: Modifier = Modifier,
     getPredictionsFunction: () -> Unit,
     hasFoundPlace: () -> Boolean,
-    updateInputFunction: (String) -> Unit,
+    onValueChange: (String) -> Unit,
     placeResponse: GoogleMapsPlaceCandidates,
-    showMap: Boolean, // TODO separate map from textfield composable
+    showMap: Boolean,
     updateMarkerFunction: () -> Unit = {},
     apiStatus: ApiResponse<GoogleMapsResponse>,
     googleMaps: GoogleMapsResponse,
+    errorMessage: UiText? = null,
+    isError: Boolean = false
 ) {
-
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(googleMaps.marker, 15f)
     }
@@ -59,7 +63,6 @@ fun AddressTextField(
         withContext(Dispatchers.IO) {
             delay(1000)
             getPredictionsFunction()
-            Log.i("test", "piung")
         }
 
         withContext(Dispatchers.Main) {
@@ -123,22 +126,17 @@ fun AddressTextField(
         Spacer(modifier = Modifier.height(20.dp))
     }
 
-    OutlinedTextField(
-        label = {
-            Text(
-                text = "Adres",
-                color = Color(0xFFe9dcc5)
-            )
-        },
-        value = googleMaps.eventAddress,
-        onValueChange = {
-            updateInputFunction(it)
-        },
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color(0xFFe9dcc5),
-            unfocusedBorderColor = Color(0xFFe9dcc5),
-        ),
+    ValidationTextFieldApp(
         modifier = Modifier.width(300.dp),
+        placeholder = stringResource(id = R.string.address_placeholder),
+        text = googleMaps.eventAddress,
+        onValueChange = {
+            onValueChange(it)
+        },
+        errorMessage = errorMessage,
+        isError = isError,
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Done
     )
 
     when (apiStatus) {
@@ -148,7 +146,7 @@ fun AddressTextField(
             AutoCompleteListComponent(
                 predictionsState = apiStatus.data.predictionsResponse.predictions
             ) { prediction ->
-                updateInputFunction(prediction.description)
+                onValueChange(prediction.description)
                 updateMarkerFunction()
             }
         }
