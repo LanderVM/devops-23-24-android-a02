@@ -91,7 +91,7 @@ fun EventDetailsScreen(
         )
         AddressTextField(
             showMap = true,
-            placeResponse = requestState.placeResponse,
+            placeResponse = uiState.googleMaps.eventAddressAutocompleteCandidates,
             apiStatus = quotationRequestViewModel.googleMapsApiState,
             hasFoundPlace = { quotationRequestViewModel.placeFound() },
             getPredictionsFunction = { quotationRequestViewModel.getPredictions() },
@@ -124,7 +124,7 @@ fun EventDetailsScreen(
                 recheckNextButtonStatus = true
             },
         )
-        if (requestState.selectedFormula != 1) {
+        if (requestState.formulaId != 1) {
             DropDownSelect(
                 label = stringResource(id = R.string.eventDetails_beerType),
                 isExpanded = uiState.dropDownExpanded,

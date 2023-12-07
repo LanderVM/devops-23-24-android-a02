@@ -52,6 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
+import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
@@ -68,6 +69,7 @@ fun SummaryScreen (
 ) {
     val scrollState = rememberScrollState()
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
+    val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
 
 
     Column (
@@ -91,8 +93,8 @@ fun SummaryScreen (
             color = Color.LightGray
         )
         Spacer(modifier = Modifier.height(25.dp))
-        EventGegevens(
-            requestState = requestState,
+        EventDetails(
+            uiState = uiState,
             dateRange = quotationRequestViewModel.getDateRange()
         )
         Spacer(modifier = Modifier.height(30.dp))
@@ -261,9 +263,9 @@ fun Navigation (
 }
 
 @Composable
-fun EventGegevens(
+fun EventDetails(
     modifier: Modifier = Modifier,
-    requestState: QuotationRequestState,
+    uiState: QuotationUiState,
     dateRange: String,
     ) {
 
@@ -308,7 +310,7 @@ fun EventGegevens(
                 },
                 supportingContent = {
                     Text(
-                        text=requestState.placeResponse.candidates[0].formatted_address,
+                        text=uiState.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address,
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(
@@ -319,7 +321,7 @@ fun EventGegevens(
             Spacer(modifier = Modifier.height(20.dp))
         }
 
-        
+
     }
 }
 
@@ -440,8 +442,8 @@ fun ExtraEquipment(
             quotationRequestViewModel.getListAddedItems().forEach { extraItem ->
                 ExtraItemCard(
                     extraItem = extraItem,
-                    onAmountChanged = {extraItem, amount ->
-                        quotationRequestViewModel.changeExtraItemAmount(extraItem, amount)},
+                    onAmountChanged = {equipment, amount ->
+                        quotationRequestViewModel.changeExtraItemAmount(equipment, amount)},
                     onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem) },
                     modifier = Modifier.padding(8.dp)
                 )

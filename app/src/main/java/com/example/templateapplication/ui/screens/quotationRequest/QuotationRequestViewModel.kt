@@ -60,6 +60,7 @@ class QuotationRequestViewModel(
             }
         }
     }
+
     fun canNavigateNext(): Boolean {
         return true //TODO fix
     }
@@ -110,7 +111,10 @@ class QuotationRequestViewModel(
                 dateRangesApiState = DateRangesApiState.Success(listDatesResult)
             } catch (e: IOException) {
                 val errorMessage = e.message ?: "An error occurred"
-                Log.e("RestApi getDateRanges", e.message ?: "Failed to retrieve date ranges from api")
+                Log.e(
+                    "RestApi getDateRanges",
+                    e.message ?: "Failed to retrieve date ranges from api"
+                )
                 dateRangesApiState = DateRangesApiState.Error(errorMessage)
             }
 
@@ -118,14 +122,11 @@ class QuotationRequestViewModel(
     }
 
 
-
-
-
     // TODO validate each field separately. Only check if hasErrors = true here.
 
     fun selectFormula(id: Int) {
         _quotationRequestState.update {
-            it.copy(selectedFormula = id)
+            it.copy(formulaId = id)
         }
     }
 
@@ -186,7 +187,7 @@ class QuotationRequestViewModel(
                 try {
                     val distanceResult = googleMapsRepository.getDistance(
                         vertrekPlaats = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
-                        eventPlaats = _quotationRequestState.value.placeResponse.candidates[0].formatted_address
+                        eventPlaats = _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address
                     )
                     _quotationUiState.update {
                         it.copy(googleMaps = it.googleMaps.copy(distanceResponse = distanceResult))
@@ -206,8 +207,10 @@ class QuotationRequestViewModel(
             try {
                 val placeResult =
                     googleMapsRepository.getPlace(input = _quotationUiState.value.googleMaps.eventAddress)
-                _quotationRequestState.update {
-                    it.copy(placeResponse = placeResult)
+                _quotationUiState.update {
+                    it.copy(
+                        googleMaps = it.googleMaps.copy(eventAddressAutocompleteCandidates = placeResult)
+                    )
                 }
                 googleMapsApiState = ApiResponse.Success(
                     GoogleMapsResponse(eventAddress = placeResult.toString())
@@ -235,8 +238,8 @@ class QuotationRequestViewModel(
     }
 
     fun placeFound(): Boolean {
-        return if (_quotationRequestState.value.placeResponse.candidates.isNotEmpty())
-            _quotationRequestState.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
+        return if (_quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates.isNotEmpty())
+            _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address.isNotEmpty()
         else false
     }
 
@@ -269,7 +272,8 @@ class QuotationRequestViewModel(
                     phoneNumber = phoneNumber
                 )
             )
-        }    }
+        }
+    }
 
     fun setEmail(email: String) {
         _quotationRequestState.update {
@@ -355,41 +359,49 @@ class QuotationRequestViewModel(
                 setFirstName(event.firstName)
                 validateFirstName()
             }
+
             is MainEvent.LastNameChanged -> {
                 formState = formState.copy(lastName = event.lastName)
                 setLastName(event.lastName)
                 validateLastName()
             }
+
             is MainEvent.PhoneNumberChanged -> {
                 formState = formState.copy(phoneNumber = event.phoneNumber)
                 setPhoneNumber(event.phoneNumber)
                 validatePhoneNumber()
             }
+
             is MainEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
                 setEmail(event.email)
                 validateEmail()
             }
+
             is MainEvent.StreetChanged -> {
                 formState = formState.copy(street = event.street)
                 setStreet(event.street)
                 validateStreet()
             }
+
             is MainEvent.HouseNumberChanged -> {
                 formState = formState.copy(houseNumber = event.houseNumber)
                 setHouseNumber(event.houseNumber)
                 validateHouseNumber()
             }
+
             is MainEvent.CityChanged -> {
                 formState = formState.copy(city = event.city)
                 setCity(event.city)
                 validateCity()
             }
+
             is MainEvent.PostalCodeChanged -> {
                 formState = formState.copy(postalCode = event.postalCode)
                 setPostalCode(event.postalCode)
                 validatePostalCode()
             }
+
             is MainEvent.VatChanged -> {
                 formState = formState.copy(vat = event.vat.uppercase())
                 setVatNumber(event.vat.uppercase())
@@ -397,8 +409,8 @@ class QuotationRequestViewModel(
             }
 
             is MainEvent.Submit -> {
-                if ( validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() && validateStreet() && validateHouseNumber() && validateCity() && validatePostalCode() && validateVat() ) {
- // TODO what is this?
+                if (validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() && validateStreet() && validateHouseNumber() && validateCity() && validatePostalCode() && validateVat()) {
+                    // TODO what is this?
                 }
             }
         }
@@ -409,48 +421,57 @@ class QuotationRequestViewModel(
         formState = formState.copy(firstNameError = result.errorMessage)
         return result.successful
     }
+
     private fun validateLastName(): Boolean {
         val result = validateText.execute(formState.lastName)
         formState = formState.copy(lastNameError = result.errorMessage)
         return result.successful
 
     }
+
     private fun validatePhoneNumber(): Boolean {
         val result = validatePhoneNumber.execute(formState.phoneNumber)
         formState = formState.copy(phoneNumberError = result.errorMessage)
         return result.successful
     }
+
     private fun validateEmail(): Boolean {
         val emailResult = validateEmailUseCase.execute(formState.email)
         formState = formState.copy(emailError = emailResult.errorMessage)
         return emailResult.successful
     }
+
     private fun validateStreet(): Boolean {
         val result = validateText.execute(formState.street)
         formState = formState.copy(streetError = result.errorMessage)
         return result.successful
     }
+
     private fun validateHouseNumber(): Boolean {
         val result = validateText.execute(formState.houseNumber)
         formState = formState.copy(houseNumberError = result.errorMessage)
         return result.successful
     }
+
     private fun validateCity(): Boolean {
         val result = validateText.execute(formState.city)
         formState = formState.copy(cityError = result.errorMessage)
         return result.successful
     }
+
     private fun validatePostalCode(): Boolean {
         val result = validateText.execute(formState.postalCode)
         formState = formState.copy(postalCodeError = result.errorMessage)
         return result.successful
     }
+
     private fun validateVat(): Boolean {
         val result = validateVat.execute(formState.vat)
         formState = formState.copy(vatError = result.errorMessage)
         return result.successful
     }
-    fun quotationScreenCanNavigate(): Boolean{
+
+    fun quotationScreenCanNavigate(): Boolean {
         return formState.isReadyForQuotation()
     }
 
@@ -477,7 +498,8 @@ class QuotationRequestViewModel(
 
     fun addItemToCart(item: ExtraItemState) {
 
-        val existingItem = _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+        val existingItem =
+            _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
 
         if (existingItem != null) {
             existingItem.amount = item.amount
@@ -506,7 +528,8 @@ class QuotationRequestViewModel(
     }
 
     fun removeItemFromCart(item: ExtraItemState) {
-        val existingItem = _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
+        val existingItem =
+            _quotationRequestState.value.addedItems.find { it.extraItemId == item.extraItemId }
         if (existingItem != null) {
             changeExtraItemAmount(existingItem, 0)
             _quotationRequestState.update {

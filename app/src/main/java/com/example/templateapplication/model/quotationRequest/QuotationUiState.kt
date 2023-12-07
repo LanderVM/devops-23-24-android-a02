@@ -11,9 +11,6 @@ import java.time.Instant
 
 data class QuotationUiState(
     val dropDownExpanded: Boolean = false,
-    val hasError: Boolean = false,
-    val dateError: String? = null, // TODO
-    val eventAddressError: String = "",
     val beerDropDownOptions: List<DropDownOption> = listOf(
         DropDownOption("Pils", 0),
         DropDownOption("Tripel", 1),
