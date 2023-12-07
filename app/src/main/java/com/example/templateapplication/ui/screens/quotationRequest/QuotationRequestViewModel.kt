@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -498,20 +499,14 @@ class QuotationRequestViewModel(
         private set
 
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
-        _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
+        _quotationUiState.value.extraItems.find { it.extraItemId == item.extraItemId }
             ?.let { extraItem ->
                 extraItem.amount = amount
             }
 
     fun getTotalPrice(): Double {
-        return _quotationRequestState.value.equipments.sumOf { it.price * it.amount }
+        return _quotationUiState.value.extraItems.sumOf { it.price * it.amount }
     }
-
-    fun changeExtraItemEditing(item: ExtraItemState, editing: Boolean) =
-        _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
-            ?.let { extraItem ->
-                extraItem.isEditing = editing
-            }
 
     fun addItemToCart(item: ExtraItemState) {
 
@@ -531,8 +526,8 @@ class QuotationRequestViewModel(
         viewModelScope.launch {
             try {
                 val listResult = restApiRepository.getQuotationExtraEquipment()
-                _quotationRequestState.update {
-                    it.copy(equipments = listResult)
+                _quotationUiState.update {
+                    it.copy(extraItems = listResult)
                 }
                 extraMateriaalApiState = ExtraItemDetailsApiState.Success(listResult)
             } catch (e: IOException) {
@@ -563,10 +558,10 @@ class QuotationRequestViewModel(
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
-            0 -> _quotationRequestState.value.equipments.sortedBy { it.price } // Sort asc
-            1 -> _quotationRequestState.value.equipments.sortedByDescending { it.price } // Sort desc
-            2 -> _quotationRequestState.value.equipments.sortedBy { it.title } // Sort by name asc
-            3 -> _quotationRequestState.value.equipments.sortedByDescending { it.title } // Sort by name desc
+            0 -> _quotationUiState.value.extraItems.sortedBy { it.price } // Sort asc
+            1 -> _quotationUiState.value.extraItems.sortedByDescending { it.price } // Sort desc
+            2 -> _quotationUiState.value.extraItems.sortedBy { it.title } // Sort by name asc
+            3 -> _quotationUiState.value.extraItems.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")
         }
         return sortedList
@@ -620,7 +615,7 @@ data class MainState(
                 houseNumber.isNotEmpty() && houseNumberError == null &&
                 city.isNotEmpty() && cityError == null &&
                 postalCode.isNotEmpty() && postalCodeError == null &&
-                vat.isNotEmpty() && vatError == null
+                vatError == null
     }
     fun isReadyForPersonalDetails(): Boolean {
         return numberOfPeople.isNotEmpty() && numberOfPeopleError == null

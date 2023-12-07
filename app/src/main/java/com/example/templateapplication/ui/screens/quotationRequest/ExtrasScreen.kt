@@ -62,7 +62,7 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 @Composable
 fun ExtrasScreen(
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel =  viewModel(factory = QuotationRequestViewModel.Factory),
+    quotationRequestViewModel: QuotationRequestViewModel =  viewModel(),
     navigateSamenvatting: () -> Unit,
     isOverview: Boolean, )
 {
@@ -129,7 +129,7 @@ fun ExtrasScreen(
         }
 
 
-        if(true /*!isOverview*/){
+        if(!isOverview){
             item{
             NextPageButton(
                 navigeer = navigateSamenvatting,
@@ -240,7 +240,7 @@ fun ExtraItemCard(
 
             )
             Spacer(modifier = Modifier.height(16.dp))
-            if(true /*!isOverView*/){
+            if(!isOverview){
                     if (extraItem.isEditing) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -254,7 +254,6 @@ fun ExtraItemCard(
                                         enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(extraItem.stock)
                                         else ->0
                                     }
-                                    Log.i("amount", enteredAmount.toString())
                                     onAddItem(extraItem)
 
                                 },
@@ -291,8 +290,9 @@ fun ExtraItemCard(
                             Button(
                                 onClick = {
                                     extraItem.amount = 1
-                                    extraItem.isEditing = true
                                     onAddItem(extraItem)
+                                    extraItem.isEditing = true
+
                                 },
                                 colors = ButtonColors(containerColor = MainColor, contentColor = Color.White, disabledContentColor = Color.White, disabledContainerColor = MainColor)
                             ) {

@@ -169,6 +169,7 @@ fun BlancheApp(
                     composable(NavigationRoutes.ExtraItems.name) {
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
+                            quotationRequestViewModel = quotationRequestViewModel,
                             navigateSamenvatting = { navController.navigate(NavigationRoutes.SummaryData.name) },
                             isOverview = false
                         )
@@ -176,6 +177,7 @@ fun BlancheApp(
                     composable(NavigationRoutes.ExtrasOverview.name) {
                         ExtrasScreen(
                             modifier = Modifier.padding(innerPadding),
+                            quotationRequestViewModel = quotationRequestViewModel,
                             navigateSamenvatting = { navController.navigate(NavigationRoutes.SummaryData.name) },
                             isOverview = true
                         )

@@ -62,7 +62,7 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 @Composable
 fun SummaryScreen (
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory),
+    quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
     navigateEventGegevens: ()->Unit,
     navigateContactGegevens:()->Unit,
     navigateExtras: () -> Unit,
@@ -445,7 +445,7 @@ fun ExtraEquipment(
                     onAmountChanged = {equipment, amount ->
                         quotationRequestViewModel.changeExtraItemAmount(equipment, amount)},
                     onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem) },
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(8.dp),
                 )
 
             }
