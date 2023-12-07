@@ -20,6 +20,7 @@ data class QuotationUiState(
     ),
     val googleMaps: GoogleMapsResponse = GoogleMapsResponse(),
     val extraItems: List<ExtraItemState>  = emptyList(),
+    val listDateRanges: List<DisabledDatesState> = emptyList(),
 )
 
 data class ExtraItemState(
@@ -34,10 +35,6 @@ data class ExtraItemState(
     var amount by mutableIntStateOf(0)
     var isEditing by mutableStateOf(false)
 }
-
-data class DisabledDateRangesState(
-    val listDateRanges: List<DisabledDatesState> = emptyList()
-)
 
 data class DisabledDatesState(
     val startTime: Instant,

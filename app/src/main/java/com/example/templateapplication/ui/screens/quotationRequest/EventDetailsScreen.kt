@@ -43,7 +43,6 @@ fun EventDetailsScreen(
     val scrollState = rememberScrollState()
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
     val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
-    val dateState by quotationRequestViewModel.disableDatesUiState.collectAsState()
 
     var nextButtonEnabled by remember { mutableStateOf(false) }
     var recheckNextButtonStatus by remember { mutableStateOf(false) }
@@ -64,7 +63,7 @@ fun EventDetailsScreen(
                 val isTimeInPast = utcTimeMillis < System.currentTimeMillis()
                 if (isTimeInPast) return false
 
-                for (item in dateState.listDateRanges)
+                for (item in uiState.listDateRanges)
                         if (Instant.ofEpochMilli(utcTimeMillis) in item.startTime..item.endTime)
                             return false
 

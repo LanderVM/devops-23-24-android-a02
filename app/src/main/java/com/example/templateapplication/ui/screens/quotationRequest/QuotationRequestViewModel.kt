@@ -18,7 +18,6 @@ import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
 import com.example.templateapplication.model.quotationRequest.DateRangesApiState
-import com.example.templateapplication.model.quotationRequest.DisabledDateRangesState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
@@ -64,6 +63,7 @@ class QuotationRequestViewModel(
     fun canNavigateNext(): Boolean {
         return true //TODO fix
     }
+
     // ---------------------------------------- EVENT DETAILS: EVENT DETAILS
     private val _quotationRequestState = MutableStateFlow(QuotationRequestState())
     val quotationRequestState = _quotationRequestState.asStateFlow()
@@ -71,11 +71,8 @@ class QuotationRequestViewModel(
     private val _quotationUiState = MutableStateFlow(QuotationUiState())
     val quotationUiState = _quotationUiState.asStateFlow()
 
-    private val _disableDatesUiState = MutableStateFlow(DisabledDateRangesState())
-    val disableDatesUiState = _disableDatesUiState.asStateFlow()
     var dateRangesApiState: DateRangesApiState by mutableStateOf(DateRangesApiState.Loading)
         private set
-
 
     fun updateDateRange(beginDate: Long?, endDate: Long?) {
         val begin = Calendar.getInstance()
@@ -107,7 +104,7 @@ class QuotationRequestViewModel(
         viewModelScope.launch {
             try {
                 val listDatesResult = restApiRepository.getDateRanges()
-                _disableDatesUiState.update {
+                _quotationUiState.update {
                     it.copy(listDateRanges = listDatesResult)
                 }
                 dateRangesApiState = DateRangesApiState.Success(listDatesResult)
