@@ -32,17 +32,22 @@ class ValidateEmailUseCase: BaseUseCase<String, ValidationResult> {
 
 class ValidatePhoneNumberUseCase : BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {
-        Log.d("phone", input)
         if (input.isBlank()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(resId = R.string.strThePhoneCanNotBeBlank),
             )
         }
-        if (!isPhoneNumber(input)) {
+        if(!isNumber(input)){
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(resId = R.string.strThePhoneNumberShouldBeContentJustDigit),
+            )
+        }
+        if (!isPhoneNumber(input)) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = UiText.StringResource(resId = R.string.strThePhoneNumberShouldBeCorrect),
             )
         }
         return ValidationResult(

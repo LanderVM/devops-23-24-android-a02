@@ -423,7 +423,7 @@ class QuotationRequestViewModel(
         return result.successful
     }
     fun quotationScreenCanNavigate(): Boolean{
-        return  validateFirstName() && validateLastName() && validatePhoneNumber() && validateEmail() && validateStreet() && validateHouseNumber() && validateCity() && validatePostalCode() && validateVat()
+        return formState.isReadyForQuotation()
     }
 
     // ---------------------------------------- VALIDATION
@@ -540,4 +540,16 @@ data class MainState(
     val postalCodeError: UiText? = null,
     val vat: String = "",
     val vatError: UiText? = null,
-)
+) {
+    fun isReadyForQuotation(): Boolean {
+        return firstName.isNotEmpty() && firstNameError == null &&
+                lastName.isNotEmpty() && lastNameError == null &&
+                phoneNumber.isNotEmpty() && phoneNumberError == null &&
+                email.isNotEmpty() && emailError == null &&
+                street.isNotEmpty() && streetError == null &&
+                houseNumber.isNotEmpty() && houseNumberError == null &&
+                city.isNotEmpty() && cityError == null &&
+                postalCode.isNotEmpty() && postalCodeError == null &&
+                vat.isNotEmpty() && vatError == null
+    }
+}

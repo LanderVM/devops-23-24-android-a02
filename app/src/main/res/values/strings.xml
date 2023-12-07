@@ -124,6 +124,7 @@
     <string name="strThePasswordNeedsToContainAtLeastOneLetterAndDigit">The password needs to contain at least one letter and digit</string>
     <string name="strThePhoneCanNotBeBlank">The phone can\'t be blank</string>
     <string name="strThePhoneNumberShouldBeContentJustDigit">The phone number should be content just digit</string>
+    <string name="strThePhoneNumberShouldBeCorrect">This number isn\'t correct</string>
     <string name="strInvalidVat">The VAT number isn\'t valid</string>
     <string name="strInvalidText">This cannot be empty</string>
 
