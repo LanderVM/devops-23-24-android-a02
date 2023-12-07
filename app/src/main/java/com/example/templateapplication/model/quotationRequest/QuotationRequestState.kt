@@ -1,5 +1,6 @@
 package com.example.templateapplication.model.quotationRequest
 
+import android.util.Log
 import java.util.Calendar
 
 data class QuotationRequestState(
@@ -29,15 +30,23 @@ data class Address(
     val city: String = "",
 )
 
-fun parseAddress(addressString: String): Address {
+fun parseAddress(addressString: String): Address { // TODO move to api stuff
+    Log.i("RestApi parseAddress", "Address to parse: $addressString")
     val parts = addressString.split(",")
-
+    Log.i("RestApi parseAddress", "Address parts: $parts")
     val streetHouseNumber = parts[0].trim().split(" ")
+    Log.i("RestApi parseAddress", "assisting object streetHouseNumber: $streetHouseNumber")
     val street = streetHouseNumber.dropLast(1).joinToString(" ")
+    Log.i("RestApi parseAddress", "Parsed street: $street")
     val houseNumber = streetHouseNumber.last()
+    Log.i("RestApi parseAddress", "Parsed houseNumber: $houseNumber")
 
-    val postalCode = parts[1].trim()
-    val city = parts[2].trim()
+    val postalCodeCity = parts[1].trim().split(" ")
+    Log.i("RestApi parseAddress", "assisting object postalCodeCity: $postalCodeCity")
+    val postalCode = postalCodeCity[0]
+    Log.i("RestApi parseAddress", "Parsed postalCode: $postalCode")
+    val city = postalCodeCity.subList(1, postalCodeCity.size).joinToString(" ")
+    Log.i("RestApi parseAddress", "Parsed city: $city")
 
     return Address(street, houseNumber, postalCode, city)
 }

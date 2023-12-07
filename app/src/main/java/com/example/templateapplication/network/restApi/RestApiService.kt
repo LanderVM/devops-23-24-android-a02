@@ -1,7 +1,11 @@
 package com.example.templateapplication.network.restApi
 
 
+import com.example.templateapplication.data.QuotationPostResponse
+import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import java.math.BigDecimal
 
 interface RestApiService {
@@ -16,6 +20,8 @@ interface RestApiService {
 
     @GET("Quotation/Dates")
     suspend fun getDates(): DatesRangeData
+    @POST("Quotation/TempAndroid")
+    suspend fun postQuotationRequest(@Body body: ApiQuotationRequestPost): Call<QuotationPostResponse>
 }
 
 

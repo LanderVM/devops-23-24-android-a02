@@ -129,7 +129,7 @@ fun SummaryScreen (
         Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {
-
+                      quotationRequestViewModel.sendQuotationRequest()
             },
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(

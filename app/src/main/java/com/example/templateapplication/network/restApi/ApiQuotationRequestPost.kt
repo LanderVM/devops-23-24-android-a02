@@ -1,0 +1,44 @@
+package com.example.templateapplication.network.restApi
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ApiQuotationRequestPost (
+    val formulaId: Int,
+    val eventLocation: Address,
+    val startTime: String,
+    val endTime: String,
+    val equipments: List<EquipmentSelected>,
+    val customer: Customer,
+    val isTripelBier: Boolean,
+    val numberOfPeople: Int,
+)
+
+@Serializable
+data class Customer(
+    val firstName: String,
+    val lastName: String,
+    val email: Email,
+    val billingAddress: Address,
+    val phoneNumber: String,
+    val vatNumber: String,
+)
+
+@Serializable
+data class EquipmentSelected(
+    val equipmentId: Int,
+    val amount: Int,
+)
+
+@Serializable
+data class Address(
+    val street: String = "",
+    val houseNumber: String = "",
+    val postalCode: String = "",
+    val city: String = "",
+)
+
+@Serializable
+data class Email(
+    val email: String,
+)

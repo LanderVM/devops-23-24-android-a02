@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -21,6 +20,12 @@ import com.example.templateapplication.model.quotationRequest.DateRangesApiState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
+import com.example.templateapplication.model.quotationRequest.parseAddress
+import com.example.templateapplication.network.restApi.Address
+import com.example.templateapplication.network.restApi.ApiQuotationRequestPost
+import com.example.templateapplication.network.restApi.Customer
+import com.example.templateapplication.network.restApi.Email
+import com.example.templateapplication.network.restApi.EquipmentSelected
 import com.example.templateapplication.validation.ValidateEmailUseCase
 import com.example.templateapplication.validation.ValidateNotEmptyUseCase
 import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
@@ -30,6 +35,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -117,6 +123,93 @@ class QuotationRequestViewModel(
                     e.message ?: "Failed to retrieve date ranges from api"
                 )
                 dateRangesApiState = DateRangesApiState.Error(errorMessage)
+            }
+
+        }
+    }
+
+    var postQuotationRequestApiState: ApiResponse<Int> by mutableStateOf(
+        ApiResponse.Loading
+    )
+        private set
+
+    fun sendQuotationRequest() {
+        viewModelScope.launch {
+            try {
+                Log.i("QuotationRequestViewModel sendQuotationRequest", "Preparing body..")
+                _quotationRequestState.update {
+                    it.copy(eventLocation = parseAddress(_quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address))
+                }
+                Log.i(
+                    "QuotationRequestViewModel sendQuotationRequest",
+                    "Set eventLocation property to ${_quotationRequestState.value.eventLocation}"
+                )
+                // TODO extra material from ui state to request state property here
+                Log.i(
+                    "QuotationRequestViewModel sendQuotationRequest",
+                    "Request state ready to use: ${_quotationRequestState.value}"
+                )
+                Log.i(
+                    "QuotationRequestViewModel sendQuotationRequest",
+                    "Creating post request body from Request state.."
+                )
+                val body = ApiQuotationRequestPost(
+                    _quotationRequestState.value.formulaId,
+                    Address(
+                        _quotationRequestState.value.eventLocation.street,
+                        _quotationRequestState.value.eventLocation.houseNumber,
+                        _quotationRequestState.value.eventLocation.postalCode,
+                        _quotationRequestState.value.eventLocation.city,
+                    ),
+                    _quotationRequestState.value.startTime?.toInstant().toString(),
+                    _quotationRequestState.value.endTime?.toInstant().toString(),
+                    _quotationRequestState.value.equipments.map {
+                        EquipmentSelected(it.extraItemId, it.amount + 1) // TODO tijdelijk amount = 1 door de extra equipment bug
+                    },
+                    Customer(
+                        _quotationRequestState.value.customer.firstName,
+                        _quotationRequestState.value.customer.lastName,
+                        Email(
+                            _quotationRequestState.value.customer.email,
+                        ),
+                        Address(
+                            _quotationRequestState.value.customer.billingAddress.street,
+                            _quotationRequestState.value.customer.billingAddress.houseNumber,
+                            _quotationRequestState.value.customer.billingAddress.postalCode,
+                            _quotationRequestState.value.customer.billingAddress.city,
+                        ),
+                        _quotationRequestState.value.customer.phoneNumber,
+                        _quotationRequestState.value.customer.vatNumber,
+                    ),
+                    _quotationRequestState.value.isTripelBier,
+                    _quotationRequestState.value.numberOfPeople,
+                )
+                Log.i(
+                    "QuotationRequestViewModel sendQuotationRequest",
+                    "Post request body created: $body"
+                )
+                Log.i("QuotationRequestViewModel sendQuotationRequest", "Sending request to api..")
+                val response =
+                    restApiRepository.postQuotationRequest(body).execute() // TODO fix response bug
+                // TODO confirmation popup if you want to send the quotation
+                // TODO confirmed popup if quotation was sent in
+
+                if (!response.isSuccessful) throw IOException(response.errorBody().toString())
+
+                postQuotationRequestApiState =
+                    ApiResponse.Success(response.body()?.quotationId ?: -1)
+            } catch (e: IOException) {
+                Log.e(
+                    "RestApi sendQuotationRequest",
+                    e.message ?: "Post request failed"
+                )
+                postQuotationRequestApiState = ApiResponse.Error
+            }catch (e: HttpException) {
+                Log.e(
+                    "RestApi sendQuotationRequest",
+                    e.message ?: "Post request failed"
+                )
+                postQuotationRequestApiState = ApiResponse.Error
             }
 
         }

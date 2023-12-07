@@ -5,9 +5,12 @@ import android.util.Log
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.quotationRequest.DisabledDatesState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
+import com.example.templateapplication.network.restApi.ApiQuotationRequestPost
 import com.example.templateapplication.network.restApi.RestApiService
 import com.example.templateapplication.network.restApi.asDomainObject
 import com.example.templateapplication.network.restApi.asDomainObjects
+import kotlinx.serialization.Serializable
+import retrofit2.Call
 import java.math.BigDecimal
 
 interface ApiRepository {
@@ -15,7 +18,13 @@ interface ApiRepository {
     suspend fun getEstimationDetails(): EstimationDetails
     suspend fun calculatePrice(): BigDecimal
     suspend fun getDateRanges(): List<DisabledDatesState>
+    suspend fun postQuotationRequest(body: ApiQuotationRequestPost): Call<QuotationPostResponse>
 }
+
+@Serializable
+data class QuotationPostResponse( // TODO move to ApiQuotationRequestPost && fix bug
+    val quotationId: Int,
+)
 
 class RestApiRepository(
     private val restApiService: RestApiService
@@ -30,6 +39,11 @@ class RestApiRepository(
     override suspend fun getDateRanges(): List<DisabledDatesState> {
         Log.i("RestAPI getDateRanges", "Retrieving list of date ranges from api..")
         return restApiService.getDates().asDomainObjects()
+    }
+
+    override suspend fun postQuotationRequest(body: ApiQuotationRequestPost): Call<QuotationPostResponse> {
+        Log.i("RestAPI postQuotationRequest", "Attempting to POST a new quotation request to api..")
+        return restApiService.postQuotationRequest(body)
     }
 
 }
