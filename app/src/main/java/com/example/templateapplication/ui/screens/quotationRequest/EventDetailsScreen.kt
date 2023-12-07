@@ -1,5 +1,6 @@
 package com.example.templateapplication.ui.screens.quotationRequest
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.math.log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +47,7 @@ fun EventDetailsScreen(
     val scrollState = rememberScrollState()
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
     val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
+    val dateState by quotationRequestViewModel.disableDatesUiState.collectAsState()
 
     var nextButtonEnabled by remember { mutableStateOf(false) }
     var recheckNextButtonStatus by remember { mutableStateOf(false) }
@@ -73,16 +76,11 @@ fun EventDetailsScreen(
                     return false
                 }
 
-                // vervang dit door de data uit de api call
-                val dateRanges = listOf(
-                    Pair("2023-12-05 00:00:00", "2023-12-07 00:00:00"),
-                    Pair("2023-12-10 00:00:00", "2023-12-12 00:00:00"),
-                    Pair("2023-12-15 00:00:00", "2023-12-18 00:00:00")
-                )
                 //itereer door de lijst van dateRange en convert naar millisecondes
-                for ((start, end) in dateRanges) {
-                    val startMillis = dateFormat.parse(start)?.time
-                    val endMillis = dateFormat.parse(end)?.time
+                for (item in dateState.listDateRanges) {
+                    Log.i("Result123", item.toString())
+                    val startMillis = dateFormat.parse(item.startTime)?.time
+                    val endMillis = dateFormat.parse(item.endTime)?.time
                     if (startMillis != null && endMillis != null) {
                         if (utcTimeMillis in startMillis..endMillis) {
                             return false

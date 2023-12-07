@@ -29,3 +29,4 @@ data class Address(
     val postalCode: String = "",
     val city: String = "",
 )
+
