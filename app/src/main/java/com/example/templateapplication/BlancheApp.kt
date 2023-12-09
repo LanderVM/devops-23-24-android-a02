@@ -56,7 +56,7 @@ fun BlancheApp(
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
-        // VIEWMODELS
+        // VIEWMODELS TODO only create these when called to optimize startup perhaps?
         var homeViewModel: HomeViewModel = viewModel()
         var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
         var priceEstimationViewModel: PriceEstimationViewModel =
