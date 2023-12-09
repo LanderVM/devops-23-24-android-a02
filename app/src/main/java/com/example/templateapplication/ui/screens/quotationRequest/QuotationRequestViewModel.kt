@@ -68,10 +68,6 @@ class QuotationRequestViewModel(
         }
     }
 
-    fun canNavigateNext(): Boolean {
-        return true //TODO fix
-    }
-
     // ---------------------------------------- EVENT DETAILS: EVENT DETAILS
     private val _quotationRequestState = MutableStateFlow(QuotationRequestState())
     val quotationRequestState = _quotationRequestState.asStateFlow()
@@ -128,7 +124,7 @@ class QuotationRequestViewModel(
         }
     }
 
-    var postQuotationRequestApiState: ApiResponse<Int> by mutableStateOf(
+    var postQuotationRequestApiState: ApiResponse<ApiQuotationRequestPost> by mutableStateOf(
         ApiResponse.Loading
     )
         private set
@@ -144,16 +140,12 @@ class QuotationRequestViewModel(
                     "QuotationRequestViewModel sendQuotationRequest",
                     "Set eventLocation property to ${_quotationRequestState.value.eventLocation}"
                 )
-                // TODO extra material from ui state to request state property here
-                Log.i(
-                    "QuotationRequestViewModel sendQuotationRequest",
-                    "Request state ready to use: ${_quotationRequestState.value}"
-                )
                 Log.i(
                     "QuotationRequestViewModel sendQuotationRequest",
                     "Creating post request body from Request state.."
                 )
                 val body = ApiQuotationRequestPost(
+                    null,
                     _quotationRequestState.value.formulaId,
                     Address(
                         _quotationRequestState.value.eventLocation.street,
@@ -164,9 +156,10 @@ class QuotationRequestViewModel(
                     _quotationRequestState.value.startTime?.toInstant().toString(),
                     _quotationRequestState.value.endTime?.toInstant().toString(),
                     _quotationRequestState.value.equipments.map {
-                        EquipmentSelected(it.extraItemId, it.amount + 1) // TODO tijdelijk amount = 1 door de extra equipment bug
+                        EquipmentSelected(it.extraItemId, it.amount)
                     },
                     Customer(
+                        null,
                         _quotationRequestState.value.customer.firstName,
                         _quotationRequestState.value.customer.lastName,
                         Email(
@@ -190,14 +183,14 @@ class QuotationRequestViewModel(
                 )
                 Log.i("QuotationRequestViewModel sendQuotationRequest", "Sending request to api..")
                 val response =
-                    restApiRepository.postQuotationRequest(body).execute() // TODO fix response bug
-                // TODO confirmation popup if you want to send the quotation
+                    restApiRepository.postQuotationRequest(body).execute()
+                // TODO fix response bug (see discord #android)
                 // TODO confirmed popup if quotation was sent in
 
-                if (!response.isSuccessful) throw IOException(response.errorBody().toString())
+                if (!response.isSuccessful) throw IOException(response.errorBody().toString()) // TODO proper showing of error in ui
 
                 postQuotationRequestApiState =
-                    ApiResponse.Success(response.body()?.quotationId ?: -1)
+                    ApiResponse.Success(response.body()!!)
             } catch (e: IOException) {
                 Log.e(
                     "RestApi sendQuotationRequest",
