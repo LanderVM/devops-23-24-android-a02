@@ -197,14 +197,18 @@ class QuotationRequestViewModel(
                     e.message ?: "Post request failed"
                 )
                 postQuotationRequestApiState = ApiResponse.Error
-            }catch (e: HttpException) {
+            } catch (e: HttpException) {
                 Log.e(
                     "RestApi sendQuotationRequest",
                     e.message ?: "Post request failed"
                 )
                 postQuotationRequestApiState = ApiResponse.Error
+            } catch (e: Exception) { // TODO fix polymorphic serializer was not found for missing class discriminator ('null)
+                Log.e(
+                    "RestApi sendQuotationRequest",
+                    e.message ?: "Post request error"
+                )
             }
-
         }
     }
 
