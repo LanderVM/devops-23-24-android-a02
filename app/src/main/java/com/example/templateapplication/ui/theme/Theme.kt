@@ -93,7 +93,7 @@ fun BlancheTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColors
+        //darkTheme -> DarkColors
         else -> LightColors
     }
     val view = LocalView.current

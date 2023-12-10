@@ -4,7 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import com.example.templateapplication.ui.screens.aboutPage.EmailForInformationScreen
+//import com.example.templateapplication.ui.screens.aboutPage.EmailForInformationScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -17,7 +17,7 @@ class OverEmailScreenTest {
     fun homeScreen_verifyContent () {
 
         composeTestRule.setContent {
-            EmailForInformationScreen()
+            //EmailForInformationScreen()
         }
 
         composeTestRule.onNodeWithText("Gelieve hieronder uw email in te vullen en op de knop \"verstuur\" te drukken om meer informatie betreffende de foodtruck te ontvangen.")

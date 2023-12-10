@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -53,6 +54,7 @@ import com.example.templateapplication.R
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
+import com.example.templateapplication.ui.commons.AlertPopUp
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
@@ -70,6 +72,7 @@ fun SummaryScreen (
     val scrollState = rememberScrollState()
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
     val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
+    var showConfirmationPop by remember { mutableStateOf(false) }
 
 
     Column (
@@ -129,7 +132,7 @@ fun SummaryScreen (
         Spacer(modifier = Modifier.height(30.dp))
         Button (
             onClick = {
-                      quotationRequestViewModel.sendQuotationRequest()
+                showConfirmationPop = true
             },
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
@@ -143,8 +146,18 @@ fun SummaryScreen (
         }
         Spacer(modifier = Modifier.height(20.dp))
     }
-
+    if (showConfirmationPop) {
+        AlertPopUp(
+            onDismissRequest = { showConfirmationPop = false },
+            dialogTitle = stringResource(id = R.string.alert_title),
+            dialogText = stringResource(id = R.string.alert_text),
+            confirmText = stringResource(id = R.string.alert_confirmation),
+            dismissText = stringResource(id = R.string.alert_dismiss),
+            onConfirmation = { quotationRequestViewModel.sendQuotationRequest() }
+        )
+    }
 }
+
 @Composable
 fun HeadOfPage1( // TODO there are two of these in this package?
     modifier: Modifier = Modifier
