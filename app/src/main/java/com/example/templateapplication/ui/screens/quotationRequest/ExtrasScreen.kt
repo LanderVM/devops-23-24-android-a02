@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.quotationRequest
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
+import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.NextPageButton
@@ -72,11 +71,11 @@ fun ExtrasScreen(
     val options = listOf(stringResource(id = R.string.extraMaterial_sort_price_desc), stringResource(id = R.string.extraMaterial_sort_price_asc), stringResource(id = R.string.extraMaterial_sort_name_desc), stringResource(id = R.string.extraMaterial_sort_name_asc))
 
     when(val extraEquipmentApiState = quotationRequestViewModel.extraMateriaalApiState){
-        is ExtraItemDetailsApiState.Loading -> Text(stringResource(id = R.string.loading))
-        is ExtraItemDetailsApiState.Error -> {
-            val errorMessage = extraEquipmentApiState.errorMessage
-            Text(stringResource(id = R.string.error, errorMessage))}
-        is ExtraItemDetailsApiState.Success -> {
+        is ApiResponse.Loading -> Text(stringResource(id = R.string.loading))
+        is ApiResponse.Error -> {
+//            val errorMessage = extraEquipmentApiState.errorMessage TODO
+            Text(stringResource(id = R.string.error, "todo"))}
+        is ApiResponse.Success -> {
 
     LazyColumn(
         modifier = Modifier
@@ -114,7 +113,6 @@ fun ExtrasScreen(
                 }
             }
         }
-
 
         items(quotationRequestViewModel.getListSorted(selectedIndex)){ extraItem ->
             ExtraItemCard(

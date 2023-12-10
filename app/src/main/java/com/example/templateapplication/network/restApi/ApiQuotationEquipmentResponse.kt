@@ -23,14 +23,13 @@ data class ApiQuotationEquipment(
     val formulaIds: List<Int>
 )
 
-fun ApiQuotationEquipment.asDbEquipment(): DbEquipment = DbEquipment( // TODO not needed
+fun ApiQuotationEquipment.asDbEquipment(): DbEquipment = DbEquipment(
     id = id,
     title = title,
     attributes = attributes,
     price = price,
     stock = stock,
     imageData = imageData.asDbImageData(),
-    formulaIds = formulaIds
 )
 
 @Serializable

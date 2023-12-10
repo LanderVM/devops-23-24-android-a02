@@ -8,7 +8,7 @@ data class QuotationRequestState(
     val eventLocation: Address = Address(),
     val startTime: Calendar? = null,
     val endTime: Calendar? = null,
-    val equipments: List<ExtraItemState> = emptyList(),
+    val equipments: List<ExtraItemState> = emptyList(), // TODO use roomdb for this (only once, not as flow)
     val customer: Customer = Customer(),
     val isTripelBier: Boolean = false,
     val numberOfPeople: Int = 0,
@@ -30,7 +30,7 @@ data class Address(
     val city: String = "",
 )
 
-fun parseAddress(addressString: String): Address { // TODO move to api stuff
+fun parseAddress(addressString: String): Address { // TODO move to api stuff?
     Log.i("RestApi parseAddress", "Address to parse: $addressString")
     val parts = addressString.split(",")
     Log.i("RestApi parseAddress", "Address parts: $parts")

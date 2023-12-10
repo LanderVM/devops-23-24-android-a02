@@ -39,34 +39,37 @@ class RestApiRepository(
     private val quotationDao: QuotationDao
 ) : ApiRepository {
 
-    // NIEUW v
     override suspend fun insertEquipment(item: ApiQuotationEquipment) {
+        Log.i("ApiRepository insertEquipment", "Starting insert into RoomDb: $item")
+        var dbEquipment = item.asDbEquipment()
+        Log.i("ApiRepository insertEquipment", "Converted to databaase item: $dbEquipment")
         quotationDao.insertEquipment(item.asDbEquipment())
+        Log.i("ApiRepository insertEquipment", "Inserted into RoomDb.")
     }
 
     override fun getEquipment(): Flow<List<Equipment>> =
-        quotationDao.getEquipment().map {
+        quotationDao.getEquipment()
+            .map {
             it.asDomainObjects()
         }.onEach { if (it.isEmpty()) refresh() }
 
     override suspend fun refresh() {
         restApiService.getEquipmentAsFlow().collect {
             Log.i("RestApi getEquipment", "Retrieving latest equipment list from api..")
+            Log.i("RestApi getEquipment", "Found: $it")
             for (equipment in it.equipment) {
+                Log.i("RestApi getEquipment", "Inserting into RoomDb: $it")
                 insertEquipment(equipment)
             }
+            Log.i("RestApi getEquipment", "Retrieved latest equipment from api.")
         }
     }
 
-
-    // OUD te refactoren v
-    override suspend fun getQuotationExtraEquipment() = // TODO opsplitsen in getEquipment
+    override suspend fun getQuotationExtraEquipment() =
         restApiService.getQuotationEquipment().asDomainObjects()
 
-    override suspend fun getEstimationDetails() = // TODO opsplitsen in getEquipment en getFormules en getUnavailableDateRanges
+    override suspend fun getEstimationDetails() =
         restApiService.getEstimationDetails().asDomainObject()
-
-    // OUD mag blijven v
 
     override suspend fun calculatePrice() = restApiService.calculatePrice()
     override suspend fun getUnavailableDateRanges(): List<DisabledDatesState> {

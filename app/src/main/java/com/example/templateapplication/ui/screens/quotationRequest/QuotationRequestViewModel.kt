@@ -15,8 +15,6 @@ import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
-import com.example.templateapplication.model.common.quotation.Equipment
-import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
 import com.example.templateapplication.model.quotationRequest.DateRangesApiState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
@@ -33,10 +31,7 @@ import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
 import com.example.templateapplication.validation.ValidateRequiredNumberUseCase
 import com.example.templateapplication.validation.ValidateVatUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -605,7 +600,7 @@ class QuotationRequestViewModel(
 
     // ---------------------------------------- VALIDATION
 
-    var extraMateriaalApiState: ExtraItemDetailsApiState by mutableStateOf(ExtraItemDetailsApiState.Loading)
+    var extraMateriaalApiState: ApiResponse<List<ExtraItemState>> by mutableStateOf(ApiResponse.Loading)
         private set
 
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
@@ -632,21 +627,17 @@ class QuotationRequestViewModel(
         }
     }
 
-    lateinit var equipmentListState: StateFlow<List<Equipment>>
-
     private fun getApiExtraEquipment() {
-        try {
-            viewModelScope.launch { restApiRepository.refresh() }
-            equipmentListState = restApiRepository.getEquipment()
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(5_000L),
-                    initialValue = listOf(),
-                )
-            extraMateriaalApiState = ExtraItemDetailsApiState.Success
-        } catch (e: IOException) {
-            val errorMessage = e.message ?: "An error occurred"
-            extraMateriaalApiState = ExtraItemDetailsApiState.Error(errorMessage)
+        viewModelScope.launch {
+            try {
+                val listResult = restApiRepository.getQuotationExtraEquipment()
+                _quotationUiState.update {
+                    it.copy(extraItems = listResult)
+                }
+                extraMateriaalApiState = ApiResponse.Success(listResult)
+            } catch (e: IOException) {
+                extraMateriaalApiState = ApiResponse.Error
+            }
         }
     }
 
@@ -676,10 +667,7 @@ class QuotationRequestViewModel(
             else -> throw IllegalArgumentException("Invalid index: $index")
         }
         return sortedList
-
     }
-
-
 }
 
 sealed class MainEvent {
