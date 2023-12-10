@@ -1,7 +1,7 @@
 package com.example.templateapplication.data
 
 import androidx.compose.ui.graphics.Color
-import com.example.templateapplication.model.formules.Formula
+import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainDarkColor
 import com.example.templateapplication.ui.theme.MainLightColor
@@ -12,13 +12,13 @@ import com.example.templateapplication.ui.theme.MainLightestColor
 class Datasource() {
     fun loadFormules(): List<Formula> {
         val basis = listOf("Foodtruck", "Optioneel bier")
-        val formulaBasis = Formula("Basis", basis)
+        val formulaBasis = Formula(0, "Basis", basis)
 
         val allIn = listOf("Foodtruck", "Vat(en)", "Glazen")
-        val formulaAllIn = Formula("All-In", allIn)
+        val formulaAllIn = Formula(1, "All-In", allIn)
 
         val gevordered = listOf("Foodtruck", "Vat(en)", "Glazen", "BBQ")
-        val formulaGevordered = Formula("Gevordered", gevordered)
+        val formulaGevordered = Formula(2, "Gevordered", gevordered)
 
         return listOf<Formula>(
             formulaBasis, formulaAllIn, formulaGevordered

@@ -15,6 +15,7 @@ import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
+import com.example.templateapplication.model.common.quotation.Equipment
 import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
 import com.example.templateapplication.model.quotationRequest.DateRangesApiState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
@@ -32,7 +33,10 @@ import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
 import com.example.templateapplication.validation.ValidateRequiredNumberUseCase
 import com.example.templateapplication.validation.ValidateVatUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -107,7 +111,7 @@ class QuotationRequestViewModel(
     fun getDateRanges() {
         viewModelScope.launch {
             try {
-                val listDatesResult = restApiRepository.getDateRanges()
+                val listDatesResult = restApiRepository.getUnavailableDateRanges()
                 _quotationUiState.update {
                     it.copy(listDateRanges = listDatesResult)
                 }
@@ -187,7 +191,9 @@ class QuotationRequestViewModel(
                 // TODO fix response bug (see discord #android)
                 // TODO confirmed popup if quotation was sent in
 
-                if (!response.isSuccessful) throw IOException(response.errorBody().toString()) // TODO proper showing of error in ui
+                if (!response.isSuccessful) throw IOException(
+                    response.errorBody().toString()
+                ) // TODO proper showing of error in ui
 
                 postQuotationRequestApiState =
                     ApiResponse.Success(response.body()!!)
@@ -444,13 +450,13 @@ class QuotationRequestViewModel(
 
     fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.AddressChanged-> {
+            is MainEvent.AddressChanged -> {
                 formState = formState.copy(address = event.address)
                 setAddressInput(event.address)
                 validateAddress()
             }
 
-            is MainEvent.NumberOfPeopleChanged-> {
+            is MainEvent.NumberOfPeopleChanged -> {
                 formState = formState.copy(numberOfPeople = event.numberOfPeople)
                 if (validateNumberOfPeople()) {
                     setAmountOfPeople(event.numberOfPeople)
@@ -459,79 +465,81 @@ class QuotationRequestViewModel(
 
             is MainEvent.FirstNameChanged -> {
                 formState = formState.copy(firstName = event.firstName)
-                if (validateFirstName()){
+                if (validateFirstName()) {
                     setFirstName(event.firstName)
                 }
             }
 
             is MainEvent.LastNameChanged -> {
                 formState = formState.copy(lastName = event.lastName)
-                if (validateLastName()){
+                if (validateLastName()) {
                     setLastName(event.lastName)
                 }
             }
 
             is MainEvent.PhoneNumberChanged -> {
                 formState = formState.copy(phoneNumber = event.phoneNumber)
-                if (validatePhoneNumber()){
+                if (validatePhoneNumber()) {
                     setPhoneNumber(event.phoneNumber)
                 }
             }
 
             is MainEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
-                if (validateEmail()){
+                if (validateEmail()) {
                     setEmail(event.email)
                 }
             }
 
             is MainEvent.StreetChanged -> {
                 formState = formState.copy(street = event.street)
-                if (validateStreet()){
+                if (validateStreet()) {
                     setStreet(event.street)
                 }
             }
 
             is MainEvent.HouseNumberChanged -> {
                 formState = formState.copy(houseNumber = event.houseNumber)
-                if (validateHouseNumber()){
+                if (validateHouseNumber()) {
                     setHouseNumber(event.houseNumber)
                 }
             }
 
             is MainEvent.CityChanged -> {
                 formState = formState.copy(city = event.city)
-                if (validateCity()){
+                if (validateCity()) {
                     setCity(event.city)
                 }
             }
 
             is MainEvent.PostalCodeChanged -> {
                 formState = formState.copy(postalCode = event.postalCode)
-                if (validatePostalCode()){
+                if (validatePostalCode()) {
                     setPostalCode(event.postalCode)
                 }
             }
 
             is MainEvent.VatChanged -> {
                 formState = formState.copy(vat = event.vat.uppercase())
-                if (validateVat()){
+                if (validateVat()) {
                     setVatNumber(event.vat.uppercase())
                 }
             }
         }
     }
 
-    private fun validateAddress(): Boolean{
+    private fun validateAddress(): Boolean {
         val result = validateText.execute(formState.address)
         formState = formState.copy(addressError = result.errorMessage)
         return result.successful
     }
+
     private fun validateNumberOfPeople(): Boolean {
         val result = validateNumber.execute(formState.numberOfPeople)
         formState = formState.copy(numberOfPeopleError = result.errorMessage)
         return result.successful
     }
+
     private fun validateFirstName(): Boolean {
         val result = validateText.execute(formState.firstName)
         formState = formState.copy(firstNameError = result.errorMessage)
@@ -590,6 +598,7 @@ class QuotationRequestViewModel(
     fun quotationScreenCanNavigate(): Boolean {
         return formState.isReadyForQuotation()
     }
+
     fun personalDetailScreenCanNavigate(): Boolean {
         return formState.isReadyForPersonalDetails()
     }
@@ -606,7 +615,7 @@ class QuotationRequestViewModel(
             }
 
     fun getTotalPrice(): Double {
-        return _quotationUiState.value.extraItems.sumOf { it.price * it.amount }
+        return _quotationUiState.value.extraItems.sumOf { a -> a.price * a.extraItemId }
     }
 
     fun addItemToCart(item: ExtraItemState) {
@@ -623,20 +632,21 @@ class QuotationRequestViewModel(
         }
     }
 
+    lateinit var equipmentListState: StateFlow<List<Equipment>>
+
     private fun getApiExtraEquipment() {
-        viewModelScope.launch {
-            try {
-                val listResult = restApiRepository.getQuotationExtraEquipment()
-                _quotationUiState.update {
-                    it.copy(extraItems = listResult)
-                }
-                extraMateriaalApiState = ExtraItemDetailsApiState.Success(listResult)
-            } catch (e: IOException) {
-                val errorMessage = e.message ?: "An error occurred"
-
-                extraMateriaalApiState = ExtraItemDetailsApiState.Error(errorMessage)
-            }
-
+        try {
+            viewModelScope.launch { restApiRepository.refresh() }
+            equipmentListState = restApiRepository.getEquipment()
+                .stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000L),
+                    initialValue = listOf(),
+                )
+            extraMateriaalApiState = ExtraItemDetailsApiState.Success
+        } catch (e: IOException) {
+            val errorMessage = e.message ?: "An error occurred"
+            extraMateriaalApiState = ExtraItemDetailsApiState.Error(errorMessage)
         }
     }
 
@@ -673,7 +683,7 @@ class QuotationRequestViewModel(
 }
 
 sealed class MainEvent {
-    data class AddressChanged(val address: String): MainEvent()
+    data class AddressChanged(val address: String) : MainEvent()
     data class NumberOfPeopleChanged(val numberOfPeople: String) : MainEvent()
     data class FirstNameChanged(val firstName: String) : MainEvent()
     data class LastNameChanged(val lastName: String) : MainEvent()
@@ -721,6 +731,7 @@ data class MainState(
                 postalCode.isNotEmpty() && postalCodeError == null &&
                 vatError == null
     }
+
     fun isReadyForPersonalDetails(): Boolean {
         return numberOfPeople.isNotEmpty() && numberOfPeopleError == null &&
                 address.isNotEmpty() && addressError == null

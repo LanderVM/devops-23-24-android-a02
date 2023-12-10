@@ -1,6 +1,7 @@
 package com.example.templateapplication.network.restApi
 
 
+import kotlinx.coroutines.flow.flow
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -9,7 +10,7 @@ import java.math.BigDecimal
 
 interface RestApiService {
     @GET("Equipment")
-    suspend fun getQuotationEquipment(): QuotationEquipmentData
+    suspend fun getQuotationEquipment(): QuotationEquipmentData // TODO rename
 
     @GET("Quotation/Estimation/Details")
     suspend fun getEstimationDetails(): EstimationDetailsData
@@ -23,4 +24,5 @@ interface RestApiService {
     suspend fun postQuotationRequest(@Body body: ApiQuotationRequestPost): Call<ApiQuotationRequestPost>
 }
 
+fun RestApiService.getEquipmentAsFlow() = flow { emit(getQuotationEquipment())}
 

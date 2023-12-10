@@ -6,7 +6,7 @@ data class ExtraItemListState( // TODO move
     val currentExtraMateriaalList: List<ExtraItemState> = emptyList())
 
 sealed interface ExtraItemDetailsApiState{
-    data class Success(val result: List<ExtraItemState>) : ExtraItemDetailsApiState
+    object Success : ExtraItemDetailsApiState
     data class Error(val errorMessage: String): ExtraItemDetailsApiState
     object Loading : ExtraItemDetailsApiState
 }
