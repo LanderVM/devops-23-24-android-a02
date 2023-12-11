@@ -105,7 +105,7 @@ fun EquipmentOverviewScreen(
                 }
 
 
-                items(list.equipmentListState) { extraItem ->
+                items(equipmentOverviewViewModel.getListSorted(selectedIndex)) { extraItem ->
                     ExtraItemCard(
                         modifier = Modifier.padding(8.dp),
                         extraItem = extraItem,

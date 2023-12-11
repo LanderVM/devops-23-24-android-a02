@@ -72,8 +72,8 @@ class EquipmentOverviewViewModel(
     fun getListSorted(index: Int): List<Equipment> {
         Log.i("Test", equipmentDbList.value.toString())
         val sortedList = when (index) {
-            0 -> equipmentDbList.value.equipmentListState.sortedBy { it.price } // Sort asc
-            1 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.price } // Sort desc
+            0 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.price } // Sort asc
+            1 -> equipmentDbList.value.equipmentListState.sortedBy { it.price } // Sort desc
             2 -> equipmentDbList.value.equipmentListState.sortedBy { it.title } // Sort by name asc
             3 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")
