@@ -1,5 +1,9 @@
 package com.example.templateapplication.data
 
+import android.content.Context
+import androidx.room.Room
+import com.example.templateapplication.data.database.BlancheDatabase
+import com.example.templateapplication.data.database.QuotationDao
 import com.example.templateapplication.network.googleMapsApi.GooglePlacesApiService
 import com.example.templateapplication.network.restApi.RestApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -15,7 +19,9 @@ interface AppContainer {
     val apiRepository: ApiRepository
 }
 
-class DefaultAppContainer: AppContainer {
+class DefaultAppContainer(
+    private val blancheContext: Context
+): AppContainer {
     private val googleMapsBaseUrl = GooglePlacesApiService.BASE_URL
     private val restApiBaseUrl = "http://10.0.2.2:5292/api/" // TODO move & quick test
 
@@ -53,7 +59,18 @@ class DefaultAppContainer: AppContainer {
         ApiGoogleMapsRepository(googleMapsRetrofitService)
     }
 
+    private val blancheDb : BlancheDatabase by lazy {
+        Room.databaseBuilder(blancheContext, BlancheDatabase::class.java, "blanche_db")
+            .build()
+    }
+
+    private val quotationDao: QuotationDao by lazy {
+        blancheDb.quotationDao()
+    }
+
     override val apiRepository: ApiRepository by lazy {
-        RestApiRepository(restApiRetrofitService)
+        RestApiRepository(
+            quotationDao = quotationDao,
+            restApiService = restApiRetrofitService)
     }
 }

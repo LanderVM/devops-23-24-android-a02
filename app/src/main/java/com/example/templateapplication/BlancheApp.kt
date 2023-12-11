@@ -37,6 +37,8 @@ import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
 import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
+import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewScreen
+import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewViewModel
 import com.example.templateapplication.ui.screens.quotationRequest.SummaryScreen
 import kotlinx.coroutines.launch
 
@@ -61,6 +63,7 @@ fun BlancheApp(
         var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
         var priceEstimationViewModel: PriceEstimationViewModel =
             viewModel(factory = PriceEstimationViewModel.Factory)
+        var equipmentOverviewViewModel: EquipmentOverviewViewModel = viewModel(factory = EquipmentOverviewViewModel.Factory)
 
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
@@ -175,11 +178,9 @@ fun BlancheApp(
                         )
                     }
                     composable(NavigationRoutes.ExtrasOverview.name) {
-                        ExtrasScreen(
+                        EquipmentOverviewScreen(
                             modifier = Modifier.padding(innerPadding),
-                            quotationRequestViewModel = quotationRequestViewModel,
-                            navigateSamenvatting = { navController.navigate(NavigationRoutes.SummaryData.name) },
-                            isOverview = true
+                            equipmentOverviewViewModel = equipmentOverviewViewModel
                         )
                     }
                     composable(NavigationRoutes.GuidePrice.name) {

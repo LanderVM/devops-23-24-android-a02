@@ -1,14 +1,15 @@
 package com.example.templateapplication.network.restApi
 
 import android.annotation.SuppressLint
-import android.util.Log
+import com.example.templateapplication.data.database.DbEquipment
+import com.example.templateapplication.data.database.DbImageData
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class QuotationEquipmentData(
     val equipment: List<ApiQuotationEquipment>,
-    val totalAmount: Int
+    val totalAmount: Int // TODO remove from Api, web & here
 )
 
 @Serializable
@@ -22,10 +23,24 @@ data class ApiQuotationEquipment(
     val formulaIds: List<Int>
 )
 
+fun ApiQuotationEquipment.asDbEquipment(): DbEquipment = DbEquipment(
+    id = id,
+    title = title,
+    attributes = attributes,
+    price = price,
+    stock = stock,
+    imageData = imageData.asDbImageData(),
+)
+
 @Serializable
 data class QuotationImageData(
     val imageUrl: String,
     val altText: String
+)
+
+fun QuotationImageData.asDbImageData(): DbImageData = DbImageData( // TODO not needed
+    imageUrl = imageUrl,
+    altText = altText,
 )
 
 @SuppressLint("ResourceType")

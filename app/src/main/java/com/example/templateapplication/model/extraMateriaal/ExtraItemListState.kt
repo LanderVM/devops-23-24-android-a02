@@ -1,12 +1,11 @@
 package com.example.templateapplication.model.extraMateriaal
 
-import com.example.templateapplication.model.quotationRequest.ExtraItemState
+import com.example.templateapplication.model.common.quotation.Equipment
 
-data class ExtraItemListState( // TODO move
-    val currentExtraMateriaalList: List<ExtraItemState> = emptyList())
-
-sealed interface ExtraItemDetailsApiState{
-    data class Success(val result: List<ExtraItemState>) : ExtraItemDetailsApiState
-    data class Error(val errorMessage: String): ExtraItemDetailsApiState
+sealed interface ExtraItemDetailsApiState { // TODO rename
+    object Success : ExtraItemDetailsApiState
+    data class Error(val errorMessage: String) : ExtraItemDetailsApiState
     object Loading : ExtraItemDetailsApiState
 }
+
+data class EquipmentListState(val equipmentListState: List<Equipment> = listOf())
