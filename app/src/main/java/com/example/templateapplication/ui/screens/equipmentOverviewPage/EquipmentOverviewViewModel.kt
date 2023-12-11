@@ -12,9 +12,11 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.model.common.quotation.Equipment
+import com.example.templateapplication.model.extraMateriaal.EquipmentListState
 import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -23,6 +25,9 @@ class EquipmentOverviewViewModel(
     private val restApiRepository: ApiRepository,
 ) :
     ViewModel() {
+
+    var extraMateriaalApiState: ExtraItemDetailsApiState by mutableStateOf(ExtraItemDetailsApiState.Loading)
+        private set
 
     init {
         getApiExtraEquipment()
@@ -42,25 +47,24 @@ class EquipmentOverviewViewModel(
         }
     }
 
-    var extraMateriaalApiState: ExtraItemDetailsApiState by mutableStateOf(ExtraItemDetailsApiState.Loading)
-        private set
 
-    lateinit var equipmentDbList: StateFlow<List<Equipment>>
+    lateinit var equipmentDbList: StateFlow<EquipmentListState>
 
     private fun getApiExtraEquipment() {
         try {
             viewModelScope.launch { restApiRepository.refresh() }
-            equipmentDbList = restApiRepository.getEquipment()
+            equipmentDbList = restApiRepository.getEquipment().map { EquipmentListState(it) }
                 .stateIn(
                     scope = viewModelScope,
                     started = SharingStarted.WhileSubscribed(5_000L),
-                    initialValue = listOf(),
+                    initialValue = EquipmentListState(),
                 )
 
-        //            extraMateriaalApiState = ExtraItemDetailsApiState.Success FIXME null reference als dit geset wordt?... pls someone fix this I don't get it
+            extraMateriaalApiState = ExtraItemDetailsApiState.Success
         } catch (e: IOException) {
             val errorMessage = e.message ?: "An error occurred"
-            extraMateriaalApiState = ExtraItemDetailsApiState.Error(errorMessage) // hier waarschijnlijk ook dan?
+            extraMateriaalApiState =
+                ExtraItemDetailsApiState.Error(errorMessage)
         }
     }
 
@@ -68,10 +72,10 @@ class EquipmentOverviewViewModel(
     fun getListSorted(index: Int): List<Equipment> {
         Log.i("Test", equipmentDbList.value.toString())
         val sortedList = when (index) {
-            0 -> equipmentDbList.value.sortedBy { it.price } // Sort asc
-            1 -> equipmentDbList.value.sortedByDescending { it.price } // Sort desc
-            2 -> equipmentDbList.value.sortedBy { it.title } // Sort by name asc
-            3 -> equipmentDbList.value.sortedByDescending { it.title } // Sort by name desc
+            0 -> equipmentDbList.value.equipmentListState.sortedBy { it.price } // Sort asc
+            1 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.price } // Sort desc
+            2 -> equipmentDbList.value.equipmentListState.sortedBy { it.title } // Sort by name asc
+            3 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")
         }
         return sortedList

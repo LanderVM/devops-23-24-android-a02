@@ -65,7 +65,7 @@ class DefaultAppContainer(
     }
 
     private val quotationDao: QuotationDao by lazy {
-        blancheDb.blancheDao()
+        blancheDb.quotationDao()
     }
 
     override val apiRepository: ApiRepository by lazy {

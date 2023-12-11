@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 @Database(entities = [DbEquipment::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class BlancheDatabase : RoomDatabase() {
-    abstract fun blancheDao(): QuotationDao
+    abstract fun quotationDao(): QuotationDao
 }
 
 class Converters {

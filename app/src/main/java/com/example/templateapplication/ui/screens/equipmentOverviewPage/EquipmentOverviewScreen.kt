@@ -23,6 +23,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.common.quotation.Equipment
+import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @ExperimentalMaterial3Api
@@ -49,6 +51,7 @@ fun EquipmentOverviewScreen(
 ) {
 
     var selectedIndex by remember { mutableIntStateOf(0) }
+    val list by equipmentOverviewViewModel.equipmentDbList.collectAsState()
 
     val options = listOf(
         stringResource(id = R.string.extraMaterial_sort_price_desc),
@@ -57,61 +60,61 @@ fun EquipmentOverviewScreen(
         stringResource(id = R.string.extraMaterial_sort_name_asc)
     )
 
-//    when (val extraEquipmentApiState = equipmentOverviewViewModel.extraMateriaalApiState) { FIXME
-//        is ExtraItemDetailsApiState.Loading -> Text(stringResource(id = R.string.loading))
-//        is ExtraItemDetailsApiState.Error -> {
-//            val errorMessage = extraEquipmentApiState.errorMessage
-//            Text(stringResource(id = R.string.error, errorMessage))
-//        }
-//        is ExtraItemDetailsApiState.Success -> {
-    LazyColumn(
-        modifier = Modifier
-            .padding(horizontal = 30.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        item {
-            SingleChoiceSegmentedButtonRow {
-                options.forEachIndexed { index, label ->
-                    SegmentedButton(
-                        shape = SegmentedButtonDefaults.itemShape(
-                            index = index,
-                            count = options.size
-                        ),
-                        onClick = { selectedIndex = index },
-                        selected = index == selectedIndex,
-                        colors = SegmentedButtonColors(
-                            activeContainerColor = Color(0xFFe9dcc5),
-                            activeBorderColor = Color.Black,
-                            activeContentColor = Color.Black,
-                            disabledActiveBorderColor = Color.Black,
-                            disabledActiveContainerColor = Color.White,
-                            disabledActiveContentColor = Color.Black,
-                            disabledInactiveBorderColor = Color.Black,
-                            disabledInactiveContainerColor = Color.Black,
-                            disabledInactiveContentColor = Color.Black,
-                            inactiveBorderColor = Color.Black,
-                            inactiveContainerColor = Color.White,
-                            inactiveContentColor = Color.Black,
-                        ),
-                    ) {
-                        Text(text = label, fontSize = 15.sp)
+    when (val apiState = equipmentOverviewViewModel.extraMateriaalApiState) {
+        is ExtraItemDetailsApiState.Loading -> Text(stringResource(id = R.string.loading))
+        is ExtraItemDetailsApiState.Error -> {
+            Text(apiState.errorMessage)
+        }
+
+        is ExtraItemDetailsApiState.Success -> {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(horizontal = 30.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                item {
+                    SingleChoiceSegmentedButtonRow {
+                        options.forEachIndexed { index, label ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = options.size
+                                ),
+                                onClick = { selectedIndex = index },
+                                selected = index == selectedIndex,
+                                colors = SegmentedButtonColors(
+                                    activeContainerColor = Color(0xFFe9dcc5),
+                                    activeBorderColor = Color.Black,
+                                    activeContentColor = Color.Black,
+                                    disabledActiveBorderColor = Color.Black,
+                                    disabledActiveContainerColor = Color.White,
+                                    disabledActiveContentColor = Color.Black,
+                                    disabledInactiveBorderColor = Color.Black,
+                                    disabledInactiveContainerColor = Color.Black,
+                                    disabledInactiveContentColor = Color.Black,
+                                    inactiveBorderColor = Color.Black,
+                                    inactiveContainerColor = Color.White,
+                                    inactiveContentColor = Color.Black,
+                                ),
+                            ) {
+                                Text(text = label, fontSize = 15.sp)
+                            }
+                        }
                     }
+                }
+
+
+                items(list.equipmentListState) { extraItem ->
+                    ExtraItemCard(
+                        modifier = Modifier.padding(8.dp),
+                        extraItem = extraItem,
+                    )
                 }
             }
         }
-
-
-        items(equipmentOverviewViewModel.getListSorted(selectedIndex)) { extraItem ->
-            ExtraItemCard(
-                modifier = Modifier.padding(8.dp),
-                extraItem = extraItem,
-            )
-        }
     }
 }
-//    }
-//}
 
 @Composable
 fun ExtraItemCard(
