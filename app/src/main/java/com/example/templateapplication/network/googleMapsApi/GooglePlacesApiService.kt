@@ -10,8 +10,8 @@ interface GooglePlacesApiService {
         @Query("types") types: String = "address",
         @Query("input") input: String,
         @Query("language") language: String = "nl",
-        @Query("region") region: String = "be",
-    ): ApiGooglePredictionResponse
+        @Query("components") components: String = "country:BE",
+        ): ApiGooglePredictionResponse
 
     @GET("maps/api/place/findplacefromtext/json")
     suspend fun getPlace(
