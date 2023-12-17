@@ -57,7 +57,7 @@
     <string name="extraMaterial_sort_name_asc">Naam ↑</string>
     <string name="extraMaterial_next_page">Volgende Pagina</string>
 
-    <string name="progressbar_extraMaterial">Extra Materiaal</string>
+    <string name="progressbar_extraMaterial">Extra\'s</string>
     <string name="clearableOutlinedTextField_iconDescription">Knop om het tekstveld leeg te maken</string>
 
     <string name="contactDetails_personal_info">Personalia</string>
@@ -126,7 +126,7 @@
     <string name="strInvalidText">Dit mag niet leeg zijn</string>
     <string name="strInvalidNumber">Waarde moet groter zijn dan 0</string>
 
-    <string name="address_placeholder">adres</string>
+    <string name="address_placeholder">Adres</string>
 
     <string name="alert_title">Bent u zeker?</string>
     <string name="alert_text">Bent u zeker dat u een offerte wilt aanvragen?</string>
