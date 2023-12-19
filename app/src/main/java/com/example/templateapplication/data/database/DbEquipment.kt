@@ -29,6 +29,8 @@ fun DbEquipment.asDomainObject(): Equipment = Equipment(
     attributes = attributes,
     price = price,
     stock = stock,
+    imgUrl = imageData.imageUrl,
+    imgTxt = imageData.altText,
 )
 
 fun List<DbEquipment>.asDomainObjects() = map { it.asDomainObject() }

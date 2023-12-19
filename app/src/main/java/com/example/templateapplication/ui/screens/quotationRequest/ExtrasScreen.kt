@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.quotationRequest
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -49,6 +49,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.templateapplication.R
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
@@ -66,7 +68,6 @@ fun ExtrasScreen(
     isOverview: Boolean, )
 {
 
-// TODO Fix viewmodel bug where adding extra items don't get added correctly
     var selectedIndex by remember { mutableIntStateOf(0) }
     val options = listOf(stringResource(id = R.string.extraMaterial_sort_price_desc), stringResource(id = R.string.extraMaterial_sort_price_asc), stringResource(id = R.string.extraMaterial_sort_name_desc), stringResource(id = R.string.extraMaterial_sort_name_asc))
 
@@ -181,16 +182,18 @@ fun ExtraItemCard(
                 .padding(16.dp)
         ) {
             // Image
-            Image(
-                painter = painterResource(id = R.drawable.foto7), // Replace with actual image
-                contentDescription = null, // Content description can be set based on your use case
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(extraItem.imgUrl)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = R.drawable.foto7),
+                contentDescription = extraItem.imgTxt,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             )
-
             Spacer(modifier = Modifier.height(16.dp))
-
             // Item Details
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -199,14 +202,14 @@ fun ExtraItemCard(
                 // Title
                 Text(
                     modifier = Modifier.size(170.dp, 40.dp),
-                    text = "${extraItem.title}",
+                    text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 // Price
                 Text(
-                    text = "$${extraItem.price}",
+                    text = "€${extraItem.price}",
                     style = MaterialTheme.typography.headlineSmall,
 
                 )

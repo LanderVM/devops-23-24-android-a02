@@ -46,6 +46,6 @@ fun QuotationImageData.asDbImageData(): DbImageData = DbImageData( // TODO not n
 @SuppressLint("ResourceType")
 fun QuotationEquipmentData.asDomainObjects(): List<ExtraItemState> {
     return this.equipment.map {
-        ExtraItemState(it.id, it.title, it.attributes, it.price, it.stock, imageResourceId = 1)
+        ExtraItemState(it.id, it.title, it.attributes, it.price, it.stock, it.imageData.imageUrl, it.imageData.altText)
     }
 }

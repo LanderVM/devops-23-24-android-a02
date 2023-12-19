@@ -1,6 +1,5 @@
 package com.example.templateapplication.model.quotationRequest
 
-import androidx.annotation.DrawableRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +15,7 @@ data class QuotationUiState(
         DropDownOption("Tripel", 1),
     ),
     val googleMaps: GoogleMapsResponse = GoogleMapsResponse(),
-    val extraItems: List<ExtraItemState>  = emptyList(),
+    val extraItems: List<ExtraItemState> = emptyList(),
     val listDateRanges: List<DisabledDateRange> = emptyList(),
 )
 
@@ -26,15 +25,15 @@ data class ExtraItemState(
     val attributes: List<String> = emptyList(),
     val price: Double = 0.00,
     val stock: Int = 112,
-    @DrawableRes val imageResourceId: Int = 0,
-
-    ){
+    val imgUrl: String = "",
+    val imgTxt: String = "",
+) {
     var amount by mutableIntStateOf(0)
     var isEditing by mutableStateOf(false)
 }
 
-sealed interface DateRangesApiState{
+sealed interface DateRangesApiState {
     data class Success(val result: List<DisabledDateRange>) : DateRangesApiState
-    data class Error(val errorMessage: String): DateRangesApiState
+    data class Error(val errorMessage: String) : DateRangesApiState
     object Loading : DateRangesApiState
 }

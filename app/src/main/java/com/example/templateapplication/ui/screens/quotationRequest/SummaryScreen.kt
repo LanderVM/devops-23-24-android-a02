@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.screens.quotationRequest
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -50,6 +50,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.templateapplication.R
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
@@ -490,14 +492,17 @@ fun ExtraItemCard( // TODO duplicate code -> make a component out of this
                 .padding(16.dp)
         ) {
             // Image
-            Image(
-                painter = painterResource(id = R.drawable.foto7), // Replace with actual image
-                contentDescription = null, // Content description can be set based on your use case
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(extraItem.imgUrl)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = R.drawable.foto7),
+                contentDescription = extraItem.imgTxt,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             )
-
             Spacer(modifier = Modifier.height(16.dp))
 
             // Item Details
