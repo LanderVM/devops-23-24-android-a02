@@ -44,3 +44,10 @@ data class Address(
 data class Email(
     val email: String,
 )
+
+sealed interface ApiQuotationRequestPostApiState {
+    object Success : ApiQuotationRequestPostApiState
+    data class Error(val errorMessage: String) : ApiQuotationRequestPostApiState
+    object Loading : ApiQuotationRequestPostApiState
+    object Idle : ApiQuotationRequestPostApiState
+}

@@ -56,6 +56,7 @@ import com.example.templateapplication.R
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
+import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPostApiState
 import com.example.templateapplication.ui.commons.AlertPopUp
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
@@ -132,6 +133,12 @@ fun SummaryScreen (
         Spacer(modifier = Modifier.height(25.dp))
         KostGegevens(quotationRequestViewModel = quotationRequestViewModel)
         Spacer(modifier = Modifier.height(30.dp))
+        when (val state = quotationRequestViewModel.postQuotationRequestApiState) {
+            is ApiQuotationRequestPostApiState.Error -> Text(text = state.errorMessage)
+            ApiQuotationRequestPostApiState.Idle -> {}
+            ApiQuotationRequestPostApiState.Loading -> Text(text = stringResource(id = R.string.summaryData_loading))
+            ApiQuotationRequestPostApiState.Success -> Text(text = stringResource(id = R.string.summaryData_confirmed))
+        }
         Button (
             onClick = {
                 showConfirmationPop = true
@@ -155,7 +162,10 @@ fun SummaryScreen (
             dialogText = stringResource(id = R.string.alert_text),
             confirmText = stringResource(id = R.string.alert_confirmation),
             dismissText = stringResource(id = R.string.alert_dismiss),
-            onConfirmation = { quotationRequestViewModel.sendQuotationRequest() }
+            onConfirmation = {
+                quotationRequestViewModel.sendQuotationRequest()
+                showConfirmationPop = false
+            }
         )
     }
 }

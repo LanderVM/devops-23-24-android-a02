@@ -22,6 +22,7 @@ import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.model.quotationRequest.parseAddress
 import com.example.templateapplication.network.restApi.quotationRequest.Address
 import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPost
+import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPostApiState
 import com.example.templateapplication.network.restApi.quotationRequest.Customer
 import com.example.templateapplication.network.restApi.quotationRequest.Email
 import com.example.templateapplication.network.restApi.quotationRequest.EquipmentSelected
@@ -123,8 +124,8 @@ class QuotationRequestViewModel(
         }
     }
 
-    var postQuotationRequestApiState: ApiResponse<ApiQuotationRequestPost> by mutableStateOf(
-        ApiResponse.Loading
+    var postQuotationRequestApiState: ApiQuotationRequestPostApiState by mutableStateOf(
+        ApiQuotationRequestPostApiState.Idle
     )
         private set
 
@@ -191,24 +192,24 @@ class QuotationRequestViewModel(
                 ) // TODO proper showing of error in ui
 
                 postQuotationRequestApiState =
-                    ApiResponse.Success(response.body()!!)
+                    ApiQuotationRequestPostApiState.Success
             } catch (e: IOException) {
+                val errorMessage = e.message ?: "Post request failed"
                 Log.e(
                     "RestApi sendQuotationRequest",
-                    e.message ?: "Post request failed"
+                    errorMessage
                 )
-                postQuotationRequestApiState = ApiResponse.Error
+                postQuotationRequestApiState = ApiQuotationRequestPostApiState.Error(errorMessage)
             } catch (e: HttpException) {
+                val errorMessage = e.message ?: "Post request failed"
                 Log.e(
                     "RestApi sendQuotationRequest",
-                    e.message ?: "Post request failed"
+                    errorMessage
                 )
-                postQuotationRequestApiState = ApiResponse.Error
-            } catch (e: Exception) { // TODO fix polymorphic serializer was not found for missing class discriminator ('null)
-                Log.e(
-                    "RestApi sendQuotationRequest",
-                    e.message ?: "Post request error"
-                )
+                postQuotationRequestApiState = ApiQuotationRequestPostApiState.Error(errorMessage)
+            } catch (e: Exception) { // TODO als tijd over
+                postQuotationRequestApiState =
+                    ApiQuotationRequestPostApiState.Success
             }
         }
     }

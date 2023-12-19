@@ -3,7 +3,7 @@
     <string name="home_info">Van catering tot feestuitrusting, Blanche is uw one-stop oplossing voor feestplezier.</string>
 
     <string name="loading">Loading…</string>
-    <string name="error">Couldn\'t load…, because of %s</string>
+    <string name="error">Er is iets foutgelopen…</string>
 
     <string name="alertPopUp_title">Snelle Inschatting</string>
     <string name="alertPopUp_text">Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?</string>
@@ -91,6 +91,9 @@
     <string name="summaryData_priceDetails_description">Omschrijving</string>
     <string name="summaryData_priceDetails_price">Prijs</string>
     <string name="summaryData_priceDetails_subtotal">Subtotaal</string>
+    <string name="summaryData_loading">Aan het versturen…</string>
+    <string name="summaryData_error">Er is iets misgelopen bij het versturen…</string>
+    <string name="summaryData_confirmed">Uw offerteaanvraag werd verstuurd!</string>
 
     <string name="home_title">Home</string>
     <string name="about_title">Over</string>
