@@ -75,4 +75,5 @@ val MainLightColor = Color(0xFFD3B98B)
 val MainDarkColor = Color(0xFFb49763)
 
 
+
 val DisabledButtonColor = Color(0xFFf8f1e4)

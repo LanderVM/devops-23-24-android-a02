@@ -62,6 +62,7 @@ fun NavigationDrawer(
             title = NavigationRoutes.GuidePrice.getString(context),
             to = NavigationRoutes.GuidePrice.name,
         ),
+
     )
 
     ModalDrawerSheet(

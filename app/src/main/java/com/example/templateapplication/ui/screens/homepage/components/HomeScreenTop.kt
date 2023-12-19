@@ -2,6 +2,8 @@ package com.example.templateapplication.ui.screens.homepage.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.ImperialScript
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun HomeScreenTop(
@@ -35,69 +38,71 @@ fun HomeScreenTop(
     openDrawer: () -> Unit = {}
 ) {
     val image = painterResource(R.drawable.homescreen_background)
-
-    Box(
-        modifier = modifier
-            .fillMaxHeight(0.4f)
-            .testTag("homeScreenTop")
-    ) {
+    Column {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxHeight(0.4f)
+                .testTag("homeScreenTop")
         ) {
-            Image(
-                painter = image,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .shadow(8.dp)
-            )
-
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                IconButton(
-                    onClick = openDrawer,
+                Image(
+                    painter = image,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.TopEnd)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = "Menu",
-                        tint = Color.White,
-                    )
-                }
+                        .fillMaxSize()
+                        .shadow(8.dp)
+                )
 
                 Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 80.sp,
-                        color = Color.White,
-                        modifier = Modifier.padding(top = 70.dp)
-                    )
+                    IconButton(
+                        onClick = openDrawer,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.TopEnd)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Menu",
+                            tint = Color.White,
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.app_name),
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 80.sp,
+                            color = Color.White,
+                            modifier = Modifier.padding(top = 70.dp)
+                        )
+                    }
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(20.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(id = R.string.home_info),
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+                color = Color.Black
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 
-    Spacer(modifier = Modifier.height(20.dp))
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.home_info),
-            fontSize = 24.sp,
-            textAlign = TextAlign.Center,
-            color = Color.Black
-        )
-    }
-    Spacer(modifier = Modifier.height(20.dp))
 }

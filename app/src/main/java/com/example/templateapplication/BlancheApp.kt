@@ -10,6 +10,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,14 +41,33 @@ import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewScreen
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewViewModel
 import com.example.templateapplication.ui.screens.quotationRequest.SummaryScreen
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlancheApp(
+    windowSize: WindowWidthSizeClass,
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
 ) {
+
+    val navigationType: ReplyNavigationType
+    when(windowSize){
+        WindowWidthSizeClass.Compact ->{
+            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
+        }
+        WindowWidthSizeClass.Medium -> {
+            navigationType = ReplyNavigationType.NAVIGATION_RAIL
+        }
+        WindowWidthSizeClass.Expanded -> {
+            navigationType = ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
+        }
+        else -> {
+            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
+        }
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -133,6 +153,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.About.name) {
                         AboutScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             navigateEmailScreen = { navController.navigate(NavigationRoutes.AboutEmail.name) },
                         )
@@ -146,6 +167,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.Formulas.name) {
                         FormulesScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding)
                         )
                     }

@@ -2,6 +2,7 @@ package com.example.templateapplication.ui.screens.formulaDetails.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,23 +22,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.ui.theme.MainLightestColor
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun FormulaDetailsCard(
+    navigationType: ReplyNavigationType,
     formula: Formula,
     backgroundColor: Color = Color.White,
     textColor: Color = Color.Black,
 ) {
+    var cardHeight : Dp
+    var fontSize : TextUnit
+    when (navigationType) {
+        ReplyNavigationType.NAVIGATION_RAIL -> {
+            cardHeight= 600.dp
+            fontSize = 30.sp
+
+        }
+        ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+            cardHeight= 650.dp
+            fontSize = 45.sp
+        }
+        else -> {
+            cardHeight= 500.dp
+            fontSize = 30.sp
+
+        }
+    }
     Card(
         shape = RectangleShape,
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
         ),
         modifier = Modifier
+            .height(cardHeight)
             .fillMaxWidth()
             .padding(20.dp)
             .shadow(elevation = 8.dp)
@@ -46,7 +70,7 @@ fun FormulaDetailsCard(
         Text(
             text = formula.title,
             fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
+            fontSize = fontSize,
             color = textColor,
             modifier = Modifier
                 .align(CenterHorizontally)
@@ -62,8 +86,9 @@ fun FormulaDetailsCard(
         formula.listOfProperties.forEach { item ->
             Row(
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(vertical = 10.dp)
                     .align(CenterHorizontally)
+                    .fillMaxWidth(0.4f)
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Check,
@@ -85,12 +110,12 @@ fun FormulaDetailsCard(
 fun DetailsFormulaCardPreview() {
     val mockList = listOf(
         "lorem ipsum",
-        "lorem ipsum",
-        "lorem ipsum"
+        "lorem ipscffffffum",
+        "lorem ipscccum"
     )
     val backgroundColor = MainLightestColor
     val textColor = Color.Black
     val formula = Formula(0, "Titel", mockList)
 
-    FormulaDetailsCard(formula, backgroundColor, textColor)
+    FormulaDetailsCard(ReplyNavigationType.BOTTOM_NAVIGATION,formula, backgroundColor, textColor)
 }

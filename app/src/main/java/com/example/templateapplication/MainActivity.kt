@@ -6,12 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.templateapplication.ui.theme.BlancheTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -21,7 +25,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    BlancheApp()
+                    val windowSize = calculateWindowSizeClass(this)
+                    BlancheApp(windowSize = windowSize.widthSizeClass)
                 }
             }
         }
@@ -32,13 +37,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppPreview() {
     BlancheTheme(darkTheme = false) {
-        BlancheApp()
+        BlancheApp(windowSize = WindowWidthSizeClass.Compact)
     }
 }
 @Preview
 @Composable
 fun AppPreviewDarkMode() {
     BlancheTheme(darkTheme = true) {
-        BlancheApp()
+        BlancheApp(windowSize = WindowWidthSizeClass.Compact)
     }
 }

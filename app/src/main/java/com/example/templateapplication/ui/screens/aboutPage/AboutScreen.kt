@@ -38,15 +38,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.Dialog
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.ImperialScript
 import com.example.templateapplication.ui.theme.MainColor
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 
 @Composable
 fun AboutScreen (
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     navigateEmailScreen:()->Unit,
 ) {
@@ -80,7 +83,7 @@ fun AboutScreen (
     ) {
         Info(openPopUp = {openDialog1 = true})
         Spacer(modifier = Modifier.height(50.dp))
-        Pictures()
+        Pictures(navigationType = navigationType)
         Spacer(modifier = Modifier.height(40.dp))
     }
 }
@@ -262,17 +265,39 @@ fun InputVeld(
 }
 
 @Composable
-fun Pictures () {
+fun Pictures (navigationType: ReplyNavigationType) {
     Column (
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        var bigImg :Dp
+        var smallImg:Dp
+        var rowHeight:Dp
+
+        when (navigationType) {
+            ReplyNavigationType.NAVIGATION_RAIL -> {
+                bigImg= 450.dp
+                smallImg = 200.dp
+                rowHeight = 180.dp
+            }
+            ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+                bigImg= 600.dp
+                smallImg = 425.dp
+                rowHeight = 300.dp
+            }
+            else -> {
+                bigImg= 200.dp
+                smallImg = 115.dp
+                rowHeight = 100.dp
+            }
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(bigImg)
         ) {
             Image(
                 painter = painterResource(R.drawable.foto3),
@@ -285,13 +310,13 @@ fun Pictures () {
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp),
+                .height(rowHeight),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Box (
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(115.dp)
+                    .width(smallImg)
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto4),
@@ -303,7 +328,7 @@ fun Pictures () {
             Box (
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(115.dp)
+                    .width(smallImg)
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto7),
@@ -315,7 +340,7 @@ fun Pictures () {
             Box (
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(115.dp)
+                    .width(smallImg)
             ) {
                 Image(
                     painter = painterResource(R.drawable.foto8),

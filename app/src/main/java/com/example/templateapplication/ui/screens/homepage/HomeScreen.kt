@@ -1,15 +1,22 @@
 package com.example.templateapplication.ui.screens.homepage
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -17,6 +24,7 @@ import com.example.templateapplication.R
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
 import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun HomeScreen(
@@ -49,13 +57,30 @@ fun HomeScreen(
         },
         floatingActionButtonPosition = FabPosition.End
     ) { paddingValues ->
-        LazyColumn(modifier.padding(paddingValues)) {
-            item { HomeScreenTop(openDrawer = openDrawer) }
-            item { FormuleCard(title = stringResource(id = R.string.formula_basic_title), image = image1, onButtonClicked = onBasicNavigation) }
-            item { FormuleCard(title = stringResource(id = R.string.formula_allIn_title), image = image2, onButtonClicked = onAllInNavigation) }
-            item { FormuleCard(title = stringResource(id = R.string.formula_advanced_title), image = image3, onButtonClicked = onGevorderedNavigation) }
-            item { FormuleCard(title = stringResource(id = R.string.formula_extraMaterials_title), image = image4, onButtonClicked = onExtraNavigation) }
+
+        val myVariable = listOf(1, 2, 3, 4)
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(250.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = modifier.padding(paddingValues)
+        ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                HomeScreenTop(openDrawer = openDrawer)
+            }
+            items(myVariable) { formula ->
+                FormuleCard(
+                    title = stringResource(id = R.string.formula_basic_title),
+                    image = image1,
+                    onButtonClicked = onBasicNavigation
+                )
+            }
+
+//            item {  }
+//            item { FormuleCard(navigationType = navigationType, title = stringResource(id = R.string.formula_allIn_title), image = image2, onButtonClicked = onAllInNavigation) }
+//            item { FormuleCard(navigationType = navigationType, title = stringResource(id = R.string.formula_advanced_title), image = image3, onButtonClicked = onGevorderedNavigation) }
+//            item { FormuleCard(navigationType = navigationType, title = stringResource(id = R.string.formula_extraMaterials_title), image = image4, onButtonClicked = onExtraNavigation) }
+
         }
     }
 }
-
