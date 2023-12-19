@@ -52,11 +52,11 @@ fun BlancheApp(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
     ) {
-        // val navController = rememberNavController()
         val backStackEntry by navController.currentBackStackEntryAsState()
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
+
 
         // VIEWMODELS TODO only create these when called to optimize startup perhaps?
         val homeViewModel: HomeViewModel =
