@@ -16,7 +16,7 @@ fun AlertPopUp(
     confirmText: String,
     dismissText: String,
 ) {
-    BlancheTheme(isOnline = true) {
+    BlancheTheme {
         AlertDialog(
             title = {
                 Text(text = dialogTitle)

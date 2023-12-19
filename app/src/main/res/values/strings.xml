@@ -10,8 +10,9 @@
     <string name="alertPopUp_confirm">Ja</string>
     <string name="alertPopUp_dismiss">Ik wacht nog even</string>
 
-    <string name="internet_offline">Geen internetconnectie beschikbaar</string>
-
+    <string name="formula_basic_title">Basic</string>
+    <string name="formula_allIn_title">All-In</string>
+    <string name="formula_advanced_title">Gevorderd</string>
     <string name="formula_extraMaterials_title">Extra Materiaal</string>
 
     <string name="guidedPrice_location_separator">Locatie</string>
