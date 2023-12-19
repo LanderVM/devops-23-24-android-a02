@@ -22,8 +22,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun ValidationTextFieldApp(
@@ -52,7 +55,7 @@ fun ValidationTextFieldApp(
         else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
     }
 
-    Column(modifier) {
+    Column(modifier = Modifier.width(300.dp)) {
         val context = LocalContext.current
         OutlinedTextField(
             label = { Text(text = placeholder) },

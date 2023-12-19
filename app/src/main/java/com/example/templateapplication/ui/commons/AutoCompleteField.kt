@@ -1,6 +1,5 @@
 package com.example.templateapplication.ui.commons
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
@@ -29,6 +27,7 @@ import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Circle
@@ -43,6 +42,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun AddressTextField(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     getPredictionsFunction: () -> Unit,
     hasFoundPlace: () -> Boolean,
@@ -82,12 +82,29 @@ fun AddressTextField(
         }
     }
 
+    var mapWidth : Dp
+    var mapHeight : Dp
+    when (navigationType) {
+        ReplyNavigationType.NAVIGATION_RAIL -> {
+            mapHeight = 400.dp
+            mapWidth = 500.dp
+        }
+        ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+            mapHeight = 500.dp
+            mapWidth = 700.dp
+        }
+        else -> {
+            mapHeight = 250.dp
+            mapWidth = 300.dp
+        }
+    }
+
     if (showMap) {
         Box(
             modifier = Modifier
                 .background(Color.LightGray)
-                .height(300.dp)
-                .width(300.dp)
+                .height(mapHeight)
+                .width(mapWidth)
                 .padding(2.dp)
         ) {
             GoogleMap(
@@ -127,7 +144,7 @@ fun AddressTextField(
     }
 
     ValidationTextFieldApp(
-        modifier = Modifier.width(300.dp),
+        modifier = Modifier.width(mapWidth),
         placeholder = stringResource(id = R.string.address_placeholder),
         text = googleMaps.eventAddress,
         onValueChange = {
@@ -143,7 +160,7 @@ fun AddressTextField(
         is ApiResponse.Loading -> {}
         is ApiResponse.Error -> Text(text = "Error") // TODO proper error && as supporting in textfield, not as Text()
         is ApiResponse.Success -> {
-            AutoCompleteListComponent(
+            AutoCompleteListComponent(mapWidth = mapWidth,
                 predictionsState = apiStatus.data.predictionsResponse.predictions
             ) { prediction ->
                 onValueChange(prediction.description)
@@ -155,16 +172,18 @@ fun AddressTextField(
 
 @Composable
 fun AutoCompleteListComponent(
+    mapWidth : Dp,
     predictionsState: List<GooglePrediction>,
     onPredictionClick: (GooglePrediction) -> Unit
 ) {
     predictionsState.forEach {
-        AutocompleteCardItem(onPredictionClick, it)
+        AutocompleteCardItem(mapWidth = mapWidth ,onPredictionClick, it)
     }
 }
 
 @Composable
 fun AutocompleteCardItem(
+    mapWidth: Dp,
     onPredictionClick: (GooglePrediction) -> Unit,
     prediction: GooglePrediction
 ) {
@@ -172,7 +191,7 @@ fun AutocompleteCardItem(
         modifier = Modifier
             .padding(top = 10.dp)
             .fillMaxHeight()
-            .width(300.dp)
+            .width(mapWidth)
             .background(color = Color(0XFFC8A86E))
             .clickable { onPredictionClick(prediction) },
         contentAlignment = Alignment.Center
@@ -194,6 +213,7 @@ fun PreviewCard() {
         modifier = Modifier.height(50.dp)
     ) {
         AutocompleteCardItem(
+            mapWidth = 300.dp,
             onPredictionClick = {},
             prediction = GooglePrediction("Aalst, België", listOf())
         )

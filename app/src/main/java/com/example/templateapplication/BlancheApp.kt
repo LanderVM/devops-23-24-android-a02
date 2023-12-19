@@ -173,6 +173,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.EventDetails.name) {
                         EventDetailsScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             navigateContactGegevensScreen = {
                                 navController.navigate(
@@ -207,6 +208,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.GuidePrice.name) {
                         GuidePriceScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             priceEstimationViewModel = priceEstimationViewModel
                         )

@@ -41,11 +41,13 @@ import com.example.templateapplication.ui.commons.SeperatingTitle
 import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
 import com.example.templateapplication.ui.theme.md_theme_light_secondary
 import com.example.templateapplication.ui.theme.md_theme_light_tertiary
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuidePriceScreen(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
@@ -81,6 +83,7 @@ fun GuidePriceScreen(
             text = stringResource(id = R.string.guidedPrice_location_separator),
         )
         AddressTextField(
+            navigationType = navigationType,
             showMap = false,
             placeResponse = priceEstimationUIState.placeResponse,
             getPredictionsFunction = { priceEstimationViewModel.getPredictions() },

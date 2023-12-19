@@ -68,18 +68,19 @@ fun HomeScreen(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 HomeScreenTop(openDrawer = openDrawer)
             }
-            items(myVariable) { formula ->
+//            items() { formula ->
+//
+//            } TODO: uncomment en vervang door lijst van Formules wanneer deze opgehaald worden door de api
+            item{
                 FormuleCard(
                     title = stringResource(id = R.string.formula_basic_title),
                     image = image1,
                     onButtonClicked = onBasicNavigation
                 )
             }
-
-//            item {  }
-//            item { FormuleCard(navigationType = navigationType, title = stringResource(id = R.string.formula_allIn_title), image = image2, onButtonClicked = onAllInNavigation) }
-//            item { FormuleCard(navigationType = navigationType, title = stringResource(id = R.string.formula_advanced_title), image = image3, onButtonClicked = onGevorderedNavigation) }
-//            item { FormuleCard(navigationType = navigationType, title = stringResource(id = R.string.formula_extraMaterials_title), image = image4, onButtonClicked = onExtraNavigation) }
+            item { FormuleCard(title = stringResource(id = R.string.formula_allIn_title), image = image2, onButtonClicked = onAllInNavigation) }
+            item { FormuleCard(title = stringResource(id = R.string.formula_advanced_title), image = image3, onButtonClicked = onGevorderedNavigation) }
+            item { FormuleCard(title = stringResource(id = R.string.formula_extraMaterials_title), image = image4, onButtonClicked = onExtraNavigation) }
 
         }
     }

@@ -30,12 +30,14 @@ import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
 import com.example.templateapplication.ui.commons.ValidationTextFieldApp
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 import java.time.Instant
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventDetailsScreen(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
     navigateContactGegevensScreen: () -> Unit,
@@ -83,6 +85,7 @@ fun EventDetailsScreen(
             text = stringResource(id = R.string.eventDetails_location_separator),
         )
         AddressTextField(
+            navigationType = navigationType,
             showMap = true,
             placeResponse = uiState.googleMaps.eventAddressAutocompleteCandidates,
             apiStatus = quotationRequestViewModel.googleMapsApiState,
@@ -111,6 +114,7 @@ fun EventDetailsScreen(
             text = stringResource(id = R.string.eventDetails_details_separator),
         )
         ValidationTextFieldApp(
+
             placeholder = stringResource(id = R.string.eventDetails_numberOfPeople),
             text = quotationRequestViewModel.formState.numberOfPeople,
             onValueChange = {quotationRequestViewModel.onEvent(MainEvent.NumberOfPeopleChanged(it))},
