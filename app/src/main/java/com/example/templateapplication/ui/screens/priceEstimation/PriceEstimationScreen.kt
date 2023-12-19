@@ -1,22 +1,16 @@
 package com.example.templateapplication.ui.screens.priceEstimation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDateRangePickerState
@@ -37,17 +31,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationDetailsApiState
-import com.example.templateapplication.network.restApi.priceEstimation.PriceEstimationResultApiState
 import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.screens.priceEstimation.components.EquipmentCheckList
+import com.example.templateapplication.ui.screens.priceEstimation.components.EstimatedPriceText
+import com.example.templateapplication.ui.screens.priceEstimation.components.WantsEquipmentCheckbox
+import com.example.templateapplication.ui.screens.priceEstimation.components.WantsTripelBeerCheckbox
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
-import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
-import com.example.templateapplication.ui.theme.md_theme_light_secondary
-import com.example.templateapplication.ui.theme.md_theme_light_tertiary
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -124,120 +118,23 @@ fun GuidePriceScreen(
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                if (priceEstimationUIState.selectedFormula != 1) {
-                    Row(
-                        modifier = Modifier.height(50.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.guidePrice_formula_tripleBeer),
-                            modifier = Modifier.padding(horizontal = 12.dp)
-                        )
-                        Checkbox(
-                            checked = priceEstimationUIState.wantsTripelBeer,
-                            onCheckedChange = { priceEstimationViewModel.setWantsTripelBeer(!priceEstimationUIState.wantsTripelBeer) },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = md_theme_light_secondary,
-                                checkmarkColor = md_theme_light_onSecondary,
-                                uncheckedColor = md_theme_light_tertiary,
-                            ),
-                        )
-                    }
-                } else {
-                    priceEstimationViewModel.setWantsTripelBeer(false)
-                }
-                Row(
-                    modifier = Modifier.height(50.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.guidePrice_formula_extraMaterial),
-                        modifier = Modifier.padding(horizontal = 12.dp)
+                WantsTripelBeerCheckbox(
+                    selectedFormula = priceEstimationUIState.selectedFormula,
+                    hasCheck = priceEstimationUIState.wantsTripelBeer,
+                    onCheck = { priceEstimationViewModel.setWantsTripelBeer(it) }
+                )
+                WantsEquipmentCheckbox(
+                    hasCheck = priceEstimationUIState.wantsExtras,
+                    onCheck = { priceEstimationViewModel.setWantsExtras(it) }
+                )
+                if (priceEstimationUIState.wantsExtras)
+                    EquipmentCheckList(
+                        list = priceEstimationUIState.dbData.equipment,
+                        hasChecked = { priceEstimationViewModel.hasSelectedExtraItem(it) },
+                        onCheck = { priceEstimationViewModel.extraItemsOnCheckedChange(it) }
                     )
-                    Checkbox(
-                        checked = priceEstimationUIState.wantsExtras,
-                        onCheckedChange = { priceEstimationViewModel.setWantsExtras(!priceEstimationUIState.wantsExtras) },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = md_theme_light_secondary,
-                            checkmarkColor = md_theme_light_onSecondary,
-                            uncheckedColor = md_theme_light_tertiary,
-                        ),
-                    )
-                }
-                if (priceEstimationUIState.wantsExtras) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 85.dp)
-                            .wrapContentSize(Alignment.Center)
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            priceEstimationUIState.dbData.equipment.forEachIndexed { _, equipment ->
-                                Row(
-                                    modifier = Modifier
-                                        .height(50.dp)
-                                        .fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Start
-                                ) {
-                                    Checkbox(
-                                        checked = priceEstimationViewModel.hasSelectedExtraItem(
-                                            equipment
-                                        ),
-                                        onCheckedChange = {
-                                            priceEstimationViewModel.extraItemsOnCheckedChange(
-                                                equipment
-                                            )
-                                        },
-                                        colors = CheckboxDefaults.colors(
-                                            checkedColor = md_theme_light_secondary,
-                                            checkmarkColor = md_theme_light_onSecondary,
-                                            uncheckedColor = md_theme_light_tertiary,
-                                        ),
-                                    )
-                                    Text(
-                                        text = equipment.title,
-                                        modifier = Modifier.padding(horizontal = 12.dp)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
                 Spacer(modifier = Modifier.height(24.dp))
-                when (val current = priceEstimationViewModel.calculatePriceApiState) {
-                    is PriceEstimationResultApiState.Error -> {
-                        Text(
-                            text = current.errorMessage,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.W500,
-                        )
-                    }
-
-                    PriceEstimationResultApiState.Loading -> {
-                        Text(
-                            text = stringResource(id = R.string.guidePrice_calculating),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.W500,
-                        )
-                    }
-
-                    is PriceEstimationResultApiState.Success -> {
-                        Text(
-                            text = stringResource(
-                                id = R.string.guidePrice_estimatedPrice,
-                                current.result
-                            ),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.W500,
-                        )
-                    }
-
-                    PriceEstimationResultApiState.Idle -> {}
-                }
+                EstimatedPriceText(calculatePriceApiState = priceEstimationViewModel.calculatePriceApiState)
                 Text(
                     text = stringResource(id = R.string.guidePrice_disclaimer),
                     fontSize = 12.sp,
