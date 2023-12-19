@@ -23,7 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationViewModel
+import com.example.templateapplication.ui.screens.priceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer

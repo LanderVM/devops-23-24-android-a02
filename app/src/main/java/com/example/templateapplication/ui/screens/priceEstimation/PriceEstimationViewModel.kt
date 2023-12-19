@@ -1,4 +1,4 @@
-package com.example.templateapplication.model.guidePriceEstimation
+package com.example.templateapplication.ui.screens.priceEstimation
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -15,6 +15,10 @@ import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
+import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
+import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment
+import com.example.templateapplication.model.guidePriceEstimation.EstimationUiState
+import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationDetailsApiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
