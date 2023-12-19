@@ -7,7 +7,7 @@ import androidx.room.TypeConverters
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-@Database(entities = [DbEquipment::class], version = 1)
+@Database(entities = [DbEquipment::class, DbFormula::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class BlancheDatabase : RoomDatabase() {
     abstract fun quotationDao(): QuotationDao
@@ -15,8 +15,22 @@ abstract class BlancheDatabase : RoomDatabase() {
 
 class Converters {
     @TypeConverter
-    fun fromList(value : List<String>) = Json.encodeToString(value)
+    fun fromStringList(value: List<String>): String {
+        return Json.encodeToString(value)
+    }
 
     @TypeConverter
-    fun toList(value: String) = Json.decodeFromString<List<String>>(value)
+    fun toStringList(value: String): List<String> {
+        return Json.decodeFromString(value)
+    }
+
+    @TypeConverter
+    fun fromDoubleList(value: List<Double>): String {
+        return Json.encodeToString(value)
+    }
+
+    @TypeConverter
+    fun toDoubleList(value: String): List<Double> {
+        return Json.decodeFromString(value)
+    }
 }

@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,16 +28,17 @@ import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
-import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
-import com.example.templateapplication.ui.screens.quotationRequest.PersonalDetailsScreen
-import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
-import com.example.templateapplication.ui.screens.quotationRequest.ExtrasScreen
-import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
-import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
-import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewScreen
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewViewModel
+import com.example.templateapplication.ui.screens.formulaDetails.FormulasViewModel
+import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
+import com.example.templateapplication.ui.screens.homepage.HomeScreen
+import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
+import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
+import com.example.templateapplication.ui.screens.quotationRequest.ExtrasScreen
+import com.example.templateapplication.ui.screens.quotationRequest.PersonalDetailsScreen
+import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
 import com.example.templateapplication.ui.screens.quotationRequest.SummaryScreen
 import kotlinx.coroutines.launch
 
@@ -59,13 +59,17 @@ fun BlancheApp(
         val scope = rememberCoroutineScope()
 
         // VIEWMODELS TODO only create these when called to optimize startup perhaps?
-        var homeViewModel: HomeViewModel = viewModel()
-        var quotationRequestViewModel: QuotationRequestViewModel = viewModel(factory = QuotationRequestViewModel.Factory)
-        var priceEstimationViewModel: PriceEstimationViewModel =
+        val homeViewModel: HomeViewModel =
+            viewModel(factory = HomeViewModel.Factory)
+        val quotationRequestViewModel: QuotationRequestViewModel =
+            viewModel(factory = QuotationRequestViewModel.Factory)
+        val priceEstimationViewModel: PriceEstimationViewModel =
             viewModel(factory = PriceEstimationViewModel.Factory)
-        var equipmentOverviewViewModel: EquipmentOverviewViewModel = viewModel(factory = EquipmentOverviewViewModel.Factory)
+        val equipmentOverviewViewModel: EquipmentOverviewViewModel =
+            viewModel(factory = EquipmentOverviewViewModel.Factory)
+        val formulasViewModel: FormulasViewModel = viewModel(factory = FormulasViewModel.Factory)
 
-        var selectedItemIndex by rememberSaveable {
+        val selectedItemIndex by rememberSaveable {
             mutableIntStateOf(0)
         }
         ModalNavigationDrawer(
@@ -113,16 +117,8 @@ fun BlancheApp(
                             },
                             modifier = Modifier.padding(innerPadding),
                             onExtraNavigation = { navController.navigate(NavigationRoutes.ExtrasOverview.name) },
-                            onBasicNavigation = {
-                                quotationRequestViewModel.selectFormula(1)
-                                navController.navigate(NavigationRoutes.EventDetails.name)
-                            },
-                            onAllInNavigation = {
-                                quotationRequestViewModel.selectFormula(2)
-                                navController.navigate(NavigationRoutes.EventDetails.name)
-                            },
-                            onGevorderedNavigation = {
-                                quotationRequestViewModel.selectFormula(3)
+                            onQuotationRequestNavigation = { chosenId ->
+                                quotationRequestViewModel.selectFormula(chosenId)
                                 navController.navigate(NavigationRoutes.EventDetails.name)
                             },
                             onGuidePriceNavigation = {
@@ -146,7 +142,8 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.Formulas.name) {
                         FormulesScreen(
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.padding(innerPadding),
+                            formulasViewModel = formulasViewModel,
                         )
                     }
                     composable(NavigationRoutes.EventDetails.name) {

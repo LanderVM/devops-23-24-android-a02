@@ -20,9 +20,12 @@ interface RestApiService {
 
     @GET("Quotation/Dates")
     suspend fun getDates(): DatesRangeData
+    @GET("Formula")
+    suspend fun getFormulas(): ApiGetFormula
     @POST("Quotation")
     suspend fun postQuotationRequest(@Body body: ApiQuotationRequestPost): Call<ApiQuotationRequestPost>
 }
 
 fun RestApiService.getEquipmentAsFlow() = flow { emit(getQuotationEquipment())}
+fun RestApiService.getFormulasAsFlow() = flow { emit(getFormulas())}
 

@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.common.quotation.Equipment
-import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
+import com.example.templateapplication.model.extraMateriaal.EquipmentApiState
 import com.example.templateapplication.ui.theme.MainLightestColor
 
 @ExperimentalMaterial3Api
@@ -61,12 +61,12 @@ fun EquipmentOverviewScreen(
     )
 
     when (val apiState = equipmentOverviewViewModel.extraMateriaalApiState) {
-        is ExtraItemDetailsApiState.Loading -> Text(stringResource(id = R.string.loading))
-        is ExtraItemDetailsApiState.Error -> {
+        is EquipmentApiState.Loading -> Text(stringResource(id = R.string.loading))
+        is EquipmentApiState.Error -> {
             Text(apiState.errorMessage)
         }
 
-        is ExtraItemDetailsApiState.Success -> {
+        is EquipmentApiState.Success -> {
             LazyColumn(
                 modifier = Modifier
                     .padding(horizontal = 30.dp)

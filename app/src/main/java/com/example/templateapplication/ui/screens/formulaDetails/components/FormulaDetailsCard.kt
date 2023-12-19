@@ -20,11 +20,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.model.common.quotation.Formula
-import com.example.templateapplication.ui.theme.MainLightestColor
 
 @Composable
 fun FormulaDetailsCard(
@@ -59,7 +57,7 @@ fun FormulaDetailsCard(
                 .align(CenterHorizontally),
             color = textColor
         )
-        formula.listOfProperties.forEach { item ->
+        formula.attributes.forEach { item ->
             Row(
                 modifier = Modifier
                     .padding(10.dp)
@@ -78,19 +76,4 @@ fun FormulaDetailsCard(
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
-}
-
-@Preview
-@Composable
-fun DetailsFormulaCardPreview() {
-    val mockList = listOf(
-        "lorem ipsum",
-        "lorem ipsum",
-        "lorem ipsum"
-    )
-    val backgroundColor = MainLightestColor
-    val textColor = Color.Black
-    val formula = Formula(0, "Titel", mockList)
-
-    FormulaDetailsCard(formula, backgroundColor, textColor)
 }

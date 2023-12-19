@@ -1,4 +1,4 @@
-package com.example.templateapplication.model.home
+package com.example.templateapplication.ui.screens.formulaDetails
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,21 +12,17 @@ import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.model.common.quotation.FormulaApiState
 import com.example.templateapplication.model.common.quotation.FormulaListState
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class HomeViewModel(
+class FormulasViewModel(
     private val restApiRepository: ApiRepository,
-) : ViewModel() {
-    private val _homeUiState = MutableStateFlow(HomeScreenUiState())
-    val homeUiState = _homeUiState.asStateFlow()
+) :
+    ViewModel() {
 
     var apiState: FormulaApiState by mutableStateOf(FormulaApiState.Loading)
         private set
@@ -42,7 +38,7 @@ class HomeViewModel(
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as RestApiApplication)
                 val apiRepository =
                     application.container.apiRepository
-                HomeViewModel(
+                FormulasViewModel(
                     restApiRepository = apiRepository,
                 )
             }
@@ -61,17 +57,12 @@ class HomeViewModel(
                     started = SharingStarted.WhileSubscribed(5_000L),
                     initialValue = FormulaListState(),
                 )
+
             apiState = FormulaApiState.Success
         } catch (e: IOException) {
             val errorMessage = e.message ?: "An error occurred"
             apiState =
                 FormulaApiState.Error(errorMessage)
-        }
-    }
-
-    fun updateOpenDialog(openDialog: Boolean) {
-        _homeUiState.update {
-            it.copy(openDialog = openDialog)
         }
     }
 }

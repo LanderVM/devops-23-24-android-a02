@@ -13,7 +13,7 @@ import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.model.common.quotation.Equipment
 import com.example.templateapplication.model.extraMateriaal.EquipmentListState
-import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
+import com.example.templateapplication.model.extraMateriaal.EquipmentApiState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -26,7 +26,7 @@ class EquipmentOverviewViewModel(
 ) :
     ViewModel() {
 
-    var extraMateriaalApiState: ExtraItemDetailsApiState by mutableStateOf(ExtraItemDetailsApiState.Loading)
+    var extraMateriaalApiState: EquipmentApiState by mutableStateOf(EquipmentApiState.Loading)
         private set
 
     init {
@@ -60,11 +60,11 @@ class EquipmentOverviewViewModel(
                     initialValue = EquipmentListState(),
                 )
 
-            extraMateriaalApiState = ExtraItemDetailsApiState.Success
+            extraMateriaalApiState = EquipmentApiState.Success
         } catch (e: IOException) {
             val errorMessage = e.message ?: "An error occurred"
             extraMateriaalApiState =
-                ExtraItemDetailsApiState.Error(errorMessage)
+                EquipmentApiState.Error(errorMessage)
         }
     }
 
