@@ -1,4 +1,4 @@
-package com.example.templateapplication.network.restApi
+package com.example.templateapplication.network.restApi.priceEstimation
 
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment
@@ -32,13 +32,13 @@ data class EstimationDetailsData(
 )
 
 fun EstimationDetailsData.asDomainObject(): EstimationDetails {
-    var formulas = this.formulas.map {
+    val formulas = this.formulas.map {
         DropDownOption(it.title, it.id)
     }
-    var equipment = this.equipment.map {
+    val equipment = this.equipment.map {
         EstimationEquipment(it.id, it.title)
     }
-    var dateRanges = this.unavailableDates.map {
+    val dateRanges = this.unavailableDates.map {
         EstimationUnavailableDateRanges(it.startTime, it.endTime)
     }
     return EstimationDetails(formulas, equipment, dateRanges)

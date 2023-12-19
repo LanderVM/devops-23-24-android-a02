@@ -35,7 +35,7 @@ data class EstimationUiState(
 )
 
 sealed interface PriceEstimationDetailsApiState {
-    data class Success(val result: EstimationDetails) : PriceEstimationDetailsApiState
+    object Success : PriceEstimationDetailsApiState
     data class Error(val errorMessage: String) : PriceEstimationDetailsApiState
     object Loading : PriceEstimationDetailsApiState
 }

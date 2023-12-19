@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -32,11 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
+import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationDetailsApiState
+import com.example.templateapplication.network.restApi.priceEstimation.PriceEstimationResultApiState
 import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.theme.DisabledButtonColor
+import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
 import com.example.templateapplication.ui.theme.md_theme_light_secondary
 import com.example.templateapplication.ui.theme.md_theme_light_tertiary
@@ -63,141 +71,194 @@ fun GuidePriceScreen(
         ),
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(state = scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        DateRangePicker(
-            state = dateRangePickerState,
-            onSelectDateRange = { startDate, endDate ->
-                priceEstimationViewModel.updateDateRange(startDate, endDate)
-            },
-            showCalenderToggle = true,
-        )
-        SeperatingTitle(
-            text = stringResource(id = R.string.guidedPrice_location_separator),
-        )
-        AddressTextField(
-            showMap = false,
-            placeResponse = priceEstimationUIState.placeResponse,
-            getPredictionsFunction = { priceEstimationViewModel.getPredictions() },
-            apiStatus = priceEstimationViewModel.googleMapsApiState,
-            hasFoundPlace = { priceEstimationViewModel.placeFound() },
-            onValueChange = { priceEstimationViewModel.updateInput(it) },
-            googleMaps = priceEstimationUIState.googleMaps,
-        )
-        SeperatingTitle(
-            text = stringResource(id = R.string.guidedPrice_details_separator),
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(0.75f)
-        ) {
-            DropDownSelect(
-                label =  stringResource(id = R.string.guidedPrice_formula_dropdown),
-                isExpanded = priceEstimationUIState.formulaDropDownIsExpanded,
-                setExpanded = { priceEstimationViewModel.setDropDownExpanded(it) },
-                selectedOption = priceEstimationUIState.selectedFormula - 1,
-                setSelectedOption = { priceEstimationViewModel.selectFormula(it) },
-                dropDownOptions = priceEstimationUIState.dbData.formulas,
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            NumberOutlinedTextField(
-                label = stringResource(id = R.string.guidedPrice_formula_numberOfPeople),
-                value = priceEstimationUIState.amountOfPeople,
-                onValueChange = { priceEstimationViewModel.setAmountOfPeople(it) },
-                keyboardController = keyboardController
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        if (priceEstimationUIState.selectedFormula != 1) {
-            Row(
-                modifier = Modifier.height(50.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text =  stringResource(id = R.string.guidedPrice_formula_tripleBeer), modifier = Modifier.padding(horizontal = 12.dp))
-                Checkbox(
-                    checked = priceEstimationUIState.wantsTripelBeer,
-                    onCheckedChange = { priceEstimationViewModel.setWantsTripelBeer(!priceEstimationUIState.wantsTripelBeer) },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = md_theme_light_secondary,
-                        checkmarkColor = md_theme_light_onSecondary,
-                        uncheckedColor = md_theme_light_tertiary,
-                    ),
-                )
-            }
-        } else {
-            priceEstimationViewModel.setWantsTripelBeer(false)
-        }
-        Row(
-            modifier = Modifier.height(50.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(text = stringResource(id = R.string.guidedPrice_formula_extraMaterial), modifier = Modifier.padding(horizontal = 12.dp))
-            Checkbox(
-                checked = priceEstimationUIState.wantsExtras,
-                onCheckedChange = { priceEstimationViewModel.setWantsExtras(!priceEstimationUIState.wantsExtras) },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = md_theme_light_secondary,
-                    checkmarkColor = md_theme_light_onSecondary,
-                    uncheckedColor = md_theme_light_tertiary,
-                ),
-            )
-        }
-        if (priceEstimationUIState.wantsExtras) {
-            Box(
+    when (val detailsApiState = priceEstimationViewModel.retrieveUiDetailsApiState) {
+        is PriceEstimationDetailsApiState.Error -> Text(text = detailsApiState.errorMessage)
+        PriceEstimationDetailsApiState.Loading -> Text(text = stringResource(id = R.string.loading))
+        PriceEstimationDetailsApiState.Success -> {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 85.dp)
-                    .wrapContentSize(Alignment.Center)
+                    .verticalScroll(state = scrollState),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.Start
+                DateRangePicker(
+                    state = dateRangePickerState,
+                    onSelectDateRange = { startDate, endDate ->
+                        priceEstimationViewModel.updateDateRange(startDate, endDate)
+                    },
+                    showCalenderToggle = true,
+                )
+                SeperatingTitle(
+                    text = stringResource(id = R.string.guidePrice_location_separator),
+                )
+                AddressTextField(
+                    showMap = false,
+                    placeResponse = priceEstimationUIState.placeResponse,
+                    getPredictionsFunction = { priceEstimationViewModel.getPredictions() },
+                    apiStatus = priceEstimationViewModel.googleMapsApiState,
+                    hasFoundPlace = { priceEstimationViewModel.placeFound() },
+                    onValueChange = { priceEstimationViewModel.updateInput(it) },
+                    googleMaps = priceEstimationUIState.googleMaps,
+                )
+                SeperatingTitle(
+                    text = stringResource(id = R.string.guidePrice_details_separator),
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.75f)
                 ) {
-                    priceEstimationUIState.dbData.equipment.forEachIndexed { _, equipment ->
-                        Row(
-                            modifier = Modifier
-                                .height(50.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
+                    DropDownSelect(
+                        label = stringResource(id = R.string.guidePrice_formula_dropdown),
+                        isExpanded = priceEstimationUIState.formulaDropDownIsExpanded,
+                        setExpanded = { priceEstimationViewModel.setDropDownExpanded(it) },
+                        selectedOption = priceEstimationUIState.selectedFormula - 1,
+                        setSelectedOption = { priceEstimationViewModel.selectFormula(it) },
+                        dropDownOptions = priceEstimationUIState.dbData.formulas,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    NumberOutlinedTextField(
+                        label = stringResource(id = R.string.guidePrice_formula_numberOfPeople),
+                        value = priceEstimationUIState.amountOfPeople,
+                        onValueChange = { priceEstimationViewModel.setAmountOfPeople(it) },
+                        keyboardController = keyboardController
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                if (priceEstimationUIState.selectedFormula != 1) {
+                    Row(
+                        modifier = Modifier.height(50.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.guidePrice_formula_tripleBeer),
+                            modifier = Modifier.padding(horizontal = 12.dp)
+                        )
+                        Checkbox(
+                            checked = priceEstimationUIState.wantsTripelBeer,
+                            onCheckedChange = { priceEstimationViewModel.setWantsTripelBeer(!priceEstimationUIState.wantsTripelBeer) },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = md_theme_light_secondary,
+                                checkmarkColor = md_theme_light_onSecondary,
+                                uncheckedColor = md_theme_light_tertiary,
+                            ),
+                        )
+                    }
+                } else {
+                    priceEstimationViewModel.setWantsTripelBeer(false)
+                }
+                Row(
+                    modifier = Modifier.height(50.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.guidePrice_formula_extraMaterial),
+                        modifier = Modifier.padding(horizontal = 12.dp)
+                    )
+                    Checkbox(
+                        checked = priceEstimationUIState.wantsExtras,
+                        onCheckedChange = { priceEstimationViewModel.setWantsExtras(!priceEstimationUIState.wantsExtras) },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = md_theme_light_secondary,
+                            checkmarkColor = md_theme_light_onSecondary,
+                            uncheckedColor = md_theme_light_tertiary,
+                        ),
+                    )
+                }
+                if (priceEstimationUIState.wantsExtras) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 85.dp)
+                            .wrapContentSize(Alignment.Center)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.Start
                         ) {
-                            Checkbox(
-                                checked = priceEstimationViewModel.hasSelectedExtraItem(equipment),
-                                onCheckedChange = {
-                                    priceEstimationViewModel.extraItemsOnCheckedChange(
-                                        equipment
+                            priceEstimationUIState.dbData.equipment.forEachIndexed { _, equipment ->
+                                Row(
+                                    modifier = Modifier
+                                        .height(50.dp)
+                                        .fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start
+                                ) {
+                                    Checkbox(
+                                        checked = priceEstimationViewModel.hasSelectedExtraItem(
+                                            equipment
+                                        ),
+                                        onCheckedChange = {
+                                            priceEstimationViewModel.extraItemsOnCheckedChange(
+                                                equipment
+                                            )
+                                        },
+                                        colors = CheckboxDefaults.colors(
+                                            checkedColor = md_theme_light_secondary,
+                                            checkmarkColor = md_theme_light_onSecondary,
+                                            uncheckedColor = md_theme_light_tertiary,
+                                        ),
                                     )
-                                },
-                                colors = CheckboxDefaults.colors(
-                                    checkedColor = md_theme_light_secondary,
-                                    checkmarkColor = md_theme_light_onSecondary,
-                                    uncheckedColor = md_theme_light_tertiary,
-                                ),
-                            )
-                            Text(
-                                text = equipment.title,
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
+                                    Text(
+                                        text = equipment.title,
+                                        modifier = Modifier.padding(horizontal = 12.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(24.dp))
+                when (val current = priceEstimationViewModel.calculatePriceApiState) {
+                    is PriceEstimationResultApiState.Error -> {
+                        Text(
+                            text = current.errorMessage,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W500,
+                        )
+                    }
+
+                    PriceEstimationResultApiState.Loading -> {
+                        Text(
+                            text = stringResource(id = R.string.guidePrice_calculating),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W500,
+                        )
+                    }
+
+                    is PriceEstimationResultApiState.Success -> {
+                        Text(
+                            text = stringResource(
+                                id = R.string.guidePrice_estimatedPrice,
+                                current.result
+                            ),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W500,
+                        )
+                    }
+
+                    PriceEstimationResultApiState.Idle -> {}
+                }
+                Text(
+                    text = stringResource(id = R.string.guidePrice_disclaimer),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light,
+                )
+                Button(
+                    onClick = {
+                        priceEstimationViewModel.getPriceEstimation()
+                    },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MainColor,
+                        disabledContainerColor = DisabledButtonColor,
+                        contentColor = Color.White,
+                        disabledContentColor = Color.White
+                    ),
+                ) {
+                    Text(text = stringResource(id = R.string.guidePrice_calculatePrice))
+                }
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = stringResource(id = R.string.guidedPrice_estimatedPrice),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.W500,
-        )
-        Text(
-            text = stringResource(id = R.string.guidedPrice_disclaimer),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Light,
-        )
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }

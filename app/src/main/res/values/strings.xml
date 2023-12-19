@@ -15,14 +15,16 @@
     <string name="formula_advanced_title">Gevorderd</string>
     <string name="formula_extraMaterials_title">Extra Materiaal</string>
 
-    <string name="guidedPrice_location_separator">Locatie</string>
-    <string name="guidedPrice_details_separator">Details</string>
-    <string name="guidedPrice_formula_dropdown">Formule</string>
-    <string name="guidedPrice_formula_numberOfPeople">Aantal Pers.</string>
-    <string name="guidedPrice_formula_tripleBeer">Ik wil tripel bier</string>
-    <string name="guidedPrice_formula_extraMaterial">Extra materiaal nodig</string>
-    <string name="guidedPrice_estimatedPrice">Dit zal tussen de 350 en 500 euro liggen.</string>
-    <string name="guidedPrice_disclaimer">Disclaimer: deze prijs is een schatting en ligt dus niet vast.</string>
+    <string name="guidePrice_location_separator">Locatie</string>
+    <string name="guidePrice_details_separator">Details</string>
+    <string name="guidePrice_formula_dropdown">Formule</string>
+    <string name="guidePrice_formula_numberOfPeople">Aantal Pers.</string>
+    <string name="guidePrice_formula_tripleBeer">Ik wil tripel bier</string>
+    <string name="guidePrice_formula_extraMaterial">Extra materiaal nodig</string>
+    <string name="guidePrice_estimatedPrice">De prijs zal ongeveer €%1s bedragen.</string>
+    <string name="guidePrice_disclaimer">Disclaimer: deze prijs is een schatting en ligt dus niet vast.</string>
+    <string name="guidePrice_calculating">Bezig met berekenen…</string>
+    <string name="guidePrice_calculatePrice">Prijs berekenen</string>
 
     <string name="about_screen_title">Over de foodtruck</string>
     <string name="about_minimum_space">Minimaal te voorziene ruimte:</string>

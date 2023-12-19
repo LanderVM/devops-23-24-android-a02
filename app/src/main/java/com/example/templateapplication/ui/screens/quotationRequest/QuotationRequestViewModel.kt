@@ -20,11 +20,11 @@ import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.model.quotationRequest.parseAddress
-import com.example.templateapplication.network.restApi.Address
-import com.example.templateapplication.network.restApi.ApiQuotationRequestPost
-import com.example.templateapplication.network.restApi.Customer
-import com.example.templateapplication.network.restApi.Email
-import com.example.templateapplication.network.restApi.EquipmentSelected
+import com.example.templateapplication.network.restApi.quotationRequest.Address
+import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPost
+import com.example.templateapplication.network.restApi.quotationRequest.Customer
+import com.example.templateapplication.network.restApi.quotationRequest.Email
+import com.example.templateapplication.network.restApi.quotationRequest.EquipmentSelected
 import com.example.templateapplication.validation.ValidateEmailUseCase
 import com.example.templateapplication.validation.ValidateNotEmptyUseCase
 import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
@@ -318,13 +318,6 @@ class QuotationRequestViewModel(
             return null
         }
         return _quotationUiState.value.googleMaps.distanceResponse.rows[0].elements[0].distance.value
-    }
-
-    fun getDistanceString(): String {
-        if (_quotationUiState.value.googleMaps.distanceResponse.rows.isEmpty() or _quotationUiState.value.googleMaps.eventAddress.isBlank()) {
-            return ""
-        }
-        return "Afstand: " + _quotationUiState.value.googleMaps.distanceResponse.rows[0].elements[0].distance.text
     }
 
     fun placeFound(): Boolean {

@@ -1,4 +1,4 @@
-package com.example.templateapplication.network.restApi
+package com.example.templateapplication.network.restApi.quotationRequest
 
 import com.example.templateapplication.data.database.DbFormula
 import kotlinx.serialization.Serializable

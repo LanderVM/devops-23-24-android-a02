@@ -19,11 +19,15 @@ import com.example.templateapplication.model.guidePriceEstimation.EstimationDeta
 import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment
 import com.example.templateapplication.model.guidePriceEstimation.EstimationUiState
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationDetailsApiState
+import com.example.templateapplication.network.restApi.priceEstimation.PriceEstimationResultApiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.io.IOException
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.Calendar
 
 class PriceEstimationViewModel(
@@ -39,7 +43,7 @@ class PriceEstimationViewModel(
         getApiEstimationDetails()
     }
 
-    var priceEstimationApiState: PriceEstimationDetailsApiState by mutableStateOf(
+    var retrieveUiDetailsApiState: PriceEstimationDetailsApiState by mutableStateOf(
         PriceEstimationDetailsApiState.Loading
     )
         private set
@@ -57,11 +61,11 @@ class PriceEstimationViewModel(
                         )
                     )
                 }
-                priceEstimationApiState = PriceEstimationDetailsApiState.Success(result)
+                retrieveUiDetailsApiState = PriceEstimationDetailsApiState.Success
             } catch (e: IOException) {
                 val errorMessage = e.message ?: "An error occurred"
-                priceEstimationApiState =
-                    PriceEstimationDetailsApiState.Error(errorMessage) // TODO use this in ui
+                retrieveUiDetailsApiState =
+                    PriceEstimationDetailsApiState.Error(errorMessage)
             }
 
         }
@@ -175,6 +179,38 @@ class PriceEstimationViewModel(
         return if (_estimationDetailsState.value.placeResponse.candidates.isNotEmpty())
             _estimationDetailsState.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
         else false
+    }
+
+    var calculatePriceApiState: PriceEstimationResultApiState by mutableStateOf(
+        PriceEstimationResultApiState.Idle
+    )
+        private set
+
+    fun getPriceEstimation() {
+        viewModelScope.launch {
+            try {
+                Log.i("PriceEstimationViewModel getPriceEstimation", "Sending request to api..")
+                val response = restApiRepository.calculatePrice(
+                    _estimationDetailsState.value.selectedFormula,
+                    selectedExtras.toList().map {
+                        it.id
+                    },
+                    _estimationDetailsState.value.startDate!!.toInstant().toEpochMilli().toString(),
+                    _estimationDetailsState.value.endDate!!.toInstant().toEpochMilli().toString(),
+                    _estimationDetailsState.value.amountOfPeople,
+                    _estimationDetailsState.value.wantsTripelBeer,
+                ).estimatedPrice
+
+                calculatePriceApiState = PriceEstimationResultApiState.Success(BigDecimal(response).setScale(2, RoundingMode.CEILING))
+            } catch (e: HttpException) {
+                val errorMessage = e.message ?: "Post request failed"
+                Log.e(
+                    "RestApi sendQuotationRequest",
+                    errorMessage
+                )
+                calculatePriceApiState = PriceEstimationResultApiState.Error(errorMessage)
+            }
+        }
     }
 
 }

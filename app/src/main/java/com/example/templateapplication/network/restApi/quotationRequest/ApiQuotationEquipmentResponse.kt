@@ -1,4 +1,4 @@
-package com.example.templateapplication.network.restApi
+package com.example.templateapplication.network.restApi.quotationRequest
 
 import android.annotation.SuppressLint
 import com.example.templateapplication.data.database.DbEquipment

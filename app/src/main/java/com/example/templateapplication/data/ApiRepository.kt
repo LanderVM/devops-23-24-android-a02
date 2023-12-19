@@ -9,21 +9,22 @@ import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.quotationRequest.DisabledDatesState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
-import com.example.templateapplication.network.restApi.ApiQuotationEquipment
-import com.example.templateapplication.network.restApi.ApiQuotationRequestPost
-import com.example.templateapplication.network.restApi.FormulaData
 import com.example.templateapplication.network.restApi.RestApiService
-import com.example.templateapplication.network.restApi.asDbEquipment
-import com.example.templateapplication.network.restApi.asDbFormula
-import com.example.templateapplication.network.restApi.asDomainObject
-import com.example.templateapplication.network.restApi.asDomainObjects
+import com.example.templateapplication.network.restApi.common.asDomainObjects
 import com.example.templateapplication.network.restApi.getEquipmentAsFlow
 import com.example.templateapplication.network.restApi.getFormulasAsFlow
+import com.example.templateapplication.network.restApi.priceEstimation.ApiGetEstimatedPriceResponse
+import com.example.templateapplication.network.restApi.priceEstimation.asDomainObject
+import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationEquipment
+import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPost
+import com.example.templateapplication.network.restApi.quotationRequest.FormulaData
+import com.example.templateapplication.network.restApi.quotationRequest.asDbEquipment
+import com.example.templateapplication.network.restApi.quotationRequest.asDbFormula
+import com.example.templateapplication.network.restApi.quotationRequest.asDomainObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import retrofit2.Call
-import java.math.BigDecimal
 
 interface ApiRepository {
     suspend fun insertEquipment(item: ApiQuotationEquipment)
@@ -36,7 +37,15 @@ interface ApiRepository {
     suspend fun getQuotationExtraEquipment(): List<ExtraItemState>
 
     suspend fun getEstimationDetails(): EstimationDetails
-    suspend fun calculatePrice(): BigDecimal
+    suspend fun calculatePrice(
+        formulaId: Int,
+        equipmentIds: List<Int>,
+        startTime: String,
+        endTime: String,
+        estimatedNumberOfPeople: Int,
+        isTripelBier: Boolean
+    ): ApiGetEstimatedPriceResponse
+
     suspend fun postQuotationRequest(body: ApiQuotationRequestPost): Call<ApiQuotationRequestPost>
 }
 
@@ -98,7 +107,22 @@ class RestApiRepository(
     override suspend fun getEstimationDetails() =
         restApiService.getEstimationDetails().asDomainObject()
 
-    override suspend fun calculatePrice() = restApiService.calculatePrice()
+    override suspend fun calculatePrice(
+        formulaId: Int,
+        equipmentIds: List<Int>,
+        startTime: String,
+        endTime: String,
+        estimatedNumberOfPeople: Int,
+        isTripelBier: Boolean
+    ) = restApiService.calculatePrice(
+        formulaId,
+        equipmentIds,
+        startTime,
+        endTime,
+        estimatedNumberOfPeople,
+        isTripelBier,
+    )
+
     override suspend fun getUnavailableDateRanges(): List<DisabledDatesState> {
         Log.i("RestAPI getDateRanges", "Retrieving list of date ranges from api..")
         return restApiService.getDates().asDomainObjects()

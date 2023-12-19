@@ -1,4 +1,4 @@
-package com.example.templateapplication.network.restApi
+package com.example.templateapplication.network.restApi.common
 
 import android.util.Log
 import com.example.templateapplication.model.quotationRequest.DisabledDatesState
@@ -19,7 +19,7 @@ data class DisabledDatesData(
 
 fun DatesRangeData.asDomainObjects(): List<DisabledDatesState> {
     Log.i("RestAPI getDateRanges", "Converting data to list of DisabledDatesState..")
-         var domainList = this.dateRanges.map {
+         val domainList = this.dateRanges.map {
              DisabledDatesState(
                  DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.startTime, Instant::from),
                  DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.endTime, Instant::from)
