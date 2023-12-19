@@ -1,10 +1,13 @@
 package com.example.templateapplication.network.restApi.priceEstimation
 
+import com.example.templateapplication.model.common.quotation.DisabledDateRange
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment
-import com.example.templateapplication.model.guidePriceEstimation.EstimationUnavailableDateRanges
+import com.example.templateapplication.network.restApi.common.DisabledDatesData
 import com.example.templateapplication.ui.commons.DropDownOption
 import kotlinx.serialization.Serializable
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 @Serializable
 data class EstimationFormulaData(
@@ -28,7 +31,7 @@ data class EstimationUnavailableDateRangesData(
 data class EstimationDetailsData(
     val formulas: List<EstimationFormulaData> = emptyList(),
     val equipment: List<EstimationEquipmentData> = emptyList(),
-    val unavailableDates: List<EstimationUnavailableDateRangesData> = emptyList(),
+    val unavailableDates: List<DisabledDatesData> = emptyList(),
 )
 
 fun EstimationDetailsData.asDomainObject(): EstimationDetails {
@@ -39,7 +42,10 @@ fun EstimationDetailsData.asDomainObject(): EstimationDetails {
         EstimationEquipment(it.id, it.title)
     }
     val dateRanges = this.unavailableDates.map {
-        EstimationUnavailableDateRanges(it.startTime, it.endTime)
+        DisabledDateRange(
+            DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.startTime, Instant::from),
+            DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.endTime, Instant::from)
+        )
     }
     return EstimationDetails(formulas, equipment, dateRanges)
 }

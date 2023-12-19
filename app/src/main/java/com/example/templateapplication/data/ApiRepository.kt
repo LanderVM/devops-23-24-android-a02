@@ -4,10 +4,10 @@ package com.example.templateapplication.data
 import android.util.Log
 import com.example.templateapplication.data.database.QuotationDao
 import com.example.templateapplication.data.database.asDomainObjects
+import com.example.templateapplication.model.common.quotation.DisabledDateRange
 import com.example.templateapplication.model.common.quotation.Equipment
 import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
-import com.example.templateapplication.model.quotationRequest.DisabledDatesState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.network.restApi.RestApiService
 import com.example.templateapplication.network.restApi.common.asDomainObjects
@@ -31,7 +31,7 @@ interface ApiRepository {
     fun getEquipment(): Flow<List<Equipment>>
     suspend fun insertFormula(item: FormulaData)
     fun getFormulas(): Flow<List<Formula>>
-    suspend fun getUnavailableDateRanges(): List<DisabledDatesState>
+    suspend fun getUnavailableDateRanges(): List<DisabledDateRange>
     suspend fun refresh()
 
     suspend fun getQuotationExtraEquipment(): List<ExtraItemState>
@@ -123,7 +123,7 @@ class RestApiRepository(
         isTripelBier,
     )
 
-    override suspend fun getUnavailableDateRanges(): List<DisabledDatesState> {
+    override suspend fun getUnavailableDateRanges(): List<DisabledDateRange> {
         Log.i("RestAPI getDateRanges", "Retrieving list of date ranges from api..")
         return restApiService.getDates().asDomainObjects()
     }

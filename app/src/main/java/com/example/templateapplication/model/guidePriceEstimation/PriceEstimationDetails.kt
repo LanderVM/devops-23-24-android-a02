@@ -2,6 +2,7 @@ package com.example.templateapplication.model.guidePriceEstimation
 
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
+import com.example.templateapplication.model.common.quotation.DisabledDateRange
 import com.example.templateapplication.ui.commons.DropDownOption
 import java.util.Calendar
 
@@ -10,15 +11,10 @@ data class EstimationEquipment(
     val title: String,
 )
 
-data class EstimationUnavailableDateRanges(
-    val startTime: Long,
-    val endTime: Long,
-)
-
 data class EstimationDetails(
     val formulas: List<DropDownOption> = emptyList(),
     val equipment: List<EstimationEquipment> = emptyList(),
-    val unavailableDates: List<EstimationUnavailableDateRanges> = emptyList(),
+    val unavailableDates: List<DisabledDateRange> = emptyList(),
 )
 
 data class EstimationUiState(

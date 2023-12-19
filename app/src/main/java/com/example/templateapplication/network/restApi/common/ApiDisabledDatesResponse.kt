@@ -1,7 +1,7 @@
 package com.example.templateapplication.network.restApi.common
 
 import android.util.Log
-import com.example.templateapplication.model.quotationRequest.DisabledDatesState
+import com.example.templateapplication.model.common.quotation.DisabledDateRange
 import kotlinx.serialization.Serializable
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -17,10 +17,10 @@ data class DisabledDatesData(
         val endTime: String,
 )
 
-fun DatesRangeData.asDomainObjects(): List<DisabledDatesState> {
+fun DatesRangeData.asDomainObjects(): List<DisabledDateRange> {
     Log.i("RestAPI getDateRanges", "Converting data to list of DisabledDatesState..")
          val domainList = this.dateRanges.map {
-             DisabledDatesState(
+             DisabledDateRange(
                  DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.startTime, Instant::from),
                  DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.endTime, Instant::from)
              )

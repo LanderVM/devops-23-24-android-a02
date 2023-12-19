@@ -52,12 +52,13 @@ class PriceEstimationViewModel(
         viewModelScope.launch {
             try {
                 val result = restApiRepository.getEstimationDetails()
+                val listDatesResult = restApiRepository.getUnavailableDateRanges()
                 _estimationDetailsState.update {
                     it.copy(
                         dbData = EstimationDetails(
                             formulas = result.formulas,
                             equipment = result.equipment,
-                            unavailableDates = result.unavailableDates,
+                            unavailableDates = listDatesResult,
                         )
                     )
                 }

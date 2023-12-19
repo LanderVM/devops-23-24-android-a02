@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
+import com.example.templateapplication.model.common.quotation.DisabledDateRange
 import com.example.templateapplication.ui.commons.DropDownOption
-import java.time.Instant
 
 data class QuotationUiState(
     val dropDownExpanded: Boolean = false,
@@ -17,7 +17,7 @@ data class QuotationUiState(
     ),
     val googleMaps: GoogleMapsResponse = GoogleMapsResponse(),
     val extraItems: List<ExtraItemState>  = emptyList(),
-    val listDateRanges: List<DisabledDatesState> = emptyList(),
+    val listDateRanges: List<DisabledDateRange> = emptyList(),
 )
 
 data class ExtraItemState(
@@ -33,14 +33,8 @@ data class ExtraItemState(
     var isEditing by mutableStateOf(false)
 }
 
-data class DisabledDatesState(
-    val startTime: Instant,
-    val endTime: Instant,
-)
-
-
 sealed interface DateRangesApiState{
-    data class Success(val result: List<DisabledDatesState>) : DateRangesApiState
+    data class Success(val result: List<DisabledDateRange>) : DateRangesApiState
     data class Error(val errorMessage: String): DateRangesApiState
     object Loading : DateRangesApiState
 }

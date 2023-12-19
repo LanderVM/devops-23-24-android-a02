@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
@@ -42,6 +43,7 @@ import com.example.templateapplication.ui.screens.priceEstimation.components.Wan
 import com.example.templateapplication.ui.screens.priceEstimation.components.WantsTripelBeerCheckbox
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
+import java.time.Instant
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,10 +62,21 @@ fun GuidePriceScreen(
         initialSelectedStartDateMillis = selectedStartDate?.timeInMillis,
         initialSelectedEndDateMillis = selectedEndDate?.timeInMillis,
         yearRange = IntRange(
-            start = 2023,
-            endInclusive = Calendar.getInstance().get(Calendar.YEAR) + 1
+            start = Calendar.getInstance().get(Calendar.YEAR),
+            endInclusive = Calendar.getInstance().get(Calendar.YEAR) + 2
         ),
-    )
+        selectableDates = object : SelectableDates {
+
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val isTimeInPast = utcTimeMillis < System.currentTimeMillis()
+                if (isTimeInPast) return false
+
+                for (item in priceEstimationUIState.dbData.unavailableDates)
+                    if (Instant.ofEpochMilli(utcTimeMillis) in item.startTime..item.endTime)
+                        return false
+                return true
+            }
+        })
 
     when (val detailsApiState = priceEstimationViewModel.retrieveUiDetailsApiState) {
         is PriceEstimationDetailsApiState.Error -> Text(text = detailsApiState.errorMessage)
