@@ -214,9 +214,6 @@ class QuotationRequestViewModel(
         }
     }
 
-
-    // TODO validate each field separately. Only check if hasErrors = true here.
-
     fun selectFormula(id: Int) {
         _quotationRequestState.update {
             it.copy(formulaId = id)

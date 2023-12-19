@@ -29,6 +29,7 @@ import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
 import com.example.templateapplication.ui.layout.BlancheAppBar
 import com.example.templateapplication.ui.screens.aboutPage.AboutScreen
+import com.example.templateapplication.ui.screens.aboutPage.AboutViewModel
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewScreen
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewViewModel
 import com.example.templateapplication.ui.screens.formulaDetails.FormulasViewModel
@@ -58,9 +59,8 @@ fun BlancheApp(
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
-        // VIEWMODELS TODO only create these when called to optimize startup perhaps?
-        val homeViewModel: HomeViewModel =
-            viewModel(factory = HomeViewModel.Factory)
+        val aboutViewModel: AboutViewModel = viewModel(factory = AboutViewModel.Factory)
+        val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
         val quotationRequestViewModel: QuotationRequestViewModel =
             viewModel(factory = QuotationRequestViewModel.Factory)
         val priceEstimationViewModel: PriceEstimationViewModel =
@@ -130,7 +130,7 @@ fun BlancheApp(
                     composable(NavigationRoutes.About.name) {
                         AboutScreen(
                             modifier = Modifier.padding(innerPadding),
-                            navigateEmailScreen = { navController.navigate(NavigationRoutes.AboutEmail.name) },
+                            aboutViewModel = aboutViewModel,
                         )
                     }
                     composable(NavigationRoutes.ContactDetails.name) {

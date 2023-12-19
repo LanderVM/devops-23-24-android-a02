@@ -25,10 +25,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -48,27 +46,28 @@ import com.example.templateapplication.ui.theme.MainColor
 @Composable
 fun AboutScreen (
     modifier: Modifier = Modifier,
-    navigateEmailScreen:()->Unit,
+    aboutViewModel: AboutViewModel,
 ) {
 
-    var openDialog1 by remember { mutableStateOf(false) }
-    var openDialog2 by remember { mutableStateOf(false) }
-    var emailAddress by remember { mutableStateOf("") }
+    val uiState by aboutViewModel.aboutUiState.collectAsState()
 
     val scrollState = rememberScrollState()
 
-    if (openDialog1) {
+    if (uiState.openDialog1) {
         PopUp1(
-            setOpenDialog = {value -> openDialog1 = value},
-            openNextDialog = {openDialog2 = true},
-            onEmailChange = {emailAddress = it},
-            email = emailAddress,
+            setOpenDialog = { aboutViewModel.setOpenDialog1(it) },
+            openNextDialog = {
+                aboutViewModel.postEmail()
+                aboutViewModel.setOpenDialog2(true)
+            },
+            onEmailChange = { aboutViewModel.setEmail(it) },
+            email = uiState.emailAddress,
         )
     }
-    if (openDialog2) {
+    if (uiState.openDialog2) {
         PopUp2(
-            setOpenDialog = {value -> openDialog2 = value},
-            emailAdress = emailAddress,
+            setOpenDialog = { aboutViewModel.setOpenDialog2(it) },
+            emailAdress = uiState.emailAddress,
         )
     }
 
@@ -78,7 +77,7 @@ fun AboutScreen (
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Info(openPopUp = {openDialog1 = true})
+        Info(openPopUp = { aboutViewModel.setOpenDialog1(true) })
         Spacer(modifier = Modifier.height(50.dp))
         Pictures()
         Spacer(modifier = Modifier.height(40.dp))
@@ -219,7 +218,7 @@ fun PopUp2(
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 Button (
-                    onClick = {setOpenDialog(false)},
+                    onClick = { setOpenDialog(false) },
                     modifier = Modifier
                         .width(100.dp)
                         .height(35.dp),

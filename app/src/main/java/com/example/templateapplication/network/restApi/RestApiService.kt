@@ -1,10 +1,12 @@
 package com.example.templateapplication.network.restApi
 
 
-import com.example.templateapplication.network.restApi.quotationRequest.ApiGetFormula
+import com.example.templateapplication.network.restApi.about.ApiEmailPost
+import com.example.templateapplication.network.restApi.about.ApiEmailResponse
 import com.example.templateapplication.network.restApi.common.DatesRangeData
 import com.example.templateapplication.network.restApi.priceEstimation.ApiGetEstimatedPriceResponse
 import com.example.templateapplication.network.restApi.priceEstimation.EstimationDetailsData
+import com.example.templateapplication.network.restApi.quotationRequest.ApiGetFormula
 import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPost
 import com.example.templateapplication.network.restApi.quotationRequest.QuotationEquipmentData
 import kotlinx.coroutines.flow.flow
@@ -39,6 +41,9 @@ interface RestApiService {
 
     @POST("Quotation")
     suspend fun postQuotationRequest(@Body body: ApiQuotationRequestPost): Call<ApiQuotationRequestPost>
+
+    @POST("Email")
+    suspend fun postEmail(@Body body: ApiEmailPost): ApiEmailResponse
 }
 
 fun RestApiService.getEquipmentAsFlow() = flow { emit(getQuotationEquipment()) }

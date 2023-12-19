@@ -10,6 +10,8 @@ import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.network.restApi.RestApiService
+import com.example.templateapplication.network.restApi.about.ApiEmailResponse
+import com.example.templateapplication.network.restApi.about.ApiEmailPost
 import com.example.templateapplication.network.restApi.common.asDomainObjects
 import com.example.templateapplication.network.restApi.getEquipmentAsFlow
 import com.example.templateapplication.network.restApi.getFormulasAsFlow
@@ -47,6 +49,7 @@ interface ApiRepository {
     ): ApiGetEstimatedPriceResponse
 
     suspend fun postQuotationRequest(body: ApiQuotationRequestPost): Call<ApiQuotationRequestPost>
+    suspend fun postEmail(body: ApiEmailPost): ApiEmailResponse
 }
 
 class RestApiRepository(
@@ -131,6 +134,11 @@ class RestApiRepository(
     override suspend fun postQuotationRequest(body: ApiQuotationRequestPost): Call<ApiQuotationRequestPost> {
         Log.i("RestAPI postQuotationRequest", "Attempting to POST a new quotation request to api..")
         return restApiService.postQuotationRequest(body)
+    }
+
+    override suspend fun postEmail(body: ApiEmailPost): ApiEmailResponse {
+        Log.i("RestAPI postQuotationRequest", "Attempting to POST a new email to api..")
+        return restApiService.postEmail(body)
     }
 
 }

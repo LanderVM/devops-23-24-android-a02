@@ -9,7 +9,6 @@ enum class NavigationRoutes(@StringRes val title: Int) {
     About(title = R.string.about_title),
     ContactDetails(title = R.string.contactDetails_title),
     Formulas(title = R.string.formulas_title),
-    AboutEmail(title = R.string.aboutEmail_title),
     EventDetails(title=R.string.eventDetails_title),
     SummaryData(title=R.string.summaryData_title),
     ExtraItems(title=R.string.extraItems_title),

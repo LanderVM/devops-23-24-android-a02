@@ -54,15 +54,4 @@ class BlancheAppNavigationTest {
         sni.performClick()
         navController.assertCurrentRouteName(NavigationRoutes.About.name)
     }
-    private fun navigateToOver() {
-        composeTestRule.onNodeWithText("Over").performClick()
-    }
-    @Test
-    fun blancheNavHost_clickMeerInfo_navigateToEmailScreen () {
-        navigateToOver()
-        composeTestRule.onNodeWithText("Meer info").performClick()
-        navController.assertCurrentRouteName(NavigationRoutes.AboutEmail.name)
-    }
-
-
 }
