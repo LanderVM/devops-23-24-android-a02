@@ -31,7 +31,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateRangePicker(
+fun CustomDateRangePicker(
     navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     state: DateRangePickerState,
@@ -42,7 +42,7 @@ fun DateRangePicker(
     SeperatingTitle(
         text = stringResource(id = R.string.dateRangePicker_separator),
     )
-    var dateWidth : Dp
+    val dateWidth : Dp
 
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {

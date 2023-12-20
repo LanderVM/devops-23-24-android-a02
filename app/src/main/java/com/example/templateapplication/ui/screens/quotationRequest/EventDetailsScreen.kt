@@ -22,9 +22,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.model.UiText
 import com.example.templateapplication.ui.commons.AddressTextField
-import com.example.templateapplication.ui.commons.DateRangePicker
+import com.example.templateapplication.ui.commons.CustomDateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressieBar
@@ -102,7 +101,7 @@ fun EventDetailsScreen(
             errorMessage = quotationRequestViewModel.formState.addressError
         )
         Spacer(modifier = Modifier.height(35.dp))
-        DateRangePicker(
+        CustomDateRangePicker(
             navigationType = navigationType,
             state = dateRangePickerState,
             onSelectDateRange = { startDate, endDate ->
