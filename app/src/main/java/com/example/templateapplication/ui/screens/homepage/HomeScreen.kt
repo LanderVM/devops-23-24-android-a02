@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
@@ -30,11 +29,7 @@ fun HomeScreen(
     onGuidePriceNavigation: () -> Unit,
     homeViewModel: HomeViewModel
 ) {
-    val image2 = painterResource(id = R.drawable.foto5)
-    val image4 = painterResource(id = R.drawable.foto7)
-
     val formulaList by homeViewModel.formulaList.collectAsState()
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -55,14 +50,13 @@ fun HomeScreen(
             items(formulaList.formulaListState) { formula ->
                 FormuleCard(
                     title = formula.title,
-                    image = image2, // formula.img TODO
+                    image = formula.imageUrl,
                     onButtonClicked = { onQuotationRequestNavigation(formula.id) }
                 )
             }
             item {
                 FormuleCard(
                     title = stringResource(id = R.string.formula_extraMaterials_title),
-                    image = image4,
                     onButtonClicked = onExtraNavigation
                 )
             }

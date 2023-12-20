@@ -11,6 +11,7 @@ data class FormulaData(
     val pricePerDayExtra: Double,
     val basePrice: List<Double>,
     val isActive: Boolean,
+    val imageUrl: String,
 )
 
 @Serializable
@@ -26,4 +27,5 @@ fun FormulaData.asDbFormula(): DbFormula = DbFormula(
     pricePerDayExtra = pricePerDayExtra,
     basePrice = basePrice,
     isActive = isActive,
+    imageUrl = imageUrl,
 )

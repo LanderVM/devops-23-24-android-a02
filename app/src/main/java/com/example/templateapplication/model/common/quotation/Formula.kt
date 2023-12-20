@@ -7,6 +7,7 @@ data class Formula(
     val pricePerDayExtra: Double,
     val basePrice: List<Double>,
     val isActive: Boolean,
+    val imageUrl: String,
 )
 
 sealed interface FormulaApiState {

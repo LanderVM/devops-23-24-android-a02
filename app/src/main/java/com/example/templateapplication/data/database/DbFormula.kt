@@ -12,7 +12,7 @@ data class DbFormula(
     val pricePerDayExtra: Double,
     val basePrice: List<Double>,
     val isActive: Boolean,
-//    @Embedded val imageData: DbImageData, TODO
+    val imageUrl: String,
 )
 
 fun DbFormula.asDomainObject(): Formula =
@@ -23,5 +23,6 @@ fun DbFormula.asDomainObject(): Formula =
         pricePerDayExtra = pricePerDayExtra,
         basePrice = basePrice,
         isActive = isActive,
+        imageUrl = imageUrl,
     )
 fun List<DbFormula>.asDomainObjects() = map { it.asDomainObject() }

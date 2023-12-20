@@ -16,23 +16,26 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import coil.size.Scale
+import com.example.templateapplication.R
 
 @Composable
 fun FormuleCard(
     modifier: Modifier = Modifier,
     title: String,
-    image: Painter,
+    image: String = "",
+    imageTxt: String = "",
     onButtonClicked: () -> Unit
 ) {
 
@@ -53,13 +56,26 @@ fun FormuleCard(
                     .background(Color(4290025315))
                     .padding(2.dp)
             ) {
-                Image(
-                    painter = image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(10.dp))
-                )
+                if (image.isBlank())
+                    Image(
+                        painter = painterResource(id = R.drawable.foto7),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(10.dp))
+                    )
+                else
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(image)
+                            .crossfade(true)
+                            .scale(Scale.FILL)
+                            .build(),
+                        placeholder = painterResource(id = R.drawable.foto7),
+                        contentDescription = imageTxt,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp))
+                    )
             }
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedButton(

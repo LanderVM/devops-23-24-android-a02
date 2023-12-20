@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.size.Scale
 import com.example.templateapplication.R
 import com.example.templateapplication.model.common.quotation.Equipment
 import com.example.templateapplication.model.extraMateriaal.EquipmentApiState
@@ -149,12 +151,14 @@ fun ExtraItemCard(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(extraItem.imgUrl)
                     .crossfade(true)
+                    .scale(Scale.FILL)
                     .build(),
                 placeholder = painterResource(id = R.drawable.foto7),
                 contentDescription = extraItem.imgTxt,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
+                    .clip(RoundedCornerShape(10.dp))
             )
             Spacer(modifier = Modifier.height(16.dp))
             // Item Details
