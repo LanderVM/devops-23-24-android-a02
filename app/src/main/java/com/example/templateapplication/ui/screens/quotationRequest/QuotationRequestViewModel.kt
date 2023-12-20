@@ -651,8 +651,8 @@ class QuotationRequestViewModel(
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
-            0 -> _quotationUiState.value.extraItems.sortedBy { it.price } // Sort asc
-            1 -> _quotationUiState.value.extraItems.sortedByDescending { it.price } // Sort desc
+            0 -> _quotationUiState.value.extraItems.sortedByDescending  { it.price } // Sort asc
+            1 -> _quotationUiState.value.extraItems.sortedBy{ it.price } // Sort desc
             2 -> _quotationUiState.value.extraItems.sortedBy { it.title } // Sort by name asc
             3 -> _quotationUiState.value.extraItems.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")

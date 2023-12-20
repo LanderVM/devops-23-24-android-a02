@@ -20,22 +20,45 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.model.common.quotation.Formula
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun FormulaDetailsCard(
+    navigationType: ReplyNavigationType,
     formula: Formula,
     backgroundColor: Color = Color.White,
     textColor: Color = Color.Black,
 ) {
+    var cardHeight : Dp
+    var fontSize : TextUnit
+    when (navigationType) {
+        ReplyNavigationType.NAVIGATION_RAIL -> {
+            cardHeight= 600.dp
+            fontSize = 30.sp
+
+        }
+        ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+            cardHeight= 650.dp
+            fontSize = 45.sp
+        }
+        else -> {
+            cardHeight= 500.dp
+            fontSize = 30.sp
+
+        }
+    }
     Card(
         shape = RectangleShape,
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
         ),
         modifier = Modifier
+            .height(cardHeight)
             .fillMaxWidth()
             .padding(20.dp)
             .shadow(elevation = 8.dp)
@@ -44,7 +67,7 @@ fun FormulaDetailsCard(
         Text(
             text = formula.title,
             fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
+            fontSize = fontSize,
             color = textColor,
             modifier = Modifier
                 .align(CenterHorizontally)
@@ -60,8 +83,9 @@ fun FormulaDetailsCard(
         formula.attributes.forEach { item ->
             Row(
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(vertical = 10.dp)
                     .align(CenterHorizontally)
+                    .fillMaxWidth(0.4f)
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Check,

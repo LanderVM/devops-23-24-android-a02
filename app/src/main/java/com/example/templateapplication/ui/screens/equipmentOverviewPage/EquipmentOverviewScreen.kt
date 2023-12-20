@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -46,10 +48,12 @@ import com.example.templateapplication.R
 import com.example.templateapplication.model.common.quotation.Equipment
 import com.example.templateapplication.model.extraMateriaal.EquipmentApiState
 import com.example.templateapplication.ui.theme.MainLightestColor
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @ExperimentalMaterial3Api
 @Composable
 fun EquipmentOverviewScreen(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     equipmentOverviewViewModel: EquipmentOverviewViewModel = viewModel(),
 ) {
@@ -64,6 +68,19 @@ fun EquipmentOverviewScreen(
         stringResource(id = R.string.extraMaterial_sort_name_asc)
     )
 
+    var columns : Int
+    when (navigationType) {
+        ReplyNavigationType.NAVIGATION_RAIL -> {
+            columns = 2
+        }
+        ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+           columns = 4
+        }
+        else -> {
+            columns = 1
+        }
+    }
+
     when (val apiState = equipmentOverviewViewModel.extraMateriaalApiState) {
         is EquipmentApiState.Loading -> Text(stringResource(id = R.string.loading))
         is EquipmentApiState.Error -> {
@@ -71,14 +88,15 @@ fun EquipmentOverviewScreen(
         }
 
         is EquipmentApiState.Success -> {
-            LazyColumn(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(columns),
                 modifier = Modifier
                     .padding(horizontal = 30.dp)
                     .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
+
             ) {
-                item {
-                    SingleChoiceSegmentedButtonRow {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(top = 20.dp)) {
                         options.forEachIndexed { index, label ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(
@@ -107,8 +125,6 @@ fun EquipmentOverviewScreen(
                         }
                     }
                 }
-
-
                 items(equipmentOverviewViewModel.getListSorted(selectedIndex)) { extraItem ->
                     ExtraItemCard(
                         modifier = Modifier.padding(8.dp),
@@ -117,6 +133,8 @@ fun EquipmentOverviewScreen(
                 }
             }
         }
+
+        else -> {}
     }
 }
 
@@ -168,14 +186,16 @@ fun ExtraItemCard(
             ) {
                 // Title
                 Text(
-                    modifier = Modifier.size(170.dp, 40.dp),
+                    fontSize = 20.sp ,
+                    modifier = Modifier.size(170.dp, 70.dp),
                     text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Visible
                 )
                 // Price
                 Text(
+                    fontSize = 20.sp ,
                     text = "€${extraItem.price}",
                     style = MaterialTheme.typography.headlineSmall,
 
@@ -192,7 +212,8 @@ fun ExtraItemCard(
                     }
                 },
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
+                color = Color.Gray,
+                modifier = Modifier.height(65.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

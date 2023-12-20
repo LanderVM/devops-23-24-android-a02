@@ -64,7 +64,7 @@
 
     <string name="contactDetails_personal_info">Personalia</string>
     <string name="contactDetails_address_info">Facturatie gegevens</string>
-    <string name="contactDetails_contact_info">Contact gegevens</string>
+    <string name="contactDetails_contact_info">Gegevens</string>
     <string name="contactDetails_first_name">Voornaam</string>
     <string name="contactDetails_name">Achternaam</string>
     <string name="contactDetails_phone_number">Telefoonnummer</string>
@@ -90,7 +90,7 @@
     <string name="summaryData_priceDetails_title">Kost</string>
     <string name="summaryData_priceDetails_description">Omschrijving</string>
     <string name="summaryData_priceDetails_price">Prijs</string>
-    <string name="summaryData_priceDetails_subtotal">Subtotaal</string>
+    <string name="summaryData_priceDetails_subtotal">Totaal</string>
     <string name="summaryData_loading">Aan het versturen…</string>
     <string name="summaryData_error">Er is iets misgelopen bij het versturen…</string>
     <string name="summaryData_confirmed">Uw offerteaanvraag werd verstuurd!</string>

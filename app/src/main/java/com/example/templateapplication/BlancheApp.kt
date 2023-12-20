@@ -10,6 +10,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,14 +42,33 @@ import com.example.templateapplication.ui.screens.quotationRequest.ExtrasScreen
 import com.example.templateapplication.ui.screens.quotationRequest.PersonalDetailsScreen
 import com.example.templateapplication.ui.screens.quotationRequest.QuotationRequestViewModel
 import com.example.templateapplication.ui.screens.quotationRequest.SummaryScreen
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlancheApp(
+    windowSize: WindowWidthSizeClass,
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
 ) {
+
+    val navigationType: ReplyNavigationType
+    when(windowSize){
+        WindowWidthSizeClass.Compact ->{
+            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
+        }
+        WindowWidthSizeClass.Medium -> {
+            navigationType = ReplyNavigationType.NAVIGATION_RAIL
+        }
+        WindowWidthSizeClass.Expanded -> {
+            navigationType = ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
+        }
+        else -> {
+            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
+        }
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -110,6 +130,7 @@ fun BlancheApp(
                 ) {
                     composable(NavigationRoutes.Home.name) {
                         HomeScreen(
+                            navigationType = navigationType,
                             openDrawer = {
                                 scope.launch {
                                     drawerState.open()
@@ -129,12 +150,14 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.About.name) {
                         AboutScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             aboutViewModel = aboutViewModel,
                         )
                     }
                     composable(NavigationRoutes.ContactDetails.name) {
                         PersonalDetailsScreen(
+                            navigationType = navigationType,
                             navigateExtras = { navController.navigate(NavigationRoutes.ExtraItems.name) },
                             quotationRequestViewModel = quotationRequestViewModel,
                             modifier = Modifier.padding(innerPadding),
@@ -142,12 +165,14 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.Formulas.name) {
                         FormulesScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             formulasViewModel = formulasViewModel,
                         )
                     }
                     composable(NavigationRoutes.EventDetails.name) {
                         EventDetailsScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             navigateContactGegevensScreen = {
                                 navController.navigate(
@@ -159,6 +184,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.SummaryData.name) {
                         SummaryScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.EventDetails.name) },
@@ -168,6 +194,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.ExtraItems.name) {
                         ExtrasScreen(
+                            navigationType= navigationType,
                             modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateSamenvatting = { navController.navigate(NavigationRoutes.SummaryData.name) },
@@ -176,12 +203,14 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.ExtrasOverview.name) {
                         EquipmentOverviewScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             equipmentOverviewViewModel = equipmentOverviewViewModel
                         )
                     }
                     composable(NavigationRoutes.GuidePrice.name) {
                         GuidePriceScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             priceEstimationViewModel = priceEstimationViewModel
                         )

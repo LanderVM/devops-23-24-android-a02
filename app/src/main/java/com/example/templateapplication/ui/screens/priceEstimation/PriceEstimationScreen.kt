@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
@@ -33,7 +34,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.model.guidePriceEstimation.PriceEstimationDetailsApiState
 import com.example.templateapplication.ui.commons.AddressTextField
-import com.example.templateapplication.ui.commons.DateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
 import com.example.templateapplication.ui.commons.SeperatingTitle
@@ -44,11 +44,13 @@ import com.example.templateapplication.ui.screens.priceEstimation.components.Wan
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import java.time.Instant
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuidePriceScreen(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
@@ -77,7 +79,6 @@ fun GuidePriceScreen(
                 return true
             }
         })
-
     when (val detailsApiState = priceEstimationViewModel.retrieveUiDetailsApiState) {
         is PriceEstimationDetailsApiState.Error -> Text(text = detailsApiState.errorMessage)
         PriceEstimationDetailsApiState.Loading -> Text(text = stringResource(id = R.string.loading))
@@ -89,6 +90,7 @@ fun GuidePriceScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 DateRangePicker(
+                    navigationType = navigationType,
                     state = dateRangePickerState,
                     onSelectDateRange = { startDate, endDate ->
                         priceEstimationViewModel.updateDateRange(startDate, endDate)
@@ -99,6 +101,7 @@ fun GuidePriceScreen(
                     text = stringResource(id = R.string.guidePrice_location_separator),
                 )
                 AddressTextField(
+                    navigationType = navigationType,
                     showMap = false,
                     placeResponse = priceEstimationUIState.placeResponse,
                     getPredictionsFunction = { priceEstimationViewModel.getPredictions() },

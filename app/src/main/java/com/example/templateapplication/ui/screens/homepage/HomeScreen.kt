@@ -1,8 +1,11 @@
 package com.example.templateapplication.ui.screens.homepage
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.FabPosition
@@ -19,9 +22,11 @@ import com.example.templateapplication.R
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
 import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun HomeScreen(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit = {},
     onExtraNavigation: () -> Unit,
@@ -45,8 +50,16 @@ fun HomeScreen(
         },
         floatingActionButtonPosition = FabPosition.End
     ) { paddingValues ->
-        LazyColumn(modifier.padding(paddingValues)) {
-            item { HomeScreenTop(openDrawer = openDrawer) }
+        val myVariable = listOf(1, 2, 3, 4)
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(250.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = modifier.padding(paddingValues)
+        ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                HomeScreenTop(navigationType = navigationType ,openDrawer = openDrawer)
+            }
             items(formulaList.formulaListState) { formula ->
                 FormuleCard(
                     title = formula.title,
@@ -63,4 +76,3 @@ fun HomeScreen(
         }
     }
 }
-
