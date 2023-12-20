@@ -46,6 +46,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -110,7 +111,7 @@ fun ExtrasScreen(
                     .fillMaxWidth(),
             ) {
                 item(span = { GridItemSpan(maxLineSpan)}){
-                    HeadOfPage1()
+                    HeadOfPage()
                 }
                 item(span = { GridItemSpan(maxLineSpan)}){
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(vertical = 20.dp, horizontal = paddingSegment)) {
@@ -259,8 +260,8 @@ fun ExtraItemCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             OutlinedTextField(
-
                                 value = extraItem.amount.takeIf { it != 0 }?.toString() ?: "",
+                                singleLine = true,
                                 onValueChange = {
                                     val enteredAmount = it.toIntOrNull()
                                     extraItem.amount = when {
@@ -271,8 +272,9 @@ fun ExtraItemCard(
 
                                 },
                                 keyboardOptions = KeyboardOptions.Default.copy(
-                                    keyboardType = KeyboardType.Number
-                                ),
+                                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                                )
+                                ,
                                 label = { Text(text = "Aantal", fontSize = 10.sp) },
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.White,
@@ -309,7 +311,7 @@ fun ExtraItemCard(
                                 },
                                 colors = ButtonColors(containerColor = MainColor, contentColor = Color.White, disabledContentColor = Color.White, disabledContainerColor = MainColor)
                             ) {
-                                Text(text = "Voeg Toe")
+                                Text(text = stringResource(id = R.string.add))
                             }
                         }
                     }

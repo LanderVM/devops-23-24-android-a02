@@ -30,6 +30,7 @@ import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
 import com.example.templateapplication.ui.commons.ValidationTextFieldApp
 import com.example.templateapplication.ui.utils.ReplyNavigationType
+import com.example.templateapplication.validation.MainEvent
 import java.time.Instant
 import java.util.Calendar
 
@@ -108,7 +109,6 @@ fun EventDetailsScreen(
                 quotationRequestViewModel.updateDateRange(startDate, endDate)
             },
             showCalenderToggle = false,
-            //enableRecheckFunction = { recheckNextButtonStatus = true }
         )
         SeperatingTitle(
             text = stringResource(id = R.string.eventDetails_details_separator),

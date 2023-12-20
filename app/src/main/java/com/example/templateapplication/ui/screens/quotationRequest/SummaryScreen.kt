@@ -106,7 +106,7 @@ fun SummaryScreen (
 
         ) {
         item(span = { GridItemSpan(maxLineSpan)}) {
-            HeadOfPage1(modifier.padding(vertical = 50.dp))
+            HeadOfPage(modifier.padding(vertical = 50.dp))
     }
         item(span = { GridItemSpan(maxLineSpan)}) {
             Navigation(
@@ -235,7 +235,7 @@ fun SummaryScreen (
 }
 
 @Composable
-fun HeadOfPage1( // TODO there are two of these in this package?
+fun HeadOfPage(
     modifier: Modifier = Modifier
 ) {
     Column (
@@ -283,71 +283,45 @@ fun Navigation (
             fontSize = 30.sp,
             color = Color.Black,
         )
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 35.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.filled_circle),
-                contentDescription = stringResource(id = R.string.summaryData_navigation_circle),
-                modifier = Modifier.size(13.dp,13.dp)
-            )
-            Spacer(modifier = Modifier.width(30.dp))
-            ClickableText(
-                text = AnnotatedString(stringResource(id = R.string.summaryData_navigation_event)) ,
-                onClick = {
-                    navigateEventGegevens()
-                },
-                style = TextStyle(fontSize = 22.sp)
-            )
-        }
+        NavigationRow(
+            text = stringResource(id = R.string.summaryData_navigation_event),
+            navigateExtras = { navigateEventGegevens() }
+        )
+        NavigationRow(
+            text = stringResource(id = R.string.summaryData_navigation_contact),
+            navigateExtras = { navigateContactGegevens() }
+        )
+        NavigationRow(
+            text = stringResource(id = R.string.summaryData_navigation_extraMaterial),
+            navigateExtras = { navigateExtras() }
+        )
+    }
+}
 
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 35.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.filled_circle),
-                contentDescription = stringResource(id = R.string.summaryData_navigation_circle),
-                modifier = Modifier.size(13.dp,13.dp)
-            )
-            Spacer(modifier = Modifier.width(30.dp))
-            ClickableText(
-                text = AnnotatedString(stringResource(id = R.string.summaryData_navigation_contact)),
-                onClick = {
-                    navigateContactGegevens()
-                },
-                style = TextStyle(fontSize = 22.sp)
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 35.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.filled_circle),
-                contentDescription = stringResource(id = R.string.summaryData_navigation_circle),
-                modifier = Modifier.size(13.dp,13.dp)
-            )
-            Spacer(modifier = Modifier.width(30.dp))
-            ClickableText(
-                text = AnnotatedString(stringResource(id = R.string.summaryData_navigation_extraMaterial)),
-                onClick = {navigateExtras()},
-                style = TextStyle(fontSize = 22.sp)
-            )
-        }
-
+@Composable
+fun NavigationRow(
+    text: String,
+    navigateExtras: () -> Unit
+) {
+    Spacer(modifier = Modifier.height(10.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 35.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.filled_circle),
+            contentDescription = stringResource(id = R.string.summaryData_navigation_circle),
+            modifier = Modifier.size(13.dp, 13.dp)
+        )
+        Spacer(modifier = Modifier.width(30.dp))
+        ClickableText(
+            text = AnnotatedString(text),
+            onClick = { navigateExtras() },
+            style = TextStyle(fontSize = 22.sp)
+        )
     }
 }
 
@@ -439,63 +413,16 @@ fun ContactGegevens(
             IconButton(onClick = { show = !show}) {
                 Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
             }
-
         }
         if(show){
-            Spacer(modifier = Modifier.height(20.dp))
-            ListItem(
-                headlineContent = {Text(text=stringResource(id = R.string.summaryData_contactDetails_fullName),fontSize = 18.sp)},
-                supportingContent = {Text(text=requestState.customer.firstName+" "+requestState.customer.lastName,fontSize = 16.sp)},
-                colors = ListItemDefaults.colors(
-                    containerColor = Color(0XFFD3B98B)
-                ),
-                modifier = Modifier.padding(horizontal = 30.dp)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            ListItem(
-                headlineContent = {Text(text=stringResource(id = R.string.contactDetails_email),fontSize = 18.sp)},
-                supportingContent = {Text(text=requestState.customer.email,fontSize = 16.sp)},
-                colors = ListItemDefaults.colors(
-                    containerColor = Color(0XFFD3B98B)
-                ),
-                modifier = Modifier.padding(horizontal = 30.dp)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            ListItem(
-                headlineContent = {Text(text=stringResource(id = R.string.contactDetails_phone_number),fontSize = 18.sp)},
-                supportingContent = {Text(text=requestState.customer.phoneNumber,fontSize = 16.sp)},
-                colors = ListItemDefaults.colors(
-                    containerColor = Color(0XFFD3B98B)
-                ),
-                modifier = Modifier.padding(horizontal = 30.dp)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            ListItem(
-                headlineContent = {Text(text=stringResource(id = R.string.summaryData_contactDetails_adress), fontSize = 18.sp)},
-                supportingContent = {
-                    Text(
-                        text=requestState.customer.billingAddress.street+" "+requestState.customer.billingAddress.houseNumber+", "+requestState.customer.billingAddress.postalCode + " " + requestState.customer.billingAddress.city,
-                        fontSize = 16.sp
-                    )},
-                colors = ListItemDefaults.colors(
-                    containerColor = Color(0XFFD3B98B)
-                ),
-                modifier = Modifier.padding(horizontal = 30.dp)
-            )
+            ListItemRow(headline = stringResource(id = R.string.summaryData_contactDetails_fullName), content= requestState.customer.firstName+" "+requestState.customer.lastName)
+            ListItemRow(headline = stringResource(id = R.string.contactDetails_email), content= requestState.customer.email)
+            ListItemRow(headline = stringResource(id = R.string.contactDetails_phone_number), content= requestState.customer.phoneNumber)
+            ListItemRow(headline = stringResource(id = R.string.summaryData_contactDetails_adress), content= requestState.customer.billingAddress.street+" "+requestState.customer.billingAddress.houseNumber+", "+requestState.customer.billingAddress.postalCode + " " + requestState.customer.billingAddress.city)
+
             if(requestState.customer.vatNumber.isNotBlank()){
                 Spacer(modifier = Modifier.height(20.dp))
-                ListItem(
-                    headlineContent = {Text(text=stringResource(id = R.string.contactDetails_vat_number), fontSize = 18.sp)},
-                    supportingContent = {
-                        Text(
-                            text=requestState.customer.vatNumber,
-                            fontSize = 16.sp
-                        )},
-                    colors = ListItemDefaults.colors(
-                        containerColor = Color(0XFFD3B98B)
-                    ),
-                    modifier = Modifier.padding(horizontal = 30.dp)
-                )
+                ListItemRow(headline = stringResource(id = R.string.contactDetails_vat_number), content= requestState.customer.vatNumber)
             }
 
         }
@@ -504,6 +431,16 @@ fun ContactGegevens(
     }
 }
 
+@Composable
+fun ListItemRow(headline: String, content: String) {
+    ListItem(
+        headlineContent = { Text(text = headline, fontSize = 18.sp) },
+        supportingContent = { Text(text = content, fontSize = 16.sp) },
+        colors = ListItemDefaults.colors(containerColor = Color(0XFFD3B98B)),
+        modifier = Modifier.padding(horizontal = 30.dp)
+    )
+    Spacer(modifier = Modifier.height(20.dp))
+}
 
 @Composable
 fun ExtraItemCard( // TODO duplicate code -> make a component out of this

@@ -133,8 +133,6 @@ fun EquipmentOverviewScreen(
                 }
             }
         }
-
-        else -> {}
     }
 }
 
@@ -164,7 +162,6 @@ fun ExtraItemCard(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // Image
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(extraItem.imgUrl)
@@ -179,12 +176,10 @@ fun ExtraItemCard(
                     .clip(RoundedCornerShape(10.dp))
             )
             Spacer(modifier = Modifier.height(16.dp))
-            // Item Details
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Title
                 Text(
                     fontSize = 20.sp ,
                     modifier = Modifier.size(170.dp, 70.dp),
@@ -193,7 +188,6 @@ fun ExtraItemCard(
                     maxLines = 2,
                     overflow = TextOverflow.Visible
                 )
-                // Price
                 Text(
                     fontSize = 20.sp ,
                     text = "€${extraItem.price}",
@@ -206,7 +200,6 @@ fun ExtraItemCard(
                     extraItem.attributes.forEachIndexed { index, attribute ->
                         append(attribute)
                         if (index < extraItem.attributes.size - 1) {
-                            // Append a new line if it's not the last item
                             append("\n")
                         }
                     }
@@ -224,7 +217,7 @@ fun ExtraItemCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${extraItem.stock} in stock",
+                    text = "${extraItem.stock} ${stringResource(id = R.string.extraMaterial_in_stock)}",
                     style = MaterialTheme.typography.bodyLarge,
 
                     )

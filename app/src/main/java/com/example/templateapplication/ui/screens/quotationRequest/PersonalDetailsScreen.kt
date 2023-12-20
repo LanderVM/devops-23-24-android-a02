@@ -30,6 +30,8 @@ import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.SeperatingTitle
 import com.example.templateapplication.ui.utils.ReplyNavigationType
+import com.example.templateapplication.validation.MainEvent
+import com.example.templateapplication.validation.MainState
 
 @Composable
 fun PersonalDetailsScreen(

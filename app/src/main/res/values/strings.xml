@@ -4,6 +4,7 @@
 
     <string name="loading">Loading…</string>
     <string name="error">Er is iets foutgelopen…</string>
+    <string name="add">Voeg Toe…</string>
 
     <string name="alertPopUp_title">Snelle Inschatting</string>
     <string name="alertPopUp_text">Wilt u een snelle prijsinschatting maken voor uw offerteaanvraag?</string>
@@ -58,6 +59,7 @@
     <string name="extraMaterial_sort_name_desc">Naam ↓</string>
     <string name="extraMaterial_sort_name_asc">Naam ↑</string>
     <string name="extraMaterial_next_page">Volgende Pagina</string>
+    <string name="extraMaterial_in_stock">in stock</string>
 
     <string name="progressbar_extraMaterial">Extra\'s</string>
     <string name="clearableOutlinedTextField_iconDescription">Knop om het tekstveld leeg te maken</string>
