@@ -73,6 +73,7 @@ fun GuidePriceScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         DateRangePicker(
+            navigationType = navigationType,
             state = dateRangePickerState,
             onSelectDateRange = { startDate, endDate ->
                 priceEstimationViewModel.updateDateRange(startDate, endDate)

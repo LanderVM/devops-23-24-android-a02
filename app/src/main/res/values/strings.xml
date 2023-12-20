@@ -62,7 +62,7 @@
 
     <string name="contactDetails_personal_info">Personalia</string>
     <string name="contactDetails_address_info">Facturatie gegevens</string>
-    <string name="contactDetails_contact_info">Contact gegevens</string>
+    <string name="contactDetails_contact_info">Gegevens</string>
     <string name="contactDetails_first_name">Voornaam</string>
     <string name="contactDetails_name">Achternaam</string>
     <string name="contactDetails_phone_number">Telefoonnummer</string>

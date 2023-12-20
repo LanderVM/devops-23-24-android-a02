@@ -103,6 +103,7 @@ fun EventDetailsScreen(
         )
         Spacer(modifier = Modifier.height(35.dp))
         DateRangePicker(
+            navigationType = navigationType,
             state = dateRangePickerState,
             onSelectDateRange = { startDate, endDate ->
                 quotationRequestViewModel.updateDateRange(startDate, endDate)

@@ -139,7 +139,7 @@ fun BlancheApp(
                             },
                             onAllInNavigation = {
                                 quotationRequestViewModel.selectFormula(2)
-                                navController.navigate(NavigationRoutes.EventDetails.name)
+                                navController.navigate(NavigationRoutes.ContactDetails.name) //TODO terug veranderen naar EventDetails
                             },
                             onGevorderedNavigation = {
                                 quotationRequestViewModel.selectFormula(3)
@@ -160,6 +160,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.ContactDetails.name) {
                         PersonalDetailsScreen(
+                            navigationType = navigationType,
                             navigateExtras = { navController.navigate(NavigationRoutes.ExtraItems.name) },
                             quotationRequestViewModel = quotationRequestViewModel,
                             modifier = Modifier.padding(innerPadding),

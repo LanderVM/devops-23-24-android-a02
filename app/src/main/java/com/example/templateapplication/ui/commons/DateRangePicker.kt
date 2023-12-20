@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,9 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.md_theme_light_onPrimary
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -30,6 +32,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePicker(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     state: DateRangePickerState,
     onSelectDateRange: (Long?, Long?) -> Unit,
@@ -39,9 +42,22 @@ fun DateRangePicker(
     SeperatingTitle(
         text = stringResource(id = R.string.dateRangePicker_separator),
     )
+    var dateWidth : Dp
+
+    when (navigationType) {
+        ReplyNavigationType.NAVIGATION_RAIL -> {
+            dateWidth = 500.dp
+        }
+        ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+            dateWidth = 700.dp
+        }
+        else -> {
+            dateWidth = 400.dp
+        }
+    }
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .width(dateWidth)
             .padding(horizontal = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
