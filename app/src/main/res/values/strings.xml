@@ -88,7 +88,7 @@
     <string name="summaryData_priceDetails_title">Kost</string>
     <string name="summaryData_priceDetails_description">Omschrijving</string>
     <string name="summaryData_priceDetails_price">Prijs</string>
-    <string name="summaryData_priceDetails_subtotal">Subtotaal</string>
+    <string name="summaryData_priceDetails_subtotal">Totaal</string>
 
     <string name="home_title">Home</string>
     <string name="about_title">Over</string>

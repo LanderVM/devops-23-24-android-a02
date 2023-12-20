@@ -67,11 +67,9 @@ fun EquipmentOverviewScreen(
     )
 
     var columns : Int
-    val fontSize : TextUnit
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
             columns = 2
-            fontSize = 20.sp
         }
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
            columns = 4
@@ -125,8 +123,6 @@ fun EquipmentOverviewScreen(
                         }
                     }
                 }
-
-
                 items(equipmentOverviewViewModel.getListSorted(selectedIndex)) { extraItem ->
                     ExtraItemCard(
                         modifier = Modifier.padding(8.dp),
@@ -135,6 +131,8 @@ fun EquipmentOverviewScreen(
                 }
             }
         }
+
+        else -> {}
     }
 }
 

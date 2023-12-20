@@ -30,7 +30,7 @@ fun NextPageButton(
             disabledContentColor = Color.White,
         ),
         enabled = enabled,
-        modifier = Modifier,
+        modifier = modifier,
     ) {
         Text(text = stringResource(id = R.string.nextPageButton_text))
     }

@@ -10,8 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -35,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -56,10 +61,12 @@ import com.example.templateapplication.ui.commons.ProgressieBar
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLightestColor
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @ExperimentalMaterial3Api
 @Composable
 fun ExtrasScreen(
+    navigationType:ReplyNavigationType,
     modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel =  viewModel(),
     navigateSamenvatting: () -> Unit,
@@ -77,83 +84,88 @@ fun ExtrasScreen(
             Text(stringResource(id = R.string.error, "todo"))}
         is ApiResponse.Success -> {
 
-    LazyColumn(
-        modifier = Modifier
-            .padding(horizontal = 30.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        item{
-            HeadOfPage1()
-        }
-        item{
-            SingleChoiceSegmentedButtonRow {
-                options.forEachIndexed { index, label ->
-                    SegmentedButton(
-                        shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
-                        onClick = { selectedIndex = index },
-                        selected = index == selectedIndex,
-                        colors = SegmentedButtonColors(
-                            activeContainerColor = Color(0xFFe9dcc5),
-                            activeBorderColor = Color.Black,
-                            activeContentColor = Color.Black,
-                            disabledActiveBorderColor = Color.Black,
-                            disabledActiveContainerColor = Color.White,
-                            disabledActiveContentColor = Color.Black,
-                            disabledInactiveBorderColor = Color.Black,
-                            disabledInactiveContainerColor = Color.Black,
-                            disabledInactiveContentColor = Color.Black,
-                            inactiveBorderColor = Color.Black,
-                            inactiveContainerColor = Color.White,
-                            inactiveContentColor = Color.Black,
-                        ),
-                    ) {
-                        Text(text = label, fontSize = 15.sp)
+
+            var columns : Int
+            var paddingSegment : Dp
+            var paddingButton : Dp
+            when (navigationType) {
+                ReplyNavigationType.NAVIGATION_RAIL -> {
+                    columns = 2
+                    paddingSegment = 60.dp
+                    paddingButton = 100.dp
+                }
+                ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+                    columns = 4
+                    paddingSegment = 100.dp
+                    paddingButton = 170.dp
+                }
+                else -> {
+                    columns = 1
+                    paddingSegment = 0.dp
+                    paddingButton = 40.dp
+                }
+            }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(columns),
+                modifier = Modifier
+                    .padding(horizontal = 30.dp)
+                    .fillMaxWidth(),
+            ) {
+                item(span = { GridItemSpan(maxLineSpan)}){
+                    HeadOfPage1()
+                }
+                item(span = { GridItemSpan(maxLineSpan)}){
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(vertical = 20.dp, horizontal = paddingSegment)) {
+                        options.forEachIndexed { index, label ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                                onClick = { selectedIndex = index },
+                                selected = index == selectedIndex,
+                                colors = SegmentedButtonColors(
+                                    activeContainerColor = Color(0xFFe9dcc5),
+                                    activeBorderColor = Color.Black,
+                                    activeContentColor = Color.Black,
+                                    disabledActiveBorderColor = Color.Black,
+                                    disabledActiveContainerColor = Color.White,
+                                    disabledActiveContentColor = Color.Black,
+                                    disabledInactiveBorderColor = Color.Black,
+                                    disabledInactiveContainerColor = Color.Black,
+                                    disabledInactiveContentColor = Color.Black,
+                                    inactiveBorderColor = Color.Black,
+                                    inactiveContainerColor = Color.White,
+                                    inactiveContentColor = Color.Black,
+                                ),
+                            ) {
+                                Text(text = label, fontSize = 15.sp)
+                            }
+                        }
                     }
+                }
+                items(quotationRequestViewModel.getListSorted(selectedIndex)){ extraItem ->
+                    ExtraItemCard(
+                        extraItem = extraItem,
+                        onAmountChanged = { _, amount ->
+                            quotationRequestViewModel.changeExtraItemAmount(extraItem, amount)},
+                        onAddItem= { quotationRequestViewModel.addItemToCart(extraItem)},
+                        onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem)},
+                        modifier = Modifier.padding(8.dp),
+                        isOverview = isOverview
+                    )
+                }
+
+
+                if(!isOverview){
+                    item(span= { GridItemSpan(maxLineSpan)}){
+                    NextPageButton(
+                        modifier = Modifier.padding(horizontal = paddingButton),
+                        navigeer = navigateSamenvatting,
+                        enabled = true,
+                    )
+                }}
+            }
                 }
             }
         }
-
-        items(quotationRequestViewModel.getListSorted(selectedIndex)){ extraItem ->
-            ExtraItemCard(
-                extraItem = extraItem,
-                onAmountChanged = { _, amount ->
-                    quotationRequestViewModel.changeExtraItemAmount(extraItem, amount)},
-                onAddItem= { quotationRequestViewModel.addItemToCart(extraItem)},
-                onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem)},
-                modifier = Modifier.padding(8.dp),
-                isOverview = isOverview
-            )
-        }
-
-
-        if(!isOverview){
-            item{
-            NextPageButton(
-                navigeer = navigateSamenvatting,
-                enabled = true,
-            )
-        }}
-    }}
-    }
-}
-
-@Composable
-fun HeadOfPage(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        ProgressieBar(
-            text = stringResource(id = R.string.progressbar_extraMaterial),
-            progression = 0.75f
-        )
-    }
-}
-
-
 
 
 @Composable
@@ -198,6 +210,7 @@ fun ExtraItemCard(
             ) {
                 // Title
                 Text(
+                    fontSize = 20.sp ,
                     modifier = Modifier.size(170.dp, 40.dp),
                     text = "${extraItem.title}",
                     style = MaterialTheme.typography.headlineSmall,
@@ -206,6 +219,7 @@ fun ExtraItemCard(
                 )
                 // Price
                 Text(
+                    fontSize = 20.sp ,
                     text = "$${extraItem.price}",
                     style = MaterialTheme.typography.headlineSmall,
 
@@ -222,7 +236,8 @@ fun ExtraItemCard(
                     }
                 },
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
+                color = Color.Gray,
+                modifier = Modifier.height(65.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

@@ -140,7 +140,7 @@ fun BlancheApp(
                             },
                             onAllInNavigation = {
                                 quotationRequestViewModel.selectFormula(2)
-                                navController.navigate(NavigationRoutes.ContactDetails.name) //TODO terug veranderen naar EventDetails
+                                navController.navigate(NavigationRoutes.EventDetails.name)
                             },
                             onGevorderedNavigation = {
                                 quotationRequestViewModel.selectFormula(3)
@@ -187,6 +187,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.SummaryData.name) {
                         SummaryScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.EventDetails.name) },
@@ -196,6 +197,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.ExtraItems.name) {
                         ExtrasScreen(
+                            navigationType= navigationType,
                             modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateSamenvatting = { navController.navigate(NavigationRoutes.SummaryData.name) },
