@@ -28,6 +28,7 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun HomeScreen(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit = {},
     onExtraNavigation: () -> Unit,
@@ -66,7 +67,7 @@ fun HomeScreen(
             modifier = modifier.padding(paddingValues)
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                HomeScreenTop(openDrawer = openDrawer)
+                HomeScreenTop(navigationType = navigationType ,openDrawer = openDrawer)
             }
 //            items() { formula ->
 //

@@ -126,6 +126,7 @@ fun BlancheApp(
                 ) {
                     composable(NavigationRoutes.Home.name) {
                         HomeScreen(
+                            navigationType = navigationType,
                             openDrawer = {
                                 scope.launch {
                                     drawerState.open()
@@ -203,6 +204,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.ExtrasOverview.name) {
                         EquipmentOverviewScreen(
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             equipmentOverviewViewModel = equipmentOverviewViewModel
                         )

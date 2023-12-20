@@ -26,6 +26,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.R
@@ -34,9 +36,22 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
 fun HomeScreenTop(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit = {}
 ) {
+    var blanchePadding: Dp
+    var blancheFontSize: TextUnit
+    when (navigationType) {
+        ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+            blanchePadding = 130.dp
+            blancheFontSize = 100.sp
+        }
+        else -> {
+            blanchePadding = 70.dp
+            blancheFontSize = 80.sp
+        }
+    }
     val image = painterResource(R.drawable.homescreen_background)
     Column {
         Box(
@@ -79,9 +94,9 @@ fun HomeScreenTop(
                         Text(
                             text = stringResource(id = R.string.app_name),
                             fontFamily = FontFamily.SansSerif,
-                            fontSize = 80.sp,
+                            fontSize = blancheFontSize,
                             color = Color.White,
-                            modifier = Modifier.padding(top = 70.dp)
+                            modifier = Modifier.padding(top = blanchePadding)
                         )
                     }
                 }

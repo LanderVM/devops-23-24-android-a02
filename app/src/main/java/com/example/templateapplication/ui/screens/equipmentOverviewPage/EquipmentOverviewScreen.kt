@@ -37,6 +37,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,10 +46,12 @@ import com.example.templateapplication.R
 import com.example.templateapplication.model.common.quotation.Equipment
 import com.example.templateapplication.model.extraMateriaal.ExtraItemDetailsApiState
 import com.example.templateapplication.ui.theme.MainLightestColor
+import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @ExperimentalMaterial3Api
 @Composable
 fun EquipmentOverviewScreen(
+    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     equipmentOverviewViewModel: EquipmentOverviewViewModel = viewModel(),
 ) {
@@ -62,6 +66,21 @@ fun EquipmentOverviewScreen(
         stringResource(id = R.string.extraMaterial_sort_name_asc)
     )
 
+    var columns : Int
+    val fontSize : TextUnit
+    when (navigationType) {
+        ReplyNavigationType.NAVIGATION_RAIL -> {
+            columns = 2
+            fontSize = 20.sp
+        }
+        ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+           columns = 4
+        }
+        else -> {
+            columns = 1
+        }
+    }
+
     when (val apiState = equipmentOverviewViewModel.extraMateriaalApiState) {
         is ExtraItemDetailsApiState.Loading -> Text(stringResource(id = R.string.loading))
         is ExtraItemDetailsApiState.Error -> {
@@ -70,14 +89,14 @@ fun EquipmentOverviewScreen(
 
         is ExtraItemDetailsApiState.Success -> {
             LazyVerticalGrid(
-                columns = GridCells.Fixed(4),
+                columns = GridCells.Fixed(columns),
                 modifier = Modifier
                     .padding(horizontal = 30.dp)
                     .fillMaxWidth(),
 
             ) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    SingleChoiceSegmentedButtonRow {
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(top = 20.dp)) {
                         options.forEachIndexed { index, label ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(
@@ -161,14 +180,16 @@ fun ExtraItemCard(
             ) {
                 // Title
                 Text(
-                    modifier = Modifier.size(170.dp, 40.dp),
+                    fontSize = 20.sp ,
+                    modifier = Modifier.size(170.dp, 70.dp),
                     text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Visible
                 )
                 // Price
                 Text(
+                    fontSize = 20.sp ,
                     text = "$${extraItem.price}",
                     style = MaterialTheme.typography.headlineSmall,
 
@@ -185,7 +206,8 @@ fun ExtraItemCard(
                     }
                 },
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
+                color = Color.Gray,
+                modifier = Modifier.height(65.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
