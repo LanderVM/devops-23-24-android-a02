@@ -1,4 +1,4 @@
-package com.example.templateapplication.unit
+package com.example.templateapplication.utility
 
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.model.common.quotation.DisabledDateRange
@@ -52,7 +52,35 @@ class RestApiMock : ApiRepository {
     }
 
     override suspend fun getQuotationExtraEquipment(): List<ExtraItemState> {
-        TODO("Not yet implemented")
+        return listOf(
+            ExtraItemState(
+                1,
+                "item One",
+                listOf("AttributeOneOne", "AttributeOneTwo"),
+                1.00,
+                10,
+                "ImageUrlOne",
+                "ImageTxtOne",
+            ),
+            ExtraItemState(
+                2,
+                "item Two",
+                listOf("AttributeTwoOne", "AttributeTwoTwo", "AttributeTwoThree"),
+                2.00,
+                20,
+                "ImageUrlTwo",
+                "ImageTxtTwo",
+            ),
+            ExtraItemState(
+                3,
+                "item Three",
+                listOf("AttributeThreeOne"),
+                3.00,
+                5,
+                "ImageUrlThree",
+                "ImageTxtThree",
+            ),
+        )
     }
 
     override suspend fun getEstimationDetails(): EstimationDetails =

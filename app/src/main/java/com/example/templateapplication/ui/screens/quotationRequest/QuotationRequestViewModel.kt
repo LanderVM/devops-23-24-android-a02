@@ -15,7 +15,6 @@ import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.model.common.quotation.Formula
-import com.example.templateapplication.model.common.quotation.FormulaApiState
 import com.example.templateapplication.model.common.quotation.FormulaListState
 import com.example.templateapplication.model.quotationRequest.DateRangesApiState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
@@ -36,11 +35,7 @@ import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
 import com.example.templateapplication.validation.ValidateRequiredNumberUseCase
 import com.example.templateapplication.validation.ValidateVatUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -58,8 +53,6 @@ class QuotationRequestViewModel(
     init {
         getApiExtraEquipment()
         getDateRanges()
-
-
     }
 
     companion object {
@@ -120,19 +113,19 @@ class QuotationRequestViewModel(
     //// New getDateRanges
     fun getDateRanges() {
         viewModelScope.launch {
-            try {
+            dateRangesApiState = try {
                 val listDatesResult = restApiRepository.getUnavailableDateRanges()
                 _quotationUiState.update {
                     it.copy(listDateRanges = listDatesResult)
                 }
-                dateRangesApiState = DateRangesApiState.Success(listDatesResult)
+                DateRangesApiState.Success(listDatesResult)
             } catch (e: IOException) {
                 val errorMessage = e.message ?: "An error occurred"
                 Log.e(
                     "RestApi getDateRanges",
                     e.message ?: "Failed to retrieve date ranges from api"
                 )
-                dateRangesApiState = DateRangesApiState.Error(errorMessage)
+                DateRangesApiState.Error(errorMessage)
             }
 
         }
@@ -233,22 +226,22 @@ class QuotationRequestViewModel(
 
     fun getPriceBasicFormula(): Double {
 
-        var initialPrice: Double
+        val initialPrice: Double
 
         val start = quotationRequestState.value.startTime
         val end = quotationRequestState.value.endTime
         val amountOfDaysDiff =
-            ((end!!.timeInMillis - start!!.timeInMillis) / (24 * 60 * 60 * 1000)).toInt() ?: 0
+            ((end!!.timeInMillis - start!!.timeInMillis) / (24 * 60 * 60 * 1000)).toInt()
 
 
         val formula = quotationRequestState.value.formula
-        when (amountOfDaysDiff) {
-            0 -> initialPrice = formula!!.basePrice[0]
-            1 -> initialPrice = formula!!.basePrice[1]
-            2 -> initialPrice = formula!!.basePrice[2]
+        initialPrice = when (amountOfDaysDiff) {
+            0 -> formula!!.basePrice[0]
+            1 -> formula!!.basePrice[1]
+            2 -> formula!!.basePrice[2]
             else -> {
                 val extraDays = amountOfDaysDiff - 2
-                initialPrice = formula!!.pricePerDayExtra * extraDays + formula.basePrice[2]
+                formula!!.pricePerDayExtra * extraDays + formula.basePrice[2]
             }
         }
         val formattedValue = String.format("%.2f", initialPrice)
@@ -256,14 +249,14 @@ class QuotationRequestViewModel(
     }
 
     fun calulateTransportCosts(): Double {
-        val distance = getDistanceLong()!!.div(1000)
+        val distance = getDistanceLong().div(1000)
 
         var cost = 0.00
-        if (distance <= 20.0) {
-            return cost
+        return if (distance <= 20.0) {
+            cost
         } else {
             cost = (distance - 20) * 0.75
-            return cost
+            cost
         }
     }
 
@@ -273,36 +266,36 @@ class QuotationRequestViewModel(
         } else {
             1.5
         }
-        return quotationRequestState.value.numberOfPeople.times(price);
+        return quotationRequestState.value.numberOfPeople.times(price)
     }
 
     fun calculatePriceBbq(): Double {
-        return quotationRequestState.value.numberOfPeople.times(12.0);
+        return quotationRequestState.value.numberOfPeople.times(12.0)
     }
 
     fun getTotalPriceWithoutVat(): Double {
-        var formula = quotationRequestState.value.formula
+        val formula = quotationRequestState.value.formula
         var totalCost =
             getListAddedItems().sumOf { a -> a.price * a.amount } + getPriceBasicFormula() + calulateTransportCosts()
-        if (formula!!.id == 2 || formula!!.id == 3) {
+        if (formula!!.id == 2 || formula.id == 3) {
             totalCost += calculatePriceBeer()
         }
-        if (formula!!.id == 3) {
+        if (formula.id == 3) {
             totalCost += calculatePriceBbq()
         }
         return totalCost
     }
 
     fun getTotalVat(): Double {
-        var formula = quotationRequestState.value.formula
-        var totalVat = 0.00
+        val formula = quotationRequestState.value.formula
+        val totalVat: Double
         var totalPrice = getTotalPriceWithoutVat()
         val beerPrice = calculatePriceBeer()
         val bbqPrice = calculatePriceBbq()
-        if (formula!!.id == 2 || formula!!.id == 3) {
+        if (formula!!.id == 2 || formula.id == 3) {
             totalPrice -= beerPrice
         }
-        if (formula!!.id == 3) {
+        if (formula.id == 3) {
             totalPrice -= bbqPrice
         }
         totalVat = (totalPrice * 0.21) + (beerPrice * 0.12) + (bbqPrice * 0.12)
@@ -373,6 +366,7 @@ class QuotationRequestViewModel(
                         vertrekPlaats = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
                         eventPlaats = _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address
                     )
+                    Log.i("bruuh", distanceResult.toString())
                     _quotationUiState.update {
                         it.copy(googleMaps = it.googleMaps.copy(distanceResponse = distanceResult))
                     }
@@ -407,10 +401,7 @@ class QuotationRequestViewModel(
         }
     }
 
-    fun getDistanceLong(): Long? {
-        if (_quotationUiState.value.googleMaps.distanceResponse.rows.isEmpty() or _quotationUiState.value.googleMaps.eventAddress.isBlank()) {
-            return null
-        }
+    fun getDistanceLong(): Long {
         return _quotationUiState.value.googleMaps.distanceResponse.rows[0].elements[0].distance.value
     }
 
@@ -713,14 +704,14 @@ class QuotationRequestViewModel(
 
     private fun getApiExtraEquipment() {
         viewModelScope.launch {
-            try {
+            extraMateriaalApiState = try {
                 val listResult = restApiRepository.getQuotationExtraEquipment()
                 _quotationUiState.update {
                     it.copy(extraItems = listResult)
                 }
-                extraMateriaalApiState = ApiResponse.Success(listResult)
+                ApiResponse.Success(listResult)
             } catch (e: IOException) {
-                extraMateriaalApiState = ApiResponse.Error
+                ApiResponse.Error
             }
         }
     }
@@ -753,8 +744,4 @@ class QuotationRequestViewModel(
         }
         return sortedList
     }
-
-
-
-
 }
