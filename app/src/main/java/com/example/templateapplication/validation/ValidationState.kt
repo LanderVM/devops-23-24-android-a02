@@ -2,6 +2,12 @@ package com.example.templateapplication.validation
 
 import com.example.templateapplication.model.UiText
 
+/**
+ * Represents events in the main UI that trigger state changes.
+ *
+ * This sealed class defines various events related to user input changes, such as address,
+ * number of people, personal details, etc. Each event carries the respective data that has changed.
+ */
 sealed class MainEvent {
     data class AddressChanged(val address: String) : MainEvent()
     data class NumberOfPeopleChanged(val numberOfPeople: String) : MainEvent()
@@ -16,6 +22,13 @@ sealed class MainEvent {
     data class VatChanged(val vat: String) : MainEvent()
 }
 
+/**
+ * Represents the state of the main UI.
+ *
+ * Holds the current state of various user inputs along with potential error messages represented
+ * by [UiText]. Includes functions to check readiness for different stages like quotation or
+ * personal details submission.
+ */
 data class MainState(
     val address: String = "",
     val addressError: UiText? = null,
