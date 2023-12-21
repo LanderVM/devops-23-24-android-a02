@@ -19,6 +19,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Composable function for rendering a title with horizontal lines on either side.
+ *
+ * This function creates a decorative title with horizontal lines on both sides, used for separating
+ * sections of content or for headings.
+ *
+ * @param modifier Modifier to be applied to the title for customization.
+ * @param text The text to be displayed as the title.
+ */
 @Composable
 fun SeperatingTitle(
     modifier: Modifier = Modifier,

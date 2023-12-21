@@ -29,11 +29,24 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+/**
+ * Composable function for displaying a custom date range picker.
+ *
+ * This function renders a date range picker that allows users to select a start and end date.
+ * It supports various navigation types and can trigger actions upon date selection.
+ *
+ * @param modifier Modifier to be applied to the composable for customization.
+ * @param navigationType The type of navigation being used in the UI, affecting the width of the picker.
+ * @param state The state of the date range picker, containing selected dates.
+ * @param onSelectDateRange Callback function to be executed when a date range is selected.
+ * @param showCalenderToggle Boolean flag to show or hide the calendar mode toggle.
+ * @param enableRecheckFunction Optional function to be executed when the date range changes.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDateRangePicker(
-    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
+    navigationType: ReplyNavigationType,
     state: DateRangePickerState,
     onSelectDateRange: (Long?, Long?) -> Unit,
     showCalenderToggle: Boolean,
@@ -42,17 +55,16 @@ fun CustomDateRangePicker(
     SeperatingTitle(
         text = stringResource(id = R.string.dateRangePicker_separator),
     )
-    val dateWidth : Dp
 
-    when (navigationType) {
+    val dateWidth : Dp = when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
-            dateWidth = 500.dp
+            500.dp
         }
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
-            dateWidth = 700.dp
+            700.dp
         }
         else -> {
-            dateWidth = 400.dp
+            400.dp
         }
     }
     Column(
@@ -127,6 +139,12 @@ fun CustomDateRangePicker(
     }
 }
 
+/**
+ * Formats the given time in milliseconds to a string in "dd/MM/yyyy" format.
+ *
+ * @param timeInMillis Time in milliseconds since Unix epoch to be formatted.
+ * @return A string representing the formatted date.
+ */
 private fun getFormattedDate(timeInMillis: Long): String {
     val calender = Calendar.getInstance()
     calender.timeInMillis = timeInMillis

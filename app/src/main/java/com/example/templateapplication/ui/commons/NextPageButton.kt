@@ -14,6 +14,16 @@ import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 
+/**
+ * Composable function for rendering a button that navigates to the next page.
+ *
+ * This function creates a button with a specific shape and color scheme, which can be
+ * used to navigate to the next page or perform a similar action when clicked.
+ *
+ * @param modifier Modifier to be applied to the button for customization.
+ * @param navigeer A lambda function to be executed when the button is clicked.
+ * @param enabled Boolean indicating if the button is enabled or disabled.
+ */
 @Composable
 fun NextPageButton(
     modifier: Modifier = Modifier,

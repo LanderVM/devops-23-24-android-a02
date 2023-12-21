@@ -13,8 +13,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.templateapplication.R
 
+/**
+ * Data class representing an option in a dropdown menu.
+ *
+ * @param title The display text of the dropdown option.
+ * @param id The unique identifier for the dropdown option.
+ */
 data class DropDownOption(val title: String, val id: Int)
 
+/**
+ * Composable function for rendering a dropdown selection menu.
+ *
+ * This function creates a dropdown menu with given options. It allows the user to select an option
+ * from the menu, displaying the selected option in an outlined text field.
+ *
+ * @param label The label for the dropdown menu.
+ * @param isExpanded Boolean indicating if the dropdown is currently expanded.
+ * @param setExpanded Function to change the expanded state of the dropdown.
+ * @param dropDownOptions List of DropDownOption, each representing an option in the dropdown.
+ * @param selectedOption The ID of the currently selected option.
+ * @param setSelectedOption Function to update the selected option.
+ */
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun DropDownSelect(
