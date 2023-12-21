@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>app</title>
+    <link href="images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="scripts/sourceset_dependencies.js" async="async"></script>
+<link href="styles/style.css" rel="Stylesheet">
+<link href="styles/main.css" rel="Stylesheet">
+<link href="styles/prism.css" rel="Stylesheet">
+<link href="styles/logo-styles.css" rel="Stylesheet">
+<link href="styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="index.html">
+                            app
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":app:dokkaHtml/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" id="content" pageIds="app::////PointingToDeclaration//492899073">
+  <div class="breadcrumbs"></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>app</span></span></h1>
+  </div>
+  <h2 class="">Packages</h2>
+  <div class="table"><a data-name="-1510603833%2FPackages%2F492899073" anchor-label="com.example.templateapplication" id="-1510603833%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication/index.html">com.example.templateapplication</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1510603833%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="298552691%2FPackages%2F492899073" anchor-label="com.example.templateapplication.api" id="298552691%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.api/index.html">com.example.templateapplication.api</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="298552691%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-968982539%2FPackages%2F492899073" anchor-label="com.example.templateapplication.data" id="-968982539%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.data/index.html">com.example.templateapplication.data</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-968982539%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-587904616%2FPackages%2F492899073" anchor-label="com.example.templateapplication.data.database" id="-587904616%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.data.database/index.html">com.example.templateapplication.data.database</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-587904616%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="456714242%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model" id="456714242%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model/index.html">com.example.templateapplication.model</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="456714242%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-282450079%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.about" id="-282450079%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.about/index.html">com.example.templateapplication.model.about</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-282450079%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="638690673%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.adres" id="638690673%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.adres/index.html">com.example.templateapplication.model.adres</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="638690673%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="564196775%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.common.googleMaps" id="564196775%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.common.googleMaps/index.html">com.example.templateapplication.model.common.googleMaps</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="564196775%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1166097287%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.common.quotation" id="-1166097287%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.common.quotation/index.html">com.example.templateapplication.model.common.quotation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1166097287%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1433711760%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.extraMateriaal" id="1433711760%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.extraMateriaal/index.html">com.example.templateapplication.model.extraMateriaal</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1433711760%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1910205688%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.guidePriceEstimation" id="-1910205688%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.guidePriceEstimation/index.html">com.example.templateapplication.model.guidePriceEstimation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1910205688%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1417037199%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.home" id="1417037199%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.home/index.html">com.example.templateapplication.model.home</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1417037199%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1739067885%2FPackages%2F492899073" anchor-label="com.example.templateapplication.model.quotationRequest" id="-1739067885%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.model.quotationRequest/index.html">com.example.templateapplication.model.quotationRequest</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1739067885%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-476530913%2FPackages%2F492899073" anchor-label="com.example.templateapplication.navigation" id="-476530913%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.navigation/index.html">com.example.templateapplication.navigation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-476530913%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-2047523574%2FPackages%2F492899073" anchor-label="com.example.templateapplication.navigation.navidrawer" id="-2047523574%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.navigation.navidrawer/index.html">com.example.templateapplication.navigation.navidrawer</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2047523574%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-343037085%2FPackages%2F492899073" anchor-label="com.example.templateapplication.network.googleMapsApi" id="-343037085%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.network.googleMapsApi/index.html">com.example.templateapplication.network.googleMapsApi</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-343037085%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1063357505%2FPackages%2F492899073" anchor-label="com.example.templateapplication.network.restApi" id="-1063357505%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.network.restApi/index.html">com.example.templateapplication.network.restApi</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1063357505%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1156919646%2FPackages%2F492899073" anchor-label="com.example.templateapplication.network.restApi.about" id="1156919646%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.network.restApi.about/index.html">com.example.templateapplication.network.restApi.about</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1156919646%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="307842494%2FPackages%2F492899073" anchor-label="com.example.templateapplication.network.restApi.common" id="307842494%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.network.restApi.common/index.html">com.example.templateapplication.network.restApi.common</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="307842494%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1475832453%2FPackages%2F492899073" anchor-label="com.example.templateapplication.network.restApi.priceEstimation" id="1475832453%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.network.restApi.priceEstimation/index.html">com.example.templateapplication.network.restApi.priceEstimation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1475832453%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="520991734%2FPackages%2F492899073" anchor-label="com.example.templateapplication.network.restApi.quotationRequest" id="520991734%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.network.restApi.quotationRequest/index.html">com.example.templateapplication.network.restApi.quotationRequest</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="520991734%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-2123233511%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.commons" id="-2123233511%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.commons/index.html">com.example.templateapplication.ui.commons</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2123233511%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1436049757%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.layout" id="1436049757%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.layout/index.html">com.example.templateapplication.ui.layout</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1436049757%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1034690118%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.aboutPage" id="1034690118%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.aboutPage/index.html">com.example.templateapplication.ui.screens.aboutPage</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1034690118%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="891731552%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.equipmentOverviewPage" id="891731552%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.equipmentOverviewPage/index.html">com.example.templateapplication.ui.screens.equipmentOverviewPage</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="891731552%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="924576822%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.formulaDetails" id="924576822%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.formulaDetails/index.html">com.example.templateapplication.ui.screens.formulaDetails</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="924576822%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1047274030%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.formulaDetails.components" id="-1047274030%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.formulaDetails.components/index.html">com.example.templateapplication.ui.screens.formulaDetails.components</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1047274030%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-846956120%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.homepage" id="-846956120%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.homepage/index.html">com.example.templateapplication.ui.screens.homepage</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-846956120%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-547564256%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.homepage.components" id="-547564256%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.homepage.components/index.html">com.example.templateapplication.ui.screens.homepage.components</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-547564256%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1317679938%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.priceEstimation" id="-1317679938%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.priceEstimation/index.html">com.example.templateapplication.ui.screens.priceEstimation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1317679938%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="212719690%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.priceEstimation.components" id="212719690%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.priceEstimation.components/index.html">com.example.templateapplication.ui.screens.priceEstimation.components</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="212719690%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-178546467%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.screens.quotationRequest" id="-178546467%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.screens.quotationRequest/index.html">com.example.templateapplication.ui.screens.quotationRequest</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-178546467%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="110406010%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.theme" id="110406010%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.theme/index.html">com.example.templateapplication.ui.theme</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="110406010%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-93130142%2FPackages%2F492899073" anchor-label="com.example.templateapplication.ui.utils" id="-93130142%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.ui.utils/index.html">com.example.templateapplication.ui.utils</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-93130142%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1983639228%2FPackages%2F492899073" anchor-label="com.example.templateapplication.validation" id="-1983639228%2FPackages%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+    <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="app/com.example.templateapplication.validation/index.html">com.example.templateapplication.validation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1983639228%2FPackages%2F492899073"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">androidJvm</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
