@@ -15,7 +15,6 @@ import com.example.templateapplication.data.GoogleMapsRepository
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.model.common.quotation.Formula
-import com.example.templateapplication.model.common.quotation.FormulaApiState
 import com.example.templateapplication.model.common.quotation.FormulaListState
 import com.example.templateapplication.model.quotationRequest.DateRangesApiState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
@@ -36,11 +35,7 @@ import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
 import com.example.templateapplication.validation.ValidateRequiredNumberUseCase
 import com.example.templateapplication.validation.ValidateVatUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -58,8 +53,6 @@ class QuotationRequestViewModel(
     init {
         getApiExtraEquipment()
         getDateRanges()
-
-
     }
 
     companion object {
@@ -753,8 +746,6 @@ class QuotationRequestViewModel(
         }
         return sortedList
     }
-
-
 
 
 }

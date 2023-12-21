@@ -27,6 +27,18 @@ import androidx.compose.ui.unit.sp
 import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 
+/**
+ * Composable function for displaying a card with details of a formula.
+ *
+ * This function creates a card that presents information about a formula. The card's appearance,
+ * including its size and font size, varies depending on the navigation type. The card displays
+ * the formula's title and its attributes.
+ *
+ * @param navigationType The type of navigation being used in the UI, affecting the card's size.
+ * @param formula The formula data to be displayed in the card.
+ * @param backgroundColor The background color of the card. Default is white.
+ * @param textColor The color of the text inside the card. Default is black.
+ */
 @Composable
 fun FormulaDetailsCard(
     navigationType: ReplyNavigationType,
@@ -34,8 +46,8 @@ fun FormulaDetailsCard(
     backgroundColor: Color = Color.White,
     textColor: Color = Color.Black,
 ) {
-    var cardHeight : Dp
-    var fontSize : TextUnit
+    val cardHeight : Dp
+    val fontSize : TextUnit
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
             cardHeight= 600.dp

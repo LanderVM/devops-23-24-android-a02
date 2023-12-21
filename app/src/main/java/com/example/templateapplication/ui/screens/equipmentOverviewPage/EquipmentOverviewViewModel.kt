@@ -22,25 +22,32 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 /**
- * ViewModel for managing and displaying equipment overview.
+ * ViewModel for managing and displaying an overview of equipment.
  *
- * @property restApiRepository An instance of ApiRepository used for fetching and updating equipment data.
+ * This ViewModel handles the operations related to fetching and displaying equipment data. It retrieves
+ * equipment data from a REST API and manages the UI state related to this data. The ViewModel tracks and updates
+ * the state of the equipment API call and provides the fetched data to the UI.
+ *
+ * @property restApiRepository Instance of [ApiRepository] used for fetching and updating equipment data.
  */
 class EquipmentOverviewViewModel(
     private val restApiRepository: ApiRepository,
 ) : ViewModel() {
 
-    // Variable to track the current state of equipment API call.
+    /**
+     * State variable to track the current status of the equipment fetch API call.
+     */
     var extraMateriaalApiState: EquipmentApiState by mutableStateOf(EquipmentApiState.Loading)
         private set
 
-    // Initialize equipment data on ViewModel creation.
     init {
         getApiExtraEquipment()
     }
 
+    /**
+     * Factory for creating instances of [EquipmentOverviewViewModel].
+     */
     companion object {
-        // Factory for creating instances of EquipmentOverviewViewModel.
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
@@ -54,12 +61,14 @@ class EquipmentOverviewViewModel(
         }
     }
 
-    // StateFlow for managing the list of equipment.
+    /**
+     * A [StateFlow] that manages and exposes the list of equipment.
+     */
     lateinit var equipmentDbList: StateFlow<EquipmentListState>
 
     /**
-     * Fetches extra equipment data from the API and updates the equipment list state.
-     * Sets the extraMateriaalApiState based on the result of the fetch operation.
+     * Fetches extra equipment data from the API and updates the state of [equipmentDbList].
+     * Sets [extraMateriaalApiState] based on the result of the fetch operation.
      */
     private fun getApiExtraEquipment() {
         try {
@@ -80,11 +89,11 @@ class EquipmentOverviewViewModel(
     }
 
     /**
-     * Returns a sorted list of equipment based on the specified index.
+     * Returns a sorted list of equipment based on the provided sorting index.
      *
-     * @param index Int value representing the sorting criteria.
-     * @return List of sorted Equipment objects.
-     * @throws IllegalArgumentException if the index is invalid.
+     * @param index The index representing the sorting criteria.
+     * @return A list of [Equipment] objects sorted according to the specified criteria.
+     * @throws IllegalArgumentException If the provided index is invalid.
      */
     fun getListSorted(index: Int): List<Equipment> {
         Log.i("Test", equipmentDbList.value.toString())

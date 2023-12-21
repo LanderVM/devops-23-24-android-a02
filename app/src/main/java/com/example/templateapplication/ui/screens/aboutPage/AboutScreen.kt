@@ -40,15 +40,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.Dialog
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
-import com.example.templateapplication.ui.theme.ImperialScript
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 
 @Composable
 fun AboutScreen (
-    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
+    navigationType: ReplyNavigationType,
     aboutViewModel: AboutViewModel,
 ) {
 
@@ -99,7 +98,6 @@ fun Info (
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = stringResource(R.string.about_screen_title),
-            fontFamily = ImperialScript,
             fontSize = 50.sp,
             color = Color.DarkGray,
         )
@@ -240,7 +238,6 @@ fun PopUp2(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputVeld(
     modifier: Modifier = Modifier,label:String,value: String,onChange:(String)->Unit,

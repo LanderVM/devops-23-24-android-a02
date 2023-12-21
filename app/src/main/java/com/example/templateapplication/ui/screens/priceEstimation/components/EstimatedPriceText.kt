@@ -8,7 +8,14 @@ import androidx.compose.ui.unit.sp
 import com.example.templateapplication.R
 import com.example.templateapplication.network.restApi.priceEstimation.PriceEstimationResultApiState
 
-
+/**
+ * Composable function for displaying the estimated price or related messages.
+ *
+ * Renders different texts based on the state of the price estimation result. It can show an error
+ * message, a loading message, the calculated price, or nothing in case of an idle state.
+ *
+ * @param calculatePriceApiState The current state of the price estimation API call.
+ */
 @Composable
 fun EstimatedPriceText(
     calculatePriceApiState: PriceEstimationResultApiState

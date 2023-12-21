@@ -16,6 +16,17 @@ import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
 import com.example.templateapplication.ui.theme.md_theme_light_secondary
 import com.example.templateapplication.ui.theme.md_theme_light_tertiary
 
+/**
+ * Composable function for displaying a checkbox option for selecting Tripel beer.
+ *
+ * This function creates a checkbox with a label specifically for the option of including Tripel beer.
+ * The checkbox is only active and displayed based on the selected formula. The state and behavior of
+ * the checkbox are controlled by the provided Boolean state and callback function.
+ *
+ * @param selectedFormula The ID of the currently selected formula, which determines if the checkbox is shown.
+ * @param hasCheck Boolean state indicating if the checkbox is checked.
+ * @param onCheck Callback function to be executed when the checkbox is checked/unchecked.
+ */
 @Composable
 fun WantsTripelBeerCheckbox(
     selectedFormula: Int,

@@ -32,6 +32,18 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import com.example.templateapplication.R
 
+/**
+ * Composable function for rendering a card view of a formula.
+ *
+ * This function creates a card displaying the title and an image of a formula. It includes an outlined
+ * button that triggers an action when clicked. The card's appearance can be customized with modifiers.
+ *
+ * @param modifier Modifier to be applied to the card for customization.
+ * @param title The title of the formula to be displayed.
+ * @param image URL or resource identifier for the formula image. If blank, a default image is shown.
+ * @param imageTxt Content description for the image.
+ * @param onButtonClicked Callback function to be executed when the button in the card is clicked.
+ */
 @Composable
 fun FormulaCard(
     modifier: Modifier = Modifier,
