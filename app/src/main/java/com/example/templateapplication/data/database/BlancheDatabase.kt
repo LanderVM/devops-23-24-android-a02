@@ -7,7 +7,7 @@ import androidx.room.TypeConverters
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-@Database(entities = [DbEquipment::class, DbFormula::class], version = 1)
+@Database(entities = [DbEquipment::class, DbFormula::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class BlancheDatabase : RoomDatabase() {
     abstract fun quotationDao(): QuotationDao

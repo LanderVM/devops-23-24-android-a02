@@ -39,7 +39,12 @@ class RestApiMock : ApiRepository {
     }
 
     override suspend fun getUnavailableDateRanges(): List<DisabledDateRange> {
-        TODO("Not yet implemented")
+        return listOf(
+            DisabledDateRange(
+                Instant.now(),
+                Instant.now().plusSeconds(oneDay)
+            )
+        )
     }
 
     override suspend fun refresh() {

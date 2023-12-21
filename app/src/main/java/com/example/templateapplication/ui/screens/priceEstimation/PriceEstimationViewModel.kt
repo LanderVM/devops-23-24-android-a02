@@ -36,17 +36,17 @@ class PriceEstimationViewModel(
 ) :
     ViewModel() {
 
+    var retrieveUiDetailsApiState: PriceEstimationDetailsApiState by mutableStateOf(
+        PriceEstimationDetailsApiState.Loading
+    )
+        private set
+
     private val _estimationDetailsState = MutableStateFlow(EstimationUiState())
     val estimationDetailsState = _estimationDetailsState.asStateFlow()
 
     init {
         getApiEstimationDetails()
     }
-
-    var retrieveUiDetailsApiState: PriceEstimationDetailsApiState by mutableStateOf(
-        PriceEstimationDetailsApiState.Loading
-    )
-        private set
 
     private fun getApiEstimationDetails() {
         viewModelScope.launch {

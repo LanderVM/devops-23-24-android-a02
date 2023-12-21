@@ -16,8 +16,8 @@ class PriceEstimationTest {
 
     @Test
     fun testYourFunction() {
-        println(viewModel.estimationDetailsState.value.dbData.toString())
-        println(viewModel.estimationDetailsState.value.dbData.toString())
+        val currentState = viewModel.estimationDetailsState.value
+        println(currentState)
     }
 
 
