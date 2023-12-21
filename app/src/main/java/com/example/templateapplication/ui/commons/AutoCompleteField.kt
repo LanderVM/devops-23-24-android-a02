@@ -40,10 +40,29 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
+/**
+ * Composable function that displays an address text field with Google Maps integration.
+ *
+ * This function shows a map view and an address text field. It provides autocomplete suggestions
+ * for addresses and displays markers on the map based on the selected address.
+ *
+ * @param modifier The modifier to be applied to this composable.
+ * @param navigationType The type of navigation being used in the UI.
+ * @param getPredictionsFunction Function to retrieve address predictions for autocomplete.
+ * @param hasFoundPlace Function that checks if a place has been found.
+ * @param onValueChange Callback for when the text field value changes.
+ * @param placeResponse Response object containing place candidates.
+ * @param showMap Boolean indicating whether the map should be shown.
+ * @param updateMarkerFunction Function to update the marker on the map.
+ * @param apiStatus The status of the API response (Loading, Error, Success).
+ * @param googleMaps Google Maps response data.
+ * @param errorMessage Optional error message for display.
+ * @param isError Boolean indicating if there is an error.
+ */
 @Composable
 fun AddressTextField(
-    navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
+    navigationType: ReplyNavigationType,
     getPredictionsFunction: () -> Unit,
     hasFoundPlace: () -> Boolean,
     onValueChange: (String) -> Unit,
@@ -170,6 +189,16 @@ fun AddressTextField(
     }
 }
 
+/**
+ * Composable function for displaying a list of autocomplete suggestions.
+ *
+ * Renders a list of predictions provided by the Google Maps API, allowing the user
+ * to select one. Each item is rendered using the AutocompleteCardItem Composable.
+ *
+ * @param mapWidth The width of the map display area.
+ * @param predictionsState List of GooglePrediction objects for rendering the autocomplete items.
+ * @param onPredictionClick Callback for when a prediction is clicked.
+ */
 @Composable
 fun AutoCompleteListComponent(
     mapWidth : Dp,
@@ -181,6 +210,16 @@ fun AutoCompleteListComponent(
     }
 }
 
+/**
+ * Composable function for displaying an individual autocomplete item.
+ *
+ * Represents a single prediction in the autocomplete list. When clicked,
+ * it triggers the provided callback with the selected prediction.
+ *
+ * @param mapWidth The width of the map display area.
+ * @param onPredictionClick Callback for when this item is clicked.
+ * @param prediction The GooglePrediction object to display.
+ */
 @Composable
 fun AutocompleteCardItem(
     mapWidth: Dp,

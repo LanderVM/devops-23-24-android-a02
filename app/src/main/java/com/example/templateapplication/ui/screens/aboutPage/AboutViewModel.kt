@@ -20,19 +20,30 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
+/**
+ * ViewModel for the About screen.
+ *
+ * @property restApiRepository An instance of ApiRepository used for making API calls.
+ */
 class AboutViewModel(
     private val restApiRepository: ApiRepository,
-) :
-    ViewModel() {
+) : ViewModel() {
 
+    // StateFlow for managing UI state in the About screen.
     private val _aboutUiState = MutableStateFlow(AboutUiState())
     val aboutUiState = _aboutUiState.asStateFlow()
 
+    // Variable to track the current state of email posting API call.
     var postEmailApiState: PostEmailApiState by mutableStateOf(
         PostEmailApiState.Loading
     )
         private set
 
+    /**
+     * Function to post an email.
+     * Uses the API repository to send an email and updates the postEmailApiState
+     * based on the result of the operation.
+     */
     fun postEmail() {
         viewModelScope.launch {
             try {
@@ -50,19 +61,35 @@ class AboutViewModel(
         }
     }
 
+    /**
+     * Updates the state of the first dialog.
+     *
+     * @param value Boolean indicating whether the dialog should be open or closed.
+     */
     fun setOpenDialog1(value: Boolean) = _aboutUiState.update {
         it.copy(openDialog1 = value)
     }
 
+    /**
+     * Updates the state of the second dialog.
+     *
+     * @param value Boolean indicating whether the dialog should be open or closed.
+     */
     fun setOpenDialog2(value: Boolean) = _aboutUiState.update {
         it.copy(openDialog2 = value)
     }
 
+    /**
+     * Sets the email address in the UI state.
+     *
+     * @param value String representing the email address to set.
+     */
     fun setEmail(value: String) = _aboutUiState.update {
         it.copy(emailAddress = value)
     }
 
     companion object {
+        // Factory for creating instances of AboutViewModel.
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =

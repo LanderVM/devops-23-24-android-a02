@@ -21,19 +21,26 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.IOException
 
+/**
+ * ViewModel for managing and displaying equipment overview.
+ *
+ * @property restApiRepository An instance of ApiRepository used for fetching and updating equipment data.
+ */
 class EquipmentOverviewViewModel(
     private val restApiRepository: ApiRepository,
-) :
-    ViewModel() {
+) : ViewModel() {
 
+    // Variable to track the current state of equipment API call.
     var extraMateriaalApiState: EquipmentApiState by mutableStateOf(EquipmentApiState.Loading)
         private set
 
+    // Initialize equipment data on ViewModel creation.
     init {
         getApiExtraEquipment()
     }
 
     companion object {
+        // Factory for creating instances of EquipmentOverviewViewModel.
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
@@ -47,9 +54,13 @@ class EquipmentOverviewViewModel(
         }
     }
 
-
+    // StateFlow for managing the list of equipment.
     lateinit var equipmentDbList: StateFlow<EquipmentListState>
 
+    /**
+     * Fetches extra equipment data from the API and updates the equipment list state.
+     * Sets the extraMateriaalApiState based on the result of the fetch operation.
+     */
     private fun getApiExtraEquipment() {
         try {
             viewModelScope.launch { restApiRepository.refresh() }
@@ -68,16 +79,23 @@ class EquipmentOverviewViewModel(
         }
     }
 
-
+    /**
+     * Returns a sorted list of equipment based on the specified index.
+     *
+     * @param index Int value representing the sorting criteria.
+     * @return List of sorted Equipment objects.
+     * @throws IllegalArgumentException if the index is invalid.
+     */
     fun getListSorted(index: Int): List<Equipment> {
         Log.i("Test", equipmentDbList.value.toString())
         val sortedList = when (index) {
-            0 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.price } // Sort asc
-            1 -> equipmentDbList.value.equipmentListState.sortedBy { it.price } // Sort desc
-            2 -> equipmentDbList.value.equipmentListState.sortedBy { it.title } // Sort by name asc
-            3 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.title } // Sort by name desc
+            0 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.price } // Sort by price descending
+            1 -> equipmentDbList.value.equipmentListState.sortedBy { it.price } // Sort by price ascending
+            2 -> equipmentDbList.value.equipmentListState.sortedBy { it.title } // Sort by title ascending
+            3 -> equipmentDbList.value.equipmentListState.sortedByDescending { it.title } // Sort by title descending
             else -> throw IllegalArgumentException("Invalid index: $index")
         }
         return sortedList
     }
 }
+

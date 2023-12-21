@@ -7,6 +7,21 @@ import androidx.compose.runtime.Composable
 import com.example.templateapplication.ui.theme.BlancheTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+
+/**
+ * Displays an alert dialog with customizable title, text, and buttons.
+ *
+ * This Composable function renders an alert dialog using the Blanche theme.
+ * It provides options for confirmation and dismissal actions, which are executed when
+ * the corresponding buttons are clicked.
+ *
+ * @param onDismissRequest A lambda function that is called when the dismiss action is triggered.
+ * @param onConfirmation An optional lambda function that is called when the confirm action is triggered. Defaults to null.
+ * @param dialogTitle The title text of the dialog.
+ * @param dialogText The main content text of the dialog.
+ * @param confirmText The text for the confirmation button.
+ * @param dismissText The text for the dismiss button.
+ */
 @Composable
 fun AlertPopUp(
     onDismissRequest: () -> Unit,
