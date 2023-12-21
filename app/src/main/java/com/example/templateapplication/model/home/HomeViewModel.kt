@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.net.SocketTimeoutException
 
 class HomeViewModel(
     private val restApiRepository: ApiRepository,
@@ -66,6 +67,8 @@ class HomeViewModel(
             val errorMessage = e.message ?: "An error occurred"
             apiState =
                 FormulaApiState.Error(errorMessage)
+        } catch (e: SocketTimeoutException) {
+            // device is offline, use roomdb instead
         }
     }
 
