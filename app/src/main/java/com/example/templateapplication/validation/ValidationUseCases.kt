@@ -71,7 +71,7 @@ class ValidateVatUseCase : BaseUseCase<String, ValidationResult> {
 }
 class ValidateNotEmptyUseCase : BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {
-        if (input.isNullOrBlank()) {
+        if (input.isBlank()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(resId = R.string.strInvalidText)
@@ -99,7 +99,7 @@ class ValidateRequiredNumberUseCase : BaseUseCase<String, ValidationResult> {
 }
 
 fun isNumber(value: String): Boolean {
-    return (!value.isNullOrEmpty()) && Regex("^\\d+\$").matches(value)
+    return (value.isNotEmpty()) && Regex("^\\d+\$").matches(value)
 }
 fun isPhoneNumber(input: String): Boolean {
     val belgianPhoneNumberPattern = """^(\+32\s?|0)4[56789]\d{7}$""".toRegex()
@@ -110,5 +110,5 @@ fun isEmailValid(email: String): Boolean {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 fun isVatValid(vat: String): Boolean {
-    return Regex("BE ?0\\d{3} ?\\d{3} ?\\d{3}").matches(vat)
+    return Regex("^BE[01][0-9]{9}$").matches(vat)
 }
