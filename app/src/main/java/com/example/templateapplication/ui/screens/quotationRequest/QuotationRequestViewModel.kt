@@ -12,9 +12,11 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
-import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.adres.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
+import com.example.templateapplication.model.common.quotation.Formula
+import com.example.templateapplication.model.common.quotation.FormulaApiState
+import com.example.templateapplication.model.common.quotation.FormulaListState
 import com.example.templateapplication.model.quotationRequest.DateRangesApiState
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.model.quotationRequest.QuotationRequestState
@@ -34,7 +36,11 @@ import com.example.templateapplication.validation.ValidatePhoneNumberUseCase
 import com.example.templateapplication.validation.ValidateRequiredNumberUseCase
 import com.example.templateapplication.validation.ValidateVatUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -52,6 +58,8 @@ class QuotationRequestViewModel(
     init {
         getApiExtraEquipment()
         getDateRanges()
+
+
     }
 
     companion object {
@@ -73,6 +81,10 @@ class QuotationRequestViewModel(
     // ---------------------------------------- EVENT DETAILS: EVENT DETAILS
     private val _quotationRequestState = MutableStateFlow(QuotationRequestState())
     val quotationRequestState = _quotationRequestState.asStateFlow()
+
+    private val _formulaState = MutableStateFlow(FormulaListState())
+    val formulaState = _formulaState.asStateFlow()
+
 
     private val _quotationUiState = MutableStateFlow(QuotationUiState())
     val quotationUiState = _quotationUiState.asStateFlow()
@@ -126,6 +138,7 @@ class QuotationRequestViewModel(
         }
     }
 
+
     var postQuotationRequestApiState: ApiQuotationRequestPostApiState by mutableStateOf(
         ApiQuotationRequestPostApiState.Idle
     )
@@ -148,7 +161,7 @@ class QuotationRequestViewModel(
                 )
                 val body = ApiQuotationRequestPost(
                     null,
-                    _quotationRequestState.value.formulaId,
+                    _quotationRequestState.value.formula!!.id,
                     Address(
                         _quotationRequestState.value.eventLocation.street,
                         _quotationRequestState.value.eventLocation.houseNumber,
@@ -216,9 +229,90 @@ class QuotationRequestViewModel(
         }
     }
 
-    fun selectFormula(id: Int) {
+    //PRICE CALCULATION
+
+    fun getPriceBasicFormula(): Double {
+
+        var initialPrice: Double
+
+        val start = quotationRequestState.value.startTime
+        val end = quotationRequestState.value.endTime
+        val amountOfDaysDiff =
+            ((end!!.timeInMillis - start!!.timeInMillis) / (24 * 60 * 60 * 1000)).toInt() ?: 0
+
+
+        val formula = quotationRequestState.value.formula
+        when (amountOfDaysDiff) {
+            0 -> initialPrice = formula!!.basePrice[0]
+            1 -> initialPrice = formula!!.basePrice[1]
+            2 -> initialPrice = formula!!.basePrice[2]
+            else -> {
+                val extraDays = amountOfDaysDiff - 2
+                initialPrice = formula!!.pricePerDayExtra * extraDays + formula.basePrice[2]
+            }
+        }
+        val formattedValue = String.format("%.2f", initialPrice)
+        return formattedValue.toDouble()
+    }
+
+    fun calulateTransportCosts(): Double {
+        val distance = getDistanceLong()!!.div(1000)
+
+        var cost = 0.00
+        if (distance <= 20.0) {
+            return cost
+        } else {
+            cost = (distance - 20) * 0.75
+            return cost
+        }
+    }
+
+    fun calculatePriceBeer(): Double {
+        val price = if (quotationRequestState.value.isTripelBier) {
+            3.0
+        } else {
+            1.5
+        }
+        return quotationRequestState.value.numberOfPeople.times(price);
+    }
+
+    fun calculatePriceBbq(): Double {
+        return quotationRequestState.value.numberOfPeople.times(12.0);
+    }
+
+    fun getTotalPriceWithoutVat(): Double {
+        var formula = quotationRequestState.value.formula
+        var totalCost =
+            getListAddedItems().sumOf { a -> a.price * a.amount } + getPriceBasicFormula() + calulateTransportCosts()
+        if (formula!!.id == 2 || formula!!.id == 3) {
+            totalCost += calculatePriceBeer()
+        }
+        if (formula!!.id == 3) {
+            totalCost += calculatePriceBbq()
+        }
+        return totalCost
+    }
+
+    fun getTotalVat(): Double {
+        var formula = quotationRequestState.value.formula
+        var totalVat = 0.00
+        var totalPrice = getTotalPriceWithoutVat()
+        val beerPrice = calculatePriceBeer()
+        val bbqPrice = calculatePriceBbq()
+        if (formula!!.id == 2 || formula!!.id == 3) {
+            totalPrice -= beerPrice
+        }
+        if (formula!!.id == 3) {
+            totalPrice -= bbqPrice
+        }
+        totalVat = (totalPrice * 0.21) + (beerPrice * 0.12) + (bbqPrice * 0.12)
+        return totalVat
+    }
+
+    //--------------------------------------------------------------------
+    fun selectFormula(formula: Formula) {
         _quotationRequestState.update {
-            it.copy(formulaId = id)
+            it.copy(formula = formula)
         }
     }
 
@@ -602,9 +696,6 @@ class QuotationRequestViewModel(
                 extraItem.amount = amount
             }
 
-    fun getTotalPrice(): Double {
-        return _quotationUiState.value.extraItems.sumOf { a -> a.price * a.extraItemId }
-    }
 
     fun addItemToCart(item: ExtraItemState) {
 
@@ -634,6 +725,7 @@ class QuotationRequestViewModel(
         }
     }
 
+
     fun removeItemFromCart(item: ExtraItemState) {
         val existingItem =
             _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
@@ -653,12 +745,16 @@ class QuotationRequestViewModel(
 
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
-            0 -> _quotationUiState.value.extraItems.sortedByDescending  { it.price } // Sort asc
-            1 -> _quotationUiState.value.extraItems.sortedBy{ it.price } // Sort desc
+            0 -> _quotationUiState.value.extraItems.sortedByDescending { it.price } // Sort asc
+            1 -> _quotationUiState.value.extraItems.sortedBy { it.price } // Sort desc
             2 -> _quotationUiState.value.extraItems.sortedBy { it.title } // Sort by name asc
             3 -> _quotationUiState.value.extraItems.sortedByDescending { it.title } // Sort by name desc
             else -> throw IllegalArgumentException("Invalid index: $index")
         }
         return sortedList
     }
+
+
+
+
 }

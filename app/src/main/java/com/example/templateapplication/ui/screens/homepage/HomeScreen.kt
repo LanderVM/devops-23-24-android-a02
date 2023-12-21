@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
+import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
 import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
@@ -30,7 +31,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit = {},
     onExtraNavigation: () -> Unit,
-    onQuotationRequestNavigation: (Int) -> Unit,
+    onQuotationRequestNavigation: (Formula) -> Unit,
     onGuidePriceNavigation: () -> Unit,
     homeViewModel: HomeViewModel
 ) {
@@ -64,7 +65,7 @@ fun HomeScreen(
                 FormuleCard(
                     title = formula.title,
                     image = formula.imageUrl,
-                    onButtonClicked = { onQuotationRequestNavigation(formula.id) }
+                    onButtonClicked = { onQuotationRequestNavigation(formula) }
                 )
             }
             item {

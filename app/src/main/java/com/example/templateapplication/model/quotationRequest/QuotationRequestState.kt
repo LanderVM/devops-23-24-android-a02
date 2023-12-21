@@ -1,10 +1,11 @@
 package com.example.templateapplication.model.quotationRequest
 
 import android.util.Log
+import com.example.templateapplication.model.common.quotation.Formula
 import java.util.Calendar
 
 data class QuotationRequestState(
-    val formulaId: Int = -1,
+    val formula: Formula? = null,
     val eventLocation: Address = Address(),
     val startTime: Calendar? = null,
     val endTime: Calendar? = null,

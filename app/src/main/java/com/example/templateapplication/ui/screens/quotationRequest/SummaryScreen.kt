@@ -61,6 +61,7 @@ import com.example.templateapplication.model.quotationRequest.QuotationRequestSt
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPostApiState
 import com.example.templateapplication.ui.commons.AlertPopUp
+import com.example.templateapplication.ui.screens.formulaDetails.FormulasViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
@@ -80,6 +81,7 @@ fun SummaryScreen (
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
     val uiState by quotationRequestViewModel.quotationUiState.collectAsState()
     var showConfirmationPop by remember { mutableStateOf(false) }
+    val formulaList by quotationRequestViewModel.formulaState.collectAsState()
 
     var columns : Int
     var fontSizeCost : TextUnit
@@ -171,9 +173,6 @@ fun SummaryScreen (
                 items(quotationRequestViewModel.getListAddedItems()){ extraItem ->
                     ExtraItemCard(
                         extraItem = extraItem,
-                        onAmountChanged = {equipment, amount ->
-                            quotationRequestViewModel.changeExtraItemAmount(equipment, amount)},
-                        onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem) },
                         modifier = Modifier.padding(8.dp),
                     )
                 }
@@ -188,6 +187,7 @@ fun SummaryScreen (
         }
         item(span = { GridItemSpan(maxLineSpan)}) {
             KostGegevens(
+                requestState = requestState,
                 fontSizeCost = fontSizeCost,
                 modifier = Modifier.padding(vertical = 50.dp)
                 ,quotationRequestViewModel = quotationRequestViewModel,
@@ -445,8 +445,6 @@ fun ListItemRow(headline: String, content: String) {
 @Composable
 fun ExtraItemCard( // TODO duplicate code -> make a component out of this
     extraItem: ExtraItemState,
-    onAmountChanged: (ExtraItemState, Int) -> Unit,
-    onRemoveItem: (ExtraItemState) -> Unit,
     modifier: Modifier = Modifier) {
     Card(
         modifier = Modifier
@@ -497,9 +495,10 @@ fun ExtraItemCard( // TODO duplicate code -> make a component out of this
 }}
 @Composable
 fun KostGegevens (
+    requestState: QuotationRequestState,
     fontSizeCost: TextUnit,
     modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel // TODO rework so VM isn't passed into this composable
+    quotationRequestViewModel: QuotationRequestViewModel
 ) {
 
     Column (
@@ -528,7 +527,9 @@ fun KostGegevens (
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly ,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .height(35.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         text= stringResource(id = R.string.summaryData_priceDetails_description),
@@ -563,36 +564,102 @@ fun KostGegevens (
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly ,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .height(35.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
-                        text="Basic formule",
+                        text="${requestState.formula!!.title}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text="€350",
+                        text="€ ${quotationRequestViewModel.getPriceBasicFormula()}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text="€350",
+                        text="€ ${quotationRequestViewModel.getPriceBasicFormula()}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                 }
+                if(requestState.formula!!.id == 2 || requestState.formula!!.id == 3){
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly ,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .height(35.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text="Bier Inbegrepen  x ${requestState.numberOfPeople} ",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier.fillMaxWidth(0.4f),
+                            fontSize = fontSizeCost,
+                            color = Color.Black,
+                        )
+                        Text(
+                            text="€ 3.0",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier.fillMaxWidth(0.3f),
+                            fontSize = fontSizeCost,
+                            color = Color.Black,
+                        )
+                        Text(
+                            text="€ ${quotationRequestViewModel.calculatePriceBeer()}",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier.fillMaxWidth(0.3f),
+                            fontSize = fontSizeCost,
+                            color = Color.Black,
+                        )
+                    }
+                }
+                if(requestState.formula!!.id == 3){
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly ,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .height(35.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text="BBQ Inbegrepen  x ${requestState.numberOfPeople}",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier.fillMaxWidth(0.4f),
+                            fontSize = fontSizeCost,
+                            color = Color.Black,
+                        )
+                        Text(
+                            text="€ 12.0",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier.fillMaxWidth(0.3f),
+                            fontSize = fontSizeCost,
+                            color = Color.Black,
+                        )
+                        Text(
+                            text="€ ${quotationRequestViewModel.calculatePriceBbq()}",
+                            textAlign = TextAlign.Left,
+                            modifier= Modifier.fillMaxWidth(0.3f),
+                            fontSize = fontSizeCost,
+                            color = Color.Black,
+                        )
+                    }
+                }
                 quotationRequestViewModel.getListAddedItems().forEach{
                     extraItem ->
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly ,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.height(35.dp).fillMaxWidth()
+                        modifier = Modifier
+                            .height(35.dp)
+                            .fillMaxWidth()
                     ) {
                         Text(
                             text="${extraItem.title} x ${extraItem.amount}",
@@ -603,7 +670,7 @@ fun KostGegevens (
                             overflow =TextOverflow.Ellipsis,
                         )
                         Text(
-                            text="€ ${extraItem.price}",
+                            text="€ ${String.format("%.2f", extraItem.price)}",
                             textAlign = TextAlign.Left,
                             modifier= Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
@@ -621,7 +688,9 @@ fun KostGegevens (
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly ,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .height(35.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         text="Vervoerskosten",
@@ -638,9 +707,7 @@ fun KostGegevens (
                         color = Color.Black,
                     )
                     Text(
-                        text="€ ${(quotationRequestViewModel.getDistanceLong()?.div(1000)?.minus(20))?.times(
-                            0.75
-                        )}",
+                        text="€ ${quotationRequestViewModel.calulateTransportCosts()}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
@@ -655,7 +722,9 @@ fun KostGegevens (
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly ,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .height(35.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         text="TOTAAL EXCL BTW",
@@ -666,7 +735,7 @@ fun KostGegevens (
                     )
 
                     Text(
-                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalPrice() + 2.25 + 350)}", //TODO change to variables
+                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalPriceWithoutVat())}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
@@ -676,10 +745,12 @@ fun KostGegevens (
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly ,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .height(35.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
-                        text="TOTAAL BTW (21%)",
+                        text="TOTAAL BTW",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.6f),
                         fontSize = fontSizeCost,
@@ -687,7 +758,7 @@ fun KostGegevens (
                     )
 
                     Text(
-                        text="€ ${String.format("%.2f", (quotationRequestViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
+                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalVat())}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
@@ -702,7 +773,9 @@ fun KostGegevens (
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly ,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(35.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .height(35.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         text="Te betalen",
@@ -714,7 +787,7 @@ fun KostGegevens (
                     )
 
                     Text(
-                        text="€ ${String.format("%.2f", (quotationRequestViewModel.getTotalPrice() + 2.25 + 350) + (quotationRequestViewModel.getTotalPrice() + 2.25 + 350) *0.21)}",
+                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalPriceWithoutVat() + quotationRequestViewModel.getTotalVat())}",
                         textAlign = TextAlign.Left,
                         modifier= Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,

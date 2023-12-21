@@ -138,8 +138,8 @@ fun BlancheApp(
                             },
                             modifier = Modifier.padding(innerPadding),
                             onExtraNavigation = { navController.navigate(NavigationRoutes.ExtrasOverview.name) },
-                            onQuotationRequestNavigation = { chosenId ->
-                                quotationRequestViewModel.selectFormula(chosenId)
+                            onQuotationRequestNavigation = { formula ->
+                                quotationRequestViewModel.selectFormula(formula)
                                 navController.navigate(NavigationRoutes.EventDetails.name)
                             },
                             onGuidePriceNavigation = {

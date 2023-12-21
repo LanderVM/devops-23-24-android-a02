@@ -42,12 +42,13 @@ fun FormuleCard(
     Card(
         shape = RectangleShape,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(30.dp)
     ) {
         Column(
             modifier = Modifier
                 .background(Color.White)
+                .fillMaxSize()
         ) {
             Box(
                 modifier = Modifier
@@ -75,6 +76,7 @@ fun FormuleCard(
                         contentDescription = imageTxt,
                         modifier = Modifier
                             .clip(RoundedCornerShape(10.dp))
+                            .fillMaxSize()
                     )
             }
             Spacer(modifier = Modifier.height(10.dp))

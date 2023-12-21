@@ -107,7 +107,7 @@ fun ExtrasScreen(
             LazyVerticalGrid(
                 columns = GridCells.Fixed(columns),
                 modifier = Modifier
-                    .padding(horizontal = 30.dp)
+                    .padding(end = 30.dp, start = 30.dp, bottom = 30.dp)
                     .fillMaxWidth(),
             ) {
                 item(span = { GridItemSpan(maxLineSpan)}){
@@ -212,11 +212,11 @@ fun ExtraItemCard(
                 // Title
                 Text(
                     fontSize = 20.sp ,
-                    modifier = Modifier.size(170.dp, 40.dp),
+                    modifier = Modifier.size(170.dp, 70.dp),
                     text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Visible
                 )
                 // Price
                 Text(

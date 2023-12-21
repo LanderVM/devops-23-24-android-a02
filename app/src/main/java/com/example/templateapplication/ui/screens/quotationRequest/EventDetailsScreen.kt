@@ -124,7 +124,7 @@ fun EventDetailsScreen(
             isError = quotationRequestViewModel.formState.numberOfPeopleError != null,
             errorMessage = quotationRequestViewModel.formState.numberOfPeopleError,
         )
-        if (requestState.formulaId != 1) {
+        if (requestState.formula!!.id != 1) {
             DropDownSelect(
                 label = stringResource(id = R.string.eventDetails_beerType),
                 isExpanded = uiState.dropDownExpanded,
