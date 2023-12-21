@@ -20,6 +20,16 @@ import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
 import com.example.templateapplication.ui.theme.md_theme_light_secondary
 import com.example.templateapplication.ui.theme.md_theme_light_tertiary
 
+/**
+ * Composable function for displaying a checklist of equipment items.
+ *
+ * This function creates a list where each item is an equipment with a checkbox. The state and
+ * behavior of each checkbox are controlled by the passed functions.
+ *
+ * @param list A list of EstimationEquipment items to be displayed.
+ * @param hasChecked Function to determine if an equipment item is checked.
+ * @param onCheck Callback function to be executed when an equipment item is checked/unchecked.
+ */
 @Composable
 fun EquipmentCheckList(
     list: List<EstimationEquipment>,

@@ -16,6 +16,15 @@ import com.example.templateapplication.ui.theme.md_theme_light_onSecondary
 import com.example.templateapplication.ui.theme.md_theme_light_secondary
 import com.example.templateapplication.ui.theme.md_theme_light_tertiary
 
+/**
+ * Composable function for a checkbox related to wanting extra equipment.
+ *
+ * Renders a checkbox with a label indicating the option to choose extra equipment. The state and
+ * behavior of the checkbox are controlled by the provided Boolean state and callback function.
+ *
+ * @param hasCheck Boolean state indicating if the checkbox is checked.
+ * @param onCheck Callback function to be executed when the checkbox is checked/unchecked.
+ */
 @Composable
 fun WantsEquipmentCheckbox(
     hasCheck: Boolean,

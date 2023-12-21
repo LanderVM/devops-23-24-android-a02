@@ -34,7 +34,3 @@ val Typography = Typography(
     )
     */
 )
-
-val ImperialScript = FontFamily(
-    Font(R.font.imperial_script_white)
-)

@@ -21,28 +21,33 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 /**
- * ViewModel for the About screen.
+ * ViewModel for managing the UI state of the About screen.
  *
- * @property restApiRepository An instance of ApiRepository used for making API calls.
+ * Responsible for handling the functionality related to the About screen, such as posting emails
+ * and updating dialog states. This ViewModel uses [ApiRepository] to interact with API services.
+ *
+ * @property restApiRepository Instance of [ApiRepository] used for making API calls.
  */
 class AboutViewModel(
     private val restApiRepository: ApiRepository,
 ) : ViewModel() {
 
-    // StateFlow for managing UI state in the About screen.
+    /**
+     * A [StateFlow] that represents the UI state of the About screen.
+     */
     private val _aboutUiState = MutableStateFlow(AboutUiState())
     val aboutUiState = _aboutUiState.asStateFlow()
 
-    // Variable to track the current state of email posting API call.
+    /**
+     * State variable to track the status of the email posting API call.
+     */
     var postEmailApiState: PostEmailApiState by mutableStateOf(
         PostEmailApiState.Loading
     )
         private set
 
     /**
-     * Function to post an email.
-     * Uses the API repository to send an email and updates the postEmailApiState
-     * based on the result of the operation.
+     * Posts an email using the API repository and updates [postEmailApiState] based on the outcome.
      */
     fun postEmail() {
         viewModelScope.launch {
@@ -64,7 +69,7 @@ class AboutViewModel(
     /**
      * Updates the state of the first dialog.
      *
-     * @param value Boolean indicating whether the dialog should be open or closed.
+     * @param value Boolean indicating the desired open/closed state of the dialog.
      */
     fun setOpenDialog1(value: Boolean) = _aboutUiState.update {
         it.copy(openDialog1 = value)
@@ -73,7 +78,7 @@ class AboutViewModel(
     /**
      * Updates the state of the second dialog.
      *
-     * @param value Boolean indicating whether the dialog should be open or closed.
+     * @param value Boolean indicating the desired open/closed state of the dialog.
      */
     fun setOpenDialog2(value: Boolean) = _aboutUiState.update {
         it.copy(openDialog2 = value)
@@ -88,8 +93,10 @@ class AboutViewModel(
         it.copy(emailAddress = value)
     }
 
+    /**
+     * Factory for creating instances of [AboutViewModel].
+     */
     companion object {
-        // Factory for creating instances of AboutViewModel.
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =

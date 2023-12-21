@@ -19,11 +19,21 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.IOException
 
+/**
+ * ViewModel for managing and displaying formulas.
+ *
+ * This ViewModel handles the fetching and presentation of formulas using data from a REST API.
+ * It maintains the state of the API call and provides the fetched data to the UI.
+ *
+ * @property restApiRepository An instance of ApiRepository used for making API calls.
+ */
 class FormulasViewModel(
     private val restApiRepository: ApiRepository,
-) :
-    ViewModel() {
+) : ViewModel() {
 
+    /**
+     * State variable to track the current status of the formula fetch API call.
+     */
     var apiState: FormulaApiState by mutableStateOf(FormulaApiState.Loading)
         private set
 
@@ -31,7 +41,11 @@ class FormulasViewModel(
         getFormulas()
     }
 
+    /**
+     * Factory for creating instances of [FormulasViewModel].
+     */
     companion object {
+        // Factory for creating instances of FormulasViewModel.
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
@@ -45,9 +59,15 @@ class FormulasViewModel(
         }
     }
 
-
+    /**
+     * A [StateFlow] that manages and exposes the list of formulas.
+     */
     lateinit var formulaList: StateFlow<FormulaListState>
 
+    /**
+     * Fetches formulas from the API and updates the state of [formulaList].
+     * It sets [apiState] based on the result of the fetch operation.
+     */
     private fun getFormulas() {
         try {
             viewModelScope.launch { restApiRepository.refresh() }

@@ -30,12 +30,24 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.Calendar
 
+/**
+ * ViewModel for managing and displaying price estimation details.
+ *
+ * Responsible for handling the fetching and management of price estimation details, including user inputs
+ * and interaction with the Rest API and Google Maps API. It maintains the UI state related to price estimation
+ * and provides the necessary data for UI components.
+ *
+ * @property restApiRepository Instance of [ApiRepository] used for making API calls.
+ * @property googleMapsRepository Instance of [GoogleMapsRepository] used for Google Maps API calls.
+ */
 class PriceEstimationViewModel(
     private val restApiRepository: ApiRepository,
     private val googleMapsRepository: GoogleMapsRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
+    /**
+     * StateFlow representing the UI state of estimation details.
+     */
     var retrieveUiDetailsApiState: PriceEstimationDetailsApiState by mutableStateOf(
         PriceEstimationDetailsApiState.Loading
     )
@@ -44,6 +56,13 @@ class PriceEstimationViewModel(
     private val _estimationDetailsState = MutableStateFlow(EstimationUiState())
     val estimationDetailsState = _estimationDetailsState.asStateFlow()
 
+    init {
+        getApiEstimationDetails()
+    }
+
+    /**
+     * Fetches estimation details from the API and updates the state of [estimationDetailsState].
+     */
     init {
         getApiEstimationDetails()
     }
@@ -72,6 +91,9 @@ class PriceEstimationViewModel(
         }
     }
 
+    /**
+     * Factory for creating instances of [PriceEstimationViewModel].
+     */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -88,24 +110,44 @@ class PriceEstimationViewModel(
         }
     }
 
+    /**
+     * Selects a formula based on the provided ID and updates the UI state.
+     *
+     * @param id The ID of the selected formula.
+     */
     fun selectFormula(id: Int) {
         _estimationDetailsState.update {
             it.copy(selectedFormula = id)
         }
     }
 
+    /**
+     * Sets the amount of people for the price estimation and updates the UI state.
+     *
+     * @param amountOfPeople String representation of the number of people.
+     */
     fun setAmountOfPeople(amountOfPeople: String) {
         _estimationDetailsState.update {
             it.copy(amountOfPeople = amountOfPeople.toInt())
         }
     }
 
+    /**
+     * Sets the option for including Tripel beer in the estimation and updates the UI state.
+     *
+     * @param wantsTripelBeer Boolean indicating the choice for Tripel beer.
+     */
     fun setWantsTripelBeer(wantsTripelBeer: Boolean) {
         _estimationDetailsState.update {
             it.copy(wantsTripelBeer = wantsTripelBeer)
         }
     }
 
+    /**
+     * Sets the option for including extra items in the estimation and updates the UI state.
+     *
+     * @param wantsExtras Boolean indicating the choice for extra items.
+     */
     fun setWantsExtras(wantsExtras: Boolean) {
         _estimationDetailsState.update {
             it.copy(wantsExtras = wantsExtras)
@@ -114,6 +156,11 @@ class PriceEstimationViewModel(
 
     private var selectedExtras = listOf<EstimationEquipment>().toMutableStateList()
 
+    /**
+     * Toggles the checked state of an extra item in the estimation and updates the selection list.
+     *
+     * @param extraItem The [EstimationEquipment] item to be toggled.
+     */
     fun extraItemsOnCheckedChange(extraItem: EstimationEquipment) {
         if (selectedExtras.contains(extraItem))
             selectedExtras.remove(extraItem)
@@ -121,16 +168,33 @@ class PriceEstimationViewModel(
             selectedExtras.add(extraItem)
     }
 
+    /**
+     * Checks if an extra item is selected in the estimation.
+     *
+     * @param extraItem The [EstimationEquipment] item to be checked.
+     * @return Boolean indicating if the item is selected.
+     */
     fun hasSelectedExtraItem(extraItem: EstimationEquipment): Boolean {
         return selectedExtras.contains(extraItem)
     }
 
+    /**
+     * Updates the dropdown expansion state in the UI.
+     *
+     * @param value Boolean indicating the desired state of the dropdown.
+     */
     fun setDropDownExpanded(value: Boolean) {
         _estimationDetailsState.update {
             it.copy(formulaDropDownIsExpanded = value)
         }
     }
 
+    /**
+     * Updates the date range for the price estimation.
+     *
+     * @param beginDate The start date in milliseconds since Unix epoch.
+     * @param endDate The end date in milliseconds since Unix epoch.
+     */
     fun updateDateRange(beginDate: Long?, endDate: Long?) {
         val begin = Calendar.getInstance()
         val end = Calendar.getInstance()
@@ -157,6 +221,9 @@ class PriceEstimationViewModel(
         }
     }
 
+    /**
+     * Fetches predictions from Google Maps based on the input address.
+     */
     fun getPredictions() {
         viewModelScope.launch {
             try {
@@ -176,6 +243,11 @@ class PriceEstimationViewModel(
         }
     }
 
+    /**
+     * Determines if a valid place has been found based on the predictions.
+     *
+     * @return Boolean indicating if a valid place is found.
+     */
     fun placeFound(): Boolean {
         return if (_estimationDetailsState.value.placeResponse.candidates.isNotEmpty())
             _estimationDetailsState.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
@@ -187,6 +259,9 @@ class PriceEstimationViewModel(
     )
         private set
 
+    /**
+     * Initiates the price estimation process and updates the state based on the result.
+     */
     fun getPriceEstimation() {
         viewModelScope.launch {
             try {
@@ -213,5 +288,4 @@ class PriceEstimationViewModel(
             }
         }
     }
-
 }

@@ -44,11 +44,20 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+/**
+ * ViewModel for handling quotation request-related functionalities.
+ *
+ * Manages the data and operations for creating and processing quotation requests. Interacts with
+ * REST API for quotation data and Google Maps API for location services. It maintains the state of
+ * various API calls and manages the UI state for quotation requests.
+ *
+ * @property restApiRepository Instance of [ApiRepository] used for REST API calls.
+ * @property googleMapsRepository Instance of [GoogleMapsRepository] used for Google Maps API calls.
+ */
 class QuotationRequestViewModel(
     private val restApiRepository: ApiRepository,
     private val googleMapsRepository: GoogleMapsRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     init {
         getApiExtraEquipment()
@@ -71,20 +80,35 @@ class QuotationRequestViewModel(
         }
     }
 
-    // ---------------------------------------- EVENT DETAILS: EVENT DETAILS
+    /**
+     * A [MutableStateFlow] managing the state of the quotation request.
+     */
     private val _quotationRequestState = MutableStateFlow(QuotationRequestState())
     val quotationRequestState = _quotationRequestState.asStateFlow()
 
+    /**
+     * A [MutableStateFlow] managing the state of the formula list.
+     */
     private val _formulaState = MutableStateFlow(FormulaListState())
     val formulaState = _formulaState.asStateFlow()
 
-
+    /**
+     * A [MutableStateFlow] managing the UI state for the quotation request.
+     */
     private val _quotationUiState = MutableStateFlow(QuotationUiState())
     val quotationUiState = _quotationUiState.asStateFlow()
 
-    var dateRangesApiState: DateRangesApiState by mutableStateOf(DateRangesApiState.Loading)
-        private set
+    /**
+     * State variable to track the status of date range API calls.
+     */
+    private var dateRangesApiState: DateRangesApiState by mutableStateOf(DateRangesApiState.Loading)
 
+    /**
+     * Updates the date range for the quotation request.
+     *
+     * @param beginDate The start date in milliseconds since the Unix epoch.
+     * @param endDate The end date in milliseconds since the Unix epoch.
+     */
     fun updateDateRange(beginDate: Long?, endDate: Long?) {
         val begin = Calendar.getInstance()
         val end = Calendar.getInstance()
@@ -99,7 +123,11 @@ class QuotationRequestViewModel(
         }
     }
 
-
+    /**
+     * Retrieves a formatted date range string for the quotation request.
+     *
+     * @return A string representing the date range in "dd/MM/yyyy" format.
+     */
     fun getDateRange(): String {
         if (_quotationRequestState.value.startTime == null || _quotationRequestState.value.endTime == null) {
             return "/"
@@ -110,8 +138,10 @@ class QuotationRequestViewModel(
                 dateFormat.format(_quotationRequestState.value.endTime!!.timeInMillis)
     }
 
-    //// New getDateRanges
-    fun getDateRanges() {
+    /**
+     * Fetches unavailable date ranges from the API and updates the UI state.
+     */
+    private fun getDateRanges() {
         viewModelScope.launch {
             dateRangesApiState = try {
                 val listDatesResult = restApiRepository.getUnavailableDateRanges()
@@ -131,12 +161,17 @@ class QuotationRequestViewModel(
         }
     }
 
-
+    /**
+     * State variable to track the status of the post quotation request API call.
+     */
     var postQuotationRequestApiState: ApiQuotationRequestPostApiState by mutableStateOf(
         ApiQuotationRequestPostApiState.Idle
     )
         private set
 
+    /**
+     * Sends a quotation request to the server and updates the [postQuotationRequestApiState] based on the result.
+     */
     fun sendQuotationRequest() {
         viewModelScope.launch {
             try {
@@ -222,8 +257,11 @@ class QuotationRequestViewModel(
         }
     }
 
-    //PRICE CALCULATION
-
+    /**
+     * Calculates the basic price of the formula based on the selected duration.
+     *
+     * @return The basic formula price as a [Double].
+     */
     fun getPriceBasicFormula(): Double {
 
         val initialPrice: Double
@@ -248,6 +286,11 @@ class QuotationRequestViewModel(
         return formattedValue.toDouble()
     }
 
+    /**
+     * Calculates transportation costs based on the distance.
+     *
+     * @return The transportation cost as a [Double].
+     */
     fun calulateTransportCosts(): Double {
         val distance = getDistanceLong().div(1000)
 
@@ -260,6 +303,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Calculates the price for beer based on the number of people and beer preference.
+     *
+     * @return The calculated price for beer.
+     */
     fun calculatePriceBeer(): Double {
         val price = if (quotationRequestState.value.isTripelBier) {
             3.0
@@ -269,10 +317,20 @@ class QuotationRequestViewModel(
         return quotationRequestState.value.numberOfPeople.times(price)
     }
 
+    /**
+     * Calculates the price for BBQ services based on the number of people.
+     *
+     * @return The calculated price for BBQ.
+     */
     fun calculatePriceBbq(): Double {
         return quotationRequestState.value.numberOfPeople.times(12.0)
     }
 
+    /**
+     * Computes the total price without VAT for the quotation request.
+     *
+     * @return The total price excluding VAT.
+     */
     fun getTotalPriceWithoutVat(): Double {
         val formula = quotationRequestState.value.formula
         var totalCost =
@@ -286,6 +344,11 @@ class QuotationRequestViewModel(
         return totalCost
     }
 
+    /**
+     * Calculates the total VAT for the quotation request.
+     *
+     * @return The total VAT amount.
+     */
     fun getTotalVat(): Double {
         val formula = quotationRequestState.value.formula
         val totalVat: Double
@@ -302,44 +365,73 @@ class QuotationRequestViewModel(
         return totalVat
     }
 
-    //--------------------------------------------------------------------
+    /**
+     * Selects a formula for the quotation request and updates the UI state.
+     *
+     * @param formula The [Formula] selected.
+     */
     fun selectFormula(formula: Formula) {
         _quotationRequestState.update {
             it.copy(formula = formula)
         }
     }
 
+    /**
+     * Updates the preference for Tripel Beer in the quotation request state.
+     *
+     * @param wantsTripelBeer Indicates the preference for Tripel Beer (1 for yes).
+     */
     fun selectBeer(wantsTripelBeer: Int) {
         _quotationRequestState.update {
             it.copy(isTripelBier = wantsTripelBeer == 1)
         }
     }
 
+    /**
+     * Expands or collapses the dropdown in the UI.
+     *
+     * @param value Boolean indicating the desired state of the dropdown.
+     */
     fun setDropDownExpanded(value: Boolean) {
         _quotationUiState.update {
             it.copy(dropDownExpanded = value)
         }
     }
 
-    fun setAmountOfPeople(amountOfPeople: String) {
+    /**
+     * Sets the number of people for the quotation request.
+     *
+     * @param amountOfPeople The number of people as a String.
+     */
+    private fun setAmountOfPeople(amountOfPeople: String) {
         _quotationRequestState.update {
             it.copy(numberOfPeople = amountOfPeople.toInt())
         }
     }
 
     // ---------------------------------------- EVENT DETAILS: GOOGLE MAPS
-
+    /**
+     * State variable to track the status of Google Maps API calls.
+     */
     var googleMapsApiState: ApiResponse<GoogleMapsResponse> by mutableStateOf(
         ApiResponse.Loading
     )
         private set
 
-    fun setAddressInput(input: String) {
+    /**
+     * Sets the input address for Google Maps predictions.
+     *
+     * @param input The address input string.
+     */
+    private fun setAddressInput(input: String) {
         _quotationUiState.update {
             it.copy(googleMaps = it.googleMaps.copy(eventAddress = input))
         }
     }
 
+    /**
+     * Fetches address predictions using Google Maps API.
+     */
     fun getPredictions() {
         viewModelScope.launch {
             try {
@@ -358,6 +450,9 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the distance data for the quotation request using Google Maps API.
+     */
     private fun updateDistance() {
         if (placeFound()) {
             viewModelScope.launch {
@@ -366,7 +461,6 @@ class QuotationRequestViewModel(
                         vertrekPlaats = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
                         eventPlaats = _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address
                     )
-                    Log.i("bruuh", distanceResult.toString())
                     _quotationUiState.update {
                         it.copy(googleMaps = it.googleMaps.copy(distanceResponse = distanceResult))
                     }
@@ -380,6 +474,9 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the location marker based on the address input.
+     */
     fun updateMarker() {
         viewModelScope.launch {
             try {
@@ -401,10 +498,20 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Retrieves the distance for the event location using Google Maps API.
+     *
+     * @return The distance as a Long value.
+     */
     fun getDistanceLong(): Long {
         return _quotationUiState.value.googleMaps.distanceResponse.rows[0].elements[0].distance.value
     }
 
+    /**
+     * Checks if a valid place has been found based on Google Maps predictions.
+     *
+     * @return Boolean indicating if a valid place is found.
+     */
     fun placeFound(): Boolean {
         return if (_quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates.isNotEmpty())
             _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address.isNotEmpty()
@@ -413,6 +520,11 @@ class QuotationRequestViewModel(
 
     // ----------------------------------------  PERSONAL DETAILS
 
+    /**
+     * Updates the first name in the quotation request state.
+     *
+     * @param firstName The first name to set.
+     */
     private fun setFirstName(firstName: String) {
         _quotationRequestState.update {
             it.copy(
@@ -423,6 +535,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the last name in the quotation request state.
+     *
+     * @param lastName The last name to set.
+     */
     private fun setLastName(lastName: String) {
         _quotationRequestState.update {
             it.copy(
@@ -433,6 +550,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the phone number in the quotation request state.
+     *
+     * @param phoneNumber The phone number to set.
+     */
     private fun setPhoneNumber(phoneNumber: String) {
         _quotationRequestState.update {
             it.copy(
@@ -443,6 +565,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the email in the quotation request state.
+     *
+     * @param email The email to set.
+     */
     private fun setEmail(email: String) {
         _quotationRequestState.update {
             it.copy(
@@ -453,6 +580,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the street in the quotation request state.
+     *
+     * @param street The street to set.
+     */
     private fun setStreet(street: String) {
         _quotationRequestState.update {
             it.copy(
@@ -465,6 +597,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the house number in the quotation request state.
+     *
+     * @param houseNumber The house number to set.
+     */
     private fun setHouseNumber(houseNumber: String) {
         _quotationRequestState.update {
             it.copy(
@@ -477,6 +614,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the city in the quotation request state.
+     *
+     * @param city The city to set.
+     */
     private fun setCity(city: String) {
         _quotationRequestState.update {
             it.copy(
@@ -489,6 +631,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the postal code in the quotation request state.
+     *
+     * @param postalCode The postal code to set.
+     */
     private fun setPostalCode(postalCode: String) {
         _quotationRequestState.update {
             it.copy(
@@ -501,6 +648,11 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Updates the vat number in the quotation request state.
+     *
+     * @param vatNumber The vat number to set.
+     */
     private fun setVatNumber(vatNumber: String) {
         _quotationRequestState.update {
             it.copy(
@@ -519,8 +671,19 @@ class QuotationRequestViewModel(
     private val validateText = ValidateNotEmptyUseCase()
     private val validateVat = ValidateVatUseCase()
 
+    /**
+     * State variable for managing the form state of user input.
+     */
     var formState by mutableStateOf(MainState())
 
+    /**
+     * Handles events triggered by user interactions in the UI.
+     *
+     * Updates the form state based on the type of event and performs necessary validations
+     * and state updates.
+     *
+     * @param event The [MainEvent] representing the user interaction.
+     */
     fun onEvent(event: MainEvent) {
         when (event) {
             is MainEvent.AddressChanged -> {
@@ -601,24 +764,44 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Validates the address and updates the form state.
+     *
+     * @return Boolean indicating if the address is valid.
+     */
     private fun validateAddress(): Boolean {
         val result = validateText.execute(formState.address)
         formState = formState.copy(addressError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the number of people and updates the form state.
+     *
+     * @return Boolean indicating if the number of people is valid.
+     */
     private fun validateNumberOfPeople(): Boolean {
         val result = validateNumber.execute(formState.numberOfPeople)
         formState = formState.copy(numberOfPeopleError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the first name and updates the form state.
+     *
+     * @return Boolean indicating if the first name is valid.
+     */
     private fun validateFirstName(): Boolean {
         val result = validateText.execute(formState.firstName)
         formState = formState.copy(firstNameError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the last name and updates the form state.
+     *
+     * @return Boolean indicating if the last name is valid.
+     */
     private fun validateLastName(): Boolean {
         val result = validateText.execute(formState.lastName)
         formState = formState.copy(lastNameError = result.errorMessage)
@@ -626,68 +809,126 @@ class QuotationRequestViewModel(
 
     }
 
+    /**
+     * Validates the phone number and updates the form state.
+     *
+     * @return Boolean indicating if the phone number is valid.
+     */
     private fun validatePhoneNumber(): Boolean {
         val result = validatePhoneNumber.execute(formState.phoneNumber)
         formState = formState.copy(phoneNumberError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the email and updates the form state.
+     *
+     * @return Boolean indicating if the email is valid.
+     */
     private fun validateEmail(): Boolean {
         val result = validateEmailUseCase.execute(formState.email)
         formState = formState.copy(emailError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the street and updates the form state.
+     *
+     * @return Boolean indicating if the street is valid.
+     */
     private fun validateStreet(): Boolean {
         val result = validateText.execute(formState.street)
         formState = formState.copy(streetError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the house number and updates the form state.
+     *
+     * @return Boolean indicating if the house number is valid.
+     */
     private fun validateHouseNumber(): Boolean {
         val result = validateText.execute(formState.houseNumber)
         formState = formState.copy(houseNumberError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the city and updates the form state.
+     *
+     * @return Boolean indicating if the city is valid.
+     */
     private fun validateCity(): Boolean {
         val result = validateText.execute(formState.city)
         formState = formState.copy(cityError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the postal code and updates the form state.
+     *
+     * @return Boolean indicating if the postal code is valid.
+     */
     private fun validatePostalCode(): Boolean {
         val result = validateText.execute(formState.postalCode)
         formState = formState.copy(postalCodeError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Validates the vat number and updates the form state.
+     *
+     * @return Boolean indicating if the vat number is valid.
+     */
     private fun validateVat(): Boolean {
         val result = validateVat.execute(formState.vat)
         formState = formState.copy(vatError = result.errorMessage)
         return result.successful
     }
 
+    /**
+     * Determines if the quotation screen can proceed to the next step.
+     *
+     * @return Boolean indicating if navigation is allowed.
+     */
     fun quotationScreenCanNavigate(): Boolean {
         return formState.isReadyForQuotation()
     }
 
+    /**
+     * Determines if the personal details screen can proceed to the next step.
+     *
+     * @return Boolean indicating if navigation is allowed.
+     */
     fun personalDetailScreenCanNavigate(): Boolean {
         return formState.isReadyForPersonalDetails()
     }
 
     // ---------------------------------------- VALIDATION
 
+    /**
+     * State variable to track the status of additional material API calls.
+     */
     var extraMateriaalApiState: ApiResponse<List<ExtraItemState>> by mutableStateOf(ApiResponse.Loading)
         private set
 
+    /**
+     * Changes the amount of an extra item in the user's quotation.
+     *
+     * @param item The [ExtraItemState] to be updated.
+     * @param amount The new amount for the item.
+     */
     fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
         _quotationUiState.value.extraItems.find { it.extraItemId == item.extraItemId }
             ?.let { extraItem ->
                 extraItem.amount = amount
             }
 
-
+    /**
+     * Adds an item to the shopping cart in the quotation request state.
+     *
+     * @param item The [ExtraItemState] representing the item to add.
+     */
     fun addItemToCart(item: ExtraItemState) {
 
         val existingItem =
@@ -702,6 +943,12 @@ class QuotationRequestViewModel(
         }
     }
 
+    /**
+     * Fetches extra equipment data from the API and updates the UI state.
+     *
+     * Initiates an API call to retrieve additional equipment options for the quotation
+     * and updates the [extraMateriaalApiState] based on the result.
+     */
     private fun getApiExtraEquipment() {
         viewModelScope.launch {
             extraMateriaalApiState = try {
@@ -716,7 +963,11 @@ class QuotationRequestViewModel(
         }
     }
 
-
+    /**
+     * Removes an item to the shopping cart in the quotation request state.
+     *
+     * @param item The [ExtraItemState] representing the item to remove.
+     */
     fun removeItemFromCart(item: ExtraItemState) {
         val existingItem =
             _quotationRequestState.value.equipments.find { it.extraItemId == item.extraItemId }
@@ -728,12 +979,22 @@ class QuotationRequestViewModel(
         }
     }
 
-
+    /**
+     * Retrieves a list of added items in the shopping cart.
+     *
+     * @return List of [ExtraItemState] representing added items.
+     */
     fun getListAddedItems(): List<ExtraItemState> {
         return _quotationRequestState.value.equipments
     }
 
-
+    /**
+     * Returns a sorted list of extra items based on the specified sorting criteria.
+     *
+     * @param index The sorting criterion index.
+     * @return Sorted list of [ExtraItemState].
+     * @throws IllegalArgumentException If the index is invalid.
+     */
     fun getListSorted(index: Int): List<ExtraItemState> {
         val sortedList = when (index) {
             0 -> _quotationUiState.value.extraItems.sortedByDescending { it.price } // Sort asc

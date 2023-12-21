@@ -3,7 +3,6 @@ package com.example.templateapplication.ui.screens.homepage.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,17 +30,26 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.templateapplication.R
-import com.example.templateapplication.ui.theme.ImperialScript
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 
+/**
+ * Composable function for rendering the top section of the Home screen.
+ *
+ * This function creates the top section of the Home screen, which includes a background image,
+ * a title, and a menu icon. The appearance of this section can change based on the navigation type.
+ *
+ * @param navigationType The type of navigation being used, affecting the layout and font size.
+ * @param modifier Modifier to be applied for customization.
+ * @param openDrawer Callback function to be executed when the menu icon is clicked.
+ */
 @Composable
 fun HomeScreenTop(
     navigationType: ReplyNavigationType,
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit = {}
 ) {
-    var blanchePadding: Dp
-    var blancheFontSize: TextUnit
+    val blanchePadding: Dp
+    val blancheFontSize: TextUnit
     when (navigationType) {
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             blanchePadding = 130.dp
