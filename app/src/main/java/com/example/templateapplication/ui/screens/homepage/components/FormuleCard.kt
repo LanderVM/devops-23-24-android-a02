@@ -21,7 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,7 +33,7 @@ import coil.size.Scale
 import com.example.templateapplication.R
 
 @Composable
-fun FormuleCard(
+fun FormulaCard(
     modifier: Modifier = Modifier,
     title: String,
     image: String = "",
@@ -90,6 +92,7 @@ fun FormuleCard(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .testTag(stringResource(R.string.nav_formulaCard))
             ) {
                 Text(
                     text = title,

@@ -16,12 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.model.home.HomeViewModel
-import com.example.templateapplication.ui.screens.homepage.components.FormuleCard
+import com.example.templateapplication.ui.screens.homepage.components.FormulaCard
 import com.example.templateapplication.ui.screens.homepage.components.HomeScreenTop
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 
@@ -51,7 +52,6 @@ fun HomeScreen(
         },
         floatingActionButtonPosition = FabPosition.End
     ) { paddingValues ->
-        val myVariable = listOf(1, 2, 3, 4)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(250.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -62,14 +62,15 @@ fun HomeScreen(
                 HomeScreenTop(navigationType = navigationType ,openDrawer = openDrawer)
             }
             items(formulaList.formulaListState) { formula ->
-                FormuleCard(
+                FormulaCard(
                     title = formula.title,
                     image = formula.imageUrl,
                     onButtonClicked = { onQuotationRequestNavigation(formula) }
                 )
             }
             item {
-                FormuleCard(
+                FormulaCard(
+                    modifier = Modifier.testTag(stringResource(R.string.nav_formulaCard)),
                     title = stringResource(id = R.string.formula_extraMaterials_title),
                     onButtonClicked = onExtraNavigation
                 )

@@ -18,6 +18,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -93,6 +95,7 @@ fun BlancheApp(
             mutableIntStateOf(0)
         }
         ModalNavigationDrawer(
+            modifier = Modifier.testTag(stringResource(R.string.nav_hamburgernav)),
             gesturesEnabled = true, // Swipe voor navigatiebar
             drawerContent = {
                 NavigationDrawer(
@@ -109,6 +112,7 @@ fun BlancheApp(
                 topBar = {
                     if (backStackEntry?.destination?.route != NavigationRoutes.Home.name) {
                         BlancheAppBar(
+                            modifier = Modifier.testTag(stringResource(R.string.nav_hamburgernav)),
                             currentScreen = NavigationRoutes.valueOf(
                                 backStackEntry?.destination?.route ?: NavigationRoutes.Home.name
                             ),
