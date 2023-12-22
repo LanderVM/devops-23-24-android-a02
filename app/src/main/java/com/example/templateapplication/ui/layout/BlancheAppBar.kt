@@ -15,8 +15,10 @@ import androidx.compose.ui.Modifier
 import com.example.templateapplication.navigation.NavigationRoutes
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.templateapplication.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +42,7 @@ fun BlancheAppBar(
                     ) {
                         if (canNavigateBack) {
                             IconButton(
+                                modifier=Modifier.testTag(stringResource(id = R.string.backButton)),
                                 onClick = navigateUp,
                             ) {
                                 Icon(
