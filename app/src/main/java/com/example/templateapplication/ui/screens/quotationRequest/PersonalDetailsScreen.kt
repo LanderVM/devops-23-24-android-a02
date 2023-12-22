@@ -96,7 +96,7 @@ fun PersonalDetailsForm (
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = padding),
+            .padding(end = padding, start = padding, bottom = 30.dp),
         columns = GridCells.Fixed(columnAmount),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
