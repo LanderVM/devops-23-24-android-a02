@@ -403,7 +403,7 @@ class QuotationRequestViewModel(
      *
      * @param amountOfPeople The number of people as a String.
      */
-    private fun setAmountOfPeople(amountOfPeople: String) {
+    fun setAmountOfPeople(amountOfPeople: String) {
         _quotationRequestState.update {
             it.copy(numberOfPeople = amountOfPeople.toInt())
         }

@@ -104,7 +104,7 @@ fun FormulaCard(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag(stringResource(R.string.nav_formulaCard))
+
             ) {
                 Text(
                     text = title,

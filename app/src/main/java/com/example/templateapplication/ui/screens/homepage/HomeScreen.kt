@@ -47,7 +47,9 @@ fun HomeScreen(
                 content = {
                     Icon(Icons.Filled.Info, contentDescription = "Localized description")
                 },
-                modifier = Modifier.padding(all = 16.dp)
+                modifier = Modifier
+                    .padding(all = 16.dp)
+                    .testTag(stringResource(id = R.string.priceEstimation_FAB))
             )
         },
         floatingActionButtonPosition = FabPosition.End
@@ -56,7 +58,9 @@ fun HomeScreen(
             columns = GridCells.Adaptive(250.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier.padding(paddingValues)
+            modifier = modifier
+                .padding(paddingValues)
+                .testTag(stringResource(R.string.home_page))
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 HomeScreenTop(navigationType = navigationType ,openDrawer = openDrawer)

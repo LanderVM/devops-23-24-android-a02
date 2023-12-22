@@ -12,8 +12,8 @@
     <string name="alertPopUp_dismiss">Ik wacht nog even</string>
 
     <string name="formula_basic_title">Basic</string>
-    <string name="formula_allIn_title">All-In</string>
-    <string name="formula_advanced_title">Gevorderd</string>
+    <string name="formula_allIn_title">All-in</string>
+    <string name="formula_advanced_title">Extended</string>
     <string name="formula_extraMaterials_title">Extra Materiaal</string>
 
     <string name="guidePrice_location_separator">Locatie</string>
@@ -143,4 +143,10 @@
     <string name="nav_appbar">blancheAppBarTest</string>
     <string name="nav_hamburgernav">modalNavBarDrawer</string>
     <string name="nav_formulaCard">extraMaterialHomeButton</string>
+    <string name="home_page">homePage</string>
+    <string name="priceEstimation_FAB">floating action button</string>
+    <string name="backButton">Back Button</string>
+    <string name="navBarContent">navbar Content</string>
+    <string name="firstDate">28</string>
+    <string name="lastDate">29</string>
 </resources>

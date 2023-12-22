@@ -4,16 +4,18 @@ import androidx.activity.ComponentActivity
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.example.templateapplication.BlancheApp
+import com.example.templateapplication.R
 import com.example.templateapplication.utility.assertCurrentRouteName
+import com.example.templateapplication.utility.onNodeWithStringTestTag
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import com.example.templateapplication.R
-import com.example.templateapplication.utility.onNodeWithStringTestTag
 
 
 class BlancheAppNavigationTest {
@@ -29,7 +31,7 @@ class BlancheAppNavigationTest {
             navController = TestNavHostController(LocalContext.current).apply {
                 navigatorProvider.addNavigator(ComposeNavigator())
             }
-            BlancheApp(navController=navController, windowSize = WindowWidthSizeClass.Compact)
+            BlancheApp(navController = navController, windowSize = WindowWidthSizeClass.Compact)
         }
     }
 
@@ -45,8 +47,46 @@ class BlancheAppNavigationTest {
     }
 
     @Test
-    fun blancheNavHost_clickExtraMaterial_navigateToExtraMaterialsScreen () {
-        composeTestRule.onNodeWithStringTestTag(R.string.nav_formulaCard).performClick()
-        navController.assertCurrentRouteName(NavigationRoutes.ExtrasOverview.name)
+    fun blancheNavHost_clickFormula_navigateToEventDetailsBasicScreen() {
+        composeTestRule.onNodeWithText(
+            text = composeTestRule.activity.getString(R.string.formula_basic_title),
+            ignoreCase = true
+        )
+            .performClick()
+        navController.assertCurrentRouteName(NavigationRoutes.EventDetails.name)
     }
+
+    @Test
+    fun blancheNavHost_clickFAB_navigateToPriceEstimationScreen() {
+        composeTestRule.onNodeWithStringTestTag(id = R.string.priceEstimation_FAB)
+            .performClick()
+        navController.assertCurrentRouteName(NavigationRoutes.GuidePrice.name)
+    }
+
+    @Test
+    fun blancheNavHost_clickFormula_navigateToEventDetailsAdvancedScreen() {
+        composeTestRule.onNodeWithText(
+            text = composeTestRule.activity.getString(R.string.formula_advanced_title),
+            ignoreCase = true
+        )
+            .performScrollTo()
+            .performClick()
+        navController.assertCurrentRouteName(NavigationRoutes.EventDetails.name)
+    }
+
+    @Test
+    fun blancheNavHost_goToEventDetails_canNavigateBack() {
+        composeTestRule.onNodeWithText(
+            text = composeTestRule.activity.getString(R.string.formula_basic_title),
+            ignoreCase = true
+        )
+            .performClick()
+        navController.assertCurrentRouteName(NavigationRoutes.EventDetails.name)
+        //return to home
+        composeTestRule.onNodeWithStringTestTag(R.string.backButton)
+            .performClick()
+        navController.assertCurrentRouteName(NavigationRoutes.Home.name)
+    }
+
+
 }
