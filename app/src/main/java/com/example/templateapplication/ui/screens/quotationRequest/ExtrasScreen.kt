@@ -216,7 +216,7 @@ fun ExtraItemCard(
                     text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
-                    overflow = TextOverflow.Visible
+                    overflow = TextOverflow.Visible 
                 )
                 // Price
                 Text(
