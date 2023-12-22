@@ -152,5 +152,5 @@ fun isEmailValid(email: String): Boolean {
  * @return Boolean indicating whether the VAT number is valid.
  */
 fun isVatValid(vat: String): Boolean {
-    return Regex("^BE[01][0-9]{9}$").matches(vat)
+    return vat.isEmpty() || Regex("^BE[01][0-9]{9}$").matches(vat)
 }
