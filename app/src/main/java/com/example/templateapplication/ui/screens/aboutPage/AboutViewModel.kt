@@ -32,36 +32,32 @@ class AboutViewModel(
     private val restApiRepository: ApiRepository,
 ) : ViewModel() {
 
-    /**
-     * A [StateFlow] that represents the UI state of the About screen.
-     */
     private val _aboutUiState = MutableStateFlow(AboutUiState())
     val aboutUiState = _aboutUiState.asStateFlow()
 
     /**
      * State variable to track the status of the email posting API call.
      */
-    var postEmailApiState: PostEmailApiState by mutableStateOf(
+    private var postEmailApiState: PostEmailApiState by mutableStateOf(
         PostEmailApiState.Loading
     )
-        private set
 
     /**
      * Posts an email using the API repository and updates [postEmailApiState] based on the outcome.
      */
     fun postEmail() {
         viewModelScope.launch {
-            try {
+            postEmailApiState = try {
                 Log.i("AboutViewModel postEmail", "Sending request to api..")
                 restApiRepository.postEmail(ApiEmailPost(aboutUiState.value.emailAddress))
-                postEmailApiState = PostEmailApiState.Success
+                PostEmailApiState.Success
             } catch (e: HttpException) {
                 val errorMessage = e.message ?: "Post request failed"
                 Log.e(
                     "RestApi sendQuotationRequest",
                     errorMessage
                 )
-                postEmailApiState = PostEmailApiState.Error(errorMessage)
+                PostEmailApiState.Error(errorMessage)
             }
         }
     }

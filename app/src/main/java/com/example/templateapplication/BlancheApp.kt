@@ -209,7 +209,6 @@ fun BlancheApp(
                     composable(NavigationRoutes.ExtrasOverview.name) {
                         EquipmentOverviewScreen(
                             navigationType = navigationType,
-                            modifier = Modifier.padding(innerPadding),
                             equipmentOverviewViewModel = equipmentOverviewViewModel
                         )
                     }

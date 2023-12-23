@@ -25,17 +25,17 @@ import androidx.compose.ui.unit.sp
  * This function creates a decorative title with horizontal lines on both sides, used for separating
  * sections of content or for headings.
  *
- * @param modifier Modifier to be applied to the title for customization.
  * @param text The text to be displayed as the title.
  */
 @Composable
-fun SeperatingTitle(
-    modifier: Modifier = Modifier,
+fun SeparatingTitle(
     text: String = "",
 ) {
     Spacer(modifier = Modifier.height(30.dp))
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 40.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -49,8 +49,8 @@ fun SeperatingTitle(
             text = text,
             textAlign = TextAlign.Center,
             fontSize = 25.sp,
-            overflow = TextOverflow.Ellipsis,  // Maakt text op meerdere lijnen
-            modifier = Modifier.width(120.dp), // Maakt text op meerdere lijnen
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(120.dp),
         )
         Spacer(modifier = Modifier.width(20.dp))
         Box(
@@ -66,8 +66,7 @@ fun SeperatingTitle(
 
 @Preview
 @Composable
-fun TitelPreview(
-    modifier: Modifier = Modifier,
+fun TitlePreview(
 ) {
-    SeperatingTitle(text = "Test title")
+    SeparatingTitle(text = "Test title")
 }

@@ -36,7 +36,7 @@ import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.CustomDateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NumberOutlinedTextField
-import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.commons.SeparatingTitle
 import com.example.templateapplication.ui.screens.priceEstimation.components.EquipmentCheckList
 import com.example.templateapplication.ui.screens.priceEstimation.components.EstimatedPriceText
 import com.example.templateapplication.ui.screens.priceEstimation.components.WantsEquipmentCheckbox
@@ -97,7 +97,7 @@ fun GuidePriceScreen(
                     },
                     showCalenderToggle = true,
                 )
-                SeperatingTitle(
+                SeparatingTitle(
                     text = stringResource(id = R.string.guidePrice_location_separator),
                 )
                 AddressTextField(
@@ -110,7 +110,7 @@ fun GuidePriceScreen(
                     onValueChange = { priceEstimationViewModel.updateInput(it) },
                     googleMaps = priceEstimationUIState.googleMaps,
                 )
-                SeperatingTitle(
+                SeparatingTitle(
                     text = stringResource(id = R.string.guidePrice_details_separator),
                 )
                 Row(

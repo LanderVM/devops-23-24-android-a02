@@ -1,8 +1,9 @@
 package com.example.templateapplication.ui.commons
+
 import android.content.Context
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -12,21 +13,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
-import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 /**
  * Composable function for a validation text field with customizable features.
@@ -44,13 +41,11 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
  * @param errorMessage Message to be displayed in case of an error.
  * @param isError Boolean flag indicating whether an error state should be shown.
  * @param isVisible Boolean flag for visibility control, particularly useful for password fields.
- * @param leadingIcon Optional leading icon to be displayed inside the text field.
  * @param singleLine Boolean flag to set the text field as a single line input.
  * @param maxLines Maximum number of lines for the text field.
  */
 @Composable
 fun ValidationTextFieldApp(
-    modifier: Modifier = Modifier,
     placeholder: String,
     text: String = "",
     onValueChange: (String) -> Unit = {},
@@ -59,21 +54,13 @@ fun ValidationTextFieldApp(
     errorMessage: UiText? = null,
     isError: Boolean = false,
     isVisible: Boolean = false,
-    leadingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = false,
     maxLines: Int = 1
 ) {
-    val isKeyboardTypeNumber = keyboardType == KeyboardType.Phone || keyboardType == KeyboardType.Number
-    val focusRequester = remember { FocusRequester() }
+    val isKeyboardTypeNumber =
+        keyboardType == KeyboardType.Phone || keyboardType == KeyboardType.Number
     val interactionSource = remember { MutableInteractionSource() }
-    val isFocused by interactionSource.collectIsFocusedAsState()
     val displayError = isError && errorMessage != null
-
-    val colorBorder = when {
-        isError -> MaterialTheme.colorScheme.error
-        isFocused -> MaterialTheme.colorScheme.primary
-        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-    }
 
     Column(modifier = Modifier.width(300.dp)) {
         val context = LocalContext.current
@@ -115,7 +102,10 @@ fun ValidationTextFieldApp(
 @Composable
 private fun ClearTextIconButton(onValueChange: (String) -> Unit) {
     IconButton(onClick = { onValueChange("") }) {
-        Icon(Icons.Default.Clear, contentDescription = stringResource(id = R.string.clearableOutlinedTextField_iconDescription))
+        Icon(
+            Icons.Default.Clear,
+            contentDescription = stringResource(id = R.string.clearableOutlinedTextField_iconDescription)
+        )
     }
 }
 

@@ -35,7 +35,6 @@ import java.util.Locale
  * This function renders a date range picker that allows users to select a start and end date.
  * It supports various navigation types and can trigger actions upon date selection.
  *
- * @param modifier Modifier to be applied to the composable for customization.
  * @param navigationType The type of navigation being used in the UI, affecting the width of the picker.
  * @param state The state of the date range picker, containing selected dates.
  * @param onSelectDateRange Callback function to be executed when a date range is selected.
@@ -45,24 +44,25 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDateRangePicker(
-    modifier: Modifier = Modifier,
     navigationType: ReplyNavigationType,
     state: DateRangePickerState,
     onSelectDateRange: (Long?, Long?) -> Unit,
     showCalenderToggle: Boolean,
     enableRecheckFunction: () -> Unit = {},
 ) {
-    SeperatingTitle(
+    SeparatingTitle(
         text = stringResource(id = R.string.dateRangePicker_separator),
     )
 
-    val dateWidth : Dp = when (navigationType) {
+    val dateWidth: Dp = when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
             500.dp
         }
+
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             700.dp
         }
+
         else -> {
             400.dp
         }
@@ -106,14 +106,22 @@ fun CustomDateRangePicker(
                             getFormattedDate(
                                 it
                             )
-                        } else stringResource(id = R.string.dateRangePicker_startDate))?.let { Text(text = it) }
+                        } else stringResource(id = R.string.dateRangePicker_startDate))?.let {
+                            Text(
+                                text = it
+                            )
+                        }
                     }
                     Box(Modifier.weight(1f)) {
                         (if (state.selectedEndDateMillis != null) state.selectedEndDateMillis?.let {
                             getFormattedDate(
                                 it
                             )
-                        } else stringResource(id = R.string.dateRangePicker_endDate))?.let { Text(text = it) }
+                        } else stringResource(id = R.string.dateRangePicker_endDate))?.let {
+                            Text(
+                                text = it
+                            )
+                        }
                     }
                 }
             },
@@ -131,7 +139,7 @@ fun CustomDateRangePicker(
                 todayDateBorderColor = Color(0xFFC8A86E),
                 dayInSelectionRangeContainerColor = Color(0xFFe9dcc5),
                 dayInSelectionRangeContentColor = Color.White,
-                selectedDayContainerColor =  Color(0xFFC8A86E),
+                selectedDayContainerColor = Color(0xFFC8A86E),
                 selectedDayContentColor = md_theme_light_onPrimary,
             ),
         )

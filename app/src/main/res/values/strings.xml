@@ -64,6 +64,9 @@
     <string name="progressbar_extraMaterial">Extra\'s</string>
     <string name="clearableOutlinedTextField_iconDescription">Knop om het tekstveld leeg te maken</string>
 
+    <string name="appbar_localizedDescription">Localized description</string>
+    <string name="appbar_menu">Menu</string>
+
     <string name="contactDetails_personal_info">Personalia</string>
     <string name="contactDetails_address_info">Facturatie gegevens</string>
     <string name="contactDetails_contact_info">Gegevens</string>

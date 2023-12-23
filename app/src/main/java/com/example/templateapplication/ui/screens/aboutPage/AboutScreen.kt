@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -29,14 +28,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.theme.DisabledButtonColor
@@ -45,7 +44,7 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 
 @Composable
-fun AboutScreen (
+fun AboutScreen(
     modifier: Modifier = Modifier,
     navigationType: ReplyNavigationType,
     aboutViewModel: AboutViewModel,
@@ -69,58 +68,69 @@ fun AboutScreen (
     if (uiState.openDialog2) {
         PopUp2(
             setOpenDialog = { aboutViewModel.setOpenDialog2(it) },
-            emailAdress = uiState.emailAddress,
+            emailAddress = uiState.emailAddress,
         )
     }
 
-    Column (
-        modifier = Modifier
+    Column(
+        modifier = modifier
             .fillMaxWidth()
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Info(openPopUp = { aboutViewModel.setOpenDialog1(true) })
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = modifier.height(50.dp))
         Pictures(navigationType = navigationType)
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = modifier.height(40.dp))
     }
 }
 
 @Composable
-fun Info (
+fun Info(
     modifier: Modifier = Modifier,
-    openPopUp:()->Unit,
+    openPopUp: () -> Unit,
 ) {
-    Column (
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = modifier.height(20.dp))
         Text(
             text = stringResource(R.string.about_screen_title),
             fontSize = 50.sp,
             color = Color.DarkGray,
         )
-        Spacer(modifier = Modifier.height(22.dp))
-        Text(text=stringResource(R.string.about_minimum_space),style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text=stringResource(R.string.about_space_dimensions), fontSize = 18.sp)
-        Spacer(modifier = Modifier.height(22.dp))
-        Text(text=stringResource(R.string.about_requirements),style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text=stringResource(R.string.about_on_site_person), fontSize = 18.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text=stringResource(R.string.about_power_outlet), fontSize = 18.sp)
-        Spacer(modifier = Modifier.height(22.dp))
-        Text(text=stringResource(R.string.about_passage),style = MaterialTheme.typography.titleMedium, fontSize = 22.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text=stringResource(R.string.about_narrowest_point), fontSize = 18.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text=stringResource(R.string.about_minimum_width), fontSize = 18.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text=stringResource(R.string.about_minimum_width_value), fontSize = 18.sp)
-        Spacer(modifier = Modifier.height(35.dp))
-        Button (
+        Spacer(modifier = modifier.height(22.dp))
+        Text(
+            text = stringResource(R.string.about_minimum_space),
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 22.sp
+        )
+        Spacer(modifier = modifier.height(8.dp))
+        Text(text = stringResource(R.string.about_space_dimensions), fontSize = 18.sp)
+        Spacer(modifier = modifier.height(22.dp))
+        Text(
+            text = stringResource(R.string.about_requirements),
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 22.sp
+        )
+        Spacer(modifier = modifier.height(8.dp))
+        Text(text = stringResource(R.string.about_on_site_person), fontSize = 18.sp)
+        Spacer(modifier = modifier.height(8.dp))
+        Text(text = stringResource(R.string.about_power_outlet), fontSize = 18.sp)
+        Spacer(modifier = modifier.height(22.dp))
+        Text(
+            text = stringResource(R.string.about_passage),
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 22.sp
+        )
+        Spacer(modifier = modifier.height(8.dp))
+        Text(text = stringResource(R.string.about_narrowest_point), fontSize = 18.sp)
+        Spacer(modifier = modifier.height(8.dp))
+        Text(text = stringResource(R.string.about_minimum_width), fontSize = 18.sp)
+        Spacer(modifier = modifier.height(8.dp))
+        Text(text = stringResource(R.string.about_minimum_width_value), fontSize = 18.sp)
+        Spacer(modifier = modifier.height(35.dp))
+        Button(
             onClick = openPopUp,
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
@@ -130,46 +140,49 @@ fun Info (
                 disabledContentColor = Color.White
             ),
         ) {
-            Text (text= stringResource(R.string.about_more_info),fontSize = 22.sp)
+            Text(text = stringResource(R.string.about_more_info), fontSize = 22.sp)
         }
     }
 }
+
 @Composable
 fun PopUp1(
     modifier: Modifier = Modifier,
     setOpenDialog: (Boolean) -> Unit,
-    openNextDialog:()->Unit,
-    onEmailChange:(String)->Unit,
-    email:String
+    openNextDialog: () -> Unit,
+    onEmailChange: (String) -> Unit,
+    email: String
 ) {
-    Dialog(onDismissRequest = {setOpenDialog(false) }) {
+    Dialog(onDismissRequest = { setOpenDialog(false) }) {
         Surface(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(200.dp)
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
             color = Color(0XFFf2e6ce),
         ) {
-            Column (
-                modifier = Modifier.fillMaxWidth(),
+            Column(
+                modifier = modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = modifier.height(15.dp))
                 Text(
                     text = stringResource(id = R.string.about_popup1_title),
                     textAlign = TextAlign.Center,
                 )
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = modifier.height(15.dp))
                 InputVeld(
-                    label = stringResource(id =R.string.about_email_label), value = email, onChange = onEmailChange
+                    label = stringResource(id = R.string.about_email_label),
+                    value = email,
+                    onChange = onEmailChange
                 )
-                Spacer(modifier = Modifier.height(15.dp))
-                Button (
+                Spacer(modifier = modifier.height(15.dp))
+                Button(
                     onClick = {
                         setOpenDialog(false)
                         openNextDialog()
-                              },
+                    },
                     modifier = Modifier
                         .width(100.dp)
                         .height(35.dp),
@@ -180,47 +193,46 @@ fun PopUp1(
                         disabledContentColor = Color.White
                     ),
                 ) {
-                    Text(text= stringResource(id = R.string.about_continue))
+                    Text(text = stringResource(id = R.string.about_continue))
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = modifier.height(10.dp))
             }
         }
     }
 }
+
 @Composable
 fun PopUp2(
-    modifier: Modifier = Modifier,
-    setOpenDialog: (Boolean) -> Unit,
-    emailAdress:String
+    modifier: Modifier = Modifier, setOpenDialog: (Boolean) -> Unit, emailAddress: String
 ) {
-    Dialog(onDismissRequest = {setOpenDialog(false) }) {
+    Dialog(onDismissRequest = { setOpenDialog(false) }) {
         Surface(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(200.dp)
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
             color = Color(0XFFf2e6ce),
         ) {
-            Column (
-                modifier = Modifier.fillMaxWidth(),
+            Column(
+                modifier = modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = modifier.height(20.dp))
                 Text(
                     text = stringResource(id = R.string.about_popup2_title),
                     textAlign = TextAlign.Center,
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = modifier.height(10.dp))
                 Text(
-                    text = emailAdress,
+                    text = emailAddress,
                     textAlign = TextAlign.Center,
                 )
-                Spacer(modifier = Modifier.height(30.dp))
-                Button (
+                Spacer(modifier = modifier.height(30.dp))
+                Button(
                     onClick = { setOpenDialog(false) },
-                    modifier = Modifier
+                    modifier = modifier
                         .width(100.dp)
                         .height(35.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -230,9 +242,9 @@ fun PopUp2(
                         disabledContentColor = Color.White
                     ),
                 ) {
-                    Text(text=stringResource(id = R.string.about_close))
+                    Text(text = stringResource(id = R.string.about_close))
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = modifier.height(10.dp))
             }
         }
     }
@@ -240,14 +252,14 @@ fun PopUp2(
 
 @Composable
 fun InputVeld(
-    modifier: Modifier = Modifier,label:String,value: String,onChange:(String)->Unit,
+    modifier: Modifier = Modifier, label: String, value: String, onChange: (String) -> Unit,
 ) {
 
     OutlinedTextField(
         label = { Text(text = label, color = Color(0XFFD3B98B)) },
         value = value,
-        onValueChange =onChange,
-        modifier = Modifier
+        onValueChange = onChange,
+        modifier = modifier
             .fillMaxWidth()
             .defaultMinSize(minHeight = 55.dp)
             .height(55.dp)
@@ -257,34 +269,36 @@ fun InputVeld(
             unfocusedBorderColor = Color(0XFFb49763),
         ),
 
-    )
+        )
 }
 
 @Composable
-fun Pictures (navigationType: ReplyNavigationType) {
-    Column (
+fun Pictures(navigationType: ReplyNavigationType) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        var bigImg :Dp
-        var smallImg:Dp
-        var rowHeight:Dp
+    ) {
+        val bigImg: Dp
+        val smallImg: Dp
+        val rowHeight: Dp
 
         when (navigationType) {
             ReplyNavigationType.NAVIGATION_RAIL -> {
-                bigImg= 450.dp
+                bigImg = 450.dp
                 smallImg = 200.dp
                 rowHeight = 180.dp
             }
+
             ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
-                bigImg= 600.dp
+                bigImg = 600.dp
                 smallImg = 425.dp
                 rowHeight = 300.dp
             }
+
             else -> {
-                bigImg= 200.dp
+                bigImg = 200.dp
                 smallImg = 115.dp
                 rowHeight = 100.dp
             }
@@ -303,13 +317,13 @@ fun Pictures (navigationType: ReplyNavigationType) {
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(rowHeight),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Box (
+            Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(smallImg)
@@ -321,7 +335,7 @@ fun Pictures (navigationType: ReplyNavigationType) {
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            Box (
+            Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(smallImg)
@@ -333,7 +347,7 @@ fun Pictures (navigationType: ReplyNavigationType) {
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            Box (
+            Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(smallImg)

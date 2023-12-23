@@ -157,7 +157,7 @@ fun ExtrasScreen(
                     item(span= { GridItemSpan(maxLineSpan)}){
                     NextPageButton(
                         modifier = Modifier.padding(horizontal = paddingButton),
-                        navigeer = navigateSamenvatting,
+                        navigate = navigateSamenvatting,
                         enabled = true,
                     )
                 }}

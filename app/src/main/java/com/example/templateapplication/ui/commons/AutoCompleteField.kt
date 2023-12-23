@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
-import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.ApiResponse
+import com.example.templateapplication.model.UiText
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction
@@ -46,7 +46,6 @@ import kotlinx.coroutines.withContext
  * This function shows a map view and an address text field. It provides autocomplete suggestions
  * for addresses and displays markers on the map based on the selected address.
  *
- * @param modifier The modifier to be applied to this composable.
  * @param navigationType The type of navigation being used in the UI.
  * @param getPredictionsFunction Function to retrieve address predictions for autocomplete.
  * @param hasFoundPlace Function that checks if a place has been found.
@@ -101,17 +100,19 @@ fun AddressTextField(
         }
     }
 
-    var mapWidth : Dp
-    var mapHeight : Dp
+    val mapWidth: Dp
+    val mapHeight: Dp
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
             mapHeight = 400.dp
             mapWidth = 500.dp
         }
+
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             mapHeight = 500.dp
             mapWidth = 700.dp
         }
+
         else -> {
             mapHeight = 250.dp
             mapWidth = 300.dp
@@ -163,7 +164,6 @@ fun AddressTextField(
     }
 
     ValidationTextFieldApp(
-        modifier = Modifier.width(mapWidth),
         placeholder = stringResource(id = R.string.address_placeholder),
         text = googleMaps.eventAddress,
         onValueChange = {
@@ -177,9 +177,10 @@ fun AddressTextField(
 
     when (apiStatus) {
         is ApiResponse.Loading -> {}
-        is ApiResponse.Error -> Text(text = "Error") // TODO proper error && as supporting in textfield, not as Text()
+        is ApiResponse.Error -> Text(text = stringResource(id = R.string.error))
         is ApiResponse.Success -> {
-            AutoCompleteListComponent(mapWidth = mapWidth,
+            AutoCompleteListComponent(
+                mapWidth = mapWidth,
                 predictionsState = apiStatus.data.predictionsResponse.predictions
             ) { prediction ->
                 onValueChange(prediction.description)
@@ -201,12 +202,12 @@ fun AddressTextField(
  */
 @Composable
 fun AutoCompleteListComponent(
-    mapWidth : Dp,
+    mapWidth: Dp,
     predictionsState: List<GooglePrediction>,
     onPredictionClick: (GooglePrediction) -> Unit
 ) {
     predictionsState.forEach {
-        AutocompleteCardItem(mapWidth = mapWidth ,onPredictionClick, it)
+        AutocompleteCardItem(mapWidth = mapWidth, onPredictionClick, it)
     }
 }
 

@@ -18,13 +18,11 @@ import androidx.compose.ui.unit.dp
  * Renders a linear progress bar along with an optional text label below it. The progression
  * of the progress bar and the text can be dynamically set.
  *
- * @param modifier Modifier to be applied to the progress bar for customization.
  * @param text Optional text to display below the progress bar.
  * @param progression Float value representing the progress, between 0.0 (no progress) and 1.0 (full progress).
  */
 @Composable
-fun ProgressieBar(
-    modifier: Modifier = Modifier,
+fun ProgressBar(
     text: String = "",
     progression: Float = 0.0f
 ) {
@@ -50,10 +48,9 @@ fun ProgressieBar(
 
 @Preview
 @Composable
-fun ProgressieBarPreview(
-    modifier: Modifier = Modifier,
+fun ProgressBarPreview(
 ) {
-    ProgressieBar(
+    ProgressBar(
         text = "Test",
         progression = 0.5f,
     )

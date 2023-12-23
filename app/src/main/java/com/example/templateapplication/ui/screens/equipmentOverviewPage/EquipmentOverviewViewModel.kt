@@ -12,8 +12,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.model.common.quotation.Equipment
-import com.example.templateapplication.model.extraMateriaal.EquipmentListState
 import com.example.templateapplication.model.extraMateriaal.EquipmentApiState
+import com.example.templateapplication.model.extraMateriaal.EquipmentListState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -37,7 +37,7 @@ class EquipmentOverviewViewModel(
     /**
      * State variable to track the current status of the equipment fetch API call.
      */
-    var extraMateriaalApiState: EquipmentApiState by mutableStateOf(EquipmentApiState.Loading)
+    var extraMaterialApiState: EquipmentApiState by mutableStateOf(EquipmentApiState.Loading)
         private set
 
     init {
@@ -68,7 +68,7 @@ class EquipmentOverviewViewModel(
 
     /**
      * Fetches extra equipment data from the API and updates the state of [equipmentDbList].
-     * Sets [extraMateriaalApiState] based on the result of the fetch operation.
+     * Sets [extraMaterialApiState] based on the result of the fetch operation.
      */
     private fun getApiExtraEquipment() {
         try {
@@ -80,10 +80,10 @@ class EquipmentOverviewViewModel(
                     initialValue = EquipmentListState(),
                 )
 
-            extraMateriaalApiState = EquipmentApiState.Success
+            extraMaterialApiState = EquipmentApiState.Success
         } catch (e: IOException) {
             val errorMessage = e.message ?: "An error occurred"
-            extraMateriaalApiState =
+            extraMaterialApiState =
                 EquipmentApiState.Error(errorMessage)
         }
     }

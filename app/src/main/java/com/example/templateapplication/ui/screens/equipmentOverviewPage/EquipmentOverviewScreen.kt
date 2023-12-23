@@ -54,7 +54,6 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
 @Composable
 fun EquipmentOverviewScreen(
     navigationType: ReplyNavigationType,
-    modifier: Modifier = Modifier,
     equipmentOverviewViewModel: EquipmentOverviewViewModel = viewModel(),
 ) {
 
@@ -68,20 +67,21 @@ fun EquipmentOverviewScreen(
         stringResource(id = R.string.extraMaterial_sort_name_asc)
     )
 
-    var columns : Int
-    when (navigationType) {
+    val columns: Int = when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
-            columns = 2
+            2
         }
+
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
-           columns = 4
+            4
         }
+
         else -> {
-            columns = 1
+            1
         }
     }
 
-    when (val apiState = equipmentOverviewViewModel.extraMateriaalApiState) {
+    when (val apiState = equipmentOverviewViewModel.extraMaterialApiState) {
         is EquipmentApiState.Loading -> Text(stringResource(id = R.string.loading))
         is EquipmentApiState.Error -> {
             Text(apiState.errorMessage)
@@ -94,7 +94,7 @@ fun EquipmentOverviewScreen(
                     .padding(horizontal = 30.dp)
                     .fillMaxWidth(),
 
-            ) {
+                ) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(top = 20.dp)) {
                         options.forEachIndexed { index, label ->
@@ -127,7 +127,6 @@ fun EquipmentOverviewScreen(
                 }
                 items(equipmentOverviewViewModel.getListSorted(selectedIndex)) { extraItem ->
                     ExtraItemCard(
-                        modifier = Modifier.padding(8.dp),
                         extraItem = extraItem,
                     )
                 }
@@ -138,7 +137,6 @@ fun EquipmentOverviewScreen(
 
 @Composable
 fun ExtraItemCard(
-    modifier: Modifier = Modifier,
     extraItem: Equipment,
 ) {
 
@@ -181,7 +179,7 @@ fun ExtraItemCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    fontSize = 20.sp ,
+                    fontSize = 20.sp,
                     modifier = Modifier.size(170.dp, 70.dp),
                     text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
@@ -189,7 +187,7 @@ fun ExtraItemCard(
                     overflow = TextOverflow.Visible
                 )
                 Text(
-                    fontSize = 20.sp ,
+                    fontSize = 20.sp,
                     text = "€${extraItem.price}",
                     style = MaterialTheme.typography.headlineSmall,
 

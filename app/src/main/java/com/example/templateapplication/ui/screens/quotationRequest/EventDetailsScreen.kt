@@ -26,8 +26,8 @@ import com.example.templateapplication.ui.commons.AddressTextField
 import com.example.templateapplication.ui.commons.CustomDateRangePicker
 import com.example.templateapplication.ui.commons.DropDownSelect
 import com.example.templateapplication.ui.commons.NextPageButton
-import com.example.templateapplication.ui.commons.ProgressieBar
-import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.commons.ProgressBar
+import com.example.templateapplication.ui.commons.SeparatingTitle
 import com.example.templateapplication.ui.commons.ValidationTextFieldApp
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 import com.example.templateapplication.validation.MainEvent
@@ -77,11 +77,11 @@ fun EventDetailsScreen(
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ProgressieBar(
+        ProgressBar(
             text = stringResource(id = R.string.eventDetails_progressbar),
             progression = 0.25f,
         )
-        SeperatingTitle(
+        SeparatingTitle(
             text = stringResource(id = R.string.eventDetails_location_separator),
         )
         AddressTextField(
@@ -110,7 +110,7 @@ fun EventDetailsScreen(
             },
             showCalenderToggle = false,
         )
-        SeperatingTitle(
+        SeparatingTitle(
             text = stringResource(id = R.string.eventDetails_details_separator),
         )
         ValidationTextFieldApp(
@@ -136,7 +136,7 @@ fun EventDetailsScreen(
         }
         Spacer(modifier = Modifier.height(20.dp))
         NextPageButton(
-            navigeer = navigateContactGegevensScreen,
+            navigate = navigateContactGegevensScreen,
             enabled = quotationRequestViewModel.personalDetailScreenCanNavigate(),
         )
         Spacer(modifier = Modifier.height(40.dp))

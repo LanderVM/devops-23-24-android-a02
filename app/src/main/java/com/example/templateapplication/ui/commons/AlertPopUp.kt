@@ -4,9 +4,9 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import com.example.templateapplication.ui.theme.BlancheTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.templateapplication.ui.theme.BlancheTheme
 
 /**
  * Displays an alert dialog with customizable title, text, and buttons.
@@ -65,10 +65,17 @@ fun AlertPopUp(
         )
     }
 }
+
 @Preview
 @Composable
 fun PopUpPreview(
     modifier: Modifier = Modifier
 ) {
-    AlertPopUp(onDismissRequest = { }, dialogTitle = "Titel", dialogText = "Tekst...", confirmText = "Confirm txt", dismissText = "Dismiss txt")
+    AlertPopUp(
+        onDismissRequest = { },
+        dialogTitle = "Titel",
+        dialogText = "Tekst...",
+        confirmText = "Confirm txt",
+        dismissText = "Dismiss txt"
+    )
 }

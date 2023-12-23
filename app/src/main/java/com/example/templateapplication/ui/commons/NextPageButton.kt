@@ -21,17 +21,17 @@ import com.example.templateapplication.ui.theme.MainColor
  * used to navigate to the next page or perform a similar action when clicked.
  *
  * @param modifier Modifier to be applied to the button for customization.
- * @param navigeer A lambda function to be executed when the button is clicked.
+ * @param navigate A lambda function to be executed when the button is clicked.
  * @param enabled Boolean indicating if the button is enabled or disabled.
  */
 @Composable
 fun NextPageButton(
     modifier: Modifier = Modifier,
-    navigeer: () -> Unit,
+    navigate: () -> Unit,
     enabled: Boolean = true,
 ) {
     Button(
-        onClick = navigeer,
+        onClick = navigate,
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MainColor,
@@ -48,10 +48,10 @@ fun NextPageButton(
 
 @Preview
 @Composable
-fun VolgendeKnopPreview(
+fun NextButtonPreview(
     modifier: Modifier = Modifier,
 ) {
     NextPageButton(
-        navigeer = {}
+        navigate = {}
     )
 }

@@ -25,8 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
 import com.example.templateapplication.ui.commons.ValidationTextFieldApp
 import com.example.templateapplication.ui.commons.NextPageButton
-import com.example.templateapplication.ui.commons.ProgressieBar
-import com.example.templateapplication.ui.commons.SeperatingTitle
+import com.example.templateapplication.ui.commons.ProgressBar
+import com.example.templateapplication.ui.commons.SeparatingTitle
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 import com.example.templateapplication.validation.MainEvent
 import com.example.templateapplication.validation.MainState
@@ -43,11 +43,11 @@ fun PersonalDetailsScreen(
     val scrollState = rememberScrollState()
 
     Column {
-        ProgressieBar(
+        ProgressBar(
             text = stringResource(id = R.string.contactDetails_personal_info),
             progression = 0.50f,
         )
-        SeperatingTitle(
+        SeparatingTitle(
             text = stringResource(id = R.string.contactDetails_contact_info),
         )
         PersonalDetailsForm(
@@ -216,7 +216,7 @@ fun PersonalDetailsForm (
         }
         item(span = { GridItemSpan(maxLineSpan)}) {
             NextPageButton(
-                navigeer = navigateExtras,
+                navigate = navigateExtras,
                 enabled = quotationRequestViewModel.quotationScreenCanNavigate(),
             )
         }
