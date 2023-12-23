@@ -2,6 +2,7 @@ package com.example.templateapplication.network.googleMapsApi
 
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.util.Properties
 
 interface GooglePlacesApiService {
     @GET("maps/api/place/autocomplete/json")

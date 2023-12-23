@@ -250,7 +250,7 @@ class PriceEstimationViewModel(
      */
     fun placeFound(): Boolean {
         return if (_estimationDetailsState.value.placeResponse.candidates.isNotEmpty())
-            _estimationDetailsState.value.placeResponse.candidates[0].formatted_address.isNotEmpty()
+            _estimationDetailsState.value.placeResponse.candidates[0].formattedAddress.isNotEmpty()
         else false
     }
 

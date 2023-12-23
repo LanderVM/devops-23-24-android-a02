@@ -13,21 +13,25 @@ data class DatesRangeData(
 
 @Serializable
 data class DisabledDatesData(
-        val startTime: String,
-        val endTime: String,
+    val startTime: String,
+    val endTime: String,
 )
 
 fun DatesRangeData.asDomainObjects(): List<DisabledDateRange> {
     Log.i("RestAPI getDateRanges", "Converting data to list of DisabledDatesState..")
-         val domainList = this.dateRanges.map {
-             DisabledDateRange(
-                 DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.startTime, Instant::from),
-                 DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.endTime, Instant::from)
-             )
-        }
+    val domainList = this.dateRanges.map {
+        DisabledDateRange(
+            DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX")
+                .parse(it.startTime, Instant::from),
+            DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.endTime, Instant::from)
+        )
+    }
 
     domainList.forEach {
-        Log.i("RestAPI getDateRanges", "Item converted to DisabledDatesState: from ${it.startTime} to ${it.endTime}")
+        Log.i(
+            "RestAPI getDateRanges",
+            "Item converted to DisabledDatesState: from ${it.startTime} to ${it.endTime}"
+        )
     }
-        return domainList
+    return domainList
 }

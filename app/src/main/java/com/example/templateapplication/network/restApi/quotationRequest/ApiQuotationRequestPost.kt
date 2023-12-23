@@ -3,7 +3,7 @@ package com.example.templateapplication.network.restApi.quotationRequest
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiQuotationRequestPost (
+data class ApiQuotationRequestPost(
     val quotationId: Int?,
     val formulaId: Int,
     val eventLocation: Address,

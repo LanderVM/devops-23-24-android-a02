@@ -26,7 +26,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.templateapplication.ui.screens.priceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.model.home.HomeViewModel
 import com.example.templateapplication.navigation.NavigationRoutes
 import com.example.templateapplication.navigation.navidrawer.NavigationDrawer
@@ -39,6 +38,7 @@ import com.example.templateapplication.ui.screens.formulaDetails.FormulasViewMod
 import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
+import com.example.templateapplication.ui.screens.priceEstimation.PriceEstimationViewModel
 import com.example.templateapplication.ui.screens.quotationRequest.EventDetailsScreen
 import com.example.templateapplication.ui.screens.quotationRequest.ExtrasScreen
 import com.example.templateapplication.ui.screens.quotationRequest.PersonalDetailsScreen
@@ -55,19 +55,21 @@ fun BlancheApp(
     context: Context = LocalContext.current,
 ) {
 
-    val navigationType: ReplyNavigationType
-    when(windowSize){
-        WindowWidthSizeClass.Compact ->{
-            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
+    val navigationType: ReplyNavigationType = when (windowSize) {
+        WindowWidthSizeClass.Compact -> {
+            ReplyNavigationType.BOTTOM_NAVIGATION
         }
+
         WindowWidthSizeClass.Medium -> {
-            navigationType = ReplyNavigationType.NAVIGATION_RAIL
+            ReplyNavigationType.NAVIGATION_RAIL
         }
+
         WindowWidthSizeClass.Expanded -> {
-            navigationType = ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
+            ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
         }
+
         else -> {
-            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
+            ReplyNavigationType.BOTTOM_NAVIGATION
         }
     }
 
@@ -75,7 +77,6 @@ fun BlancheApp(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
     ) {
-        // val navController = rememberNavController()
         val backStackEntry by navController.currentBackStackEntryAsState()
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -96,7 +97,7 @@ fun BlancheApp(
         }
         ModalNavigationDrawer(
             modifier = Modifier.testTag(stringResource(R.string.nav_hamburgernav)),
-            gesturesEnabled = true, // Swipe voor navigatiebar
+            gesturesEnabled = true,
             drawerContent = {
                 NavigationDrawer(
                     navController = navController,
@@ -198,7 +199,7 @@ fun BlancheApp(
                     }
                     composable(NavigationRoutes.ExtraItems.name) {
                         ExtrasScreen(
-                            navigationType= navigationType,
+                            navigationType = navigationType,
                             modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateSamenvatting = { navController.navigate(NavigationRoutes.SummaryData.name) },

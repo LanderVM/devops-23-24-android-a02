@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class QuotationEquipmentData(
     val equipment: List<ApiQuotationEquipment>,
-    val totalAmount: Int // TODO remove from Api, web & here
 )
 
 @Serializable
@@ -38,7 +37,7 @@ data class QuotationImageData(
     val altText: String
 )
 
-fun QuotationImageData.asDbImageData(): DbImageData = DbImageData( // TODO not needed
+fun QuotationImageData.asDbImageData(): DbImageData = DbImageData(
     imageUrl = imageUrl,
     altText = altText,
 )
@@ -46,6 +45,14 @@ fun QuotationImageData.asDbImageData(): DbImageData = DbImageData( // TODO not n
 @SuppressLint("ResourceType")
 fun QuotationEquipmentData.asDomainObjects(): List<ExtraItemState> {
     return this.equipment.map {
-        ExtraItemState(it.id, it.title, it.attributes, it.price, it.stock, it.imageData.imageUrl, it.imageData.altText)
+        ExtraItemState(
+            it.id,
+            it.title,
+            it.attributes,
+            it.price,
+            it.stock,
+            it.imageData.imageUrl,
+            it.imageData.altText
+        )
     }
 }

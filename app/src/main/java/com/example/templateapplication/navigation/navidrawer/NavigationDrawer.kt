@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -39,8 +39,6 @@ fun NavigationDrawer(
     drawerState: DrawerState,
     context: Context,
 ) {
-    var selectedItemIdx = selectedItemIndex
-
     val navItems = listOf(
         NavigationItem(
             title = NavigationRoutes.Home.getString(context),
@@ -62,7 +60,6 @@ fun NavigationDrawer(
             title = NavigationRoutes.GuidePrice.getString(context),
             to = NavigationRoutes.GuidePrice.name,
         ),
-
     )
 
     ModalDrawerSheet(
@@ -75,14 +72,13 @@ fun NavigationDrawer(
         )
 
         navItems.forEachIndexed { index, item ->
-            Divider(
-                color = Color.DarkGray,
+            HorizontalDivider(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .padding(10.dp)
                     .align(Alignment.CenterHorizontally),
+                color = Color.DarkGray
             )
-            val isSelected = index == selectedItemIndex
 
             NavigationDrawerItem(
                 colors = NavigationDrawerItemDefaults.colors(
@@ -104,7 +100,6 @@ fun NavigationDrawer(
                 selected = index == selectedItemIndex,
                 onClick = {
                     navController.navigate(item.to)
-                    selectedItemIdx = index
                     scope.launch {
                         drawerState.close()
                     }
@@ -121,7 +116,7 @@ fun NavigationDrawer(
 @Composable
 fun NavigationDrawerPreview() {
     val navController = rememberNavController()
-    val selectedItemIndex = 1 // Replace with your desired selected item index
+    val selectedItemIndex = 1
     val drawerState = rememberDrawerState(DrawerValue.Open)
     val context = LocalContext.current
 

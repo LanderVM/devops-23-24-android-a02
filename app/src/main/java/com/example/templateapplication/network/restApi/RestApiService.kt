@@ -18,7 +18,7 @@ import retrofit2.http.Query
 
 interface RestApiService {
     @GET("Equipment")
-    suspend fun getQuotationEquipment(): QuotationEquipmentData // TODO rename
+    suspend fun getQuotationEquipment(): QuotationEquipmentData
 
     @GET("Quotation/Estimation/Details")
     suspend fun getEstimationDetails(): EstimationDetailsData

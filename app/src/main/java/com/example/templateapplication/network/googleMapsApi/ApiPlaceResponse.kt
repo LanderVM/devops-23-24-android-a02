@@ -1,6 +1,7 @@
 package com.example.templateapplication.network.googleMapsApi
 
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,7 +22,8 @@ data class GooglePlaceGeometry(
 
 @Serializable
 data class GooglePlace(
-    val formatted_address: String,
+    @SerialName("formatted_address")
+    val formattedAddress: String,
     val geometry: GooglePlaceGeometry,
 )
 

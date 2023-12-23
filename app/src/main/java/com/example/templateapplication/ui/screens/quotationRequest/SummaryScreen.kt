@@ -373,7 +373,7 @@ fun EventDetails(
                 },
                 supportingContent = {
                     Text(
-                        text=uiState.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address,
+                        text=uiState.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formattedAddress,
                         fontSize = 16.sp)
                 },
                 colors = ListItemDefaults.colors(

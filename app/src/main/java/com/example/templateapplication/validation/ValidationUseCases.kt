@@ -23,7 +23,7 @@ interface BaseUseCase<In, Out> {
  * Validates an email based on certain criteria such as blankness and format validity.
  * Returns [ValidationResult] indicating success or failure with an error message.
  */
-class ValidateEmailUseCase: BaseUseCase<String, ValidationResult> {
+class ValidateEmailUseCase : BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {
         if (input.isBlank()) {
             return ValidationResult(
@@ -52,7 +52,7 @@ class ValidatePhoneNumberUseCase : BaseUseCase<String, ValidationResult> {
                 errorMessage = UiText.StringResource(resId = R.string.strThePhoneCanNotBeBlank),
             )
         }
-        if(!isNumber(input)){
+        if (!isNumber(input)) {
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(resId = R.string.strThePhoneNumberShouldBeContentJustDigit),
@@ -70,6 +70,7 @@ class ValidatePhoneNumberUseCase : BaseUseCase<String, ValidationResult> {
         )
     }
 }
+
 class ValidateVatUseCase : BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {
         if (!isVatValid(input)) {
@@ -84,6 +85,7 @@ class ValidateVatUseCase : BaseUseCase<String, ValidationResult> {
         )
     }
 }
+
 class ValidateNotEmptyUseCase : BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {
         if (input.isBlank()) {
@@ -98,6 +100,7 @@ class ValidateNotEmptyUseCase : BaseUseCase<String, ValidationResult> {
         )
     }
 }
+
 class ValidateRequiredNumberUseCase : BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {
         if (!isNumber(input)) {

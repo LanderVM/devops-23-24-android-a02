@@ -9,7 +9,7 @@ data class QuotationRequestState(
     val eventLocation: Address = Address(),
     val startTime: Calendar? = null,
     val endTime: Calendar? = null,
-    val equipments: List<ExtraItemState> = emptyList(), // TODO use roomdb for this (only once, not as flow)
+    val equipments: List<ExtraItemState> = emptyList(),
     val customer: Customer = Customer(),
     val isTripelBier: Boolean = false,
     val numberOfPeople: Int = 0,

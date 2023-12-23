@@ -177,7 +177,7 @@ class QuotationRequestViewModel(
             try {
                 Log.i("QuotationRequestViewModel sendQuotationRequest", "Preparing body..")
                 _quotationRequestState.update {
-                    it.copy(eventLocation = parseAddress(_quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address))
+                    it.copy(eventLocation = parseAddress(_quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formattedAddress))
                 }
                 Log.i(
                     "QuotationRequestViewModel sendQuotationRequest",
@@ -459,7 +459,7 @@ class QuotationRequestViewModel(
                 try {
                     val distanceResult = googleMapsRepository.getDistance(
                         departurePlace = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
-                        eventPlace = _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address
+                        eventPlace = _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formattedAddress
                     )
                     _quotationUiState.update {
                         it.copy(googleMaps = it.googleMaps.copy(distanceResponse = distanceResult))
@@ -514,7 +514,7 @@ class QuotationRequestViewModel(
      */
     fun placeFound(): Boolean {
         return if (_quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates.isNotEmpty())
-            _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address.isNotEmpty()
+            _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formattedAddress.isNotEmpty()
         else false
     }
 

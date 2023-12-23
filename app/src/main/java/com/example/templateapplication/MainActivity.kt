@@ -40,10 +40,3 @@ fun AppPreview() {
         BlancheApp(windowSize = WindowWidthSizeClass.Compact)
     }
 }
-@Preview
-@Composable
-fun AppPreviewDarkMode() {
-    BlancheTheme(darkTheme = true) {
-        BlancheApp(windowSize = WindowWidthSizeClass.Compact)
-    }
-}

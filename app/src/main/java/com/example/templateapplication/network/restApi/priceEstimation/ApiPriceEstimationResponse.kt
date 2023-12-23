@@ -22,12 +22,6 @@ data class EstimationEquipmentData(
 )
 
 @Serializable
-data class EstimationUnavailableDateRangesData(
-    val startTime: Long,
-    val endTime: Long,
-)
-
-@Serializable
 data class EstimationDetailsData(
     val formulas: List<EstimationFormulaData> = emptyList(),
     val equipment: List<EstimationEquipmentData> = emptyList(),
@@ -43,7 +37,8 @@ fun EstimationDetailsData.asDomainObject(): EstimationDetails {
     }
     val dateRanges = this.unavailableDates.map {
         DisabledDateRange(
-            DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.startTime, Instant::from),
+            DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX")
+                .parse(it.startTime, Instant::from),
             DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX").parse(it.endTime, Instant::from)
         )
     }

@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import java.math.BigDecimal
 
 @Serializable
-data class ApiGetEstimatedPriceResponse (
+data class ApiGetEstimatedPriceResponse(
     val estimatedPrice: Double,
 )
 
