@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
-import com.example.templateapplication.model.adres.ApiResponse
+import com.example.templateapplication.model.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.model.common.quotation.FormulaListState
@@ -458,8 +458,8 @@ class QuotationRequestViewModel(
             viewModelScope.launch {
                 try {
                     val distanceResult = googleMapsRepository.getDistance(
-                        vertrekPlaats = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
-                        eventPlaats = _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address
+                        departurePlace = "${_quotationUiState.value.googleMaps.marker.latitude}, ${_quotationUiState.value.googleMaps.marker.longitude}",
+                        eventPlace = _quotationUiState.value.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formatted_address
                     )
                     _quotationUiState.update {
                         it.copy(googleMaps = it.googleMaps.copy(distanceResponse = distanceResult))

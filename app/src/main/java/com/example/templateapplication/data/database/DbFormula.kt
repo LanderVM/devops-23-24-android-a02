@@ -25,4 +25,5 @@ fun DbFormula.asDomainObject(): Formula =
         isActive = isActive,
         imageUrl = imageUrl,
     )
+
 fun List<DbFormula>.asDomainObjects() = map { it.asDomainObject() }

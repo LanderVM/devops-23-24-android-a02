@@ -9,12 +9,12 @@ import com.example.templateapplication.network.googleMapsApi.asDomainObject
 interface GoogleMapsRepository {
     suspend fun getPredictions(input: String): GoogleMapsPrediction
     suspend fun getPlace(input: String): GoogleMapsPlaceCandidates
-    suspend fun getDistance(vertrekPlaats: String, eventPlaats: String): GoogleMapsDistance
+    suspend fun getDistance(departurePlace: String, eventPlace: String): GoogleMapsDistance
 }
 
 class ApiGoogleMapsRepository(
     private val googlePlacesApiService: GooglePlacesApiService
-): GoogleMapsRepository {
+) : GoogleMapsRepository {
     override suspend fun getPredictions(input: String): GoogleMapsPrediction {
         return googlePlacesApiService.getPredictions(input = input).asDomainObject()
     }
@@ -23,8 +23,14 @@ class ApiGoogleMapsRepository(
         return googlePlacesApiService.getPlace(input = input).asDomainObject()
     }
 
-    override suspend fun getDistance(vertrekPlaats: String, eventPlaats: String): GoogleMapsDistance {
-        return googlePlacesApiService.getDistance(origins = vertrekPlaats, destinations = eventPlaats).asDomainObject()
+    override suspend fun getDistance(
+        departurePlace: String,
+        eventPlace: String
+    ): GoogleMapsDistance {
+        return googlePlacesApiService.getDistance(
+            origins = departurePlace,
+            destinations = eventPlace
+        ).asDomainObject()
     }
 
 }

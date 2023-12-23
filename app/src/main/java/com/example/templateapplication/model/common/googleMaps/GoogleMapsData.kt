@@ -17,8 +17,8 @@ data class GoogleMapsPrediction(
     val predictions: List<GooglePrediction> = emptyList()
 )
 
-data class GoogleMapsResponse( // TODO move to common
-    val predictionsResponse: GoogleMapsPrediction = GoogleMapsPrediction(), // TODO rename
+data class GoogleMapsResponse(
+    val predictionsResponse: GoogleMapsPrediction = GoogleMapsPrediction(),
     val eventAddressAutocompleteCandidates: GoogleMapsPlaceCandidates = GoogleMapsPlaceCandidates(),
     val predictions: List<GooglePrediction> = emptyList(),
     val eventAddress: String = "",

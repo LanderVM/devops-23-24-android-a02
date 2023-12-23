@@ -56,7 +56,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.templateapplication.R
-import com.example.templateapplication.model.adres.ApiResponse
+import com.example.templateapplication.model.ApiResponse
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.theme.MainColor

@@ -21,13 +21,14 @@ interface AppContainer {
 
 class DefaultAppContainer(
     private val blancheContext: Context
-): AppContainer {
+) : AppContainer {
     private val googleMapsBaseUrl = GooglePlacesApiService.BASE_URL
-    private val restApiBaseUrl = "http://10.0.2.2:5292/api/" // TODO move & quick test
+    private val restApiBaseUrl = "http://10.0.2.2:5292/api/"
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    private val logger = HttpLoggingInterceptor().apply{level = HttpLoggingInterceptor.Level.BODY}
+    private val logger =
+        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
     private val client = OkHttpClient.Builder()
         .addInterceptor(logger)
         .build()
@@ -59,7 +60,7 @@ class DefaultAppContainer(
         ApiGoogleMapsRepository(googleMapsRetrofitService)
     }
 
-    private val blancheDb : BlancheDatabase by lazy {
+    private val blancheDb: BlancheDatabase by lazy {
         Room.databaseBuilder(blancheContext, BlancheDatabase::class.java, "blanche_db")
             .build()
     }
@@ -71,6 +72,7 @@ class DefaultAppContainer(
     override val apiRepository: ApiRepository by lazy {
         RestApiRepository(
             quotationDao = quotationDao,
-            restApiService = restApiRetrofitService)
+            restApiService = restApiRetrofitService
+        )
     }
 }

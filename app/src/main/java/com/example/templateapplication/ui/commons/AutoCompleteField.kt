@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.templateapplication.R
 import com.example.templateapplication.model.UiText
-import com.example.templateapplication.model.adres.ApiResponse
+import com.example.templateapplication.model.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsPlaceCandidates
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.network.googleMapsApi.GooglePrediction

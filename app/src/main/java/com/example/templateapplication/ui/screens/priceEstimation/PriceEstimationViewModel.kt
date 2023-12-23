@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.templateapplication.api.RestApiApplication
 import com.example.templateapplication.data.ApiRepository
 import com.example.templateapplication.data.GoogleMapsRepository
-import com.example.templateapplication.model.adres.ApiResponse
+import com.example.templateapplication.model.ApiResponse
 import com.example.templateapplication.model.common.googleMaps.GoogleMapsResponse
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.guidePriceEstimation.EstimationEquipment

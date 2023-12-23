@@ -29,8 +29,7 @@ class HomeViewModel(
     private val _homeUiState = MutableStateFlow(HomeScreenUiState())
     val homeUiState = _homeUiState.asStateFlow()
 
-    var apiState: FormulaApiState by mutableStateOf(FormulaApiState.Loading)
-        private set
+    private var apiState: FormulaApiState by mutableStateOf(FormulaApiState.Loading)
 
     init {
         getFormulas()

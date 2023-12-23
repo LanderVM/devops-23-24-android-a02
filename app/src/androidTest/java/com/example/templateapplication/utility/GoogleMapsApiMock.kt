@@ -45,8 +45,8 @@ class GoogleMapsApiMock : GoogleMapsRepository {
     }
 
     override suspend fun getDistance(
-        vertrekPlaats: String,
-        eventPlaats: String
+        departurePlace: String,
+        eventPlace: String
     ): GoogleMapsDistance {
         return GoogleMapsDistance(
             listOf(

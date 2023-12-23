@@ -10,8 +10,8 @@ import com.example.templateapplication.model.common.quotation.Formula
 import com.example.templateapplication.model.guidePriceEstimation.EstimationDetails
 import com.example.templateapplication.model.quotationRequest.ExtraItemState
 import com.example.templateapplication.network.restApi.RestApiService
-import com.example.templateapplication.network.restApi.about.ApiEmailResponse
 import com.example.templateapplication.network.restApi.about.ApiEmailPost
+import com.example.templateapplication.network.restApi.about.ApiEmailResponse
 import com.example.templateapplication.network.restApi.common.asDomainObjects
 import com.example.templateapplication.network.restApi.getEquipmentAsFlow
 import com.example.templateapplication.network.restApi.getFormulasAsFlow
@@ -60,7 +60,7 @@ class RestApiRepository(
     override suspend fun insertEquipment(item: ApiQuotationEquipment) {
         Log.i("ApiRepository insertEquipment", "Starting insert into RoomDb: $item")
         val dbEquipment = item.asDbEquipment()
-        Log.i("ApiRepository insertEquipment", "Converted to databaase item: $dbEquipment")
+        Log.i("ApiRepository insertEquipment", "Converted to database item: $dbEquipment")
         quotationDao.insertEquipment(item.asDbEquipment())
         Log.i("ApiRepository insertEquipment", "Inserted into RoomDb.")
     }
@@ -74,7 +74,7 @@ class RestApiRepository(
     override suspend fun insertFormula(item: FormulaData) {
         Log.i("ApiRepository insertFormula", "Starting insert into RoomDb: $item")
         val dbFormula = item.asDbFormula()
-        Log.i("ApiRepository insertFormula", "Converted to databaase item: $dbFormula")
+        Log.i("ApiRepository insertFormula", "Converted to database item: $dbFormula")
         quotationDao.insertFormula(item.asDbFormula())
         Log.i("ApiRepository insertFormula", "Inserted into RoomDb.")
     }
