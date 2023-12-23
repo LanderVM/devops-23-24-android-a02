@@ -188,8 +188,8 @@ fun BlancheApp(
                         SummaryScreen(
                             navigationType = navigationType,
                             quotationRequestViewModel = quotationRequestViewModel,
-                            navigateEventGegevens = { navController.navigate(NavigationRoutes.EventDetails.name) },
-                            navigateContactGegevens = { navController.navigate(NavigationRoutes.ContactDetails.name) },
+                            navigateEventDetails = { navController.navigate(NavigationRoutes.EventDetails.name) },
+                            navigateContactDetails = { navController.navigate(NavigationRoutes.ContactDetails.name) },
                             navigateExtras = { navController.navigate(NavigationRoutes.ExtraItems.name) },
                         )
                     }

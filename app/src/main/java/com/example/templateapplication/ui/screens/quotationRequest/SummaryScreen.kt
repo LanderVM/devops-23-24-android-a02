@@ -72,8 +72,8 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
 fun SummaryScreen(
     navigationType: ReplyNavigationType,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
-    navigateEventGegevens: () -> Unit,
-    navigateContactGegevens: () -> Unit,
+    navigateEventDetails: () -> Unit,
+    navigateContactDetails: () -> Unit,
     navigateExtras: () -> Unit,
 ) {
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
@@ -112,8 +112,8 @@ fun SummaryScreen(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             Navigation(
-                navigateContactGegevens = navigateContactGegevens,
-                navigateEventGegevens = navigateEventGegevens,
+                navigateContactDetails = navigateContactDetails,
+                navigateEventDetails = navigateEventDetails,
                 navigateExtras = navigateExtras
             )
         }
@@ -138,7 +138,7 @@ fun SummaryScreen(
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
-            ContactGegevens(
+            ContactDetails(
                 requestState = requestState,
             )
         }
@@ -163,7 +163,10 @@ fun SummaryScreen(
                         color = MainColor,
                     )
                     IconButton(onClick = { show = !show }) {
-                        Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
+                        Icon(
+                            Icons.Outlined.ArrowDropDown,
+                            contentDescription = stringResource(id = R.string.summaryScreen_dropdown)
+                        )
                     }
                 }
 
@@ -184,7 +187,7 @@ fun SummaryScreen(
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
-            KostGegevens(
+            CostDetails(
                 requestState = requestState,
                 fontSizeCost = fontSizeCost,
                 quotationRequestViewModel = quotationRequestViewModel,
@@ -262,8 +265,8 @@ fun HeadOfPage(
 
 @Composable
 fun Navigation(
-    navigateEventGegevens: () -> Unit,
-    navigateContactGegevens: () -> Unit,
+    navigateEventDetails: () -> Unit,
+    navigateContactDetails: () -> Unit,
     navigateExtras: () -> Unit,
 ) {
     Column(
@@ -281,11 +284,11 @@ fun Navigation(
         )
         NavigationRow(
             text = stringResource(id = R.string.summaryData_navigation_event),
-            navigateExtras = { navigateEventGegevens() }
+            navigateExtras = { navigateEventDetails() }
         )
         NavigationRow(
             text = stringResource(id = R.string.summaryData_navigation_contact),
-            navigateExtras = { navigateContactGegevens() }
+            navigateExtras = { navigateContactDetails() }
         )
         NavigationRow(
             text = stringResource(id = R.string.summaryData_navigation_extraMaterial),
@@ -345,14 +348,17 @@ fun EventDetails(
                 color = MainColor,
             )
             IconButton(onClick = { show = !show }) {
-                Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
+                Icon(
+                    Icons.Outlined.ArrowDropDown,
+                    contentDescription = stringResource(id = R.string.summaryScreen_dropdown)
+                )
             }
         }
         if (show) {
             Spacer(modifier = Modifier.height(20.dp))
             ListItem(
                 headlineContent = {
-                    Text(text = "Datum", fontSize = 18.sp)
+                    Text(text = stringResource(id = R.string.summaryScreen_date), fontSize = 18.sp)
                 },
                 supportingContent = {
                     Text(
@@ -390,7 +396,7 @@ fun EventDetails(
 }
 
 @Composable
-fun ContactGegevens(
+fun ContactDetails(
     requestState: QuotationRequestState,
 ) {
     var show by rememberSaveable { mutableStateOf(true) }
@@ -411,7 +417,10 @@ fun ContactGegevens(
                 color = MainColor,
             )
             IconButton(onClick = { show = !show }) {
-                Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
+                Icon(
+                    Icons.Outlined.ArrowDropDown,
+                    contentDescription = stringResource(id = R.string.summaryScreen_dropdown)
+                )
             }
         }
         if (show) {
@@ -502,7 +511,11 @@ fun ExtraItemCard(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = "€ ${extraItem.price} x ${extraItem.amount} stuks",
+                text = "${stringResource(id = R.string.price_icon)} ${extraItem.price} x ${extraItem.amount} ${
+                    stringResource(
+                        id = R.string.summaryScreen_pieces
+                    )
+                }",
                 style = MaterialTheme.typography.bodyMedium,
 
                 )
@@ -513,7 +526,7 @@ fun ExtraItemCard(
 }
 
 @Composable
-fun KostGegevens(
+fun CostDetails(
     requestState: QuotationRequestState,
     fontSizeCost: TextUnit,
     quotationRequestViewModel: QuotationRequestViewModel
@@ -594,14 +607,14 @@ fun KostGegevens(
                         color = Color.Black,
                     )
                     Text(
-                        text = "€ ${quotationRequestViewModel.getPriceBasicFormula()}",
+                        text = "${stringResource(id = R.string.price_icon)} ${quotationRequestViewModel.getPriceBasicFormula()}",
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text = "€ ${quotationRequestViewModel.getPriceBasicFormula()}",
+                        text = "${stringResource(id = R.string.price_icon)} ${quotationRequestViewModel.getPriceBasicFormula()}",
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
@@ -617,21 +630,21 @@ fun KostGegevens(
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text = "Bier Inbegrepen  x ${requestState.numberOfPeople} ",
+                            text = "${stringResource(id = R.string.summaryScreen_beerIncluded)}  x ${requestState.numberOfPeople} ",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.4f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text = "€ 3.0",
+                            text = "${stringResource(id = R.string.price_icon)} 3.0",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text = "€ ${quotationRequestViewModel.calculatePriceBeer()}",
+                            text = "${stringResource(id = R.string.price_icon)} ${quotationRequestViewModel.calculatePriceBeer()}",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
@@ -648,21 +661,21 @@ fun KostGegevens(
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text = "BBQ Inbegrepen  x ${requestState.numberOfPeople}",
+                            text = "${stringResource(id = R.string.summaryScreen_bbqIncluded)}  x ${requestState.numberOfPeople}",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.4f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text = "€ 12.0",
+                            text = "${stringResource(id = R.string.price_icon)} 12.0",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text = "€ ${quotationRequestViewModel.calculatePriceBbq()}",
+                            text = "${stringResource(id = R.string.price_icon)} ${quotationRequestViewModel.calculatePriceBbq()}",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
@@ -687,14 +700,24 @@ fun KostGegevens(
                             overflow = TextOverflow.Ellipsis,
                         )
                         Text(
-                            text = "€ ${String.format("%.2f", extraItem.price)}",
+                            text = "${stringResource(id = R.string.price_icon)} ${
+                                String.format(
+                                    "%.2f",
+                                    extraItem.price
+                                )
+                            }",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text = "€ ${String.format("%.2f", extraItem.price * extraItem.amount)}",
+                            text = "${stringResource(id = R.string.price_icon)} ${
+                                String.format(
+                                    "%.2f",
+                                    extraItem.price * extraItem.amount
+                                )
+                            }",
                             textAlign = TextAlign.Left,
                             modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
@@ -710,21 +733,21 @@ fun KostGegevens(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Vervoerskosten",
+                        text = stringResource(id = R.string.summaryScreen_transportationCosts),
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text = "€ 0.75",
+                        text = "${stringResource(id = R.string.price_icon)} 0.75",
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text = "€ ${quotationRequestViewModel.calulateTransportCosts()}",
+                        text = "${stringResource(id = R.string.price_icon)} ${quotationRequestViewModel.calulateTransportCosts()}",
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
@@ -744,7 +767,7 @@ fun KostGegevens(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "TOTAAL EXCL BTW",
+                        text = stringResource(id = R.string.summaryScreen_totalExclusiveBtw),
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.6f),
                         fontSize = fontSizeCost,
@@ -752,7 +775,7 @@ fun KostGegevens(
                     )
 
                     Text(
-                        text = "€ ${
+                        text = "${stringResource(id = R.string.price_icon)} ${
                             String.format(
                                 "%.2f",
                                 quotationRequestViewModel.getTotalPriceWithoutVat()
@@ -772,7 +795,7 @@ fun KostGegevens(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "TOTAAL BTW",
+                        text = stringResource(id = R.string.summaryScreen_totalExclusiveBtw),
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.6f),
                         fontSize = fontSizeCost,
@@ -805,7 +828,7 @@ fun KostGegevens(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Te betalen",
+                        text = stringResource(id = R.string.summaryScreen_toPay),
                         textAlign = TextAlign.Left,
                         modifier = Modifier.fillMaxWidth(0.6f),
                         fontSize = fontSizeCost,
@@ -814,7 +837,7 @@ fun KostGegevens(
                     )
 
                     Text(
-                        text = "€ ${
+                        text = "${stringResource(id = R.string.price_icon)} ${
                             String.format(
                                 "%.2f",
                                 quotationRequestViewModel.getTotalPriceWithoutVat() + quotationRequestViewModel.getTotalVat()

@@ -103,6 +103,16 @@
     <string name="summaryData_error">Er is iets misgelopen bij het versturen…</string>
     <string name="summaryData_confirmed">Uw offerteaanvraag werd verstuurd!</string>
 
+    <string name="summaryScreen_dropdown">dropdown</string>
+    <string name="summaryScreen_date">Datum</string>
+    <string name="summaryScreen_pieces">stuks</string>
+    <string name="summaryScreen_beerIncluded">Bier Inbegrepen</string>
+    <string name="summaryScreen_bbqIncluded">BBQ Inbegrepen</string>
+    <string name="summaryScreen_transportationCosts">Vervoerskosten</string>
+    <string name="summaryScreen_totalExclusiveBtw">TOTAAL EXCL BTW</string>
+    <string name="summaryScreen_totalBtw">TOTAAL BTW</string>
+    <string name="summaryScreen_toPay">Te betalen</string>
+
     <string name="home_title">Home</string>
     <string name="about_title">Over</string>
     <string name="contactDetails_title">Contact gegevens</string>
