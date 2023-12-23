@@ -12,6 +12,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 
 interface AppContainer {
@@ -23,7 +24,7 @@ class DefaultAppContainer(
     private val blancheContext: Context
 ) : AppContainer {
     private val googleMapsBaseUrl = GooglePlacesApiService.BASE_URL
-    private val restApiBaseUrl = "http://10.0.2.2:5292/api/"
+    private val restApiBaseUrl = "https://devops-2324-a02.hogenttiproject.be/api/"
 
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -31,6 +32,8 @@ class DefaultAppContainer(
         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
     private val client = OkHttpClient.Builder()
         .addInterceptor(logger)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(60, TimeUnit.SECONDS)
         .build()
 
     private val googleMapsRetrofit = Retrofit.Builder()
