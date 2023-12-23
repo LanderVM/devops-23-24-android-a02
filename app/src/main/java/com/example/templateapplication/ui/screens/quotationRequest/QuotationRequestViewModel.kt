@@ -503,7 +503,7 @@ class QuotationRequestViewModel(
      *
      * @return The distance as a Long value.
      */
-    fun getDistanceLong(): Long {
+    private fun getDistanceLong(): Long {
         return _quotationUiState.value.googleMaps.distanceResponse.rows[0].elements[0].distance.value
     }
 
@@ -918,7 +918,7 @@ class QuotationRequestViewModel(
      * @param item The [ExtraItemState] to be updated.
      * @param amount The new amount for the item.
      */
-    fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
+    private fun changeExtraItemAmount(item: ExtraItemState, amount: Int) =
         _quotationUiState.value.extraItems.find { it.extraItemId == item.extraItemId }
             ?.let { extraItem ->
                 extraItem.amount = amount

@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
@@ -61,7 +61,6 @@ import com.example.templateapplication.model.quotationRequest.QuotationRequestSt
 import com.example.templateapplication.model.quotationRequest.QuotationUiState
 import com.example.templateapplication.network.restApi.quotationRequest.ApiQuotationRequestPostApiState
 import com.example.templateapplication.ui.commons.AlertPopUp
-import com.example.templateapplication.ui.screens.formulaDetails.FormulasViewModel
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.theme.MainLighterColor
@@ -70,12 +69,11 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 
 @Composable
-fun SummaryScreen (
-    navigationType : ReplyNavigationType,
-    modifier: Modifier = Modifier,
+fun SummaryScreen(
+    navigationType: ReplyNavigationType,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
-    navigateEventGegevens: ()->Unit,
-    navigateContactGegevens:()->Unit,
+    navigateEventGegevens: () -> Unit,
+    navigateContactGegevens: () -> Unit,
     navigateExtras: () -> Unit,
 ) {
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
@@ -83,17 +81,19 @@ fun SummaryScreen (
     var showConfirmationPop by remember { mutableStateOf(false) }
     val formulaList by quotationRequestViewModel.formulaState.collectAsState()
 
-    var columns : Int
-    var fontSizeCost : TextUnit
+    val columns: Int
+    val fontSizeCost: TextUnit
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
             columns = 2
             fontSizeCost = 15.sp
         }
+
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             columns = 4
             fontSizeCost = 22.sp
         }
+
         else -> {
             columns = 1
             fontSizeCost = 10.sp
@@ -107,91 +107,88 @@ fun SummaryScreen (
             .fillMaxWidth(),
 
         ) {
-        item(span = { GridItemSpan(maxLineSpan)}) {
-            HeadOfPage(modifier.padding(vertical = 50.dp))
-    }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            HeadOfPage()
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
             Navigation(
-                modifier = Modifier.padding(vertical = 50.dp),
-                navigateContactGegevens=navigateContactGegevens,
+                navigateContactGegevens = navigateContactGegevens,
                 navigateEventGegevens = navigateEventGegevens,
                 navigateExtras = navigateExtras
             )
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 15.dp, vertical = 50.dp),
                 thickness = 4.dp,
                 color = Color.LightGray
             )
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             EventDetails(
-                modifier = Modifier.padding(vertical = 50.dp) ,
                 uiState = uiState,
                 dateRange = quotationRequestViewModel.getDateRange()
             )
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 15.dp, vertical = 50.dp),
                 thickness = 4.dp,
                 color = Color.LightGray
             )
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             ContactGegevens(
-                modifier = Modifier.padding(vertical = 50.dp),
                 requestState = requestState,
             )
         }
-        if(quotationRequestViewModel.getListAddedItems().isNotEmpty()){
-            item(span = { GridItemSpan(maxLineSpan)}) {
+        if (quotationRequestViewModel.getListAddedItems().isNotEmpty()) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 15.dp, vertical = 50.dp),
                     thickness = 4.dp,
                     color = Color.LightGray
                 )
             }
-            item(span = { GridItemSpan(maxLineSpan)}) {
-                Row(modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text= stringResource(id = R.string.extraItems_title),
+                        text = stringResource(id = R.string.extraItems_title),
                         textAlign = TextAlign.Start,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MainColor,
                     )
-                    IconButton(onClick = { show = !show}) {
+                    IconButton(onClick = { show = !show }) {
                         Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
                     }
                 }
 
             }
-            if(show){
-                items(quotationRequestViewModel.getListAddedItems()){ extraItem ->
+            if (show) {
+                items(quotationRequestViewModel.getListAddedItems()) { extraItem ->
                     ExtraItemCard(
                         extraItem = extraItem,
-                        modifier = Modifier.padding(8.dp),
                     )
                 }
             }
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 15.dp,50.dp),
+                modifier = Modifier.padding(horizontal = 15.dp, 50.dp),
                 thickness = 4.dp,
                 color = Color.LightGray
             )
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             KostGegevens(
                 requestState = requestState,
                 fontSizeCost = fontSizeCost,
-                modifier = Modifier.padding(vertical = 50.dp)
-                ,quotationRequestViewModel = quotationRequestViewModel,
-                )
+                quotationRequestViewModel = quotationRequestViewModel,
+            )
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             when (val state = quotationRequestViewModel.postQuotationRequestApiState) {
@@ -201,8 +198,8 @@ fun SummaryScreen (
                 ApiQuotationRequestPostApiState.Success -> Text(text = stringResource(id = R.string.summaryData_confirmed))
             }
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
-            Button (
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Button(
                 modifier = Modifier.padding(vertical = 50.dp),
                 onClick = {
                     showConfirmationPop = true
@@ -215,7 +212,7 @@ fun SummaryScreen (
                     disabledContentColor = Color.White
                 ),
             ) {
-                Text (text= stringResource(id = R.string.summaryData_quoteRequest))
+                Text(text = stringResource(id = R.string.summaryData_quoteRequest))
             }
         }
     }
@@ -236,17 +233,16 @@ fun SummaryScreen (
 
 @Composable
 fun HeadOfPage(
-    modifier: Modifier = Modifier
 ) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text= stringResource(id = R.string.summaryData_overview),
+            text = stringResource(id = R.string.summaryData_overview),
             textAlign = TextAlign.Center,
-            modifier= Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp),
             fontSize = 30.sp,
@@ -263,21 +259,21 @@ fun HeadOfPage(
         )
     }
 }
+
 @Composable
-fun Navigation (
-    modifier: Modifier = Modifier,
-    navigateEventGegevens:()->Unit,
-    navigateContactGegevens:()->Unit,
+fun Navigation(
+    navigateEventGegevens: () -> Unit,
+    navigateContactGegevens: () -> Unit,
     navigateExtras: () -> Unit,
 ) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-    ){
+    ) {
         Text(
-            text= stringResource(id = R.string.summaryData_navigation_goto),
+            text = stringResource(id = R.string.summaryData_navigation_goto),
             textAlign = TextAlign.Left,
-            modifier= Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 20.dp),
             fontSize = 30.sp,
@@ -327,102 +323,121 @@ fun NavigationRow(
 
 @Composable
 fun EventDetails(
-    modifier: Modifier = Modifier,
     uiState: QuotationUiState,
     dateRange: String,
-    ) {
-
-    var show by rememberSaveable { mutableStateOf(true) }
-
-    Column (
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically){
-            Text(
-                text= stringResource(id = R.string.summaryData_eventDetails_title),
-                textAlign = TextAlign.Start,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MainColor,
-            )
-            IconButton(onClick = { show = !show}) {
-                Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
-            }
-        }
-        if(show){
-            Spacer(modifier = Modifier.height(20.dp))
-            ListItem(
-                headlineContent = {
-                    Text(text="Datum",fontSize = 18.sp)},
-                supportingContent = {
-                    Text(
-                        text=dateRange,
-                        fontSize = 16.sp)
-                },
-                colors = ListItemDefaults.colors(
-                    containerColor = Color(0XFFD3B98B)
-                ),
-                modifier = Modifier.padding(horizontal = 30.dp)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            ListItem(
-                headlineContent = {
-                    Text(text=stringResource(id = R.string.summaryData_eventDetails_location),fontSize = 18.sp)
-                },
-                supportingContent = {
-                    Text(
-                        text=uiState.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formattedAddress,
-                        fontSize = 16.sp)
-                },
-                colors = ListItemDefaults.colors(
-                    containerColor = Color(0XFFD3B98B)
-                ),
-                modifier = Modifier.padding(horizontal = 30.dp)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-        }
-
-
-    }
-}
-
-@Composable
-fun ContactGegevens(
-    modifier: Modifier = Modifier,
-    requestState: QuotationRequestState,
 ) {
+
     var show by rememberSaveable { mutableStateOf(true) }
 
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
-                text= stringResource(id = R.string.summaryData_contactDetails_title),
+                text = stringResource(id = R.string.summaryData_eventDetails_title),
                 textAlign = TextAlign.Start,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MainColor,
             )
-            IconButton(onClick = { show = !show}) {
+            IconButton(onClick = { show = !show }) {
                 Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
             }
         }
-        if(show){
-            ListItemRow(headline = stringResource(id = R.string.summaryData_contactDetails_fullName), content= requestState.customer.firstName+" "+requestState.customer.lastName)
-            ListItemRow(headline = stringResource(id = R.string.contactDetails_email), content= requestState.customer.email)
-            ListItemRow(headline = stringResource(id = R.string.contactDetails_phone_number), content= requestState.customer.phoneNumber)
-            ListItemRow(headline = stringResource(id = R.string.summaryData_contactDetails_adress), content= requestState.customer.billingAddress.street+" "+requestState.customer.billingAddress.houseNumber+", "+requestState.customer.billingAddress.postalCode + " " + requestState.customer.billingAddress.city)
+        if (show) {
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {
+                    Text(text = "Datum", fontSize = 18.sp)
+                },
+                supportingContent = {
+                    Text(
+                        text = dateRange,
+                        fontSize = 16.sp
+                    )
+                },
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(0XFFD3B98B)
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.summaryData_eventDetails_location),
+                        fontSize = 18.sp
+                    )
+                },
+                supportingContent = {
+                    Text(
+                        text = uiState.googleMaps.eventAddressAutocompleteCandidates.candidates[0].formattedAddress,
+                        fontSize = 16.sp
+                    )
+                },
+                colors = ListItemDefaults.colors(
+                    containerColor = Color(0XFFD3B98B)
+                ),
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
 
-            if(requestState.customer.vatNumber.isNotBlank()){
+@Composable
+fun ContactGegevens(
+    requestState: QuotationRequestState,
+) {
+    var show by rememberSaveable { mutableStateOf(true) }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.summaryData_contactDetails_title),
+                textAlign = TextAlign.Start,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MainColor,
+            )
+            IconButton(onClick = { show = !show }) {
+                Icon(Icons.Outlined.ArrowDropDown, contentDescription = "dropdown")
+            }
+        }
+        if (show) {
+            ListItemRow(
+                headline = stringResource(id = R.string.summaryData_contactDetails_fullName),
+                content = requestState.customer.firstName + " " + requestState.customer.lastName
+            )
+            ListItemRow(
+                headline = stringResource(id = R.string.contactDetails_email),
+                content = requestState.customer.email
+            )
+            ListItemRow(
+                headline = stringResource(id = R.string.contactDetails_phone_number),
+                content = requestState.customer.phoneNumber
+            )
+            ListItemRow(
+                headline = stringResource(id = R.string.summaryData_contactDetails_adress),
+                content = requestState.customer.billingAddress.street + " " + requestState.customer.billingAddress.houseNumber + ", " + requestState.customer.billingAddress.postalCode + " " + requestState.customer.billingAddress.city
+            )
+
+            if (requestState.customer.vatNumber.isNotBlank()) {
                 Spacer(modifier = Modifier.height(20.dp))
-                ListItemRow(headline = stringResource(id = R.string.contactDetails_vat_number), content= requestState.customer.vatNumber)
+                ListItemRow(
+                    headline = stringResource(id = R.string.contactDetails_vat_number),
+                    content = requestState.customer.vatNumber
+                )
             }
 
         }
@@ -443,9 +458,9 @@ fun ListItemRow(headline: String, content: String) {
 }
 
 @Composable
-fun ExtraItemCard( // TODO duplicate code -> make a component out of this
+fun ExtraItemCard(
     extraItem: ExtraItemState,
-    modifier: Modifier = Modifier) {
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -454,14 +469,18 @@ fun ExtraItemCard( // TODO duplicate code -> make a component out of this
             defaultElevation = 6.dp
         ),
         shape = RoundedCornerShape(8.dp),
-        colors = CardColors(containerColor = MainLightestColor, contentColor = Color.Black, disabledContainerColor = Color.Gray, disabledContentColor = Color.Black)
+        colors = CardColors(
+            containerColor = MainLightestColor,
+            contentColor = Color.Black,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.Black
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // Image
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(extraItem.imgUrl)
@@ -475,7 +494,6 @@ fun ExtraItemCard( // TODO duplicate code -> make a component out of this
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Item Details
             Text(
                 modifier = Modifier.size(170.dp, 70.dp),
                 text = extraItem.title,
@@ -483,7 +501,6 @@ fun ExtraItemCard( // TODO duplicate code -> make a component out of this
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            // Price
             Text(
                 text = "€ ${extraItem.price} x ${extraItem.amount} stuks",
                 style = MaterialTheme.typography.bodyMedium,
@@ -492,23 +509,24 @@ fun ExtraItemCard( // TODO duplicate code -> make a component out of this
 
         }
 
-}}
+    }
+}
+
 @Composable
-fun KostGegevens (
+fun KostGegevens(
     requestState: QuotationRequestState,
     fontSizeCost: TextUnit,
-    modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel
 ) {
 
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text= stringResource(id = R.string.summaryData_priceDetails_title),
+            text = stringResource(id = R.string.summaryData_priceDetails_title),
             textAlign = TextAlign.Start,
-            modifier= Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             color = MainColor,
@@ -518,39 +536,39 @@ fun KostGegevens (
             modifier = Modifier
                 .fillMaxWidth(),
             color = MainLighterColor,
-        ){
-            Column (
+        ) {
+            Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center
-                ) {
+            ) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly ,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .height(35.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text= stringResource(id = R.string.summaryData_priceDetails_description),
+                        text = stringResource(id = R.string.summaryData_priceDetails_description),
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.4f),
+                        modifier = Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
-                        text= stringResource(id = R.string.summaryData_priceDetails_price),
+                        text = stringResource(id = R.string.summaryData_priceDetails_price),
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
-                        text=stringResource(id = R.string.summaryData_priceDetails_subtotal),
+                        text = stringResource(id = R.string.summaryData_priceDetails_subtotal),
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -562,154 +580,153 @@ fun KostGegevens (
                     color = Color.Gray
                 )
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly ,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .height(35.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text="${requestState.formula!!.title}",
+                        text = requestState.formula!!.title,
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.4f),
+                        modifier = Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text="€ ${quotationRequestViewModel.getPriceBasicFormula()}",
+                        text = "€ ${quotationRequestViewModel.getPriceBasicFormula()}",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text="€ ${quotationRequestViewModel.getPriceBasicFormula()}",
+                        text = "€ ${quotationRequestViewModel.getPriceBasicFormula()}",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                 }
-                if(requestState.formula!!.id == 2 || requestState.formula!!.id == 3){
+                if (requestState.formula!!.id == 2 || requestState.formula.id == 3) {
                     Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly ,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .height(35.dp)
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text="Bier Inbegrepen  x ${requestState.numberOfPeople} ",
+                            text = "Bier Inbegrepen  x ${requestState.numberOfPeople} ",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.4f),
+                            modifier = Modifier.fillMaxWidth(0.4f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text="€ 3.0",
+                            text = "€ 3.0",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.3f),
+                            modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text="€ ${quotationRequestViewModel.calculatePriceBeer()}",
+                            text = "€ ${quotationRequestViewModel.calculatePriceBeer()}",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.3f),
+                            modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                     }
                 }
-                if(requestState.formula!!.id == 3){
+                if (requestState.formula.id == 3) {
                     Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly ,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .height(35.dp)
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text="BBQ Inbegrepen  x ${requestState.numberOfPeople}",
+                            text = "BBQ Inbegrepen  x ${requestState.numberOfPeople}",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.4f),
+                            modifier = Modifier.fillMaxWidth(0.4f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text="€ 12.0",
+                            text = "€ 12.0",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.3f),
+                            modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text="€ ${quotationRequestViewModel.calculatePriceBbq()}",
+                            text = "€ ${quotationRequestViewModel.calculatePriceBbq()}",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.3f),
+                            modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                     }
                 }
-                quotationRequestViewModel.getListAddedItems().forEach{
-                    extraItem ->
+                quotationRequestViewModel.getListAddedItems().forEach { extraItem ->
                     Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly ,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .height(35.dp)
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text="${extraItem.title} x ${extraItem.amount}",
+                            text = "${extraItem.title} x ${extraItem.amount}",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.4f),
+                            modifier = Modifier.fillMaxWidth(0.4f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
-                            overflow =TextOverflow.Ellipsis,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
-                            text="€ ${String.format("%.2f", extraItem.price)}",
+                            text = "€ ${String.format("%.2f", extraItem.price)}",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.3f),
+                            modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                         Text(
-                            text="€ ${String.format("%.2f", extraItem.price * extraItem.amount)}",
+                            text = "€ ${String.format("%.2f", extraItem.price * extraItem.amount)}",
                             textAlign = TextAlign.Left,
-                            modifier= Modifier.fillMaxWidth(0.3f),
+                            modifier = Modifier.fillMaxWidth(0.3f),
                             fontSize = fontSizeCost,
                             color = Color.Black,
                         )
                     }
                 }
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly ,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .height(35.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text="Vervoerskosten",
+                        text = "Vervoerskosten",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.4f),
+                        modifier = Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text="€ 0.75",
+                        text = "€ 0.75",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                     Text(
-                        text="€ ${quotationRequestViewModel.calulateTransportCosts()}",
+                        text = "€ ${quotationRequestViewModel.calulateTransportCosts()}",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier.fillMaxWidth(0.3f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
@@ -720,47 +737,57 @@ fun KostGegevens (
                     color = Color.Gray
                 )
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly ,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .height(35.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text="TOTAAL EXCL BTW",
+                        text = "TOTAAL EXCL BTW",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.6f),
+                        modifier = Modifier.fillMaxWidth(0.6f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
 
                     Text(
-                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalPriceWithoutVat())}",
+                        text = "€ ${
+                            String.format(
+                                "%.2f",
+                                quotationRequestViewModel.getTotalPriceWithoutVat()
+                            )
+                        }",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.4f),
+                        modifier = Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
                 }
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly ,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .height(35.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text="TOTAAL BTW",
+                        text = "TOTAAL BTW",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.6f),
+                        modifier = Modifier.fillMaxWidth(0.6f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
 
                     Text(
-                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalVat())}",
+                        text = "${stringResource(id = R.string.price_icon)} ${
+                            String.format(
+                                "%.2f",
+                                quotationRequestViewModel.getTotalVat()
+                            )
+                        }",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.4f),
+                        modifier = Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                     )
@@ -771,25 +798,30 @@ fun KostGegevens (
                     color = Color.Gray
                 )
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly ,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .height(35.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text="Te betalen",
+                        text = "Te betalen",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.6f),
+                        modifier = Modifier.fillMaxWidth(0.6f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                     )
 
                     Text(
-                        text="€ ${String.format("%.2f", quotationRequestViewModel.getTotalPriceWithoutVat() + quotationRequestViewModel.getTotalVat())}",
+                        text = "€ ${
+                            String.format(
+                                "%.2f",
+                                quotationRequestViewModel.getTotalPriceWithoutVat() + quotationRequestViewModel.getTotalVat()
+                            )
+                        }",
                         textAlign = TextAlign.Left,
-                        modifier= Modifier.fillMaxWidth(0.4f),
+                        modifier = Modifier.fillMaxWidth(0.4f),
                         fontSize = fontSizeCost,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,

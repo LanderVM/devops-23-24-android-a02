@@ -45,7 +45,7 @@ fun WantsTripelBeerCheckbox(
             )
             Checkbox(
                 checked = hasCheck,
-                onCheckedChange = { onCheck(!hasCheck)},
+                onCheckedChange = { onCheck(!hasCheck) },
                 colors = CheckboxDefaults.colors(
                     checkedColor = md_theme_light_secondary,
                     checkmarkColor = md_theme_light_onSecondary,

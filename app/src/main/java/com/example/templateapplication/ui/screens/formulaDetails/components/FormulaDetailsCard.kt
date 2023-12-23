@@ -46,20 +46,21 @@ fun FormulaDetailsCard(
     backgroundColor: Color = Color.White,
     textColor: Color = Color.Black,
 ) {
-    val cardHeight : Dp
-    val fontSize : TextUnit
+    val cardHeight: Dp
+    val fontSize: TextUnit
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
-            cardHeight= 600.dp
+            cardHeight = 600.dp
             fontSize = 30.sp
-
         }
+
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
-            cardHeight= 650.dp
+            cardHeight = 650.dp
             fontSize = 45.sp
         }
+
         else -> {
-            cardHeight= 500.dp
+            cardHeight = 500.dp
             fontSize = 30.sp
 
         }

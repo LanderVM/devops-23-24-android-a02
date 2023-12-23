@@ -47,6 +47,7 @@ fun EstimatedPriceText(
                 fontWeight = FontWeight.W500,
             )
         }
+
         PriceEstimationResultApiState.Idle -> {}
     }
 }

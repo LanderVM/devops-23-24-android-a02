@@ -35,7 +35,7 @@ import com.example.templateapplication.ui.screens.aboutPage.AboutViewModel
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewScreen
 import com.example.templateapplication.ui.screens.equipmentOverviewPage.EquipmentOverviewViewModel
 import com.example.templateapplication.ui.screens.formulaDetails.FormulasViewModel
-import com.example.templateapplication.ui.screens.formulaDetails.FormulesScreen
+import com.example.templateapplication.ui.screens.formulaDetails.FormulasScreen
 import com.example.templateapplication.ui.screens.homepage.HomeScreen
 import com.example.templateapplication.ui.screens.priceEstimation.GuidePriceScreen
 import com.example.templateapplication.ui.screens.priceEstimation.PriceEstimationViewModel
@@ -165,21 +165,18 @@ fun BlancheApp(
                             navigationType = navigationType,
                             navigateExtras = { navController.navigate(NavigationRoutes.ExtraItems.name) },
                             quotationRequestViewModel = quotationRequestViewModel,
-                            modifier = Modifier.padding(innerPadding),
                         )
                     }
                     composable(NavigationRoutes.Formulas.name) {
-                        FormulesScreen(
+                        FormulasScreen(
                             navigationType = navigationType,
-                            modifier = Modifier.padding(innerPadding),
                             formulasViewModel = formulasViewModel,
                         )
                     }
                     composable(NavigationRoutes.EventDetails.name) {
                         EventDetailsScreen(
                             navigationType = navigationType,
-                            modifier = Modifier.padding(innerPadding),
-                            navigateContactGegevensScreen = {
+                            navigateContactDetailsScreen = {
                                 navController.navigate(
                                     NavigationRoutes.ContactDetails.name
                                 )
@@ -190,7 +187,6 @@ fun BlancheApp(
                     composable(NavigationRoutes.SummaryData.name) {
                         SummaryScreen(
                             navigationType = navigationType,
-                            modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
                             navigateEventGegevens = { navController.navigate(NavigationRoutes.EventDetails.name) },
                             navigateContactGegevens = { navController.navigate(NavigationRoutes.ContactDetails.name) },
@@ -200,9 +196,8 @@ fun BlancheApp(
                     composable(NavigationRoutes.ExtraItems.name) {
                         ExtrasScreen(
                             navigationType = navigationType,
-                            modifier = Modifier.padding(innerPadding),
                             quotationRequestViewModel = quotationRequestViewModel,
-                            navigateSamenvatting = { navController.navigate(NavigationRoutes.SummaryData.name) },
+                            navigateSummary = { navController.navigate(NavigationRoutes.SummaryData.name) },
                             isOverview = false
                         )
                     }
@@ -215,7 +210,6 @@ fun BlancheApp(
                     composable(NavigationRoutes.GuidePrice.name) {
                         GuidePriceScreen(
                             navigationType = navigationType,
-                            modifier = Modifier.padding(innerPadding),
                             priceEstimationViewModel = priceEstimationViewModel
                         )
                     }

@@ -55,6 +55,7 @@ fun HomeScreenTop(
             blanchePadding = 130.dp
             blancheFontSize = 100.sp
         }
+
         else -> {
             blanchePadding = 70.dp
             blancheFontSize = 80.sp
@@ -90,7 +91,7 @@ fun HomeScreenTop(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Menu,
-                            contentDescription = "Menu",
+                            contentDescription = stringResource(id = R.string.appbar_menu),
                             tint = Color.White,
                         )
                     }

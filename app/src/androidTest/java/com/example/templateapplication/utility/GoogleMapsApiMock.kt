@@ -32,7 +32,7 @@ class GoogleMapsApiMock : GoogleMapsRepository {
         return GoogleMapsPlaceCandidates(
             listOf(
                 GooglePlace(
-                    formatted_address = "Adres",
+                    formattedAddress = "Adres",
                     geometry = GooglePlaceGeometry(
                         GooglePlaceLatitudes(
                             lat = 15.0,

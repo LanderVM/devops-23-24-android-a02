@@ -34,8 +34,7 @@ class FormulasViewModel(
     /**
      * State variable to track the current status of the formula fetch API call.
      */
-    var apiState: FormulaApiState by mutableStateOf(FormulaApiState.Loading)
-        private set
+    private var apiState: FormulaApiState by mutableStateOf(FormulaApiState.Loading)
 
     init {
         getFormulas()
@@ -45,7 +44,6 @@ class FormulasViewModel(
      * Factory for creating instances of [FormulasViewModel].
      */
     companion object {
-        // Factory for creating instances of FormulasViewModel.
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =

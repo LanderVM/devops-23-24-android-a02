@@ -43,15 +43,14 @@ import com.example.templateapplication.ui.screens.priceEstimation.components.Wan
 import com.example.templateapplication.ui.screens.priceEstimation.components.WantsTripelBeerCheckbox
 import com.example.templateapplication.ui.theme.DisabledButtonColor
 import com.example.templateapplication.ui.theme.MainColor
-import java.time.Instant
 import com.example.templateapplication.ui.utils.ReplyNavigationType
+import java.time.Instant
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuidePriceScreen(
     navigationType: ReplyNavigationType,
-    modifier: Modifier = Modifier,
     priceEstimationViewModel: PriceEstimationViewModel = viewModel(factory = PriceEstimationViewModel.Factory),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {

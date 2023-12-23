@@ -19,24 +19,25 @@ import com.example.templateapplication.ui.theme.MainColor
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 
 @Composable
-fun FormulesScreen(
-    modifier: Modifier = Modifier,
+fun FormulasScreen(
     formulasViewModel: FormulasViewModel,
     navigationType: ReplyNavigationType,
 ) {
     val formulaList by formulasViewModel.formulaList.collectAsState()
 
-    var columnAmount : Int
-    var padding : Dp
+    val columnAmount: Int
+    val padding: Dp
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
             columnAmount = 1
             padding = 100.dp
         }
+
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             columnAmount = 3
             padding = 0.dp
         }
+
         else -> {
             columnAmount = 1
             padding = 0.dp
@@ -50,7 +51,11 @@ fun FormulesScreen(
             .padding(horizontal = padding)
     ) {
         itemsIndexed(formulaList.formulaListState) { index, formula ->
-            FormulaDetailsCard(navigationType= navigationType ,formula = formula, backgroundColor = if (index % 2 == 0) Color.White else MainColor)
+            FormulaDetailsCard(
+                navigationType = navigationType,
+                formula = formula,
+                backgroundColor = if (index % 2 == 0) Color.White else MainColor
+            )
         }
     }
 }

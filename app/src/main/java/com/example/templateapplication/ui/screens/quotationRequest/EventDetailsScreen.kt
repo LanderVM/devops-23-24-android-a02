@@ -38,9 +38,8 @@ import java.util.Calendar
 @Composable
 fun EventDetailsScreen(
     navigationType: ReplyNavigationType,
-    modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
-    navigateContactGegevensScreen: () -> Unit,
+    navigateContactDetailsScreen: () -> Unit,
 ) {
 
     val scrollState = rememberScrollState()
@@ -64,8 +63,8 @@ fun EventDetailsScreen(
                 if (isTimeInPast) return false
 
                 for (item in uiState.listDateRanges)
-                        if (Instant.ofEpochMilli(utcTimeMillis) in item.startTime..item.endTime)
-                            return false
+                    if (Instant.ofEpochMilli(utcTimeMillis) in item.startTime..item.endTime)
+                        return false
 
                 return true
             }
@@ -117,7 +116,7 @@ fun EventDetailsScreen(
 
             placeholder = stringResource(id = R.string.eventDetails_numberOfPeople),
             text = quotationRequestViewModel.formState.numberOfPeople,
-            onValueChange = {quotationRequestViewModel.onEvent(MainEvent.NumberOfPeopleChanged(it))},
+            onValueChange = { quotationRequestViewModel.onEvent(MainEvent.NumberOfPeopleChanged(it)) },
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done,
             singleLine = true,
@@ -136,7 +135,7 @@ fun EventDetailsScreen(
         }
         Spacer(modifier = Modifier.height(20.dp))
         NextPageButton(
-            navigate = navigateContactGegevensScreen,
+            navigate = navigateContactDetailsScreen,
             enabled = quotationRequestViewModel.personalDetailScreenCanNavigate(),
         )
         Spacer(modifier = Modifier.height(40.dp))

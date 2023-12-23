@@ -14,7 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -23,10 +22,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.templateapplication.R
-import com.example.templateapplication.ui.commons.ValidationTextFieldApp
 import com.example.templateapplication.ui.commons.NextPageButton
 import com.example.templateapplication.ui.commons.ProgressBar
 import com.example.templateapplication.ui.commons.SeparatingTitle
+import com.example.templateapplication.ui.commons.ValidationTextFieldApp
 import com.example.templateapplication.ui.utils.ReplyNavigationType
 import com.example.templateapplication.validation.MainEvent
 import com.example.templateapplication.validation.MainState
@@ -34,12 +33,10 @@ import com.example.templateapplication.validation.MainState
 @Composable
 fun PersonalDetailsScreen(
     navigationType: ReplyNavigationType,
-    modifier: Modifier = Modifier,
     quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
     navigateExtras: () -> Unit,
 ) {
     val requestState by quotationRequestViewModel.quotationRequestState.collectAsState()
-
     val scrollState = rememberScrollState()
 
     Column {
@@ -51,7 +48,7 @@ fun PersonalDetailsScreen(
             text = stringResource(id = R.string.contactDetails_contact_info),
         )
         PersonalDetailsForm(
-            navigationType =navigationType,
+            navigationType = navigationType,
             navigateExtras = navigateExtras,
             quotationRequestViewModel = quotationRequestViewModel,
 
@@ -64,29 +61,30 @@ fun PersonalDetailsScreen(
 }
 
 @Composable
-fun PersonalDetailsForm (
+fun PersonalDetailsForm(
     navigationType: ReplyNavigationType,
     navigateExtras: () -> Unit,
-    quotationRequestViewModel : QuotationRequestViewModel,
-    modifier: Modifier = Modifier,
+    quotationRequestViewModel: QuotationRequestViewModel,
     formState: MainState,
     onEvent: (MainEvent) -> Unit,
 ) {
 
-    var columnAmount : Int
-    val padding : Dp
-    val spacer : Dp
+    val columnAmount: Int
+    val padding: Dp
+    val spacer: Dp
     when (navigationType) {
         ReplyNavigationType.NAVIGATION_RAIL -> {
             columnAmount = 2
             padding = 50.dp; 30.dp
             spacer = 30.dp
         }
+
         ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             columnAmount = 4
             padding = 60.dp
             spacer = 60.dp
         }
+
         else -> {
             columnAmount = 1
             padding = 60.dp
@@ -100,11 +98,11 @@ fun PersonalDetailsForm (
         columns = GridCells.Fixed(columnAmount),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        item{
+        item {
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.contactDetails_first_name),
                 text = formState.firstName,
-                onValueChange = {newValue -> onEvent(MainEvent.FirstNameChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.FirstNameChanged(newValue)) },
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -112,11 +110,11 @@ fun PersonalDetailsForm (
                 errorMessage = formState.firstNameError,
             )
         }
-        item{
+        item {
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.contactDetails_name),
                 text = formState.lastName,
-                onValueChange = {newValue -> onEvent(MainEvent.LastNameChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.LastNameChanged(newValue)) },
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -124,11 +122,11 @@ fun PersonalDetailsForm (
                 errorMessage = formState.lastNameError,
             )
         }
-        item{
+        item {
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.strPhoneNumber),
                 text = formState.phoneNumber,
-                onValueChange = {newValue -> onEvent(MainEvent.PhoneNumberChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.PhoneNumberChanged(newValue)) },
                 keyboardType = KeyboardType.Phone,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -136,11 +134,11 @@ fun PersonalDetailsForm (
                 errorMessage = formState.phoneNumberError,
             )
         }
-        item{
+        item {
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.strEmail),
                 text = formState.email,
-                onValueChange = { newValue -> onEvent(MainEvent.EmailChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.EmailChanged(newValue)) },
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -148,14 +146,14 @@ fun PersonalDetailsForm (
                 errorMessage = formState.emailError,
             )
         }
-        item(span = { GridItemSpan(maxLineSpan)}){
+        item(span = { GridItemSpan(maxLineSpan) }) {
             Spacer(modifier = Modifier.size(30.dp))
         }
-        item{
+        item {
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.contactDetails_street),
                 text = formState.street,
-                onValueChange = { newValue -> onEvent(MainEvent.StreetChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.StreetChanged(newValue)) },
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -167,7 +165,7 @@ fun PersonalDetailsForm (
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.contactDetails_house_number),
                 text = formState.houseNumber,
-                onValueChange = { newValue -> onEvent(MainEvent.HouseNumberChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.HouseNumberChanged(newValue)) },
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -179,7 +177,7 @@ fun PersonalDetailsForm (
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.contactDetails_city),
                 text = formState.city,
-                onValueChange = { newValue -> onEvent(MainEvent.CityChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.CityChanged(newValue)) },
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -191,7 +189,7 @@ fun PersonalDetailsForm (
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.contactDetails_postal_code),
                 text = formState.postalCode,
-                onValueChange = { newValue -> onEvent(MainEvent.PostalCodeChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.PostalCodeChanged(newValue)) },
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
                 singleLine = true,
@@ -199,11 +197,11 @@ fun PersonalDetailsForm (
                 errorMessage = formState.postalCodeError,
             )
         }
-        item(){
+        item {
             ValidationTextFieldApp(
                 placeholder = stringResource(id = R.string.contactDetails_vat_number),
                 text = formState.vat,
-                onValueChange = { newValue -> onEvent(MainEvent.VatChanged(newValue))},
+                onValueChange = { newValue -> onEvent(MainEvent.VatChanged(newValue)) },
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done,
                 singleLine = true,
@@ -211,29 +209,15 @@ fun PersonalDetailsForm (
                 errorMessage = formState.vatError,
             )
         }
-        item(span = { GridItemSpan(maxLineSpan)}){
+        item(span = { GridItemSpan(maxLineSpan) }) {
             Spacer(modifier = Modifier.size(spacer))
         }
-        item(span = { GridItemSpan(maxLineSpan)}) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             NextPageButton(
                 navigate = navigateExtras,
                 enabled = quotationRequestViewModel.quotationScreenCanNavigate(),
             )
         }
-
-    }
-}
-
-@Composable
-fun FacturationForm(
-    modifier: Modifier = Modifier,
-    onEvent: (MainEvent) -> Unit,
-    formState: MainState,
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
 
     }
 }

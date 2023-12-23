@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -35,7 +36,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -66,38 +66,43 @@ import com.example.templateapplication.ui.utils.ReplyNavigationType
 @ExperimentalMaterial3Api
 @Composable
 fun ExtrasScreen(
-    navigationType:ReplyNavigationType,
-    modifier: Modifier = Modifier,
-    quotationRequestViewModel: QuotationRequestViewModel =  viewModel(),
-    navigateSamenvatting: () -> Unit,
-    isOverview: Boolean, )
-{
+    navigationType: ReplyNavigationType,
+    quotationRequestViewModel: QuotationRequestViewModel = viewModel(),
+    navigateSummary: () -> Unit,
+    isOverview: Boolean,
+) {
 
     var selectedIndex by remember { mutableIntStateOf(0) }
-    val options = listOf(stringResource(id = R.string.extraMaterial_sort_price_desc), stringResource(id = R.string.extraMaterial_sort_price_asc), stringResource(id = R.string.extraMaterial_sort_name_desc), stringResource(id = R.string.extraMaterial_sort_name_asc))
+    val options = listOf(
+        stringResource(id = R.string.extraMaterial_sort_price_desc),
+        stringResource(id = R.string.extraMaterial_sort_price_asc),
+        stringResource(id = R.string.extraMaterial_sort_name_desc),
+        stringResource(id = R.string.extraMaterial_sort_name_asc)
+    )
 
-    when(val extraEquipmentApiState = quotationRequestViewModel.extraMateriaalApiState){
+    when (quotationRequestViewModel.extraMateriaalApiState) {
         is ApiResponse.Loading -> Text(stringResource(id = R.string.loading))
         is ApiResponse.Error -> {
-//            val errorMessage = extraEquipmentApiState.errorMessage TODO
-            Text(stringResource(id = R.string.error, "todo"))}
+            Text(stringResource(id = R.string.error))
+        }
+
         is ApiResponse.Success -> {
-
-
-            var columns : Int
-            var paddingSegment : Dp
-            var paddingButton : Dp
+            val columns: Int
+            val paddingSegment: Dp
+            val paddingButton: Dp
             when (navigationType) {
                 ReplyNavigationType.NAVIGATION_RAIL -> {
                     columns = 2
                     paddingSegment = 60.dp
                     paddingButton = 100.dp
                 }
+
                 ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
                     columns = 4
                     paddingSegment = 100.dp
                     paddingButton = 170.dp
                 }
+
                 else -> {
                     columns = 1
                     paddingSegment = 0.dp
@@ -110,14 +115,22 @@ fun ExtrasScreen(
                     .padding(end = 30.dp, start = 30.dp, bottom = 30.dp)
                     .fillMaxWidth(),
             ) {
-                item(span = { GridItemSpan(maxLineSpan)}){
+                item(span = { GridItemSpan(maxLineSpan) }) {
                     HeadOfPage()
                 }
-                item(span = { GridItemSpan(maxLineSpan)}){
-                    SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(vertical = 20.dp, horizontal = paddingSegment)) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    SingleChoiceSegmentedButtonRow(
+                        modifier = Modifier.padding(
+                            vertical = 20.dp,
+                            horizontal = paddingSegment
+                        )
+                    ) {
                         options.forEachIndexed { index, label ->
                             SegmentedButton(
-                                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = options.size
+                                ),
                                 onClick = { selectedIndex = index },
                                 selected = index == selectedIndex,
                                 colors = SegmentedButtonColors(
@@ -140,41 +153,37 @@ fun ExtrasScreen(
                         }
                     }
                 }
-                items(quotationRequestViewModel.getListSorted(selectedIndex)){ extraItem ->
+                items(quotationRequestViewModel.getListSorted(selectedIndex)) { extraItem ->
                     ExtraItemCard(
                         extraItem = extraItem,
-                        onAmountChanged = { _, amount ->
-                            quotationRequestViewModel.changeExtraItemAmount(extraItem, amount)},
-                        onAddItem= { quotationRequestViewModel.addItemToCart(extraItem)},
-                        onRemoveItem= { quotationRequestViewModel.removeItemFromCart(extraItem)},
-                        modifier = Modifier.padding(8.dp),
+                        onAddItem = { quotationRequestViewModel.addItemToCart(extraItem) },
+                        onRemoveItem = { quotationRequestViewModel.removeItemFromCart(extraItem) },
                         isOverview = isOverview
                     )
                 }
 
-
-                if(!isOverview){
-                    item(span= { GridItemSpan(maxLineSpan)}){
-                    NextPageButton(
-                        modifier = Modifier.padding(horizontal = paddingButton),
-                        navigate = navigateSamenvatting,
-                        enabled = true,
-                    )
-                }}
-            }
+                if (!isOverview) {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        NextPageButton(
+                            modifier = Modifier.padding(horizontal = paddingButton),
+                            navigate = navigateSummary,
+                            enabled = true,
+                        )
+                    }
                 }
             }
         }
+    }
+}
 
 
 @Composable
 fun ExtraItemCard(
     extraItem: ExtraItemState,
-    onAmountChanged: (ExtraItemState, Int) -> Unit,
     onAddItem: (ExtraItemState) -> Unit,
     onRemoveItem: (ExtraItemState) -> Unit,
-    modifier: Modifier = Modifier,
-    isOverview: Boolean) {
+    isOverview: Boolean
+) {
 
     Card(
         modifier = Modifier
@@ -184,14 +193,19 @@ fun ExtraItemCard(
             defaultElevation = 6.dp
         ),
         shape = RoundedCornerShape(8.dp),
-        colors = CardColors(containerColor = MainLightestColor, contentColor = Color.Black, disabledContainerColor = Color.Gray, disabledContentColor = Color.Black)
+        colors = CardColors(
+            containerColor = MainLightestColor,
+            contentColor = Color.Black,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.Black
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // Image
+
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(extraItem.imgUrl)
@@ -204,34 +218,33 @@ fun ExtraItemCard(
                     .height(200.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            // Item Details
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Title
+
                 Text(
-                    fontSize = 20.sp ,
+                    fontSize = 20.sp,
                     modifier = Modifier.size(170.dp, 70.dp),
                     text = extraItem.title,
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 2,
-                    overflow = TextOverflow.Visible 
+                    overflow = TextOverflow.Visible
                 )
-                // Price
+
                 Text(
-                    fontSize = 20.sp ,
-                    text = "€${extraItem.price}",
+                    fontSize = 20.sp,
+                    text = "${stringResource(id = R.string.price_icon)}${extraItem.price}",
                     style = MaterialTheme.typography.headlineSmall,
 
-                )
+                    )
             }
             Text(
                 text = buildAnnotatedString {
                     extraItem.attributes.forEachIndexed { index, attribute ->
                         append(attribute)
                         if (index < extraItem.attributes.size - 1) {
-                            // Append a new line if it's not the last item
                             append("\n")
                         }
                     }
@@ -243,18 +256,19 @@ fun ExtraItemCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically){
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
 
-            Text(
-                text = "${extraItem.stock} in stock",
-                style = MaterialTheme.typography.bodyLarge,
-
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            if(!isOverview){
+                Text(
+                    text = "${extraItem.stock} ${stringResource(id = R.string.extraMaterial_in_stock)}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    )
+                Spacer(modifier = Modifier.height(16.dp))
+                if (!isOverview) {
                     if (extraItem.isEditing) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -265,17 +279,19 @@ fun ExtraItemCard(
                                 onValueChange = {
                                     val enteredAmount = it.toIntOrNull()
                                     extraItem.amount = when {
-                                        enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(extraItem.stock)
-                                        else ->0
+                                        enteredAmount != null && enteredAmount > 0 -> enteredAmount.coerceAtMost(
+                                            extraItem.stock
+                                        )
+
+                                        else -> 0
                                     }
                                     onAddItem(extraItem)
 
                                 },
                                 keyboardOptions = KeyboardOptions.Default.copy(
                                     keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
-                                )
-                                ,
-                                label = { Text(text = "Aantal", fontSize = 10.sp) },
+                                ),
+                                label = { Text(text = stringResource(id = R.string.extraMaterial_number_of), fontSize = 10.sp) },
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.White,
                                     unfocusedContainerColor = Color.White,
@@ -283,7 +299,6 @@ fun ExtraItemCard(
                                 ),
                                 modifier = Modifier
                                     .width(70.dp)
-
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             IconButton(
@@ -291,17 +306,25 @@ fun ExtraItemCard(
                                     extraItem.isEditing = false
                                     onRemoveItem(extraItem)
                                 },
-                                colors = IconButtonColors(containerColor = Color.Transparent, contentColor = Color.Red, disabledContentColor = Color.Transparent, disabledContainerColor = Color.Red)
+                                colors = IconButtonColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = Color.Red,
+                                    disabledContentColor = Color.Transparent,
+                                    disabledContainerColor = Color.Red
+                                )
 
                             ) {
-                                Icon(Icons.Filled.Delete, "Delete Button", modifier=Modifier.size(35.dp))
+                                Icon(
+                                    Icons.Filled.Delete,
+                                    stringResource(id = R.string.extraMaterial_delete_button),
+                                    modifier = Modifier.size(35.dp)
+                                )
                             }
                         }
                     } else {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-
-                        ) {
+                            ) {
                             Button(
                                 onClick = {
                                     extraItem.amount = 1
@@ -309,17 +332,23 @@ fun ExtraItemCard(
                                     extraItem.isEditing = true
 
                                 },
-                                colors = ButtonColors(containerColor = MainColor, contentColor = Color.White, disabledContentColor = Color.White, disabledContainerColor = MainColor)
+                                colors = ButtonColors(
+                                    containerColor = MainColor,
+                                    contentColor = Color.White,
+                                    disabledContentColor = Color.White,
+                                    disabledContainerColor = MainColor
+                                )
                             ) {
                                 Text(text = stringResource(id = R.string.add))
                             }
                         }
                     }
                 }
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
             }
-        }}
+        }
     }
+}
 
 
 

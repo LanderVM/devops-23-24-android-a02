@@ -60,9 +60,6 @@ class PriceEstimationViewModel(
         getApiEstimationDetails()
     }
 
-    /**
-     * Fetches estimation details from the API and updates the state of [estimationDetailsState].
-     */
     init {
         getApiEstimationDetails()
     }
@@ -208,7 +205,6 @@ class PriceEstimationViewModel(
             it.copy(startDate = begin, endDate = end)
         }
     }
-    // ---------------------------------------- EVENT DETAILS: GOOGLE MAPS TODO code duplication?
 
     var googleMapsApiState: ApiResponse<GoogleMapsResponse> by mutableStateOf(
         ApiResponse.Loading
@@ -235,7 +231,6 @@ class PriceEstimationViewModel(
                 googleMapsApiState = ApiResponse.Success(
                     GoogleMapsResponse(predictionsResponse = listResult)
                 )
-                Log.i("AAAAAAAA", listResult.toString())
             } catch (e: IOException) {
                 googleMapsApiState = ApiResponse.Error
                 Log.i("Error", e.toString())
@@ -277,7 +272,12 @@ class PriceEstimationViewModel(
                     _estimationDetailsState.value.wantsTripelBeer,
                 ).estimatedPrice
 
-                calculatePriceApiState = PriceEstimationResultApiState.Success(BigDecimal(response).setScale(2, RoundingMode.CEILING))
+                calculatePriceApiState = PriceEstimationResultApiState.Success(
+                    BigDecimal(response).setScale(
+                        2,
+                        RoundingMode.CEILING
+                    )
+                )
             } catch (e: HttpException) {
                 val errorMessage = e.message ?: "Post request failed"
                 Log.e(
